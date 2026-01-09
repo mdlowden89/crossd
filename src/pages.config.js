@@ -12,6 +12,9 @@ import ChatList from './pages/ChatList';
 import Chat from './pages/Chat';
 import CrossdPlus from './pages/CrossdPlus';
 import Recaps from './pages/Recaps';
+import Profile from './pages/Profile';
+import Verification from './pages/Verification';
+import Settings from './pages/Settings';
 import __Layout from './Layout.jsx';
 
 
@@ -30,6 +33,9 @@ export const PAGES = {
     "Chat": Chat,
     "CrossdPlus": CrossdPlus,
     "Recaps": Recaps,
+    "Profile": Profile,
+    "Verification": Verification,
+    "Settings": Settings,
 }
 
 export const pagesConfig = {
