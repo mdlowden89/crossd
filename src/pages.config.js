@@ -10,6 +10,8 @@ import MomentDetail from './pages/MomentDetail';
 import Trail from './pages/Trail';
 import ChatList from './pages/ChatList';
 import Chat from './pages/Chat';
+import CrossdPlus from './pages/CrossdPlus';
+import Recaps from './pages/Recaps';
 import __Layout from './Layout.jsx';
 
 
@@ -26,6 +28,8 @@ export const PAGES = {
     "Trail": Trail,
     "ChatList": ChatList,
     "Chat": Chat,
+    "CrossdPlus": CrossdPlus,
+    "Recaps": Recaps,
 }
 
 export const pagesConfig = {
