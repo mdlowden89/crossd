@@ -8,6 +8,8 @@ import ProfileDetail from './pages/ProfileDetail';
 import Moments from './pages/Moments';
 import MomentDetail from './pages/MomentDetail';
 import Trail from './pages/Trail';
+import ChatList from './pages/ChatList';
+import Chat from './pages/Chat';
 import __Layout from './Layout.jsx';
 
 
@@ -22,6 +24,8 @@ export const PAGES = {
     "Moments": Moments,
     "MomentDetail": MomentDetail,
     "Trail": Trail,
+    "ChatList": ChatList,
+    "Chat": Chat,
 }
 
 export const pagesConfig = {
