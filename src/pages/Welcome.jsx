@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
 import CrossdLogo from '@/components/common/CrossdLogo';
 import StarBackground from '@/components/common/StarBackground';
@@ -57,18 +57,23 @@ export default function Welcome() {
             transition={{ delay: 0.8, duration: 0.5 }}
             className="flex flex-col w-full gap-4"
           >
-            <Link to={createPageUrl('Signup')} className="w-full">
-              <CrossdButton className="w-full" size="lg">
-                <SparkIcon size={20} />
-                Join Crossd Today
-              </CrossdButton>
-            </Link>
+            <CrossdButton 
+              className="w-full" 
+              size="lg"
+              onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
+            >
+              <SparkIcon size={20} />
+              Join Crossd Today
+            </CrossdButton>
             
-            <Link to={createPageUrl('Login')} className="w-full">
-              <CrossdButton variant="secondary" className="w-full" size="lg">
-                Log In
-              </CrossdButton>
-            </Link>
+            <CrossdButton 
+              variant="secondary" 
+              className="w-full" 
+              size="lg"
+              onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
+            >
+              Log In
+            </CrossdButton>
           </motion.div>
 
           <motion.p
