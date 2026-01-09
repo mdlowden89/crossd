@@ -5,8 +5,9 @@ import TopHeader from '@/components/navigation/TopHeader';
 import BottomNav from '@/components/navigation/BottomNav';
 
 // Pages that don't show the main navigation
-const authPages = ['Welcome', 'Login', 'Signup', 'Onboarding', 'SetupProfile', 'Permissions', 'MBTIQuiz', 'FirstMoment'];
+const authPages = ['Welcome', 'Login', 'Signup', 'Onboarding', 'SetupProfile', 'Permissions', 'MBTIQuiz', 'FirstMoment', 'Recaps'];
 const adminPages = ['AdminVerification', 'AdminReports'];
+const fullScreenPages = ['Chat', 'ProfileDetail', 'MomentDetail', 'Verification', 'Settings', 'Notifications'];
 
 export default function Layout({ children, currentPageName }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -32,7 +33,7 @@ export default function Layout({ children, currentPageName }) {
   });
 
   const unreadCount = notifications?.length || 0;
-  const showNav = isAuthenticated && !authPages.includes(currentPageName) && !adminPages.includes(currentPageName);
+  const showNav = isAuthenticated && !authPages.includes(currentPageName) && !adminPages.includes(currentPageName) && !fullScreenPages.includes(currentPageName);
 
   return (
     <div className="min-h-screen bg-black text-white">
