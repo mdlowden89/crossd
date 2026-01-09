@@ -15,6 +15,10 @@ import Recaps from './pages/Recaps';
 import Profile from './pages/Profile';
 import Verification from './pages/Verification';
 import Settings from './pages/Settings';
+import Notifications from './pages/Notifications';
+import AdminVerification from './pages/AdminVerification';
+import AdminReports from './pages/AdminReports';
+import Home from './pages/Home';
 import __Layout from './Layout.jsx';
 
 
@@ -36,6 +40,10 @@ export const PAGES = {
     "Profile": Profile,
     "Verification": Verification,
     "Settings": Settings,
+    "Notifications": Notifications,
+    "AdminVerification": AdminVerification,
+    "AdminReports": AdminReports,
+    "Home": Home,
 }
 
 export const pagesConfig = {
