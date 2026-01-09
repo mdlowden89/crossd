@@ -3,6 +3,8 @@ import Onboarding from './pages/Onboarding';
 import SetupProfile from './pages/SetupProfile';
 import MBTIQuiz from './pages/MBTIQuiz';
 import FirstMoment from './pages/FirstMoment';
+import Explore from './pages/Explore';
+import ProfileDetail from './pages/ProfileDetail';
 import __Layout from './Layout.jsx';
 
 
@@ -12,6 +14,8 @@ export const PAGES = {
     "SetupProfile": SetupProfile,
     "MBTIQuiz": MBTIQuiz,
     "FirstMoment": FirstMoment,
+    "Explore": Explore,
+    "ProfileDetail": ProfileDetail,
 }
 
 export const pagesConfig = {
