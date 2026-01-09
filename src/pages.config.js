@@ -5,6 +5,9 @@ import MBTIQuiz from './pages/MBTIQuiz';
 import FirstMoment from './pages/FirstMoment';
 import Explore from './pages/Explore';
 import ProfileDetail from './pages/ProfileDetail';
+import Moments from './pages/Moments';
+import MomentDetail from './pages/MomentDetail';
+import Trail from './pages/Trail';
 import __Layout from './Layout.jsx';
 
 
@@ -16,6 +19,9 @@ export const PAGES = {
     "FirstMoment": FirstMoment,
     "Explore": Explore,
     "ProfileDetail": ProfileDetail,
+    "Moments": Moments,
+    "MomentDetail": MomentDetail,
+    "Trail": Trail,
 }
 
 export const pagesConfig = {
