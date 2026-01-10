@@ -1,26 +1,48 @@
 import React from 'react';
-import { Heart } from 'lucide-react';
 
 export default function CrossdLogo({ size = 'default', showText = true }) {
   const sizes = {
-    sm: { icon: 20, text: 'text-lg' },
-    default: { icon: 28, text: 'text-2xl' },
-    lg: { icon: 40, text: 'text-4xl' }
+    sm: { dimension: 24, text: 'text-lg' },
+    default: { dimension: 32, text: 'text-2xl' },
+    lg: { dimension: 48, text: 'text-4xl' }
   };
 
-  const { icon, text } = sizes[size];
+  const { dimension, text } = sizes[size];
 
   return (
     <div className="flex items-center gap-2">
-      <div className="relative">
-        <Heart 
-          className="text-[#E70F72] fill-[#E70F72]" 
-          size={icon}
+      <svg 
+        width={dimension} 
+        height={dimension} 
+        viewBox="0 0 100 100" 
+        fill="none" 
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        {/* Heart outline */}
+        <path
+          d="M50 85C50 85 15 65 15 40C15 30 20 20 30 20C40 20 45 30 50 35C55 30 60 20 70 20C80 20 85 30 85 40C85 65 50 85 50 85Z"
+          stroke="#E70F72"
+          strokeWidth="5"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-[30%] h-[30%] bg-black rounded-full" />
-        </div>
-      </div>
+        {/* Crossed paths inside */}
+        <path
+          d="M35 45 Q 42 38, 50 45 Q 58 52, 65 45"
+          stroke="#E70F72"
+          strokeWidth="5"
+          fill="none"
+          strokeLinecap="round"
+        />
+        <path
+          d="M35 55 Q 42 62, 50 55 Q 58 48, 65 55"
+          stroke="#E70F72"
+          strokeWidth="5"
+          fill="none"
+          strokeLinecap="round"
+        />
+      </svg>
       {showText && (
         <span className={`font-bold text-white ${text}`}>
           Crossd
