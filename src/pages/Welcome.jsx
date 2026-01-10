@@ -118,7 +118,7 @@ export default function Welcome() {
               <CrossdButton 
                 className="w-full" 
                 size="lg"
-                onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
+                onClick={() => window.location.href = createPageUrl('Onboarding')}
               >
                 <SparkIcon size={20} />
                 Get Started
@@ -182,7 +182,7 @@ export default function Welcome() {
             <CrossdButton 
               className="w-full" 
               size="lg"
-              onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
+              onClick={() => window.location.href = createPageUrl('Onboarding')}
             >
               <SparkIcon size={20} />
               Join Crossd Today
@@ -192,7 +192,7 @@ export default function Welcome() {
               variant="secondary" 
               className="w-full" 
               size="lg"
-              onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
+              onClick={() => window.location.href = createPageUrl('Onboarding')}
             >
               Log In
             </CrossdButton>
