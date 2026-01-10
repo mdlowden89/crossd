@@ -114,7 +114,7 @@ export default function Onboarding() {
     }
   };
 
-  const currentStepData = steps[currentStep];
+  const currentStepData = steps[currentStep] || steps[0];
   const isLastStep = currentStep === steps.length - 1;
 
   return (
