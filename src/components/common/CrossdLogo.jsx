@@ -18,33 +18,48 @@ export default function CrossdLogo({ size = 'default', showText = true }) {
         fill="none" 
         xmlns="http://www.w3.org/2000/svg"
       >
-        {/* Heart outline */}
+        {/* Heart outline with integrated handshake */}
         <path
-          d="M50 85C50 85 15 65 15 40C15 30 20 20 30 20C40 20 45 30 50 35C55 30 60 20 70 20C80 20 85 30 85 40C85 65 50 85 50 85Z"
+          d="M50 18C45 13 38 10 32 10C22 10 14 18 14 28C14 42 24 54 34 64C40 70 46 76 50 80C54 76 60 70 66 64C76 54 86 42 86 28C86 18 78 10 68 10C62 10 55 13 50 18Z"
           stroke="#E70F72"
-          strokeWidth="5"
+          strokeWidth="6"
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        {/* Crossed paths inside */}
+        
+        {/* Interlocking handshake - S shape with fingers */}
+        {/* Left hand coming in from left */}
         <path
-          d="M35 45 Q 42 38, 50 45 Q 58 52, 65 45"
+          d="M32 38 L38 44 Q42 48 46 44 L50 40"
           stroke="#E70F72"
-          strokeWidth="5"
+          strokeWidth="6"
           fill="none"
           strokeLinecap="round"
+          strokeLinejoin="round"
         />
+        
+        {/* Right hand coming in from right with interlock */}
         <path
-          d="M35 55 Q 42 62, 50 55 Q 58 48, 65 55"
+          d="M68 38 L62 44 Q58 48 54 44 L50 40"
           stroke="#E70F72"
-          strokeWidth="5"
+          strokeWidth="6"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        
+        {/* Finger lines on lower right hand */}
+        <path
+          d="M54 50 L54 58 M58 50 L58 58 M62 50 L62 58"
+          stroke="#E70F72"
+          strokeWidth="6"
           fill="none"
           strokeLinecap="round"
         />
       </svg>
       {showText && (
-        <span className={`font-bold text-white ${text}`}>
+        <span className={`font-bold text-[#E70F72] ${text}`}>
           Crossd
         </span>
       )}
