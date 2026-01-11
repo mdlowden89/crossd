@@ -35,7 +35,7 @@ export default function StarBackground() {
             width: star.size,
             height: star.size,
             opacity: star.opacity,
-            animation: `starDrift 60s linear ${star.delay}s infinite`
+            animation: `starDrift 40s linear ${star.delay}s infinite`
           }}
         />
       ))}
