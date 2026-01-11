@@ -12,6 +12,15 @@ import { MapPin, Sparkles, Heart, Shield, ChevronRight } from 'lucide-react';
 export default function Welcome() {
   const [showDetails, setShowDetails] = useState(false);
 
+  const handleLogin = async () => {
+    const isAuth = await base44.auth.isAuthenticated();
+    if (isAuth) {
+      window.location.href = createPageUrl('Home');
+    } else {
+      base44.auth.redirectToLogin(createPageUrl('Home'));
+    }
+  };
+
   if (showDetails) {
     return (
       <div className="min-h-screen bg-black relative overflow-hidden">
@@ -200,7 +209,7 @@ export default function Welcome() {
               variant="secondary" 
               className="w-full" 
               size="lg"
-              onClick={() => base44.auth.redirectToLogin()}
+              onClick={handleLogin}
             >
               Log In
             </CrossdButton>
