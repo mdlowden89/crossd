@@ -3,13 +3,13 @@ import React from 'react';
 export default function StarBackground() {
   // Generate random star positions
   const stars = React.useMemo(() => {
-    return Array.from({ length: 80 }, (_, i) => ({
+    return Array.from({ length: 200 }, (_, i) => ({
       id: i,
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`,
-      size: Math.random() * 2 + 0.5,
-      opacity: Math.random() * 0.6 + 0.3,
-      delay: Math.random() * 60
+      left: `${Math.random() * 120}%`,
+      top: `${Math.random() * 120}%`,
+      size: Math.random() * 2.5 + 0.5,
+      opacity: Math.random() * 0.7 + 0.2,
+      delay: Math.random() * 40
     }));
   }, []);
 
@@ -35,7 +35,7 @@ export default function StarBackground() {
             width: star.size,
             height: star.size,
             opacity: star.opacity,
-            animation: `starDrift 120s linear ${star.delay}s infinite`
+            animation: `starDrift 60s linear ${star.delay}s infinite`
           }}
         />
       ))}
