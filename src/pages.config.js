@@ -19,6 +19,7 @@ import SetupProfile from './pages/SetupProfile';
 import Trail from './pages/Trail';
 import Verification from './pages/Verification';
 import Welcome from './pages/Welcome';
+import Dashboard from './pages/Dashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -44,6 +45,7 @@ export const PAGES = {
     "Trail": Trail,
     "Verification": Verification,
     "Welcome": Welcome,
+    "Dashboard": Dashboard,
 }
 
 export const pagesConfig = {
