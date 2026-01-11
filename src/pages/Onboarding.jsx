@@ -5,6 +5,7 @@ import { base44 } from '@/api/base44Client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, ChevronLeft, MapPin, Bell, Sparkles } from 'lucide-react';
 import CrossdLogo from '@/components/common/CrossdLogo';
+import MapIllustration from '@/components/common/MapIllustration';
 import { CrossdButton } from '@/components/ui/crossd-button';
 
 const steps = [
@@ -14,7 +15,8 @@ const steps = [
     description: 'Where missed connections become meaningful matches.',
     icon: Sparkles,
     content: (
-      <div className="space-y-4 text-center">
+      <div className="space-y-6 text-center">
+        <MapIllustration />
         <p className="text-white/65">
           Crossd helps you reconnect with people you've crossed paths with in real life.
         </p>
