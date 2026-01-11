@@ -4,6 +4,7 @@ import { base44 } from '@/api/base44Client';
 import { motion, AnimatePresence } from 'framer-motion';
 import CrossdLogo from '@/components/common/CrossdLogo';
 import StarBackground from '@/components/common/StarBackground';
+import MapIllustration from '@/components/common/MapIllustration';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import SparkIcon from '@/components/common/SparkIcon';
 import { MapPin, Sparkles, Heart, Shield, ChevronRight } from 'lucide-react';
@@ -167,11 +168,19 @@ export default function Welcome() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.6 }}
-            className="text-white/65 text-lg mb-8 leading-relaxed"
+            className="text-white/65 text-lg mb-4 leading-relaxed"
           >
             Discover the people you've crossed paths with. 
             Turn missed connections into meaningful matches.
           </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.7, duration: 0.6 }}
+          >
+            <MapIllustration />
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
