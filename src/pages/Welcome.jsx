@@ -200,7 +200,7 @@ export default function Welcome() {
               variant="secondary" 
               className="w-full" 
               size="lg"
-              onClick={() => base44.auth.redirectToLogin(createPageUrl('Home'))}
+              onClick={() => base44.auth.redirectToLogin()}
             >
               Log In
             </CrossdButton>
