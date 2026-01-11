@@ -189,11 +189,10 @@ export default function Welcome() {
             className="flex flex-col w-full gap-4 mb-6"
           >
             <CrossdButton 
-              className="w-full" 
+              className="w-full justify-center" 
               size="lg"
               onClick={() => window.location.href = createPageUrl('Onboarding')}
             >
-              <SparkIcon size={20} />
               Join Crossd Today
             </CrossdButton>
             
