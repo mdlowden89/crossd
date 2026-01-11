@@ -1,16 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { Compass, MapPin, MessageCircle, Map, Sparkles } from 'lucide-react';
+import { LayoutDashboard, Compass, MapPin, MessageCircle, Map, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from "@/lib/utils";
 
 const navItems = [
+  { name: 'Dashboard', icon: LayoutDashboard, page: 'Dashboard' },
   { name: 'Explore', icon: Compass, page: 'Explore' },
   { name: 'Moments', icon: MapPin, page: 'Moments' },
   { name: 'Chat', icon: MessageCircle, page: 'ChatList' },
-  { name: 'Trail', icon: Map, page: 'Trail' },
-  { name: 'Crossd+', icon: Sparkles, page: 'CrossdPlus', isGlow: true }
+  { name: 'Profile', icon: Sparkles, page: 'Profile', isGlow: true }
 ];
 
 export default function BottomNav({ currentPage }) {

@@ -31,8 +31,8 @@ export default function Home() {
         return;
       }
 
-      // Profile exists and complete, go to Explore
-      window.location.href = createPageUrl('Explore');
+      // Profile exists and complete, go to Dashboard
+      window.location.href = createPageUrl('Dashboard');
     } catch (error) {
       window.location.href = createPageUrl('Welcome');
     }
