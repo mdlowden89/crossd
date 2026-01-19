@@ -87,10 +87,10 @@ export default function ActivityMap({ moments }) {
         .leaflet-container {
           width: 100%;
           height: 100%;
-          background: #0a0a0a;
+          background: #000000;
         }
         .leaflet-tile-pane {
-          filter: grayscale(100%) brightness(0.4) contrast(1.2);
+          filter: brightness(0.2) invert(1) hue-rotate(290deg) saturate(3);
         }
         .leaflet-popup-content-wrapper {
           background: #0B0B0B;
@@ -112,8 +112,8 @@ export default function ActivityMap({ moments }) {
         scrollWheelZoom={false}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://cartodb.com/attributions">CartoDB</a>'
+          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
         />
         
         {/* Route line */}
