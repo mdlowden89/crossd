@@ -90,7 +90,7 @@ export default function ActivityMap({ moments }) {
           background: #000000;
         }
         .leaflet-tile-pane {
-          filter: brightness(0.2) invert(1) hue-rotate(290deg) saturate(3);
+          filter: brightness(0.6) sepia(1) hue-rotate(290deg) saturate(5) contrast(1.2);
         }
         .leaflet-popup-content-wrapper {
           background: #0B0B0B;
@@ -101,6 +101,17 @@ export default function ActivityMap({ moments }) {
         .leaflet-popup-tip {
           background: #0B0B0B;
           border: 1px solid rgba(231, 15, 114, 0.3);
+        }
+        .leaflet-control-zoom {
+          border: 1px solid rgba(231, 15, 114, 0.3) !important;
+        }
+        .leaflet-control-zoom a {
+          background: #0B0B0B !important;
+          color: #E70F72 !important;
+          border-bottom: 1px solid rgba(231, 15, 114, 0.2) !important;
+        }
+        .leaflet-control-zoom a:hover {
+          background: #1a1a1a !important;
         }
       `}</style>
       <MapContainer
@@ -113,7 +124,11 @@ export default function ActivityMap({ moments }) {
       >
         <TileLayer
           attribution='&copy; <a href="https://cartodb.com/attributions">CartoDB</a>'
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+          url="https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
+        />
+        <TileLayer
+          attribution='&copy; <a href="https://cartodb.com/attributions">CartoDB</a>'
+          url="https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png"
         />
         
         {/* Route line */}
