@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import CrossdProgressRing from '@/components/ui/crossd-progress-ring';
+import ActivityMap from '@/components/dashboard/ActivityMap';
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -309,31 +310,7 @@ export default function Dashboard() {
             A visual journey of your logged encounters.
           </p>
           
-          <div className="aspect-video bg-black/40 rounded-2xl flex items-center justify-center border border-white/5 overflow-hidden">
-            {moments.length > 0 ? (
-              <div className="text-center p-8">
-                <Map className="w-12 h-12 text-[#E70F72] mx-auto mb-4" />
-                <p className="text-white/65">
-                  You've logged {moments.length} moments
-                </p>
-                <Link to={createPageUrl('Trail')}>
-                  <CrossdButton variant="ghost" className="mt-4">
-                    View Your Trail
-                  </CrossdButton>
-                </Link>
-              </div>
-            ) : (
-              <div className="text-center p-8">
-                <Map className="w-12 h-12 text-white/30 mx-auto mb-4" />
-                <p className="text-white/50">Start logging moments to see your journey</p>
-                <Link to={createPageUrl('Moments')}>
-                  <CrossdButton variant="secondary" className="mt-4">
-                    Log First Moment
-                  </CrossdButton>
-                </Link>
-              </div>
-            )}
-          </div>
+          <ActivityMap moments={moments} />
         </motion.div>
 
         {/* Active Challenge */}
