@@ -1,16 +1,30 @@
 import React from 'react';
 
 export default function StarBackground() {
-  // Generate random star positions
-  const stars = React.useMemo(() => {
-    return Array.from({ length: 200 }, (_, i) => ({
-      id: i,
-      left: `${Math.random() * 120}%`,
-      top: `${Math.random() * 120}%`,
-      size: Math.random() * 2.5 + 0.5,
-      opacity: Math.random() * 0.7 + 0.2,
-      delay: Math.random() * 40
-    }));
+  // Generate star clusters - 6 stars per cluster in a line
+  const starClusters = React.useMemo(() => {
+    const clusters = [];
+    const numClusters = 30;
+    
+    for (let i = 0; i < numClusters; i++) {
+      const clusterStartX = Math.random() * 120;
+      const clusterStartY = Math.random() * 120;
+      const delay = Math.random() * 40;
+      
+      // Create 6 stars in a horizontal line for this cluster
+      for (let j = 0; j < 6; j++) {
+        clusters.push({
+          id: `${i}-${j}`,
+          left: `${clusterStartX + (j * 3)}%`,
+          top: `${clusterStartY}%`,
+          size: Math.random() * 2 + 1,
+          opacity: Math.random() * 0.6 + 0.3,
+          delay: delay + (j * 0.2)
+        });
+      }
+    }
+    
+    return clusters;
   }, []);
 
   return (
