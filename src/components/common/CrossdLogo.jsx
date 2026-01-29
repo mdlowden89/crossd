@@ -10,13 +10,14 @@ export default function CrossdLogo({ size = 'default', showText = true }) {
   const { dimension, text } = sizes[size];
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-3">
       <svg 
         width={dimension} 
         height={dimension} 
         viewBox="0 0 100 100" 
         fill="none" 
         xmlns="http://www.w3.org/2000/svg"
+        className="flex-shrink-0"
       >
         {/* Heart outline with integrated handshake */}
         <path
