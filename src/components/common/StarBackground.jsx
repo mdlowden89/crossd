@@ -35,11 +35,11 @@ export default function StarBackground() {
             transform: translate(0, 0);
           }
           100% {
-            transform: translate(100vw, 100vh);
+            transform: translate(-100vw, -100vh);
           }
         }
       `}</style>
-      {stars.map(star => (
+      {starClusters.map(star => (
         <div
           key={star.id}
           className="absolute rounded-full bg-white"
