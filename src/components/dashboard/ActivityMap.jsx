@@ -156,7 +156,7 @@ export default function ActivityMap({ moments }) {
                 weight: 2
               }}
             />
-            <Marker position={[moment.lat, moment.lng]} icon={pinkIcon}>
+            <Marker position={[moment.lat, moment.lng]} icon={createPinkIcon()}>
               <Popup>
                 <div className="p-2">
                   <div className="font-semibold text-[#E70F72] mb-1">
