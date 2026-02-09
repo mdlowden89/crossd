@@ -44,7 +44,11 @@ const vibeOptions = [
 ];
 
 export default function SetupProfile() {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const stepParam = urlParams.get('step');
+    return stepParam ? parseInt(stepParam) : 0;
+  });
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState({
     display_name: '',
