@@ -13,6 +13,7 @@ import { CrossdProgressRing } from '@/components/ui/crossd-progress-ring';
 import { CrossdInput } from '@/components/ui/crossd-input';
 import { CrossdModal } from '@/components/ui/crossd-modal';
 import VibeTagSelector from '@/components/profile/VibeTagSelector';
+import PromptModal from '@/components/profile/PromptModal';
 
 export default function Profile() {
   const [myProfile, setMyProfile] = useState(null);
