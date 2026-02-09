@@ -13,6 +13,7 @@ import { CrossdInput } from '@/components/ui/crossd-input';
 import { CrossdModal } from '@/components/ui/crossd-modal';
 import { format } from 'date-fns';
 import MomentsTrail from '@/components/moments/MomentsTrail';
+import { generateSampleMoments } from '@/utils/sampleMoments';
 
 // Geohash encoder
 function encodeGeohash(lat, lng, precision = 7) {
@@ -60,7 +61,11 @@ export default function Moments() {
 
   const { data: moments = [], isLoading } = useQuery({
     queryKey: ['my-moments', myProfile?.id],
-    queryFn: () => base44.entities.Moment.filter({ user_id: myProfile.id }, '-created_date', 50),
+    queryFn: async () => {
+      const realMoments = await base44.entities.Moment.filter({ user_id: myProfile.id }, '-created_date', 50);
+      // Use sample moments if no real moments exist (for demo purposes)
+      return realMoments.length > 0 ? realMoments : generateSampleMoments();
+    },
     enabled: !!myProfile
   });
 
