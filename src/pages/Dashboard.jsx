@@ -523,36 +523,8 @@ export default function Dashboard() {
           <ActivityMap moments={moments} profile={profile} />
         </motion.div>
 
-        {/* Active Challenge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30"
-        >
-          <div className="flex items-center gap-2 mb-2">
-            <Award className="w-5 h-5 text-[#E70F72]" />
-            <h2 className="text-2xl font-bold text-white">Active Challenge</h2>
-          </div>
-          <p className="text-white/65 mb-6">
-            Moment Marathon: Log a Moment 7 days in a row
-          </p>
-          
-          {/* Progress Bar */}
-          <div className="relative mb-4">
-            <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-white/30 rounded-full transition-all duration-500"
-                style={{ width: `${(dayStreak / 7) * 100}%` }}
-              />
-            </div>
-          </div>
-          <p className="text-white/50 text-sm mb-6">{dayStreak} / 7 days logged</p>
-          
-          <CrossdButton variant="secondary" className="w-full">
-            View All Challenges
-          </CrossdButton>
-        </motion.div>
+        {/* Challenges Section */}
+        <ChallengesSection />
 
         {/* Crossd+ Upsell */}
         {!profile.crossd_plus && (
