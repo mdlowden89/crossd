@@ -171,19 +171,21 @@ export default function Moments() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-center py-20"
+          className="flex flex-col items-center justify-center text-center py-20"
         >
-          <div className="w-20 h-20 mx-auto bg-[#E70F72]/10 rounded-full flex items-center justify-center mb-6">
+          <div className="w-20 h-20 bg-[#E70F72]/10 rounded-full flex items-center justify-center mb-6">
             <MapPin className="w-10 h-10 text-[#E70F72]" />
           </div>
           <h2 className="text-xl font-bold text-white mb-2">No Moments Yet</h2>
           <p className="text-white/65 mb-6">
             Log your first moment to start discovering crossings.
           </p>
-          <CrossdButton onClick={openLogModal}>
-            <Plus className="w-5 h-5 mr-1" />
-            Log Your First Moment
-          </CrossdButton>
+          <div className="flex justify-center">
+            <CrossdButton onClick={openLogModal}>
+              <Plus className="w-5 h-5 mr-1" />
+              Log Your First Moment
+            </CrossdButton>
+          </div>
         </motion.div>
       ) : (
         <div className="space-y-4">
