@@ -180,22 +180,22 @@ export default function Dashboard() {
 
   // MBTI personality types with emojis and descriptions
   const mbtiTypes = {
-    'INTJ': { emoji: '✒️', name: 'Architect', description: 'Strategic masterminds who love planning and achieving goals.', matches: ['ENTP', 'ENFP', 'ENTJ'] },
+    'INTJ': { emoji: '🏛️', name: 'Architect', description: 'Strategic masterminds who love planning and achieving goals.', matches: ['ENTP', 'ENFP', 'ENTJ'] },
     'INTP': { emoji: '🧪', name: 'Logician', description: 'Innovative inventive with an unquenchable thirst for knowledge.', matches: ['ENTJ', 'ENTP', 'INFJ'] },
     'ENTJ': { emoji: '👑', name: 'Commander', description: 'Bold and imaginative leaders who find a way or make one.', matches: ['INTP', 'INTJ', 'ENFP'] },
-    'ENTP': { emoji: '🗣️', name: 'Debater', description: 'Smart and curious thinkers who love intellectual challenges.', matches: ['INFJ', 'INTJ', 'ENFJ'] },
-    'INFJ': { emoji: '🤝', name: 'Advocate', description: 'Quiet and mystical, yet inspiring and idealistic.', matches: ['ENTP', 'ENFP', 'INFP'] },
-    'INFP': { emoji: '🧘', name: 'Mediator', description: 'Poetic, kind souls always searching for meaning.', matches: ['ENFJ', 'ENTJ', 'INFJ'] },
-    'ENFJ': { emoji: '🦸', name: 'Protagonist', description: 'Charismatic and inspiring leaders who captivate audiences.', matches: ['INFP', 'ENFP', 'INFJ'] },
+    'ENTP': { emoji: '💡', name: 'Debater', description: 'Smart and curious thinkers who love intellectual challenges.', matches: ['INFJ', 'INTJ', 'ENFJ'] },
+    'INFJ': { emoji: '🌟', name: 'Advocate', description: 'Quiet and mystical, yet inspiring and idealistic.', matches: ['ENTP', 'ENFP', 'INFP'] },
+    'INFP': { emoji: '🎨', name: 'Mediator', description: 'Poetic, kind souls always searching for meaning.', matches: ['ENFJ', 'ENTJ', 'INFJ'] },
+    'ENFJ': { emoji: '✨', name: 'Protagonist', description: 'Charismatic and inspiring leaders who captivate audiences.', matches: ['INFP', 'ENFP', 'INFJ'] },
     'ENFP': { emoji: '🎉', name: 'Campaigner', description: 'Enthusiastic, creative free spirits with vibrant energy.', matches: ['INTJ', 'INFJ', 'ENFJ'] },
-    'ISTJ': { emoji: '📊', name: 'Logistician', description: 'Practical and fact-minded with unwavering reliability.', matches: ['ESTP', 'ESFP', 'ESTJ'] },
+    'ISTJ': { emoji: '📋', name: 'Logistician', description: 'Practical and fact-minded with unwavering reliability.', matches: ['ESTP', 'ESFP', 'ESTJ'] },
     'ISFJ': { emoji: '🛡️', name: 'Defender', description: 'Dedicated protectors ready to defend loved ones.', matches: ['ESFP', 'ESTP', 'ISFP'] },
-    'ESTJ': { emoji: '👔', name: 'Executive', description: 'Excellent administrators skilled in managing things and people.', matches: ['ISTP', 'ISTJ', 'ESFJ'] },
+    'ESTJ': { emoji: '⚖️', name: 'Executive', description: 'Excellent administrators skilled in managing things and people.', matches: ['ISTP', 'ISTJ', 'ESFJ'] },
     'ESFJ': { emoji: '🤗', name: 'Consul', description: 'Caring and social, always eager to help others.', matches: ['ISFP', 'ISTP', 'ESTJ'] },
     'ISTP': { emoji: '🔧', name: 'Virtuoso', description: 'Bold and practical experimenters mastering tools.', matches: ['ESTJ', 'ESFJ', 'ESTP'] },
     'ISFP': { emoji: '🎨', name: 'Adventurer', description: 'Flexible and charming artists ready to explore.', matches: ['ESFJ', 'ENFJ', 'ESTJ'] },
     'ESTP': { emoji: '🚀', name: 'Entrepreneur', description: 'Smart, energetic risk-takers who live on the edge.', matches: ['ISFJ', 'ISTJ', 'ESFP'] },
-    'ESFP': { emoji: '✨', name: 'Entertainer', description: 'Spontaneous entertainers who love life and people.', matches: ['ISTJ', 'ISFJ', 'ESTP'] }
+    'ESFP': { emoji: '🌈', name: 'Entertainer', description: 'Spontaneous entertainers who love life and people.', matches: ['ISTJ', 'ISFJ', 'ESTP'] }
   };
 
   const getMBTIInfo = (type) => {
