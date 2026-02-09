@@ -113,55 +113,56 @@ const createMarkerIcon = (state, moment) => {
     : '';
   
   const matchBadge = hasMatch 
-    ? `<div style="position: absolute; top: -8px; right: -8px; background: ${COLORS.GREEN}; border-radius: 50%; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; font-size: 10px;">🌟</div>`
+    ? `<div style="position: absolute; top: -10px; right: -10px; background: ${COLORS.GREEN}; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 14px; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">🌟</div>`
     : '';
   
   const reSightBadge = isReSight
-    ? `<div style="position: absolute; top: -10px; right: -10px; background: ${COLORS.PURPLE}; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: bold; border: 2px solid #000;">×${reSightCount}</div>`
+    ? `<div style="position: absolute; top: -12px; right: -12px; background: ${COLORS.PURPLE}; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">×${reSightCount}</div>`
     : '';
   
   const todayBadge = isToday
-    ? `<div style="position: absolute; top: -12px; left: -12px; background: ${COLORS.ORANGE}; color: white; border-radius: 4px; padding: 2px 4px; font-size: 8px; font-weight: bold;">TODAY</div>`
+    ? `<div style="position: absolute; top: -16px; left: -16px; background: ${COLORS.ORANGE}; color: white; border-radius: 6px; padding: 3px 6px; font-size: 10px; font-weight: bold; box-shadow: 0 2px 8px rgba(0,0,0,0.3); border: 1px solid #fff;">TODAY</div>`
     : '';
   
-  const placeTypeIcon = `<div style="position: absolute; top: -6px; left: -6px; font-size: 12px;">${placeIcon}</div>`;
+  const placeTypeIcon = `<div style="position: absolute; top: -8px; left: -8px; font-size: 16px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));">${placeIcon}</div>`;
   
   return L.divIcon({
     className: 'custom-crossd-marker',
     html: `
       <style>
         @keyframes pulse {
-          0%, 100% { box-shadow: 0 0 20px rgba(255, 216, 77, 0.3); }
-          50% { box-shadow: 0 0 40px rgba(255, 216, 77, 0.6); }
+          0%, 100% { box-shadow: 0 0 25px rgba(255, 216, 77, 0.4); }
+          50% { box-shadow: 0 0 50px rgba(255, 216, 77, 0.7); }
         }
         @keyframes shimmer {
           0% { transform: rotate(-45deg) scale(1); }
-          50% { transform: rotate(-45deg) scale(1.1); }
+          50% { transform: rotate(-45deg) scale(1.15); }
           100% { transform: rotate(-45deg) scale(1); }
         }
       </style>
-      <div style="position: relative; width: 26px; height: 26px;">
+      <div style="position: relative; width: 36px; height: 36px; cursor: pointer;">
         ${placeTypeIcon}
         <div style="
           background: linear-gradient(135deg, ${fillColor}, ${color}); 
-          width: 26px; 
-          height: 26px; 
+          width: 36px; 
+          height: 36px; 
           border-radius: 50% 50% 50% 0; 
           transform: rotate(-45deg); 
-          border: 3px solid #fff; 
-          box-shadow: 0 0 ${20 * glowIntensity}px rgba(231, 15, 114, ${glowIntensity});
-          opacity: ${isExpired ? 0.4 : 1};
+          border: 4px solid #fff; 
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 ${25 * glowIntensity}px rgba(231, 15, 114, ${glowIntensity});
+          opacity: ${isExpired ? 0.5 : 1};
           ${glowAnimation}
           ${hasMatch ? 'animation: shimmer 1s ease-in-out;' : ''}
+          transition: transform 0.2s ease;
         "></div>
         ${matchBadge}
         ${reSightBadge}
         ${todayBadge}
       </div>
     `,
-    iconSize: [26, 26],
-    iconAnchor: [13, 26],
-    popupAnchor: [0, -26]
+    iconSize: [36, 36],
+    iconAnchor: [18, 36],
+    popupAnchor: [0, -36]
   });
 };
 
@@ -244,37 +245,55 @@ export default function ActivityMap({ moments, profile }) {
           background: #000000;
         }
         .leaflet-tile-pane {
-          filter: brightness(0.6) sepia(1) hue-rotate(290deg) saturate(5) contrast(1.2);
+          filter: brightness(0.7) sepia(1) hue-rotate(290deg) saturate(4) contrast(1.1);
         }
         .leaflet-popup-content-wrapper {
-          background: #0B0B0B;
+          background: rgba(11, 11, 11, 0.98);
           color: white;
-          border: 1px solid rgba(231, 15, 114, 0.3);
-          border-radius: 12px;
+          border: 2px solid rgba(231, 15, 114, 0.5);
+          border-radius: 16px;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+          backdrop-filter: blur(10px);
+          max-width: 280px !important;
         }
         .leaflet-popup-tip {
-          background: #0B0B0B;
-          border: 1px solid rgba(231, 15, 114, 0.3);
+          background: rgba(11, 11, 11, 0.98);
+          border: 2px solid rgba(231, 15, 114, 0.5);
+        }
+        .leaflet-popup-content {
+          margin: 0 !important;
         }
         .leaflet-control-zoom {
-          border: 1px solid rgba(231, 15, 114, 0.3) !important;
+          border: 2px solid rgba(231, 15, 114, 0.5) !important;
+          border-radius: 12px !important;
+          overflow: hidden;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
         }
         .leaflet-control-zoom a {
+          width: 40px !important;
+          height: 40px !important;
+          line-height: 40px !important;
+          font-size: 24px !important;
           background: #0B0B0B !important;
           color: #E70F72 !important;
-          border-bottom: 1px solid rgba(231, 15, 114, 0.2) !important;
+          border-bottom: 1px solid rgba(231, 15, 114, 0.3) !important;
         }
         .leaflet-control-zoom a:hover {
           background: #1a1a1a !important;
+          color: #ff1a8c !important;
+        }
+        .custom-crossd-marker:hover div > div {
+          transform: rotate(-45deg) scale(1.1) !important;
         }
       `}</style>
       <MapContainer
         center={center}
         zoom={13}
         bounds={bounds}
-        boundsOptions={{ padding: [50, 50] }}
+        boundsOptions={{ padding: [60, 60] }}
         style={{ width: '100%', height: '100%' }}
-        scrollWheelZoom={false}
+        scrollWheelZoom={true}
+        zoomControl={true}
       >
         <TileLayer
           attribution='&copy; <a href="https://cartodb.com/attributions">CartoDB</a>'
@@ -291,9 +310,11 @@ export default function ActivityMap({ moments, profile }) {
             positions={pathCoordinates}
             pathOptions={{
               color: '#E70F72',
-              weight: 3,
-              opacity: 0.7,
-              dashArray: '10, 10'
+              weight: 4,
+              opacity: 0.8,
+              dashArray: '12, 8',
+              lineCap: 'round',
+              lineJoin: 'round'
             }}
           />
         )}
@@ -305,14 +326,14 @@ export default function ActivityMap({ moments, profile }) {
             {state.isGlowActive && !state.isExpired && (
               <Circle
                 center={[moment.lat, moment.lng]}
-                radius={150}
+                radius={200}
                 pathOptions={{
                   color: COLORS.PINK,
                   fillColor: COLORS.PINK,
-                  fillOpacity: 0.1,
-                  weight: 2,
-                  opacity: 0.3,
-                  dashArray: '5, 10'
+                  fillOpacity: 0.15,
+                  weight: 3,
+                  opacity: 0.4,
+                  dashArray: '8, 12'
                 }}
               />
             )}
@@ -320,13 +341,13 @@ export default function ActivityMap({ moments, profile }) {
             {/* Main circle radius */}
             <Circle
               center={[moment.lat, moment.lng]}
-              radius={50}
+              radius={60}
               pathOptions={{
                 color: state.color,
                 fillColor: state.fillColor,
-                fillOpacity: state.isExpired ? 0.1 : 0.2 * state.recencyOpacity,
-                weight: state.isExpired ? 1 : 2,
-                opacity: state.recencyOpacity
+                fillOpacity: state.isExpired ? 0.1 : 0.25 * state.recencyOpacity,
+                weight: state.isExpired ? 2 : 3,
+                opacity: state.recencyOpacity * 0.8
               }}
             />
             
@@ -335,52 +356,56 @@ export default function ActivityMap({ moments, profile }) {
               position={[moment.lat, moment.lng]} 
               icon={createMarkerIcon(state, moment)}
             >
-              <Popup>
-                <div className="p-3 min-w-[200px]">
+              <Popup maxWidth={280} minWidth={240}>
+                <div className="p-4">
                   {/* Header */}
-                  <div className="flex items-start justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-2xl">{state.placeIcon}</span>
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <span className="text-3xl">{state.placeIcon}</span>
                       <div>
-                        <div className="font-bold text-white text-base">
+                        <div className="font-bold text-white text-lg leading-tight">
                           {moment.venue_name || 'Logged Moment'}
                         </div>
-                        <div className="text-white/50 text-xs">
-                          {new Date(moment.created_date).toLocaleDateString()}
+                        <div className="text-white/60 text-sm mt-1">
+                          {new Date(moment.created_date).toLocaleDateString('en-GB', { 
+                            day: 'numeric', 
+                            month: 'short', 
+                            year: 'numeric' 
+                          })}
                         </div>
                       </div>
                     </div>
                   </div>
                   
                   {/* Status badges */}
-                  <div className="flex gap-1 mb-3 flex-wrap">
+                  <div className="flex gap-2 mb-3 flex-wrap">
                     {state.hasMatch && (
-                      <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full flex items-center gap-1">
+                      <span className="text-sm font-semibold bg-green-500/30 text-green-300 px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-green-400/30">
                         🌟 Match
                       </span>
                     )}
                     {state.isReSight && (
-                      <span className="text-xs bg-purple-500/20 text-purple-400 px-2 py-1 rounded-full">
+                      <span className="text-sm font-semibold bg-purple-500/30 text-purple-300 px-3 py-1.5 rounded-full border border-purple-400/30">
                         Re-Sight ×{state.reSightCount}
                       </span>
                     )}
                     {state.isExpiringSoon && (
-                      <span className="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded-full flex items-center gap-1">
+                      <span className="text-sm font-semibold bg-yellow-500/30 text-yellow-300 px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-yellow-400/30">
                         ⏰ {Math.round(state.hoursUntilExpiry)}h left
                       </span>
                     )}
                     {state.isExpired && (
-                      <span className="text-xs bg-gray-500/20 text-gray-400 px-2 py-1 rounded-full">
+                      <span className="text-sm font-semibold bg-gray-500/30 text-gray-400 px-3 py-1.5 rounded-full border border-gray-400/30">
                         Expired
                       </span>
                     )}
                     {state.isToday && (
-                      <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-1 rounded-full">
+                      <span className="text-sm font-semibold bg-orange-500/30 text-orange-300 px-3 py-1.5 rounded-full border border-orange-400/30">
                         Today
                       </span>
                     )}
                     {state.isGlowActive && (
-                      <span className="text-xs bg-pink-500/20 text-pink-400 px-2 py-1 rounded-full flex items-center gap-1">
+                      <span className="text-sm font-semibold bg-pink-500/30 text-pink-300 px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-pink-400/30">
                         ✨ Glow Active
                       </span>
                     )}
@@ -388,18 +413,18 @@ export default function ActivityMap({ moments, profile }) {
                   
                   {/* Note */}
                   {moment.note && (
-                    <div className="text-white/80 text-sm mb-2 italic">
+                    <div className="text-white/90 text-base mb-3 italic leading-relaxed px-2 py-2 bg-white/5 rounded-lg border border-white/10">
                       "{moment.note}"
                     </div>
                   )}
                   
                   {/* Mood tags */}
                   {moment.mood_tags && moment.mood_tags.length > 0 && (
-                    <div className="flex gap-1 flex-wrap mb-2">
+                    <div className="flex gap-2 flex-wrap mb-3">
                       {moment.mood_tags.map((tag, idx) => (
                         <span 
                           key={idx}
-                          className="text-xs bg-[#E70F72]/20 text-[#E70F72] px-2 py-0.5 rounded-full"
+                          className="text-sm font-medium bg-[#E70F72]/25 text-[#E70F72] px-3 py-1 rounded-full border border-[#E70F72]/40"
                         >
                           {tag}
                         </span>
@@ -408,7 +433,7 @@ export default function ActivityMap({ moments, profile }) {
                   )}
                   
                   {/* Age indicator */}
-                  <div className="text-white/40 text-xs pt-2 border-t border-white/10">
+                  <div className="text-white/50 text-sm pt-3 border-t border-white/10 font-medium">
                     {state.ageDays < 1 
                       ? 'Today' 
                       : state.ageDays < 2 
