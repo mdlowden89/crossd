@@ -21,6 +21,7 @@ export default function Profile() {
   const [editedProfile, setEditedProfile] = useState(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [generatingBio, setGeneratingBio] = useState(false);
+  const [showPromptModal, setShowPromptModal] = useState(false);
   const queryClient = useQueryClient();
 
   useEffect(() => {
