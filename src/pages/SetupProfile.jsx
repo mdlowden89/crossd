@@ -144,7 +144,10 @@ export default function SetupProfile() {
       status: 'active'
     });
 
-    window.location.href = createPageUrl('MBTIQuiz');
+    // If came from a specific step (e.g., from Profile page), go back to Profile
+    const urlParams = new URLSearchParams(window.location.search);
+    const stepParam = urlParams.get('step');
+    window.location.href = stepParam ? createPageUrl('Profile') : createPageUrl('MBTIQuiz');
   };
 
   const steps = [
