@@ -76,6 +76,7 @@ export default function LogMoment() {
 
     if (value.length < 2) {
       setPredictions([]);
+      setSearchLoading(false);
       return;
     }
 
@@ -88,12 +89,12 @@ export default function LogMoment() {
           lng: userLocation?.lng
         });
         setPredictions(response.data?.predictions || []);
+        setSearchLoading(false);
       } catch (error) {
         console.error('Search error:', error);
-      } finally {
         setSearchLoading(false);
       }
-    }, 300);
+    }, 500);
   };
 
   const handleSelectPlace = async (prediction) => {
