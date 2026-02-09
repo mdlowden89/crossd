@@ -420,8 +420,12 @@ export default function MBTIQuiz() {
   };
 
   const progress = ((currentQuestion + 1) / questions.length) * 100;
+  const totalProgress = quizMode === 'basic' 
+    ? (currentQuestion + 1) / (basicQuestions.length + advancedQuestions.length) * 100 
+    : ((basicQuestions.length + currentQuestion + 1) / (basicQuestions.length + advancedQuestions.length)) * 100;
 
-  if (result) {
+  // Interim screen after basic quiz
+  if (showInterim && result) {
     return (
       <div className="min-h-screen bg-black px-6 py-8 flex flex-col items-center justify-center">
         <motion.div
@@ -431,12 +435,65 @@ export default function MBTIQuiz() {
         >
           <div className="mb-6">
             <Sparkles className="w-12 h-12 text-[#E70F72] mx-auto mb-4" />
-            <h1 className="text-3xl font-bold text-white mb-2">Your Vibe Type</h1>
+            <h1 className="text-3xl font-bold text-white mb-2">Your Basic Type: {mbtiDescriptions[result].split(' - ')[0]}</h1>
+            <p className="text-[#E70F72] text-xl font-semibold">{result}</p>
+          </div>
+
+          <CrossdCard glow className="mb-8">
+            <p className="text-white/80 mb-4">You've completed the standard quiz!</p>
+            <p className="text-white/65 text-sm">
+              This gives us a good starting point. For a more nuanced profile and even better 
+              AI-powered match suggestions, answer the remaining questions.
+            </p>
+          </CrossdCard>
+
+          <div className="space-y-3 mb-8">
+            <CrossdButton onClick={continueToAdvanced} className="w-full" size="lg">
+              Continue for More Accuracy
+              <ChevronRight className="w-5 h-5 ml-1" />
+            </CrossdButton>
+            <CrossdButton onClick={finishBasic} variant="secondary" className="w-full">
+              Finish Now
+            </CrossdButton>
+          </div>
+
+          <button 
+            onClick={() => window.location.href = createPageUrl('Dashboard')}
+            className="text-white/50 text-sm hover:text-white/80"
+          >
+            Save & Exit Later
+          </button>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // Final result screen after full quiz
+  if (result && !showInterim) {
+    return (
+      <div className="min-h-screen bg-black px-6 py-8 flex flex-col items-center justify-center">
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="text-center max-w-md"
+        >
+          <div className="mb-6">
+            <Sparkles className="w-12 h-12 text-[#E70F72] mx-auto mb-4" />
+            <h1 className="text-3xl font-bold text-white mb-2">
+              {quizMode === 'advanced' ? 'Your Complete Type' : 'Your Vibe Type'}
+            </h1>
           </div>
 
           <CrossdCard glow className="mb-8">
             <div className="text-5xl font-bold text-[#E70F72] mb-4">{result}</div>
             <p className="text-white/80">{mbtiDescriptions[result]}</p>
+            {quizMode === 'advanced' && (
+              <div className="mt-4 pt-4 border-t border-white/10">
+                <p className="text-white/65 text-sm">
+                  ✨ You've completed the full assessment for maximum accuracy!
+                </p>
+              </div>
+            )}
           </CrossdCard>
 
           <p className="text-white/65 mb-8">
