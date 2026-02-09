@@ -396,44 +396,12 @@ export default function Profile() {
 
       {/* Vibe Tags */}
       <div className="mb-6">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-white/65 text-sm font-medium">Vibe Tags</h2>
-          {editMode && (!myProfile.vibe_tags || myProfile.vibe_tags.length < 5) && (
-            <button
-              onClick={() => {
-                const newTag = prompt('Enter a vibe tag:');
-                if (newTag) {
-                  const updatedTags = [...(editedProfile?.vibe_tags || []), newTag];
-                  setEditedProfile({ ...editedProfile, vibe_tags: updatedTags });
-                }
-              }}
-              className="text-[#E70F72] text-xs hover:text-white"
-            >
-              <Plus className="w-4 h-4 inline mr-1" />
-              Add
-            </button>
-          )}
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {editedProfile?.vibe_tags?.map((tag, index) => (
-            <div key={index} className="relative">
-              <span className="px-4 py-2 rounded-full bg-[#E70F72]/10 text-[#E70F72] text-sm border border-[#E70F72]/30 block">
-                {tag}
-              </span>
-              {editMode && (
-                <button
-                  onClick={() => {
-                    const updatedTags = editedProfile.vibe_tags.filter((_, i) => i !== index);
-                    setEditedProfile({ ...editedProfile, vibe_tags: updatedTags });
-                  }}
-                  className="absolute -top-2 -right-2 w-5 h-5 bg-red-600 rounded-full flex items-center justify-center"
-                >
-                  <X className="w-3 h-3 text-white" />
-                </button>
-              )}
-            </div>
-          ))}
-        </div>
+        <h2 className="text-white/65 text-sm font-medium mb-3">Vibe Tags</h2>
+        <VibeTagSelector 
+          selectedTags={editedProfile?.vibe_tags || []}
+          onTagsChange={(tags) => setEditedProfile({ ...editedProfile, vibe_tags: tags })}
+          editMode={editMode}
+        />
       </div>
 
       {/* Prompts */}
