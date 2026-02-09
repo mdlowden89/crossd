@@ -116,15 +116,10 @@ export default function ChallengesSection() {
                   </div>
 
                   {/* Next Milestone */}
-                  <div className="bg-white/5 border border-white/10 rounded-lg p-3 mb-4">
+                  <div className="bg-white/5 border border-white/10 rounded-lg p-3">
                     <span className="text-white/50 text-xs">Next Milestone:</span>
                     <p className="text-white/75 text-sm mt-1">{challenge.nextMilestone}</p>
                   </div>
-
-                  {/* Action Button */}
-                  <CrossdButton variant="secondary" className="w-full text-sm py-2">
-                    {challenge.action}
-                  </CrossdButton>
                 </div>
               </div>
             </motion.div>
