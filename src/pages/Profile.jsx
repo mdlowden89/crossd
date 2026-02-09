@@ -393,29 +393,9 @@ export default function Profile() {
         </CrossdCard>
       </div>
 
-      {/* Prompts */}
-      <div className="mb-6">
-        <h2 className="text-white/65 text-sm font-medium mb-3">Prompts</h2>
-        {myProfile.prompts?.map((prompt, index) => (
-          <CrossdCard key={index} className="mb-3">
-            <p className="text-[#E70F72] text-sm font-medium mb-1">{prompt.question}</p>
-            <p className="text-white">{prompt.answer}</p>
-          </CrossdCard>
-        ))}
-        {(!myProfile.prompts || myProfile.prompts.length < 3) && (
-          <button
-            onClick={() => window.location.href = createPageUrl('SetupProfile') + '?step=2'}
-            className="w-full p-4 rounded-xl border-2 border-dashed border-white/20 text-white/40 hover:border-[#E70F72]/50 hover:text-white/60 transition-colors"
-          >
-            <Plus className="w-5 h-5 mx-auto mb-1" />
-            Add Prompt
-          </button>
-        )}
-      </div>
-
       {/* Vibe Tags */}
       <div className="mb-6">
-        <h2 className="text-white/65 text-sm font-medium mb-3">Your Vibe</h2>
+        <h2 className="text-white/65 text-sm font-medium mb-3">Vibe Tags</h2>
         <div className="flex flex-wrap gap-2">
           {myProfile.vibe_tags?.map((tag, index) => (
             <span
@@ -435,6 +415,26 @@ export default function Profile() {
             </button>
           )}
         </div>
+      </div>
+
+      {/* Prompts */}
+      <div className="mb-6">
+        <h2 className="text-white/65 text-sm font-medium mb-3">Prompts</h2>
+        {myProfile.prompts?.map((prompt, index) => (
+          <CrossdCard key={index} className="mb-3">
+            <p className="text-[#E70F72] text-sm font-medium mb-1">{prompt.question}</p>
+            <p className="text-white">{prompt.answer}</p>
+          </CrossdCard>
+        ))}
+        {(!myProfile.prompts || myProfile.prompts.length < 3) && (
+          <button
+            onClick={() => window.location.href = createPageUrl('SetupProfile') + '?step=2'}
+            className="w-full p-4 rounded-xl border-2 border-dashed border-white/20 text-white/40 hover:border-[#E70F72]/50 hover:text-white/60 transition-colors"
+          >
+            <Plus className="w-5 h-5 mx-auto mb-1" />
+            Add Prompt
+          </button>
+        )}
       </div>
 
       {/* Lifestyle & Background */}
