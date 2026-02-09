@@ -201,6 +201,110 @@ export default function Dashboard() {
     return mbtiTypes[type] || { emoji: '✨', name: 'Unknown', description: 'Discover your personality type!', matches: [] };
   };
 
+  // Premium MBTI insights (only for Crossd+ users)
+  const premiumInsights = {
+    'INTP': {
+      strengths: ['Analytical', 'Original', 'Open-minded', 'Objective'],
+      weaknesses: ['Private', 'Indecisive', 'Absent-minded', 'Condescending'],
+      relationshipApproach: "In relationships, Logicians value intellectual connection above all. They show affection through shared ideas and problem-solving rather than overt emotional displays, and they need a partner who respects their independence and thirst for solitude.",
+      famousExamples: ['Albert Einstein', 'Bill Gates', 'Isaac Newton', 'Stanley Kubrick']
+    },
+    'INTJ': {
+      strengths: ['Strategic', 'Independent', 'Determined', 'Insightful'],
+      weaknesses: ['Arrogant', 'Dismissive', 'Overly critical', 'Emotionally distant'],
+      relationshipApproach: "Architects approach relationships with the same strategic mindset they apply to everything else. They value partners who can match their intellect and ambition while respecting their need for independence.",
+      famousExamples: ['Elon Musk', 'Friedrich Nietzsche', 'Michelle Obama', 'Christopher Nolan']
+    },
+    'ENTJ': {
+      strengths: ['Efficient', 'Confident', 'Strategic', 'Charismatic'],
+      weaknesses: ['Stubborn', 'Intolerant', 'Impatient', 'Ruthless'],
+      relationshipApproach: "Commanders seek partners who can keep up with their ambitious nature. They value efficiency and directness in relationships and show love through acts of service and achieving shared goals.",
+      famousExamples: ['Steve Jobs', 'Margaret Thatcher', 'Napoleon Bonaparte', 'Gordon Ramsay']
+    },
+    'ENTP': {
+      strengths: ['Quick-witted', 'Charismatic', 'Energetic', 'Knowledgeable'],
+      weaknesses: ['Argumentative', 'Insensitive', 'Unfocused', 'Intolerant'],
+      relationshipApproach: "Debaters thrive on intellectual sparring and mental stimulation in relationships. They need partners who can engage in debates without taking things personally and who appreciate their playful nature.",
+      famousExamples: ['Mark Twain', 'Adam Savage', 'Sarah Silverman', 'Tyrion Lannister']
+    },
+    'INFJ': {
+      strengths: ['Creative', 'Insightful', 'Principled', 'Passionate'],
+      weaknesses: ['Perfectionist', 'Overly sensitive', 'Private', 'Burnout-prone'],
+      relationshipApproach: "Advocates seek deep, meaningful connections and are intensely devoted partners. They need someone who can appreciate their idealism and provide emotional reciprocity in the relationship.",
+      famousExamples: ['Martin Luther King Jr.', 'Nelson Mandela', 'Lady Gaga', 'Plato']
+    },
+    'INFP': {
+      strengths: ['Empathetic', 'Creative', 'Idealistic', 'Open-minded'],
+      weaknesses: ['Unrealistic', 'Self-critical', 'Impractical', 'Emotionally vulnerable'],
+      relationshipApproach: "Mediators are hopeless romantics who seek authentic, soulful connections. They express love through creative gestures and need partners who can appreciate their emotional depth and idealistic nature.",
+      famousExamples: ['William Shakespeare', 'Vincent van Gogh', 'Audrey Hepburn', 'Johnny Depp']
+    },
+    'ENFJ': {
+      strengths: ['Charismatic', 'Altruistic', 'Natural leader', 'Reliable'],
+      weaknesses: ['Overly idealistic', 'Too selfless', 'Sensitive to criticism', 'Fluctuating self-esteem'],
+      relationshipApproach: "Protagonists are warm and affirming partners who prioritize their loved one's growth. They show love through encouragement and support, and need partners who can reciprocate their emotional investment.",
+      famousExamples: ['Barack Obama', 'Oprah Winfrey', 'Maya Angelou', 'Jennifer Lawrence']
+    },
+    'ENFP': {
+      strengths: ['Enthusiastic', 'Creative', 'Sociable', 'Free-spirited'],
+      weaknesses: ['Unfocused', 'Overthinking', 'Overly emotional', 'Difficulty with routine'],
+      relationshipApproach: "Campaigners bring energy and warmth to relationships, constantly seeking new experiences with their partners. They need someone who can match their enthusiasm while providing gentle grounding.",
+      famousExamples: ['Robin Williams', 'Ellen DeGeneres', 'Quentin Tarantino', 'Walt Disney']
+    },
+    'ISTJ': {
+      strengths: ['Reliable', 'Practical', 'Responsible', 'Detail-oriented'],
+      weaknesses: ['Stubborn', 'Insensitive', 'By-the-book', 'Judgmental'],
+      relationshipApproach: "Logisticians show love through loyalty and dependability. They value tradition and stability in relationships and express affection through practical acts of service rather than grand romantic gestures.",
+      famousExamples: ['George Washington', 'Warren Buffett', 'Angela Merkel', 'Denzel Washington']
+    },
+    'ISFJ': {
+      strengths: ['Supportive', 'Reliable', 'Patient', 'Practical'],
+      weaknesses: ['Overly humble', 'Shy', 'Too altruistic', 'Reluctant to change'],
+      relationshipApproach: "Defenders are devoted and attentive partners who remember small details that matter. They need partners who appreciate their selfless nature and can encourage them to prioritize their own needs.",
+      famousExamples: ['Mother Teresa', 'Queen Elizabeth II', 'Kate Middleton', 'Beyoncé']
+    },
+    'ESTJ': {
+      strengths: ['Dedicated', 'Strong-willed', 'Direct', 'Loyal'],
+      weaknesses: ['Inflexible', 'Uncomfortable with emotion', 'Judgmental', 'Difficult to relax'],
+      relationshipApproach: "Executives approach relationships with the same dedication they bring to everything else. They value honesty and commitment, and show love through creating stability and security for their partners.",
+      famousExamples: ['John D. Rockefeller', 'Sonia Sotomayor', 'Lyndon B. Johnson', 'Judge Judy']
+    },
+    'ESFJ': {
+      strengths: ['Strong practical skills', 'Loyal', 'Warm', 'Sensitive'],
+      weaknesses: ['Needy', 'Inflexible', 'Reluctant to change', 'Too selfless'],
+      relationshipApproach: "Consuls are warm and nurturing partners who excel at creating harmonious relationships. They show love through caring gestures and need partners who can express appreciation and reciprocate their affection.",
+      famousExamples: ['Taylor Swift', 'Danny Glover', 'Jennifer Garner', 'Terry Bradshaw']
+    },
+    'ISTP': {
+      strengths: ['Practical', 'Creative', 'Relaxed', 'Spontaneous'],
+      weaknesses: ['Stubborn', 'Insensitive', 'Private', 'Easily bored'],
+      relationshipApproach: "Virtuosos need space and freedom in relationships. They show affection through actions rather than words and need partners who can respect their independence while sharing in hands-on adventures.",
+      famousExamples: ['Clint Eastwood', 'Bear Grylls', 'Tom Cruise', 'Olivia Wilde']
+    },
+    'ISFP': {
+      strengths: ['Charming', 'Sensitive', 'Imaginative', 'Passionate'],
+      weaknesses: ['Fiercely independent', 'Unpredictable', 'Easily stressed', 'Overly competitive'],
+      relationshipApproach: "Adventurers are spontaneous and creative partners who live in the moment. They express love through thoughtful gestures and experiences, and need partners who appreciate their free-spirited nature.",
+      famousExamples: ['Michael Jackson', 'Britney Spears', 'Lana Del Rey', 'Kevin Costner']
+    },
+    'ESTP': {
+      strengths: ['Bold', 'Rational', 'Perceptive', 'Direct'],
+      weaknesses: ['Impatient', 'Risk-prone', 'Unstructured', 'Insensitive'],
+      relationshipApproach: "Entrepreneurs bring excitement and energy to relationships. They live for action and adventure, and need partners who can keep up with their fast-paced lifestyle and appreciate their spontaneity.",
+      famousExamples: ['Madonna', 'Ernest Hemingway', 'Eddie Murphy', 'Bruce Willis']
+    },
+    'ESFP': {
+      strengths: ['Bold', 'Original', 'Practical', 'Excellent people skills'],
+      weaknesses: ['Sensitive', 'Conflict-averse', 'Easily bored', 'Poor long-term planner'],
+      relationshipApproach: "Entertainers are fun-loving and affectionate partners who excel at making others feel special. They show love through creating joyful experiences and need partners who can appreciate their vibrant energy.",
+      famousExamples: ['Marilyn Monroe', 'Jamie Oliver', 'Adele', 'Elvis Presley']
+    }
+  };
+
+  const getInsights = (type) => {
+    return premiumInsights[type] || null;
+  };
+
   if (isLoading || !profile) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
@@ -427,6 +531,52 @@ export default function Dashboard() {
                         <span className="text-white/90">{getMBTIInfo(matchType).name}</span>
                       </div>
                     ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Premium Insights */}
+              {profile.crossd_plus && getInsights(profile.mbti_type) && (
+                <div className="mb-6 pt-6 border-t border-[#E70F72]/20">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Star className="w-5 h-5 text-[#E70F72]" />
+                    <h3 className="text-lg font-bold text-[#E70F72]">Your Premium Insights</h3>
+                  </div>
+                  
+                  <div className="mb-4">
+                    <p className="text-white/90 font-semibold mb-2">Strengths & Weaknesses</p>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        {getInsights(profile.mbti_type).strengths.map((strength, idx) => (
+                          <div key={idx} className="flex items-center gap-2 text-white/70 text-sm mb-1">
+                            <Circle className="w-1.5 h-1.5 fill-green-500 text-green-500" />
+                            {strength}
+                          </div>
+                        ))}
+                      </div>
+                      <div>
+                        {getInsights(profile.mbti_type).weaknesses.map((weakness, idx) => (
+                          <div key={idx} className="flex items-center gap-2 text-white/70 text-sm mb-1">
+                            <Circle className="w-1.5 h-1.5 fill-red-500 text-red-500" />
+                            {weakness}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-4">
+                    <p className="text-white/90 font-semibold mb-2">Relationship Approach</p>
+                    <p className="text-white/60 text-sm italic leading-relaxed">
+                      "{getInsights(profile.mbti_type).relationshipApproach}"
+                    </p>
+                  </div>
+                  
+                  <div>
+                    <p className="text-white/90 font-semibold mb-2">Famous {getMBTIInfo(profile.mbti_type).name}s</p>
+                    <p className="text-white/70 text-sm">
+                      {getInsights(profile.mbti_type).famousExamples.join(', ')}
+                    </p>
                   </div>
                 </div>
               )}
