@@ -12,6 +12,7 @@ import { CrossdButton } from '@/components/ui/crossd-button';
 import CrossdProgressRing from '@/components/ui/crossd-progress-ring';
 import ActivityMap from '@/components/dashboard/ActivityMap';
 import PersonalityCard from '@/components/mbti/PersonalityCard';
+import ChallengesSection from '@/components/dashboard/ChallengesSection';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Progress } from '@/components/ui/progress';
 
