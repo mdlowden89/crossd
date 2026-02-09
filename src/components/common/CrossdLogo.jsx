@@ -19,44 +19,24 @@ export default function CrossdLogo({ size = 'default', showText = true }) {
         xmlns="http://www.w3.org/2000/svg"
         className="flex-shrink-0"
       >
-        {/* Heart outline with integrated handshake */}
+        {/* Heart shape */}
         <path
-          d="M50 18C45 13 38 10 32 10C22 10 14 18 14 28C14 42 24 54 34 64C40 70 46 76 50 80C54 76 60 70 66 64C76 54 86 42 86 28C86 18 78 10 68 10C62 10 55 13 50 18Z"
-          stroke="#E70F72"
-          strokeWidth="6"
-          fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          d="M50 85C50 85 15 60 15 35C15 20 25 10 35 10C42 10 47 14 50 20C53 14 58 10 65 10C75 10 85 20 85 35C85 60 50 85 50 85Z"
+          fill="#E70F72"
         />
         
-        {/* Interlocking handshake - S shape with fingers */}
-        {/* Left hand coming in from left */}
-        <path
-          d="M32 38 L38 44 Q42 48 46 44 L50 40"
-          stroke="#E70F72"
-          strokeWidth="6"
-          fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+        {/* Location pin integrated in the heart */}
+        <circle
+          cx="50"
+          cy="35"
+          r="12"
+          fill="black"
         />
-        
-        {/* Right hand coming in from right with interlock */}
-        <path
-          d="M68 38 L62 44 Q58 48 54 44 L50 40"
-          stroke="#E70F72"
-          strokeWidth="6"
-          fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        
-        {/* Finger lines on lower right hand */}
-        <path
-          d="M54 50 L54 58 M58 50 L58 58 M62 50 L62 58"
-          stroke="#E70F72"
-          strokeWidth="6"
-          fill="none"
-          strokeLinecap="round"
+        <circle
+          cx="50"
+          cy="35"
+          r="6"
+          fill="#E70F72"
         />
       </svg>
       {showText && (
