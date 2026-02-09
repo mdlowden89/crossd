@@ -100,14 +100,14 @@ export default function Profile() {
   };
 
   const generateBioWithAI = async () => {
-    if (!myProfile.vibe_tags || myProfile.vibe_tags.length === 0) {
+    if (!editedProfile?.vibe_tags || editedProfile.vibe_tags.length === 0) {
       alert('Add some vibe tags first to generate a bio!');
       return;
     }
 
     setGeneratingBio(true);
     try {
-      const vibeTags = myProfile.vibe_tags.join(', ');
+      const vibeTags = editedProfile.vibe_tags.join(', ');
       const response = await base44.integrations.Core.InvokeLLM({
         prompt: `Write a short, engaging dating profile bio (2-3 sentences max) for someone with these vibe tags: ${vibeTags}. Make it authentic, fun, and conversational. Don't use hashtags or emojis. Just write natural, first-person text.`,
       });
