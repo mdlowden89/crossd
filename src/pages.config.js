@@ -69,6 +69,7 @@ import SetupProfile from './pages/SetupProfile';
 import Trail from './pages/Trail';
 import Verification from './pages/Verification';
 import Welcome from './pages/Welcome';
+import LogMoment from './pages/LogMoment';
 import __Layout from './Layout.jsx';
 
 
@@ -95,6 +96,7 @@ export const PAGES = {
     "Trail": Trail,
     "Verification": Verification,
     "Welcome": Welcome,
+    "LogMoment": LogMoment,
 }
 
 export const pagesConfig = {
