@@ -505,7 +505,7 @@ export default function Dashboard() {
             <>
               <div className="flex items-center gap-2 mb-2">
                 <Sparkles className="w-5 h-5 text-[#E70F72]" />
-                <h2 className="text-2xl font-bold text-white">Your Type:</h2>
+                <h2 className="text-xl font-bold text-white">Your Type:</h2>
               </div>
               
               <div className="mb-6">
@@ -589,19 +589,17 @@ export default function Dashboard() {
             </>
           ) : (
             <>
-              <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="w-5 h-5 text-[#E70F72]" />
+              <div className="flex items-center gap-2 mb-4">
+                <Zap className="w-5 h-5 text-[#E70F72]" />
                 <h2 className="text-2xl font-bold text-white">Know Your Type?</h2>
               </div>
-              <p className="text-white/90 mb-4">
-                Adding your personality type leads to more compatible Spark Swipes.
-              </p>
               <p className="text-white/65 mb-6">
-                Discover your personality type to unlock more compatible profiles in Spark Swipes.
+                Discover your MBTI personality type and find more compatible matches.
               </p>
               <Link to={createPageUrl('MBTIQuiz')}>
                 <CrossdButton className="w-full" size="lg">
-                  Take the Quiz
+                  <Sparkles className="w-5 h-5" />
+                  Take Quiz
                 </CrossdButton>
               </Link>
             </>
