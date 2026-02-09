@@ -446,12 +446,24 @@ export default function Profile() {
               <div className="flex-1">
                 <p className="text-white/50 text-sm">Ethnicity</p>
                 {editMode ? (
-                  <CrossdInput
+                  <select
                     value={editedProfile?.ethnicity || ''}
                     onChange={(e) => setEditedProfile({ ...editedProfile, ethnicity: e.target.value })}
-                    placeholder="Your ethnicity"
-                    className="mt-1"
-                  />
+                    className="w-full bg-transparent text-white mt-1 focus:outline-none"
+                  >
+                    <option value="" className="bg-[#0B0B0B]">Select...</option>
+                    <option value="Prefer Not to Say" className="bg-[#0B0B0B]">Prefer Not to Say</option>
+                    <option value="White/Caucasian" className="bg-[#0B0B0B]">White/Caucasian</option>
+                    <option value="Black/African Descent" className="bg-[#0B0B0B]">Black/African Descent</option>
+                    <option value="East Asian" className="bg-[#0B0B0B]">East Asian</option>
+                    <option value="Hispanic/Latino" className="bg-[#0B0B0B]">Hispanic/Latino</option>
+                    <option value="Middle Eastern" className="bg-[#0B0B0B]">Middle Eastern</option>
+                    <option value="Native American" className="bg-[#0B0B0B]">Native American</option>
+                    <option value="Pacific Islander" className="bg-[#0B0B0B]">Pacific Islander</option>
+                    <option value="South Asian" className="bg-[#0B0B0B]">South Asian</option>
+                    <option value="Southeast Asian" className="bg-[#0B0B0B]">Southeast Asian</option>
+                    <option value="Other" className="bg-[#0B0B0B]">Other</option>
+                  </select>
                 ) : (
                   <p className="text-white">{myProfile.ethnicity || 'Not set'}</p>
                 )}
@@ -464,12 +476,28 @@ export default function Profile() {
               <div className="flex-1">
                 <p className="text-white/50 text-sm">Religion</p>
                 {editMode ? (
-                  <CrossdInput
+                  <select
                     value={editedProfile?.religion || ''}
                     onChange={(e) => setEditedProfile({ ...editedProfile, religion: e.target.value })}
-                    placeholder="Your religion"
-                    className="mt-1"
-                  />
+                    className="w-full bg-transparent text-white mt-1 focus:outline-none"
+                  >
+                    <option value="" className="bg-[#0B0B0B]">Select...</option>
+                    <option value="Prefer Not to Say" className="bg-[#0B0B0B]">Prefer Not to Say</option>
+                    <option value="Agnostic" className="bg-[#0B0B0B]">Agnostic</option>
+                    <option value="Atheist" className="bg-[#0B0B0B]">Atheist</option>
+                    <option value="Buddhist" className="bg-[#0B0B0B]">Buddhist</option>
+                    <option value="Catholic" className="bg-[#0B0B0B]">Catholic</option>
+                    <option value="Christian" className="bg-[#0B0B0B]">Christian</option>
+                    <option value="Hindu" className="bg-[#0B0B0B]">Hindu</option>
+                    <option value="Jain" className="bg-[#0B0B0B]">Jain</option>
+                    <option value="Jewish" className="bg-[#0B0B0B]">Jewish</option>
+                    <option value="Mormon" className="bg-[#0B0B0B]">Mormon</option>
+                    <option value="Muslim" className="bg-[#0B0B0B]">Muslim</option>
+                    <option value="Sikh" className="bg-[#0B0B0B]">Sikh</option>
+                    <option value="Spiritual" className="bg-[#0B0B0B]">Spiritual</option>
+                    <option value="Zoroastrian" className="bg-[#0B0B0B]">Zoroastrian</option>
+                    <option value="Other" className="bg-[#0B0B0B]">Other</option>
+                  </select>
                 ) : (
                   <p className="text-white">{myProfile.religion || 'Not set'}</p>
                 )}
