@@ -5,7 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { 
   Camera, Edit2, BadgeCheck, Sparkles, Plus, X,
-  ChevronRight, Upload, User, MapPin, Briefcase
+  ChevronRight, Upload, User, MapPin, Briefcase, Ruler, GraduationCap, Heart, Cake, Wand2
 } from 'lucide-react';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
@@ -18,6 +18,7 @@ export default function Profile() {
   const [editMode, setEditMode] = useState(false);
   const [editedProfile, setEditedProfile] = useState(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [generatingBio, setGeneratingBio] = useState(false);
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -95,6 +96,27 @@ export default function Profile() {
 
   const saveChanges = () => {
     updateProfileMutation.mutate(editedProfile);
+  };
+
+  const generateBioWithAI = async () => {
+    if (!myProfile.vibe_tags || myProfile.vibe_tags.length === 0) {
+      alert('Add some vibe tags first to generate a bio!');
+      return;
+    }
+
+    setGeneratingBio(true);
+    try {
+      const vibeTags = myProfile.vibe_tags.join(', ');
+      const response = await base44.integrations.Core.InvokeLLM({
+        prompt: `Write a short, engaging dating profile bio (2-3 sentences max) for someone with these vibe tags: ${vibeTags}. Make it authentic, fun, and conversational. Don't use hashtags or emojis. Just write natural, first-person text.`,
+      });
+      
+      setEditedProfile({ ...editedProfile, bio: response });
+    } catch (error) {
+      alert('Failed to generate bio. Please try again.');
+    } finally {
+      setGeneratingBio(false);
+    }
   };
 
   if (!myProfile) {
@@ -199,7 +221,7 @@ export default function Profile() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <User className="w-5 h-5 text-white/40" />
-              <div>
+              <div className="flex-1">
                 <p className="text-white/50 text-sm">Name</p>
                 {editMode ? (
                   <CrossdInput
@@ -208,13 +230,89 @@ export default function Profile() {
                     className="mt-1"
                   />
                 ) : (
-                  <p className="text-white">{myProfile.display_name}{age ? `, ${age}` : ''}</p>
+                  <p className="text-white">{myProfile.display_name}</p>
                 )}
               </div>
             </div>
             {myProfile.verification_status === 'verified' && (
               <BadgeCheck className="w-5 h-5 text-[#E70F72]" />
             )}
+          </div>
+        </CrossdCard>
+
+        <CrossdCard>
+          <div className="flex items-center gap-3">
+            <Cake className="w-5 h-5 text-white/40" />
+            <div className="flex-1">
+              <p className="text-white/50 text-sm">Age</p>
+              <p className="text-white">{age || 'Not set'}</p>
+            </div>
+          </div>
+        </CrossdCard>
+
+        <CrossdCard>
+          <div className="flex items-center gap-3">
+            <Heart className="w-5 h-5 text-white/40" />
+            <div className="flex-1">
+              <p className="text-white/50 text-sm">Interested In</p>
+              {editMode ? (
+                <select
+                  value={editedProfile?.interested_in || ''}
+                  onChange={(e) => setEditedProfile({ ...editedProfile, interested_in: e.target.value })}
+                  className="w-full bg-transparent text-white mt-1 focus:outline-none"
+                >
+                  <option value="" className="bg-[#0B0B0B]">Select...</option>
+                  <option value="everyone" className="bg-[#0B0B0B]">Everyone</option>
+                  <option value="men" className="bg-[#0B0B0B]">Men</option>
+                  <option value="women" className="bg-[#0B0B0B]">Women</option>
+                  <option value="men_and_women" className="bg-[#0B0B0B]">Men & Women</option>
+                </select>
+              ) : (
+                <p className="text-white capitalize">{myProfile.interested_in?.replace('_', ' & ') || 'Not set'}</p>
+              )}
+            </div>
+          </div>
+        </CrossdCard>
+
+        <CrossdCard>
+          <div className="flex items-center gap-3">
+            <Ruler className="w-5 h-5 text-white/40" />
+            <div className="flex-1">
+              <p className="text-white/50 text-sm">Height</p>
+              {editMode ? (
+                <div className="flex gap-2 items-center mt-1">
+                  <CrossdInput
+                    type="number"
+                    value={editedProfile?.height || ''}
+                    onChange={(e) => setEditedProfile({ ...editedProfile, height: parseInt(e.target.value) || null })}
+                    placeholder="170"
+                    className="w-20"
+                  />
+                  <span className="text-white/65">cm</span>
+                </div>
+              ) : (
+                <p className="text-white">{myProfile.height ? `${myProfile.height} cm` : 'Not set'}</p>
+              )}
+            </div>
+          </div>
+        </CrossdCard>
+
+        <CrossdCard>
+          <div className="flex items-center gap-3">
+            <GraduationCap className="w-5 h-5 text-white/40" />
+            <div className="flex-1">
+              <p className="text-white/50 text-sm">University</p>
+              {editMode ? (
+                <CrossdInput
+                  value={editedProfile?.university || ''}
+                  onChange={(e) => setEditedProfile({ ...editedProfile, university: e.target.value })}
+                  placeholder="Which university did you attend?"
+                  className="mt-1"
+                />
+              ) : (
+                <p className="text-white">{myProfile.university || 'Not set'}</p>
+              )}
+            </div>
           </div>
         </CrossdCard>
 
@@ -259,7 +357,19 @@ export default function Profile() {
 
       {/* Bio */}
       <div className="mb-6">
-        <h2 className="text-white/65 text-sm font-medium mb-3">Bio</h2>
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-white/65 text-sm font-medium">Bio</h2>
+          {editMode && myProfile.vibe_tags && myProfile.vibe_tags.length > 0 && (
+            <button
+              onClick={generateBioWithAI}
+              disabled={generatingBio}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#E70F72]/10 text-[#E70F72] text-xs font-medium hover:bg-[#E70F72]/20 transition-colors disabled:opacity-50"
+            >
+              <Wand2 className="w-3.5 h-3.5" />
+              {generatingBio ? 'Generating...' : 'Suggest with AI'}
+            </button>
+          )}
+        </div>
         <CrossdCard>
           {editMode ? (
             <textarea
