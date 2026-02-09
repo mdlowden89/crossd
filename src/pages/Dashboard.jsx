@@ -230,7 +230,7 @@ export default function Dashboard() {
                 className="h-full bg-[#E70F72] rounded-full"
               />
             </div>
-            <div className="absolute -right-1 -top-2 text-[#E70F72] font-bold">
+            <div className="absolute -right-2 -top-1 text-[#E70F72] font-bold">
               {sparkEnergy}%
             </div>
           </div>
