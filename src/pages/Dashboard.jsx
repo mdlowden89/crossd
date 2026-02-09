@@ -6,11 +6,13 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { 
   Sparkles, CheckCircle2, Circle, Flame, Clock, 
-  Star, Zap, TrendingUp, Map, Award, Gift
+  Star, Zap, TrendingUp, Map, Award, Gift, Activity, ShieldCheck
 } from 'lucide-react';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import CrossdProgressRing from '@/components/ui/crossd-progress-ring';
 import ActivityMap from '@/components/dashboard/ActivityMap';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Progress } from '@/components/ui/progress';
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -70,18 +72,75 @@ export default function Dashboard() {
     return { percentage, items };
   };
 
-  // Calculate spark energy (based on weekly activity)
+  // Calculate spark energy with detailed breakdown
   const calculateSparkEnergy = () => {
     const now = new Date();
     const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
     
-    const recentMoments = moments.filter(m => new Date(m.created_date) > weekAgo).length;
-    const recentMatches = matches.filter(m => new Date(m.created_date) > weekAgo).length;
+    // Mock data (would come from backend in production)
+    const mockData = {
+      likesSentD1: 34,
+      sessionsD1: 4,
+      resonanceValue: 0.78,
+      isGlowActive: false,
+      reportsW7: 0,
+      blocksW7: 0,
+      spamScore: 0,
+    };
     
-    // Simple energy calculation: moments + matches * 5, capped at 100
-    const energy = Math.min(100, (recentMoments * 2) + (recentMatches * 10));
+    // Component A: Activity (30%)
+    const momentsW7 = moments.filter(m => new Date(m.created_date) > weekAgo).length;
+    const cappedMoments = Math.min(momentsW7, 5);
+    const cappedLikes = Math.min(mockData.likesSentD1, 50);
+    const cappedSessions = Math.min(mockData.sessionsD1, 10);
+    const activityScore = ((cappedMoments / 5) + (cappedLikes / 50) + (cappedSessions / 10)) / 3 * 100;
     
-    return Math.round(energy);
+    // Component B: Streak (15%)
+    const streakDays = calculateStreak();
+    const streakScore = (Math.min(streakDays, 7) / 7) * 100;
+    
+    // Component C: Profile Quality (20%)
+    const { percentage: profileStrength } = calculateProfileStrength();
+    const qualityScore = Math.min(100, profileStrength + (profile.verification_status === 'verified' ? 10 : 0));
+    
+    // Component D: Resonance (20%)
+    const resonanceScore = mockData.resonanceValue * 100;
+    
+    // Component E: Freshness (10%)
+    const hoursSinceActive = (now.getTime() - new Date(profile.last_active_at || now).getTime()) / (1000 * 60 * 60);
+    let freshnessScore = 10;
+    if (hoursSinceActive <= 24) freshnessScore = 100;
+    else if (hoursSinceActive <= 72) freshnessScore = 70;
+    else if (hoursSinceActive <= 168) freshnessScore = 40;
+    
+    // Component F: Boosts
+    const boostValue = (mockData.isGlowActive ? 20 : 0) + (profile.crossd_plus ? 5 : 0);
+    
+    // Component G: Penalties
+    const penaltyValue = Math.min(25, mockData.reportsW7 * 5 + mockData.blocksW7 * 3 + mockData.spamScore);
+    
+    // Final Score
+    const baseScore = 
+      0.30 * activityScore +
+      0.15 * streakScore +
+      0.20 * qualityScore +
+      0.20 * resonanceScore +
+      0.10 * freshnessScore;
+    
+    const finalScore = Math.round(Math.max(0, Math.min(100, baseScore + boostValue - penaltyValue)));
+    
+    return {
+      score: finalScore,
+      components: {
+        activity: Math.round(activityScore),
+        streak: Math.round(streakScore),
+        profileQuality: Math.round(qualityScore),
+        resonance: Math.round(resonanceScore),
+        freshness: Math.round(freshnessScore),
+        boosts: boostValue,
+        penalties: penaltyValue
+      }
+    };
   };
 
   // Calculate day streak
@@ -127,7 +186,7 @@ export default function Dashboard() {
   }
 
   const { percentage: profileStrength, items: profileItems } = calculateProfileStrength();
-  const sparkEnergy = calculateSparkEnergy();
+  const energyData = calculateSparkEnergy();
   const dayStreak = calculateStreak();
   const expiringMoments = calculateExpiringMoments();
   const sparksThisWeek = moments.filter(m => 
@@ -222,17 +281,67 @@ export default function Dashboard() {
           
           {/* Energy Bar */}
           <div className="mb-8">
-            <div className="h-3 bg-white/10 rounded-full overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${sparkEnergy}%` }}
-                transition={{ duration: 1, ease: "easeOut" }}
-                className="h-full bg-[#E70F72] rounded-full"
-              />
-            </div>
-            <div className="text-center text-[#E70F72] font-bold mt-2">
-              {sparkEnergy}%
-            </div>
+            <TooltipProvider>
+              <Tooltip delayDuration={100}>
+                <TooltipTrigger asChild>
+                  <div className="cursor-help">
+                    <div className="h-3 bg-white/10 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${energyData.score}%` }}
+                        transition={{ duration: 1, ease: "easeOut" }}
+                        className="h-full bg-[#E70F72] rounded-full"
+                      />
+                    </div>
+                    <div className="text-center text-[#E70F72] font-bold mt-2">
+                      {energyData.score}%
+                    </div>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent className="p-4 w-80 bg-[#0B0B0B] border-white/10">
+                  <h4 className="font-semibold mb-3 text-white">Energy Breakdown</h4>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3 text-sm">
+                      <Activity className="w-4 h-4 text-[#E70F72] flex-shrink-0" />
+                      <span className="flex-1 text-white/90">Activity</span>
+                      <Progress value={energyData.components.activity} className="w-24 h-2 bg-white/10" />
+                      <span className="font-semibold w-10 text-right text-white">{energyData.components.activity}%</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm">
+                      <Flame className="w-4 h-4 text-[#E70F72] flex-shrink-0" />
+                      <span className="flex-1 text-white/90">Streak</span>
+                      <Progress value={energyData.components.streak} className="w-24 h-2 bg-white/10" />
+                      <span className="font-semibold w-10 text-right text-white">{energyData.components.streak}%</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm">
+                      <ShieldCheck className="w-4 h-4 text-[#E70F72] flex-shrink-0" />
+                      <span className="flex-1 text-white/90">Profile Quality</span>
+                      <Progress value={energyData.components.profileQuality} className="w-24 h-2 bg-white/10" />
+                      <span className="font-semibold w-10 text-right text-white">{energyData.components.profileQuality}%</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm">
+                      <Sparkles className="w-4 h-4 text-[#E70F72] flex-shrink-0" />
+                      <span className="flex-1 text-white/90">Resonance</span>
+                      <Progress value={energyData.components.resonance} className="w-24 h-2 bg-white/10" />
+                      <span className="font-semibold w-10 text-right text-white">{energyData.components.resonance}%</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm">
+                      <Clock className="w-4 h-4 text-[#E70F72] flex-shrink-0" />
+                      <span className="flex-1 text-white/90">Freshness</span>
+                      <Progress value={energyData.components.freshness} className="w-24 h-2 bg-white/10" />
+                      <span className="font-semibold w-10 text-right text-white">{energyData.components.freshness}%</span>
+                    </div>
+                    {energyData.components.boosts > 0 && (
+                      <div className="flex items-center gap-3 text-sm">
+                        <TrendingUp className="w-4 h-4 text-green-400 flex-shrink-0" />
+                        <span className="flex-1 text-white/90">Boosts</span>
+                        <span className="font-semibold text-green-400">+{energyData.components.boosts}</span>
+                      </div>
+                    )}
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
           
           {/* Metric Cards */}
