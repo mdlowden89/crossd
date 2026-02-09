@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MapPin, Plus, Clock, Sparkles, Users, ChevronRight, 

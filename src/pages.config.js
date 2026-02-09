@@ -56,6 +56,7 @@ import Dashboard from './pages/Dashboard';
 import Explore from './pages/Explore';
 import FirstMoment from './pages/FirstMoment';
 import Home from './pages/Home';
+import LogMoment from './pages/LogMoment';
 import MBTIQuiz from './pages/MBTIQuiz';
 import MomentDetail from './pages/MomentDetail';
 import Moments from './pages/Moments';
@@ -69,7 +70,6 @@ import SetupProfile from './pages/SetupProfile';
 import Trail from './pages/Trail';
 import Verification from './pages/Verification';
 import Welcome from './pages/Welcome';
-import LogMoment from './pages/LogMoment';
 import __Layout from './Layout.jsx';
 
 
@@ -83,6 +83,7 @@ export const PAGES = {
     "Explore": Explore,
     "FirstMoment": FirstMoment,
     "Home": Home,
+    "LogMoment": LogMoment,
     "MBTIQuiz": MBTIQuiz,
     "MomentDetail": MomentDetail,
     "Moments": Moments,
@@ -96,7 +97,6 @@ export const PAGES = {
     "Trail": Trail,
     "Verification": Verification,
     "Welcome": Welcome,
-    "LogMoment": LogMoment,
 }
 
 export const pagesConfig = {
