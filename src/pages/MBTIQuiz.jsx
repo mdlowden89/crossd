@@ -521,17 +521,22 @@ export default function MBTIQuiz() {
 
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-white/65 text-sm">Question {currentQuestion + 1} of {questions.length}</span>
-            <span className="text-[#E70F72] font-medium">{Math.round(progress)}%</span>
+            <span className="text-white/65 text-sm">
+              {quizMode === 'basic' ? 'Basic' : 'Advanced'} Quiz - Question {currentQuestion + 1} of {questions.length}
+            </span>
+            <span className="text-[#E70F72] font-medium">{Math.round(totalProgress)}%</span>
           </div>
           <div className="h-1 bg-white/10 rounded-full overflow-hidden">
             <motion.div
               className="h-full bg-[#E70F72]"
               initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
+              animate={{ width: `${totalProgress}%` }}
               transition={{ duration: 0.3 }}
             />
           </div>
+          {quizMode === 'advanced' && (
+            <p className="text-white/50 text-xs mt-2">✨ Advanced questions for greater accuracy</p>
+          )}
         </div>
 
         <AnimatePresence mode="wait">
