@@ -136,13 +136,22 @@ export default function SetupProfile() {
     setLoading(true);
     const user = await base44.auth.me();
     
-    await base44.entities.Profile.create({
-      ...profile,
-      user_id: user.id,
-      onboarding_complete: true,
-      last_active_at: new Date().toISOString(),
-      status: 'active'
-    });
+    // Check if profile already exists
+    const existingProfiles = await base44.entities.Profile.filter({ user_id: user.id });
+    
+    if (existingProfiles.length > 0) {
+      // Update existing profile
+      await base44.entities.Profile.update(existingProfiles[0].id, profile);
+    } else {
+      // Create new profile
+      await base44.entities.Profile.create({
+        ...profile,
+        user_id: user.id,
+        onboarding_complete: true,
+        last_active_at: new Date().toISOString(),
+        status: 'active'
+      });
+    }
 
     // If came from a specific step (e.g., from Profile page), go back to Profile
     const urlParams = new URLSearchParams(window.location.search);
