@@ -8,7 +8,9 @@ import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
 import { CrossdProgressRing } from '@/components/ui/crossd-progress-ring';
 
-const questions = [
+// Basic 16 questions
+const basicQuestions = [
+  // E/I Questions (4)
   {
     id: 1,
     question: "At a party, you usually...",
@@ -20,39 +22,40 @@ const questions = [
   },
   {
     id: 2,
-    question: "You prefer plans that are...",
-    options: [
-      { text: "Flexible and open to change", value: "P" },
-      { text: "Structured and organized", value: "J" }
-    ],
-    dimension: "JP"
-  },
-  {
-    id: 3,
-    question: "When making decisions, you rely more on...",
-    options: [
-      { text: "Logic and objective analysis", value: "T" },
-      { text: "Feelings and how others will be affected", value: "F" }
-    ],
-    dimension: "TF"
-  },
-  {
-    id: 4,
-    question: "You're more interested in...",
-    options: [
-      { text: "What is real and actual", value: "S" },
-      { text: "What is possible and potential", value: "N" }
-    ],
-    dimension: "SN"
-  },
-  {
-    id: 5,
     question: "After socializing, you feel...",
     options: [
       { text: "Energized and want more", value: "E" },
       { text: "Drained and need alone time", value: "I" }
     ],
     dimension: "EI"
+  },
+  {
+    id: 3,
+    question: "You recharge your energy by...",
+    options: [
+      { text: "Being around others and talking", value: "E" },
+      { text: "Spending time alone with your thoughts", value: "I" }
+    ],
+    dimension: "EI"
+  },
+  {
+    id: 4,
+    question: "In a group, you tend to...",
+    options: [
+      { text: "Share your thoughts openly", value: "E" },
+      { text: "Listen more than you speak", value: "I" }
+    ],
+    dimension: "EI"
+  },
+  // S/N Questions (4)
+  {
+    id: 5,
+    question: "You're more interested in...",
+    options: [
+      { text: "What is real and actual", value: "S" },
+      { text: "What is possible and potential", value: "N" }
+    ],
+    dimension: "SN"
   },
   {
     id: 6,
@@ -65,6 +68,34 @@ const questions = [
   },
   {
     id: 7,
+    question: "When learning something new, you prefer...",
+    options: [
+      { text: "Step-by-step instructions and examples", value: "S" },
+      { text: "Understanding the big picture first", value: "N" }
+    ],
+    dimension: "SN"
+  },
+  {
+    id: 8,
+    question: "You trust more...",
+    options: [
+      { text: "Experience and proven methods", value: "S" },
+      { text: "Intuition and new ideas", value: "N" }
+    ],
+    dimension: "SN"
+  },
+  // T/F Questions (4)
+  {
+    id: 9,
+    question: "When making decisions, you rely more on...",
+    options: [
+      { text: "Logic and objective analysis", value: "T" },
+      { text: "Feelings and how others will be affected", value: "F" }
+    ],
+    dimension: "TF"
+  },
+  {
+    id: 10,
     question: "You'd rather be seen as...",
     options: [
       { text: "Reasonable and fair", value: "T" },
@@ -73,11 +104,209 @@ const questions = [
     dimension: "TF"
   },
   {
-    id: 8,
+    id: 11,
+    question: "In conflicts, you value...",
+    options: [
+      { text: "Being right and logical", value: "T" },
+      { text: "Maintaining harmony and understanding feelings", value: "F" }
+    ],
+    dimension: "TF"
+  },
+  {
+    id: 12,
+    question: "You're more proud of your...",
+    options: [
+      { text: "Problem-solving abilities", value: "T" },
+      { text: "Empathy and understanding", value: "F" }
+    ],
+    dimension: "TF"
+  },
+  // J/P Questions (4)
+  {
+    id: 13,
+    question: "You prefer plans that are...",
+    options: [
+      { text: "Structured and organized", value: "J" },
+      { text: "Flexible and open to change", value: "P" }
+    ],
+    dimension: "JP"
+  },
+  {
+    id: 14,
     question: "Your workspace is usually...",
     options: [
       { text: "Neat and organized", value: "J" },
       { text: "Creative and flexible", value: "P" }
+    ],
+    dimension: "JP"
+  },
+  {
+    id: 15,
+    question: "You feel better when things are...",
+    options: [
+      { text: "Decided and settled", value: "J" },
+      { text: "Open to possibilities", value: "P" }
+    ],
+    dimension: "JP"
+  },
+  {
+    id: 16,
+    question: "For a vacation, you prefer to...",
+    options: [
+      { text: "Plan everything in advance", value: "J" },
+      { text: "Be spontaneous and go with the flow", value: "P" }
+    ],
+    dimension: "JP"
+  }
+];
+
+// Advanced 16 questions for more accuracy
+const advancedQuestions = [
+  // E/I Advanced
+  {
+    id: 17,
+    question: "You feel most alive when...",
+    options: [
+      { text: "You're out experiencing the world", value: "E" },
+      { text: "You're in your own inner world", value: "I" }
+    ],
+    dimension: "EI"
+  },
+  {
+    id: 18,
+    question: "When stressed, you prefer to...",
+    options: [
+      { text: "Talk it out with others", value: "E" },
+      { text: "Process it alone", value: "I" }
+    ],
+    dimension: "EI"
+  },
+  {
+    id: 19,
+    question: "Your ideal weekend includes...",
+    options: [
+      { text: "Multiple social activities", value: "E" },
+      { text: "Quiet time to recharge", value: "I" }
+    ],
+    dimension: "EI"
+  },
+  {
+    id: 20,
+    question: "You make friends...",
+    options: [
+      { text: "Easily and quickly", value: "E" },
+      { text: "Slowly but deeply", value: "I" }
+    ],
+    dimension: "EI"
+  },
+  // S/N Advanced
+  {
+    id: 21,
+    question: "You're drawn to...",
+    options: [
+      { text: "What's proven and reliable", value: "S" },
+      { text: "What's innovative and untested", value: "N" }
+    ],
+    dimension: "SN"
+  },
+  {
+    id: 22,
+    question: "When telling a story, you focus on...",
+    options: [
+      { text: "Specific details and facts", value: "S" },
+      { text: "The overall meaning and metaphors", value: "N" }
+    ],
+    dimension: "SN"
+  },
+  {
+    id: 23,
+    question: "You're more interested in...",
+    options: [
+      { text: "Improving what exists", value: "S" },
+      { text: "Imagining what could be", value: "N" }
+    ],
+    dimension: "SN"
+  },
+  {
+    id: 24,
+    question: "You notice more...",
+    options: [
+      { text: "Concrete details in your environment", value: "S" },
+      { text: "Patterns and connections", value: "N" }
+    ],
+    dimension: "SN"
+  },
+  // T/F Advanced
+  {
+    id: 25,
+    question: "Criticism affects you...",
+    options: [
+      { text: "Less - you can be objective", value: "T" },
+      { text: "More - you take it personally", value: "F" }
+    ],
+    dimension: "TF"
+  },
+  {
+    id: 26,
+    question: "You'd rather be...",
+    options: [
+      { text: "Respected for your competence", value: "T" },
+      { text: "Loved for your kindness", value: "F" }
+    ],
+    dimension: "TF"
+  },
+  {
+    id: 27,
+    question: "In debates, you focus on...",
+    options: [
+      { text: "The logical arguments", value: "T" },
+      { text: "The people's feelings", value: "F" }
+    ],
+    dimension: "TF"
+  },
+  {
+    id: 28,
+    question: "You make better decisions when you...",
+    options: [
+      { text: "Remove emotions from the equation", value: "T" },
+      { text: "Consider everyone's feelings", value: "F" }
+    ],
+    dimension: "TF"
+  },
+  // J/P Advanced
+  {
+    id: 29,
+    question: "You work best...",
+    options: [
+      { text: "With a clear plan and deadlines", value: "J" },
+      { text: "With flexibility and no pressure", value: "P" }
+    ],
+    dimension: "JP"
+  },
+  {
+    id: 30,
+    question: "Deadlines make you feel...",
+    options: [
+      { text: "Motivated and focused", value: "J" },
+      { text: "Stressed and constrained", value: "P" }
+    ],
+    dimension: "JP"
+  },
+  {
+    id: 31,
+    question: "You prefer to...",
+    options: [
+      { text: "Make decisions quickly", value: "J" },
+      { text: "Keep your options open", value: "P" }
+    ],
+    dimension: "JP"
+  },
+  {
+    id: 32,
+    question: "Your closet is...",
+    options: [
+      { text: "Organized by category or color", value: "J" },
+      { text: "Organized in your own unique way", value: "P" }
     ],
     dimension: "JP"
   }
