@@ -225,17 +225,6 @@ export default function ActivityMap({ moments, profile }) {
     };
   }, [moments, profile]);
 
-  if (!moments || moments.length === 0) {
-    return (
-      <div className="aspect-video bg-black/40 rounded-2xl flex items-center justify-center border border-white/5">
-        <div className="text-center p-8">
-          <Map className="w-12 h-12 text-white/30 mx-auto mb-4" />
-          <p className="text-white/50">Start logging moments to see your journey</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="aspect-video rounded-2xl overflow-hidden border border-[#E70F72]/20 shadow-[0_0_30px_rgba(231,15,114,0.15)]">
       <style>{`
