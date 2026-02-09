@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Loader2, ImageOff } from 'lucide-react';
 import { format } from 'date-fns';
+import { base44 } from '@/api/base44Client';
 
 const statusEmojis = {
   pending: '⏳',
@@ -16,11 +17,33 @@ export default function MomentTrailCard({ moment, status = 'pending', onClick })
   const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
-    // Generate a placeholder image URL based on the venue name
-    // Using Unsplash API for location-based images
-    const venueName = encodeURIComponent(moment.venue_name || 'location');
-    const url = `https://source.unsplash.com/400x300/?${venueName}`;
-    setImageUrl(url);
+    const fetchPlacePhoto = async () => {
+      try {
+        setImageLoading(true);
+        const response = await base44.functions.invoke('getPlacePhoto', {
+          venue_name: moment.venue_name,
+          lat: moment.lat,
+          lng: moment.lng
+        });
+        
+        if (response.data?.photo_url) {
+          setImageUrl(response.data.photo_url);
+        } else {
+          setImageError(true);
+        }
+      } catch (error) {
+        setImageError(true);
+      } finally {
+        setImageLoading(false);
+      }
+    };
+
+    if (moment.venue_name) {
+      fetchPlacePhoto();
+    } else {
+      setImageError(true);
+      setImageLoading(false);
+    }
   }, [moment.venue_name]);
 
   const handleImageError = () => {
