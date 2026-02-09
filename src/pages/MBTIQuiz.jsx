@@ -332,29 +332,51 @@ const mbtiDescriptions = {
 };
 
 export default function MBTIQuiz() {
+  const [quizMode, setQuizMode] = useState('basic'); // 'basic' or 'advanced'
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState({});
+  const [basicAnswers, setBasicAnswers] = useState({});
+  const [advancedAnswers, setAdvancedAnswers] = useState({});
   const [result, setResult] = useState(null);
+  const [showInterim, setShowInterim] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const questions = quizMode === 'basic' ? basicQuestions : advancedQuestions;
+  const answers = quizMode === 'basic' ? basicAnswers : advancedAnswers;
 
   const handleAnswer = (value) => {
     const newAnswers = {
       ...answers,
       [questions[currentQuestion].id]: value
     };
-    setAnswers(newAnswers);
+    
+    if (quizMode === 'basic') {
+      setBasicAnswers(newAnswers);
+    } else {
+      setAdvancedAnswers(newAnswers);
+    }
 
     if (currentQuestion < questions.length - 1) {
       setTimeout(() => setCurrentQuestion(currentQuestion + 1), 300);
     } else {
-      calculateResult(newAnswers);
+      // Finished this set
+      if (quizMode === 'basic') {
+        calculateResult(newAnswers, 'basic');
+        setShowInterim(true);
+      } else {
+        calculateResult(newAnswers, 'advanced');
+      }
     }
   };
 
-  const calculateResult = (finalAnswers) => {
+  const calculateResult = (finalAnswers, mode) => {
     const counts = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
     
-    Object.values(finalAnswers).forEach(answer => {
+    // If advanced mode, combine basic + advanced answers
+    const allAnswers = mode === 'advanced' 
+      ? { ...basicAnswers, ...finalAnswers }
+      : finalAnswers;
+    
+    Object.values(allAnswers).forEach(answer => {
       counts[answer]++;
     });
 
@@ -366,6 +388,16 @@ export default function MBTIQuiz() {
     ].join('');
 
     setResult(type);
+  };
+
+  const continueToAdvanced = () => {
+    setShowInterim(false);
+    setQuizMode('advanced');
+    setCurrentQuestion(0);
+  };
+
+  const finishBasic = () => {
+    saveAndContinue();
   };
 
   const saveAndContinue = async () => {
