@@ -408,7 +408,19 @@ export default function Profile() {
       {/* Prompts */}
       <div className="mb-6">
         <h2 className="text-white/65 text-sm font-medium mb-3">Prompts</h2>
-        {editMode && (!editedProfile?.prompts || editedProfile?.prompts?.length < 3) && (
+        <AnimatePresence>
+          {editMode && showPromptModal && (!editedProfile?.prompts || editedProfile?.prompts?.length < 3) && (
+            <PromptModal
+              onClose={() => setShowPromptModal(false)}
+              onSave={(prompt) => {
+                const newPrompts = [...(editedProfile?.prompts || []), prompt];
+                setEditedProfile({ ...editedProfile, prompts: newPrompts });
+                setShowPromptModal(false);
+              }}
+            />
+          )}
+        </AnimatePresence>
+        {editMode && (!editedProfile?.prompts || editedProfile?.prompts?.length < 3) && !showPromptModal && (
           <CrossdButton 
             onClick={() => setShowPromptModal(true)}
             variant="secondary"
@@ -436,16 +448,6 @@ export default function Profile() {
           </CrossdCard>
         ))}
       </div>
-
-      <PromptModal
-        isOpen={showPromptModal}
-        onClose={() => setShowPromptModal(false)}
-        onSave={(prompt) => {
-          const newPrompts = [...(editedProfile?.prompts || []), prompt];
-          setEditedProfile({ ...editedProfile, prompts: newPrompts });
-          setShowPromptModal(false);
-        }}
-      />
 
       {/* Lifestyle & Background */}
       <div className="mb-6">
