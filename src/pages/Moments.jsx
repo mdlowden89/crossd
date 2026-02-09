@@ -13,7 +13,7 @@ import { CrossdInput } from '@/components/ui/crossd-input';
 import { CrossdModal } from '@/components/ui/crossd-modal';
 import { format } from 'date-fns';
 import MomentsTrail from '@/components/moments/MomentsTrail';
-import { generateSampleMoments } from '@/utils/sampleMoments';
+import { generateSampleMoments } from '@/components/moments/sampleMoments';
 
 // Geohash encoder
 function encodeGeohash(lat, lng, precision = 7) {
