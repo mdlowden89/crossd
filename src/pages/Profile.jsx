@@ -244,8 +244,17 @@ export default function Profile() {
           <div className="flex items-center gap-3">
             <Cake className="w-5 h-5 text-white/40" />
             <div className="flex-1">
-              <p className="text-white/50 text-sm">Age</p>
-              <p className="text-white">{age || 'Not set'}</p>
+              <p className="text-white/50 text-sm">{editMode ? 'Birthdate' : 'Age'}</p>
+              {editMode ? (
+                <CrossdInput
+                  type="date"
+                  value={editedProfile?.birthdate || ''}
+                  onChange={(e) => setEditedProfile({ ...editedProfile, birthdate: e.target.value })}
+                  className="mt-1"
+                />
+              ) : (
+                <p className="text-white">{age || 'Not set'}</p>
+              )}
             </div>
           </div>
         </CrossdCard>
