@@ -221,7 +221,7 @@ export default function Dashboard() {
           </p>
           
           {/* Energy Bar */}
-          <div className="relative mb-8">
+          <div className="mb-8">
             <div className="h-3 bg-white/10 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
@@ -230,7 +230,7 @@ export default function Dashboard() {
                 className="h-full bg-[#E70F72] rounded-full"
               />
             </div>
-            <div className="absolute -right-2 -top-1 text-[#E70F72] font-bold">
+            <div className="text-center text-[#E70F72] font-bold mt-2">
               {sparkEnergy}%
             </div>
           </div>
