@@ -12,6 +12,7 @@ import { CrossdCard } from '@/components/ui/crossd-card';
 import { CrossdInput } from '@/components/ui/crossd-input';
 import { CrossdModal } from '@/components/ui/crossd-modal';
 import { format } from 'date-fns';
+import MomentsTrail from '@/components/moments/MomentsTrail';
 
 // Geohash encoder
 function encodeGeohash(lat, lng, precision = 7) {
@@ -168,69 +169,33 @@ export default function Moments() {
           <Loader2 className="w-8 h-8 text-[#E70F72] animate-spin" />
         </div>
       ) : moments.length === 0 ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="flex flex-col items-center justify-center text-center py-20"
-        >
-          <div className="w-20 h-20 bg-[#E70F72]/10 rounded-full flex items-center justify-center mb-6">
-            <MapPin className="w-10 h-10 text-[#E70F72]" />
-          </div>
-          <h2 className="text-xl font-bold text-white mb-2">No Moments Yet</h2>
-          <p className="text-white/65 mb-6">
-            Log your first moment to start discovering crossings.
-          </p>
-          <div className="flex justify-center">
-            <CrossdButton onClick={openLogModal}>
-              <Plus className="w-5 h-5 mr-1" />
-              Log Your First Moment
-            </CrossdButton>
-          </div>
-        </motion.div>
-      ) : (
-        <div className="space-y-4">
-          {moments.map((moment, index) => (
-            <motion.div
-              key={moment.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-            >
-              <CrossdCard 
-                className="cursor-pointer hover:border-[#E70F72]/40 transition-colors"
-                onClick={() => window.location.href = createPageUrl('MomentDetail') + `?id=${moment.id}`}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-[#E70F72]/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-6 h-6 text-[#E70F72]" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-medium text-white truncate">
-                      {moment.venue_name || 'Unknown Location'}
-                    </h3>
-                    <div className="flex items-center gap-3 text-white/50 text-sm mt-1">
-                      <div className="flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5" />
-                        <span>{format(new Date(moment.created_date), 'MMM d, h:mm a')}</span>
-                      </div>
-                      {moment.nearby_spark_count > 0 && (
-                        <div className="flex items-center gap-1 text-[#E70F72]">
-                          <Users className="w-3.5 h-3.5" />
-                          <span>{moment.nearby_spark_count}</span>
-                        </div>
-                      )}
-                    </div>
-                    {moment.note && (
-                      <p className="text-white/65 text-sm mt-2 line-clamp-1">{moment.note}</p>
-                    )}
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-white/30" />
-                </div>
-              </CrossdCard>
-            </motion.div>
-          ))}
-        </div>
-      )}
+         <motion.div
+           initial={{ opacity: 0 }}
+           animate={{ opacity: 1 }}
+           className="flex flex-col items-center justify-center text-center py-20"
+         >
+           <div className="w-20 h-20 bg-[#E70F72]/10 rounded-full flex items-center justify-center mb-6">
+             <MapPin className="w-10 h-10 text-[#E70F72]" />
+           </div>
+           <h2 className="text-xl font-bold text-white mb-2">No Moments Yet</h2>
+           <p className="text-white/65 mb-6">
+             Log your first moment to start discovering crossings.
+           </p>
+           <div className="flex justify-center">
+             <CrossdButton onClick={openLogModal}>
+               <Plus className="w-5 h-5 mr-1" />
+               Log Your First Moment
+             </CrossdButton>
+           </div>
+         </motion.div>
+       ) : (
+         <>
+           <MomentsTrail 
+             moments={moments}
+             onMomentClick={(id) => window.location.href = createPageUrl('MomentDetail') + `?id=${id}`}
+           />
+         </>
+       )}
 
       {/* Log Moment Modal */}
       <CrossdModal
