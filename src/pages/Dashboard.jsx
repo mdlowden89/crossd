@@ -177,6 +177,30 @@ export default function Dashboard() {
     return moments.filter(m => new Date(m.created_date) < weekAgo).length;
   };
 
+  // MBTI personality types with emojis and descriptions
+  const mbtiTypes = {
+    'INTJ': { emoji: '✒️', name: 'Architect', description: 'Strategic masterminds who love planning and achieving goals.', matches: ['ENTP', 'ENFP', 'ENTJ'] },
+    'INTP': { emoji: '🧪', name: 'Logician', description: 'Innovative inventive with an unquenchable thirst for knowledge.', matches: ['ENTJ', 'ENTP', 'INFJ'] },
+    'ENTJ': { emoji: '👑', name: 'Commander', description: 'Bold and imaginative leaders who find a way or make one.', matches: ['INTP', 'INTJ', 'ENFP'] },
+    'ENTP': { emoji: '🗣️', name: 'Debater', description: 'Smart and curious thinkers who love intellectual challenges.', matches: ['INFJ', 'INTJ', 'ENFJ'] },
+    'INFJ': { emoji: '🤝', name: 'Advocate', description: 'Quiet and mystical, yet inspiring and idealistic.', matches: ['ENTP', 'ENFP', 'INFP'] },
+    'INFP': { emoji: '🧘', name: 'Mediator', description: 'Poetic, kind souls always searching for meaning.', matches: ['ENFJ', 'ENTJ', 'INFJ'] },
+    'ENFJ': { emoji: '🦸', name: 'Protagonist', description: 'Charismatic and inspiring leaders who captivate audiences.', matches: ['INFP', 'ENFP', 'INFJ'] },
+    'ENFP': { emoji: '🎉', name: 'Campaigner', description: 'Enthusiastic, creative free spirits with vibrant energy.', matches: ['INTJ', 'INFJ', 'ENFJ'] },
+    'ISTJ': { emoji: '📊', name: 'Logistician', description: 'Practical and fact-minded with unwavering reliability.', matches: ['ESTP', 'ESFP', 'ESTJ'] },
+    'ISFJ': { emoji: '🛡️', name: 'Defender', description: 'Dedicated protectors ready to defend loved ones.', matches: ['ESFP', 'ESTP', 'ISFP'] },
+    'ESTJ': { emoji: '👔', name: 'Executive', description: 'Excellent administrators skilled in managing things and people.', matches: ['ISTP', 'ISTJ', 'ESFJ'] },
+    'ESFJ': { emoji: '🤗', name: 'Consul', description: 'Caring and social, always eager to help others.', matches: ['ISFP', 'ISTP', 'ESTJ'] },
+    'ISTP': { emoji: '🔧', name: 'Virtuoso', description: 'Bold and practical experimenters mastering tools.', matches: ['ESTJ', 'ESFJ', 'ESTP'] },
+    'ISFP': { emoji: '🎨', name: 'Adventurer', description: 'Flexible and charming artists ready to explore.', matches: ['ESFJ', 'ENFJ', 'ESTJ'] },
+    'ESTP': { emoji: '🚀', name: 'Entrepreneur', description: 'Smart, energetic risk-takers who live on the edge.', matches: ['ISFJ', 'ISTJ', 'ESFP'] },
+    'ESFP': { emoji: '✨', name: 'Entertainer', description: 'Spontaneous entertainers who love life and people.', matches: ['ISTJ', 'ISFJ', 'ESTP'] }
+  };
+
+  const getMBTIInfo = (type) => {
+    return mbtiTypes[type] || { emoji: '✨', name: 'Unknown', description: 'Discover your personality type!', matches: [] };
+  };
+
   if (isLoading || !profile) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
@@ -373,35 +397,63 @@ export default function Dashboard() {
           transition={{ delay: 0.3 }}
           className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30"
         >
-          <div className="flex items-center gap-2 mb-4">
-            <Zap className="w-5 h-5 text-[#E70F72]" />
-            <h2 className="text-2xl font-bold text-white">Know Your Type?</h2>
-          </div>
-          
           {profile.mbti_type ? (
             <>
-              <p className="text-white/65 mb-4">Your personality type is:</p>
-              <div className="text-6xl font-bold text-[#E70F72] mb-4">
-                {profile.mbti_type}
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="w-5 h-5 text-[#E70F72]" />
+                <h2 className="text-xl font-bold text-white">Your Type:</h2>
               </div>
-              <p className="text-white/65 mb-6">
-                Adding your personality type leads to more compatible Spark Swipes.
-              </p>
+              
+              <div className="mb-6">
+                <div className="text-4xl font-bold text-white mb-2 flex items-center gap-3">
+                  <span className="text-5xl">{getMBTIInfo(profile.mbti_type).emoji}</span>
+                  {getMBTIInfo(profile.mbti_type).name} ({profile.mbti_type})
+                </div>
+                <p className="text-white/65 text-lg">
+                  {getMBTIInfo(profile.mbti_type).description}
+                </p>
+              </div>
+
+              {getMBTIInfo(profile.mbti_type).matches.length > 0 && (
+                <div className="mb-6">
+                  <p className="text-white/90 font-semibold mb-3">Best matches for you:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {getMBTIInfo(profile.mbti_type).matches.map(matchType => (
+                      <div 
+                        key={matchType}
+                        className="flex items-center gap-2 px-4 py-2 bg-black/40 rounded-full border border-[#E70F72]/20"
+                      >
+                        <span className="text-xl">{getMBTIInfo(matchType).emoji}</span>
+                        <span className="text-white/90">{getMBTIInfo(matchType).name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              <Link to={createPageUrl('MBTIQuiz')}>
+                <CrossdButton variant="secondary" className="w-full">
+                  Retake Quiz
+                </CrossdButton>
+              </Link>
             </>
           ) : (
             <>
+              <div className="flex items-center gap-2 mb-4">
+                <Zap className="w-5 h-5 text-[#E70F72]" />
+                <h2 className="text-2xl font-bold text-white">Know Your Type?</h2>
+              </div>
               <p className="text-white/65 mb-6">
                 Discover your MBTI personality type and find more compatible matches.
               </p>
+              <Link to={createPageUrl('MBTIQuiz')}>
+                <CrossdButton className="w-full" size="lg">
+                  <Sparkles className="w-5 h-5" />
+                  Take Quiz
+                </CrossdButton>
+              </Link>
             </>
           )}
-          
-          <Link to={createPageUrl('MBTIQuiz')}>
-            <CrossdButton className="w-full" size="lg">
-              <Sparkles className="w-5 h-5" />
-              {profile.mbti_type ? 'Retake Quiz' : 'Take Quiz'}
-            </CrossdButton>
-          </Link>
         </motion.div>
 
         {/* Activity Map */}
