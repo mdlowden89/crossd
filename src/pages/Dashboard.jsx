@@ -11,6 +11,7 @@ import {
 import { CrossdButton } from '@/components/ui/crossd-button';
 import CrossdProgressRing from '@/components/ui/crossd-progress-ring';
 import ActivityMap from '@/components/dashboard/ActivityMap';
+import PersonalityCard from '@/components/mbti/PersonalityCard';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Progress } from '@/components/ui/progress';
 
@@ -499,111 +500,8 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30"
         >
-          {profile.mbti_type ? (
-            <>
-              <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="w-5 h-5 text-[#E70F72]" />
-                <h2 className="text-xl font-bold text-white">Your Type:</h2>
-              </div>
-              
-              <div className="mb-6">
-                <div className="text-4xl font-bold text-white mb-2 flex items-center gap-3">
-                  <span className="text-5xl">{getMBTIInfo(profile.mbti_type).emoji}</span>
-                  {getMBTIInfo(profile.mbti_type).name} ({profile.mbti_type})
-                </div>
-                <p className="text-white/65 text-lg">
-                  {getMBTIInfo(profile.mbti_type).description}
-                </p>
-              </div>
-
-              {getMBTIInfo(profile.mbti_type).matches.length > 0 && (
-                <div className="mb-6">
-                  <p className="text-white/90 font-semibold mb-3">Best matches for you:</p>
-                  <div className="flex flex-wrap gap-2">
-                    {getMBTIInfo(profile.mbti_type).matches.map(matchType => (
-                      <div 
-                        key={matchType}
-                        className="flex items-center gap-2 px-4 py-2 bg-black/40 rounded-full border border-[#E70F72]/20"
-                      >
-                        <span className="text-xl">{getMBTIInfo(matchType).emoji}</span>
-                        <span className="text-white/90">{getMBTIInfo(matchType).name}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Premium Insights */}
-              {profile.crossd_plus && getInsights(profile.mbti_type) && (
-                <div className="mb-6 pt-6 border-t border-[#E70F72]/20">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Star className="w-5 h-5 text-[#E70F72]" />
-                    <h3 className="text-lg font-bold text-[#E70F72]">Your Premium Insights</h3>
-                  </div>
-                  
-                  <div className="mb-4">
-                    <p className="text-white/90 font-semibold mb-2">Strengths & Weaknesses</p>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        {getInsights(profile.mbti_type).strengths.map((strength, idx) => (
-                          <div key={idx} className="flex items-center gap-2 text-white/70 text-sm mb-1">
-                            <Circle className="w-1.5 h-1.5 fill-green-500 text-green-500" />
-                            {strength}
-                          </div>
-                        ))}
-                      </div>
-                      <div>
-                        {getInsights(profile.mbti_type).weaknesses.map((weakness, idx) => (
-                          <div key={idx} className="flex items-center gap-2 text-white/70 text-sm mb-1">
-                            <Circle className="w-1.5 h-1.5 fill-red-500 text-red-500" />
-                            {weakness}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="mb-4">
-                    <p className="text-white/90 font-semibold mb-2">Relationship Approach</p>
-                    <p className="text-white/60 text-sm italic leading-relaxed">
-                      "{getInsights(profile.mbti_type).relationshipApproach}"
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <p className="text-white/90 font-semibold mb-2">Famous {getMBTIInfo(profile.mbti_type).name}s</p>
-                    <p className="text-white/70 text-sm">
-                      {getInsights(profile.mbti_type).famousExamples.join(', ')}
-                    </p>
-                  </div>
-                </div>
-              )}
-              
-              <Link to={createPageUrl('MBTIQuiz')}>
-                <CrossdButton variant="secondary" className="w-full">
-                  Retake Quiz
-                </CrossdButton>
-              </Link>
-            </>
-          ) : (
-            <>
-              <div className="flex items-center gap-2 mb-4">
-                <Zap className="w-5 h-5 text-[#E70F72]" />
-                <h2 className="text-2xl font-bold text-white">Know Your Type?</h2>
-              </div>
-              <p className="text-white/65 mb-6">
-                Discover your MBTI personality type and find more compatible matches.
-              </p>
-              <Link to={createPageUrl('MBTIQuiz')}>
-                <CrossdButton className="w-full" size="lg">
-                  <Sparkles className="w-5 h-5" />
-                  Take Quiz
-                </CrossdButton>
-              </Link>
-            </>
-          )}
+          <PersonalityCard profile={profile} />
         </motion.div>
 
         {/* Activity Map */}
