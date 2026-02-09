@@ -717,22 +717,22 @@ export default function Profile() {
                   <p className="text-white text-lg">
                     {myProfile.mbti_type ? (
                       <>
-                        {myProfile.mbti_type === 'INTJ' && '✒️ INTJ – The Mastermind / Architect'}
+                        {myProfile.mbti_type === 'INTJ' && '🏛️ INTJ – The Mastermind / Architect'}
                         {myProfile.mbti_type === 'INTP' && '🧪 INTP – The Thinker / Logician'}
                         {myProfile.mbti_type === 'ENTJ' && '👑 ENTJ – The Commander / Executive'}
-                        {myProfile.mbti_type === 'ENTP' && '🗣️ ENTP – The Debater / Visionary'}
-                        {myProfile.mbti_type === 'INFJ' && '🤝 INFJ – The Advocate / Counsellor'}
-                        {myProfile.mbti_type === 'INFP' && '🧘 INFP – The Mediator / Idealist'}
-                        {myProfile.mbti_type === 'ENFJ' && '🦸 ENFJ – The Protagonist / Teacher'}
+                        {myProfile.mbti_type === 'ENTP' && '💡 ENTP – The Debater / Visionary'}
+                        {myProfile.mbti_type === 'INFJ' && '🌟 INFJ – The Advocate / Counsellor'}
+                        {myProfile.mbti_type === 'INFP' && '🎨 INFP – The Mediator / Idealist'}
+                        {myProfile.mbti_type === 'ENFJ' && '✨ ENFJ – The Protagonist / Teacher'}
                         {myProfile.mbti_type === 'ENFP' && '🎉 ENFP – The Campaigner / Inspirer'}
-                        {myProfile.mbti_type === 'ISTJ' && '📊 ISTJ – The Inspector / Logistician'}
+                        {myProfile.mbti_type === 'ISTJ' && '📋 ISTJ – The Inspector / Logistician'}
                         {myProfile.mbti_type === 'ISFJ' && '🛡️ ISFJ – The Defender / Nurturer'}
-                        {myProfile.mbti_type === 'ESTJ' && '👔 ESTJ – The Supervisor / Executive'}
+                        {myProfile.mbti_type === 'ESTJ' && '⚖️ ESTJ – The Supervisor / Executive'}
                         {myProfile.mbti_type === 'ESFJ' && '🤗 ESFJ – The Consul / Provider'}
                         {myProfile.mbti_type === 'ISTP' && '🔧 ISTP – The Virtuoso / Craftsman'}
                         {myProfile.mbti_type === 'ISFP' && '🎨 ISFP – The Adventurer / Composer'}
                         {myProfile.mbti_type === 'ESTP' && '🚀 ESTP – The Dynamo / Entrepreneur'}
-                        {myProfile.mbti_type === 'ESFP' && '✨ ESFP – The Performer / Entertainer'}
+                        {myProfile.mbti_type === 'ESFP' && '🌈 ESFP – The Performer / Entertainer'}
                       </>
                     ) : (
                       'Not set'
