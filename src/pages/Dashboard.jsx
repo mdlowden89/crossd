@@ -519,7 +519,7 @@ export default function Dashboard() {
             A visual journey of your logged encounters.
           </p>
           
-          <ActivityMap moments={moments} />
+          <ActivityMap moments={moments} profile={profile} />
         </motion.div>
 
         {/* Active Challenge */}
