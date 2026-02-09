@@ -532,20 +532,22 @@ export default function Dashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="relative overflow-hidden rounded-3xl p-8 text-center"
+            className="relative overflow-hidden rounded-3xl p-12 text-center border border-[#E70F72]/30"
             style={{
-              background: 'linear-gradient(135deg, #E70F72 0%, #000000 100%)'
+              background: 'linear-gradient(135deg, #1a0510 0%, #0B0B0B 100%)'
             }}
           >
-            <Star className="w-12 h-12 text-white mx-auto mb-4" />
-            <h2 className="text-3xl font-bold text-white mb-3">Unlock Crossd+</h2>
-            <p className="text-white/90 text-lg mb-6 max-w-md mx-auto">
+            <div className="w-16 h-16 bg-[#E70F72] rounded-full flex items-center justify-center mx-auto mb-6">
+              <Star className="w-8 h-8 text-white" />
+            </div>
+            <h2 className="text-3xl font-bold text-[#E70F72] mb-3">Unlock Crossd+</h2>
+            <p className="text-white/65 text-base mb-8 max-w-md mx-auto">
               Supercharge your experience with unlimited likes, see who likes you, 
               and more exclusive perks!
             </p>
-            <Link to={createPageUrl('CrossdPlus')}>
+            <Link to={createPageUrl('CrossdPlus')} className="inline-block">
               <CrossdButton 
-                className="bg-white text-[#E70F72] hover:bg-white/90"
+                className="bg-gradient-to-r from-[#E70F72] to-orange-500 text-white hover:shadow-lg hover:shadow-[#E70F72]/30"
                 size="lg"
               >
                 Explore Premium Features
