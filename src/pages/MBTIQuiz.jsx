@@ -412,7 +412,7 @@ export default function MBTIQuiz() {
       });
     }
 
-    window.location.href = createPageUrl('FirstMoment');
+    window.location.href = createPageUrl('Dashboard');
   };
 
   const skipQuiz = () => {
