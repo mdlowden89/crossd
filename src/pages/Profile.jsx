@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Camera, Edit2, BadgeCheck, Sparkles, Plus, X,
   ChevronRight, Upload, User, MapPin, Briefcase, Ruler, GraduationCap, Heart, Cake, Wand2
@@ -11,7 +11,6 @@ import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
 import { CrossdProgressRing } from '@/components/ui/crossd-progress-ring';
 import { CrossdInput } from '@/components/ui/crossd-input';
-import { CrossdModal } from '@/components/ui/crossd-modal';
 import VibeTagSelector from '@/components/profile/VibeTagSelector';
 import PromptModal from '@/components/profile/PromptModal';
 
