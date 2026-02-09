@@ -220,8 +220,23 @@ export default function Welcome() {
         </motion.div>
       </div>
 
-      {/* Flowing Graphic at bottom */}
-      <FlowingGraphic />
+      {/* Hero Image at bottom */}
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.8 }}
+        className="absolute bottom-0 left-0 right-0 h-[50vh] pointer-events-none"
+      >
+        <img
+          src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/696101571241f794c88771c9/76f683a5d_image.png"
+          alt="Connection visualization"
+          className="w-full h-full object-cover object-top opacity-80"
+          style={{
+            maskImage: 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)',
+            WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)'
+          }}
+        />
+      </motion.div>
     </div>
   );
 }
