@@ -437,22 +437,44 @@ export default function Profile() {
 
       {/* Prompts */}
       <div className="mb-6">
-        <h2 className="text-white/65 text-sm font-medium mb-3">Prompts</h2>
-        {myProfile.prompts?.map((prompt, index) => (
-          <CrossdCard key={index} className="mb-3">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-white/65 text-sm font-medium">Prompts</h2>
+          {editMode && (!editedProfile?.prompts || editedProfile?.prompts?.length < 3) && (
+            <button
+              onClick={() => {
+                const question = prompt('Enter a prompt question:');
+                if (question) {
+                  const answer = prompt('Enter your answer:');
+                  if (answer) {
+                    const newPrompts = [...(editedProfile?.prompts || []), { question, answer }];
+                    setEditedProfile({ ...editedProfile, prompts: newPrompts });
+                  }
+                }
+              }}
+              className="text-[#E70F72] text-xs hover:text-white"
+            >
+              <Plus className="w-4 h-4 inline mr-1" />
+              Add
+            </button>
+          )}
+        </div>
+        {editedProfile?.prompts?.map((prompt, index) => (
+          <CrossdCard key={index} className="mb-3 relative">
             <p className="text-[#E70F72] text-sm font-medium mb-1">{prompt.question}</p>
             <p className="text-white">{prompt.answer}</p>
+            {editMode && (
+              <button
+                onClick={() => {
+                  const updatedPrompts = editedProfile.prompts.filter((_, i) => i !== index);
+                  setEditedProfile({ ...editedProfile, prompts: updatedPrompts });
+                }}
+                className="absolute top-2 right-2 w-5 h-5 bg-red-600 rounded-full flex items-center justify-center"
+              >
+                <X className="w-3 h-3 text-white" />
+              </button>
+            )}
           </CrossdCard>
         ))}
-        {(!myProfile.prompts || myProfile.prompts.length < 3) && (
-          <button
-            onClick={() => window.location.href = createPageUrl('SetupProfile') + '?step=2'}
-            className="w-full p-4 rounded-xl border-2 border-dashed border-white/20 text-white/40 hover:border-[#E70F72]/50 hover:text-white/60 transition-colors"
-          >
-            <Plus className="w-5 h-5 mx-auto mb-1" />
-            Add Prompt
-          </button>
-        )}
       </div>
 
       {/* Lifestyle & Background */}
