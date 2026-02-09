@@ -160,12 +160,8 @@ const generateSampleMoments = () => {
 };
 
 export default function Moments() {
-  const [showLogModal, setShowLogModal] = useState(false);
-  const [location, setLocation] = useState(null);
-  const [gettingLocation, setGettingLocation] = useState(false);
-  const [newMoment, setNewMoment] = useState({ venue_name: '', note: '' });
   const [myProfile, setMyProfile] = useState(null);
-  const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadProfile();
@@ -181,7 +177,6 @@ export default function Moments() {
     queryKey: ['my-moments', myProfile?.id],
     queryFn: async () => {
       const realMoments = await base44.entities.Moment.filter({ user_id: myProfile.id }, '-created_date', 50);
-      // Use sample moments if no real moments exist (for demo purposes)
       return realMoments.length > 0 ? realMoments : generateSampleMoments();
     },
     enabled: !!myProfile
@@ -197,57 +192,6 @@ export default function Moments() {
     enabled: !!myProfile
   });
 
-  const logMomentMutation = useMutation({
-    mutationFn: async () => {
-      if (!location || !myProfile) return;
-
-      const now = new Date();
-      const timeBucket = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}-${String(now.getHours()).padStart(2, '0')}`;
-      const geohash = encodeGeohash(location.lat, location.lng);
-      const tileKey = geohash.substring(0, 6);
-
-      return base44.entities.Moment.create({
-        user_id: myProfile.id,
-        lat: location.lat,
-        lng: location.lng,
-        geohash,
-        tile_key: tileKey,
-        time_bucket: timeBucket,
-        venue_name: newMoment.venue_name || 'My Location',
-        note: newMoment.note || null,
-        privacy_level: 'approximate',
-        device_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(['my-moments']);
-      setShowLogModal(false);
-      setNewMoment({ venue_name: '', note: '' });
-      setLocation(null);
-    }
-  });
-
-  const getLocation = () => {
-    setGettingLocation(true);
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
-          setGettingLocation(false);
-        },
-        () => setGettingLocation(false),
-        { enableHighAccuracy: true }
-      );
-    } else {
-      setGettingLocation(false);
-    }
-  };
-
-  const openLogModal = () => {
-    setShowLogModal(true);
-    getLocation();
-  };
-
   return (
     <div className="min-h-screen bg-black px-4 py-4">
       {/* Header */}
@@ -256,9 +200,9 @@ export default function Moments() {
           <h1 className="text-2xl font-bold text-white">Moments</h1>
           <p className="text-white/65 text-sm">Track where you've been</p>
         </div>
-        <CrossdButton onClick={openLogModal}>
-          <Plus className="w-5 h-5 mr-1" />
-          Log Moment
+        <CrossdButton onClick={() => window.location.href = createPageUrl('LogMoment')}>
+           <Plus className="w-5 h-5 mr-1" />
+           Log Moment
         </CrossdButton>
       </div>
 
@@ -305,7 +249,7 @@ export default function Moments() {
              Log your first moment to start discovering crossings.
            </p>
            <div className="flex justify-center">
-             <CrossdButton onClick={openLogModal}>
+             <CrossdButton onClick={() => window.location.href = createPageUrl('LogMoment')}>
                <Plus className="w-5 h-5 mr-1" />
                Log Your First Moment
              </CrossdButton>
@@ -320,76 +264,7 @@ export default function Moments() {
          </>
        )}
 
-      {/* Log Moment Modal */}
-      <CrossdModal
-        isOpen={showLogModal}
-        onClose={() => setShowLogModal(false)}
-        title="Log a Moment"
-      >
-        <div className="space-y-6">
-          {/* Location */}
-          <CrossdCard>
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 bg-[#E70F72]/10 rounded-xl flex items-center justify-center">
-                <Navigation className="w-5 h-5 text-[#E70F72]" />
-              </div>
-              <div className="flex-1">
-                <p className="text-white/65 text-sm">Current Location</p>
-                {gettingLocation ? (
-                  <p className="text-white/45 text-sm">Getting location...</p>
-                ) : location ? (
-                  <p className="text-white text-sm">
-                    {location.lat.toFixed(4)}, {location.lng.toFixed(4)}
-                  </p>
-                ) : (
-                  <p className="text-red-400 text-sm">Unable to get location</p>
-                )}
-              </div>
-              {!gettingLocation && !location && (
-                <CrossdButton variant="secondary" size="sm" onClick={getLocation}>
-                  Retry
-                </CrossdButton>
-              )}
-            </div>
-          </CrossdCard>
 
-          {/* Venue Name */}
-          <div>
-            <label className="text-white/80 text-sm mb-2 block">Venue Name</label>
-            <CrossdInput
-              placeholder="e.g., Coffee Shop, Gym..."
-              icon={MapPin}
-              value={newMoment.venue_name}
-              onChange={(e) => setNewMoment({ ...newMoment, venue_name: e.target.value })}
-            />
-          </div>
-
-          {/* Note */}
-          <div>
-            <label className="text-white/80 text-sm mb-2 block">Note (optional)</label>
-            <CrossdInput
-              placeholder="What's the vibe?"
-              icon={Edit3}
-              value={newMoment.note}
-              onChange={(e) => setNewMoment({ ...newMoment, note: e.target.value })}
-            />
-          </div>
-
-          <CrossdButton
-            onClick={() => logMomentMutation.mutate()}
-            className="w-full"
-            disabled={!location || logMomentMutation.isPending}
-            loading={logMomentMutation.isPending}
-          >
-            <Sparkles className="w-5 h-5 mr-2" />
-            Log Moment
-          </CrossdButton>
-
-          <p className="text-white/45 text-xs text-center">
-            Your precise location is never shared with other users.
-          </p>
-        </div>
-      </CrossdModal>
     </div>
   );
 }
