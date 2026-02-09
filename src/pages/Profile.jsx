@@ -682,22 +682,76 @@ export default function Profile() {
       </div>
 
       {/* MBTI */}
-      {myProfile.mbti_type && (
-        <CrossdCard className="mb-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-white/50 text-sm">Personality Type</p>
-              <p className="text-2xl font-bold text-[#E70F72]">{myProfile.mbti_type}</p>
+      <div className="mb-6">
+        <h2 className="text-white/65 text-sm font-medium mb-3">My Personality Type (MBTI)</h2>
+        <CrossdCard>
+          <div className="flex items-center gap-3">
+            <div className="flex-1">
+              {editMode ? (
+                <select
+                  value={editedProfile?.mbti_type || ''}
+                  onChange={(e) => setEditedProfile({ ...editedProfile, mbti_type: e.target.value })}
+                  className="w-full bg-transparent text-white mt-1 focus:outline-none"
+                >
+                  <option value="" className="bg-[#0B0B0B]">Prefer Not to Say</option>
+                  <option value="INTJ" className="bg-[#0B0B0B]">🎯 INTJ – The Mastermind / Architect</option>
+                  <option value="INTP" className="bg-[#0B0B0B]">🧠 INTP – The Thinker / Logician</option>
+                  <option value="ENTJ" className="bg-[#0B0B0B]">⚡ ENTJ – The Commander / Executive</option>
+                  <option value="ENTP" className="bg-[#0B0B0B]">💡 ENTP – The Debater / Visionary</option>
+                  <option value="INFJ" className="bg-[#0B0B0B]">🌙 INFJ – The Advocate / Counsellor</option>
+                  <option value="INFP" className="bg-[#0B0B0B]">🌸 INFP – The Mediator / Idealist</option>
+                  <option value="ENFJ" className="bg-[#0B0B0B]">⭐ ENFJ – The Protagonist / Teacher</option>
+                  <option value="ENFP" className="bg-[#0B0B0B]">🔥 ENFP – The Campaigner / Inspirer</option>
+                  <option value="ISTJ" className="bg-[#0B0B0B]">📋 ISTJ – The Inspector / Logistician</option>
+                  <option value="ISFJ" className="bg-[#0B0B0B]">🛡️ ISFJ – The Defender / Nurturer</option>
+                  <option value="ESTJ" className="bg-[#0B0B0B]">⚙️ ESTJ – The Supervisor / Executive</option>
+                  <option value="ESFJ" className="bg-[#0B0B0B]">🎀 ESFJ – The Consul / Provider</option>
+                  <option value="ISTP" className="bg-[#0B0B0B]">🔧 ISTP – The Virtuoso / Craftsman</option>
+                  <option value="ISFP" className="bg-[#0B0B0B]">🎨 ISFP – The Adventurer / Composer</option>
+                  <option value="ESTP" className="bg-[#0B0B0B]">🏆 ESTP – The Dynamo / Entrepreneur</option>
+                  <option value="ESFP" className="bg-[#0B0B0B]">🎭 ESFP – The Performer / Entertainer</option>
+                </select>
+              ) : (
+                <>
+                  <p className="text-white/50 text-sm">Personality Type</p>
+                  <p className="text-white text-lg">
+                    {myProfile.mbti_type ? (
+                      <>
+                        {myProfile.mbti_type === 'INTJ' && '🎯 INTJ – The Mastermind / Architect'}
+                        {myProfile.mbti_type === 'INTP' && '🧠 INTP – The Thinker / Logician'}
+                        {myProfile.mbti_type === 'ENTJ' && '⚡ ENTJ – The Commander / Executive'}
+                        {myProfile.mbti_type === 'ENTP' && '💡 ENTP – The Debater / Visionary'}
+                        {myProfile.mbti_type === 'INFJ' && '🌙 INFJ – The Advocate / Counsellor'}
+                        {myProfile.mbti_type === 'INFP' && '🌸 INFP – The Mediator / Idealist'}
+                        {myProfile.mbti_type === 'ENFJ' && '⭐ ENFJ – The Protagonist / Teacher'}
+                        {myProfile.mbti_type === 'ENFP' && '🔥 ENFP – The Campaigner / Inspirer'}
+                        {myProfile.mbti_type === 'ISTJ' && '📋 ISTJ – The Inspector / Logistician'}
+                        {myProfile.mbti_type === 'ISFJ' && '🛡️ ISFJ – The Defender / Nurturer'}
+                        {myProfile.mbti_type === 'ESTJ' && '⚙️ ESTJ – The Supervisor / Executive'}
+                        {myProfile.mbti_type === 'ESFJ' && '🎀 ESFJ – The Consul / Provider'}
+                        {myProfile.mbti_type === 'ISTP' && '🔧 ISTP – The Virtuoso / Craftsman'}
+                        {myProfile.mbti_type === 'ISFP' && '🎨 ISFP – The Adventurer / Composer'}
+                        {myProfile.mbti_type === 'ESTP' && '🏆 ESTP – The Dynamo / Entrepreneur'}
+                        {myProfile.mbti_type === 'ESFP' && '🎭 ESFP – The Performer / Entertainer'}
+                      </>
+                    ) : (
+                      'Not set'
+                    )}
+                  </p>
+                </>
+              )}
             </div>
-            <button
-              onClick={() => window.location.href = createPageUrl('MBTIQuiz')}
-              className="text-white/50 hover:text-white"
-            >
-              <Edit2 className="w-5 h-5" />
-            </button>
+            {!editMode && (
+              <button
+                onClick={() => window.location.href = createPageUrl('MBTIQuiz')}
+                className="text-white/50 hover:text-white"
+              >
+                <Edit2 className="w-5 h-5" />
+              </button>
+            )}
           </div>
         </CrossdCard>
-      )}
+      </div>
 
       {/* Verification */}
       <CrossdCard 
