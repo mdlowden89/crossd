@@ -14,30 +14,19 @@ export default function CrossdLogo({ size = 'default', showText = true }) {
       <svg 
         width={dimension} 
         height={dimension} 
-        viewBox="0 0 100 100" 
+        viewBox="0 0 24 24" 
         fill="none" 
         xmlns="http://www.w3.org/2000/svg"
+        stroke="#E70F72"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         className="flex-shrink-0"
       >
-        {/* Heart shape */}
-        <path
-          d="M50 85C50 85 15 60 15 35C15 20 25 10 35 10C42 10 47 14 50 20C53 14 58 10 65 10C75 10 85 20 85 35C85 60 50 85 50 85Z"
-          fill="#E70F72"
-        />
-        
-        {/* Location pin integrated in the heart */}
-        <circle
-          cx="50"
-          cy="35"
-          r="12"
-          fill="black"
-        />
-        <circle
-          cx="50"
-          cy="35"
-          r="6"
-          fill="#E70F72"
-        />
+        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+        <path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08v0c.82.82 2.13.85 3 .07l2.07-1.9a2.82 2.82 0 0 1 3.79 0l2.96 2.66" />
+        <path d="m18 15-2-2" />
+        <path d="m15 18-2-2" />
       </svg>
       {showText && (
         <span className={`font-bold text-[#E70F72] ${text}`}>
