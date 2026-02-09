@@ -410,36 +410,14 @@ export default function Profile() {
       <div className="mb-6">
         <h2 className="text-white/65 text-sm font-medium mb-3">Prompts</h2>
         {editMode && (!editedProfile?.prompts || editedProfile?.prompts?.length < 3) && (
-          <div className="mb-4">
-            <select
-              onChange={(e) => {
-                if (e.target.value) {
-                  const promptQuestion = e.target.value;
-                  const answer = prompt(`Your answer to "${promptQuestion}":`);
-                  if (answer) {
-                    const newPrompts = [...(editedProfile?.prompts || []), { question: promptQuestion, answer }];
-                    setEditedProfile({ ...editedProfile, prompts: newPrompts });
-                    e.target.value = '';
-                  }
-                }
-              }}
-              className="w-full bg-transparent border border-white/20 text-white/80 rounded-xl p-3 focus:outline-none focus:border-[#E70F72] mb-3"
-            >
-              <option value="" className="bg-[#0B0B0B]">Select a prompt to answer...</option>
-              <option value="About Me: Unusual Skills" className="bg-[#0B0B0B]">About Me: Unusual Skills</option>
-              <option value="Typical Sunday" className="bg-[#0B0B0B]">Typical Sunday</option>
-              <option value="A Random Fact I love is" className="bg-[#0B0B0B]">A Random Fact I love is</option>
-              <option value="My Greatest Strength" className="bg-[#0B0B0B]">My Greatest Strength</option>
-              <option value="My Simple Pleasures" className="bg-[#0B0B0B]">My Simple Pleasures</option>
-              <option value="I recently discovered that" className="bg-[#0B0B0B]">I recently discovered that</option>
-              <option value="Dating me is like" className="bg-[#0B0B0B]">Dating me is like</option>
-              <option value="My most irrational fear" className="bg-[#0B0B0B]">My most irrational fear</option>
-              <option value="This year, I really want to" className="bg-[#0B0B0B]">This year, I really want to</option>
-              <option value="The Way to win me over is" className="bg-[#0B0B0B]">The Way to win me over is</option>
-              <option value="I go crazy for" className="bg-[#0B0B0B]">I go crazy for</option>
-              <option value="A life goal of mine" className="bg-[#0B0B0B]">A life goal of mine</option>
-            </select>
-          </div>
+          <CrossdButton 
+            onClick={() => setShowPromptModal(true)}
+            variant="secondary"
+            className="w-full mb-4"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Prompt
+          </CrossdButton>
         )}
         {editedProfile?.prompts?.map((prompt, index) => (
           <CrossdCard key={index} className="mb-3 relative">
@@ -459,6 +437,16 @@ export default function Profile() {
           </CrossdCard>
         ))}
       </div>
+
+      <PromptModal
+        isOpen={showPromptModal}
+        onClose={() => setShowPromptModal(false)}
+        onSave={(prompt) => {
+          const newPrompts = [...(editedProfile?.prompts || []), prompt];
+          setEditedProfile({ ...editedProfile, prompts: newPrompts });
+          setShowPromptModal(false);
+        }}
+      />
 
       {/* Lifestyle & Background */}
       <div className="mb-6">
