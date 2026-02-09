@@ -225,7 +225,7 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-white/5"
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30"
         >
           <div className="flex items-center gap-2 mb-2">
             <Sparkles className="w-5 h-5 text-[#E70F72]" />
@@ -269,7 +269,7 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-white/5"
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30"
         >
           <div className="flex items-center gap-2 mb-2">
             <TrendingUp className="w-5 h-5 text-[#E70F72]" />
@@ -346,19 +346,19 @@ export default function Dashboard() {
           
           {/* Metric Cards */}
           <div className="grid grid-cols-3 gap-4">
-            <div className="bg-black/40 rounded-2xl p-4 text-center border border-white/5">
+            <div className="bg-black/40 rounded-2xl p-4 text-center border border-[#E70F72]/20">
               <Flame className="w-6 h-6 text-orange-500 mx-auto mb-2" />
               <div className="text-2xl font-bold text-white mb-1">{dayStreak}</div>
               <div className="text-white/50 text-sm">Day Streak</div>
             </div>
             
-            <div className="bg-black/40 rounded-2xl p-4 text-center border border-white/5">
+            <div className="bg-black/40 rounded-2xl p-4 text-center border border-[#E70F72]/20">
               <Sparkles className="w-6 h-6 text-[#E70F72] mx-auto mb-2" />
               <div className="text-2xl font-bold text-white mb-1">{sparksThisWeek}</div>
               <div className="text-white/50 text-sm">Sparks this week</div>
             </div>
             
-            <div className="bg-black/40 rounded-2xl p-4 text-center border border-white/5">
+            <div className="bg-black/40 rounded-2xl p-4 text-center border border-[#E70F72]/20">
               <Clock className="w-6 h-6 text-blue-500 mx-auto mb-2" />
               <div className="text-2xl font-bold text-white mb-1">{expiringMoments}</div>
               <div className="text-white/50 text-sm">Expiring Moments</div>
@@ -371,7 +371,7 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-white/5"
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30"
         >
           <div className="flex items-center gap-2 mb-4">
             <Zap className="w-5 h-5 text-[#E70F72]" />
@@ -409,7 +409,7 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-white/5"
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30"
         >
           <div className="flex items-center gap-2 mb-2">
             <Map className="w-5 h-5 text-[#E70F72]" />
@@ -427,7 +427,7 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-white/5"
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30"
         >
           <div className="flex items-center gap-2 mb-2">
             <Award className="w-5 h-5 text-[#E70F72]" />
@@ -486,7 +486,7 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-white/5"
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30"
         >
           <div className="flex items-center gap-2 mb-2">
             <Gift className="w-5 h-5 text-[#E70F72]" />
@@ -497,7 +497,7 @@ export default function Dashboard() {
           </p>
           
           <div className="space-y-3">
-            <div className="flex items-center justify-between p-4 bg-black/40 rounded-xl border border-white/5">
+            <div className="flex items-center justify-between p-4 bg-black/40 rounded-xl border border-[#E70F72]/20">
               <div className="flex items-center gap-3">
                 <Flame className="w-5 h-5 text-orange-500" />
                 <div>
@@ -508,7 +508,7 @@ export default function Dashboard() {
               <CrossdButton size="sm" variant="secondary">Get</CrossdButton>
             </div>
             
-            <div className="flex items-center justify-between p-4 bg-black/40 rounded-xl border border-white/5">
+            <div className="flex items-center justify-between p-4 bg-black/40 rounded-xl border border-[#E70F72]/20">
               <div className="flex items-center gap-3">
                 <Zap className="w-5 h-5 text-[#E70F72]" />
                 <div>
