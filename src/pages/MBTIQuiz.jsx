@@ -569,6 +569,25 @@ export default function MBTIQuiz() {
                 </motion.button>
               ))}
             </div>
+
+            {quizMode === 'basic' && currentQuestion === basicQuestions.length - 1 && answers[questions[currentQuestion].id] && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="pt-4 space-y-2"
+              >
+                <CrossdButton 
+                  className="w-full"
+                  onClick={() => {
+                    calculateResult(answers, 'basic');
+                    setShowInterim(true);
+                  }}
+                >
+                  See Your Results
+                  <ChevronRight className="w-5 h-5 ml-1" />
+                </CrossdButton>
+              </motion.div>
+            )}
           </motion.div>
         </AnimatePresence>
 
