@@ -437,6 +437,222 @@ export default function Profile() {
         </div>
       </div>
 
+      {/* Lifestyle & Background */}
+      <div className="mb-6">
+        <h2 className="text-white/65 text-sm font-medium mb-3">Lifestyle & Background</h2>
+        <div className="space-y-3">
+          <CrossdCard>
+            <div className="flex items-center gap-3">
+              <div className="flex-1">
+                <p className="text-white/50 text-sm">Ethnicity</p>
+                {editMode ? (
+                  <CrossdInput
+                    value={editedProfile?.ethnicity || ''}
+                    onChange={(e) => setEditedProfile({ ...editedProfile, ethnicity: e.target.value })}
+                    placeholder="Your ethnicity"
+                    className="mt-1"
+                  />
+                ) : (
+                  <p className="text-white">{myProfile.ethnicity || 'Not set'}</p>
+                )}
+              </div>
+            </div>
+          </CrossdCard>
+
+          <CrossdCard>
+            <div className="flex items-center gap-3">
+              <div className="flex-1">
+                <p className="text-white/50 text-sm">Religion</p>
+                {editMode ? (
+                  <CrossdInput
+                    value={editedProfile?.religion || ''}
+                    onChange={(e) => setEditedProfile({ ...editedProfile, religion: e.target.value })}
+                    placeholder="Your religion"
+                    className="mt-1"
+                  />
+                ) : (
+                  <p className="text-white">{myProfile.religion || 'Not set'}</p>
+                )}
+              </div>
+            </div>
+          </CrossdCard>
+
+          <CrossdCard>
+            <div className="flex items-center gap-3">
+              <div className="flex-1">
+                <p className="text-white/50 text-sm">Zodiac Sign</p>
+                {editMode ? (
+                  <select
+                    value={editedProfile?.zodiac_sign || ''}
+                    onChange={(e) => setEditedProfile({ ...editedProfile, zodiac_sign: e.target.value })}
+                    className="w-full bg-transparent text-white mt-1 focus:outline-none"
+                  >
+                    <option value="" className="bg-[#0B0B0B]">Select...</option>
+                    <option value="Aries" className="bg-[#0B0B0B]">Aries</option>
+                    <option value="Taurus" className="bg-[#0B0B0B]">Taurus</option>
+                    <option value="Gemini" className="bg-[#0B0B0B]">Gemini</option>
+                    <option value="Cancer" className="bg-[#0B0B0B]">Cancer</option>
+                    <option value="Leo" className="bg-[#0B0B0B]">Leo</option>
+                    <option value="Virgo" className="bg-[#0B0B0B]">Virgo</option>
+                    <option value="Libra" className="bg-[#0B0B0B]">Libra</option>
+                    <option value="Scorpio" className="bg-[#0B0B0B]">Scorpio</option>
+                    <option value="Sagittarius" className="bg-[#0B0B0B]">Sagittarius</option>
+                    <option value="Capricorn" className="bg-[#0B0B0B]">Capricorn</option>
+                    <option value="Aquarius" className="bg-[#0B0B0B]">Aquarius</option>
+                    <option value="Pisces" className="bg-[#0B0B0B]">Pisces</option>
+                  </select>
+                ) : (
+                  <p className="text-white">{myProfile.zodiac_sign || 'Not set'}</p>
+                )}
+              </div>
+            </div>
+          </CrossdCard>
+
+          <CrossdCard>
+            <div className="flex items-center gap-3">
+              <div className="flex-1">
+                <p className="text-white/50 text-sm">Drinking</p>
+                {editMode ? (
+                  <select
+                    value={editedProfile?.drinking || ''}
+                    onChange={(e) => setEditedProfile({ ...editedProfile, drinking: e.target.value })}
+                    className="w-full bg-transparent text-white mt-1 focus:outline-none"
+                  >
+                    <option value="" className="bg-[#0B0B0B]">Select...</option>
+                    <option value="Never" className="bg-[#0B0B0B]">Never</option>
+                    <option value="Sometimes" className="bg-[#0B0B0B]">Sometimes</option>
+                    <option value="Regularly" className="bg-[#0B0B0B]">Regularly</option>
+                    <option value="Prefer not to say" className="bg-[#0B0B0B]">Prefer not to say</option>
+                  </select>
+                ) : (
+                  <p className="text-white">{myProfile.drinking || 'Not set'}</p>
+                )}
+              </div>
+            </div>
+          </CrossdCard>
+
+          <CrossdCard>
+            <div className="flex items-center gap-3">
+              <div className="flex-1">
+                <p className="text-white/50 text-sm">Smoking</p>
+                {editMode ? (
+                  <select
+                    value={editedProfile?.smoking || ''}
+                    onChange={(e) => setEditedProfile({ ...editedProfile, smoking: e.target.value })}
+                    className="w-full bg-transparent text-white mt-1 focus:outline-none"
+                  >
+                    <option value="" className="bg-[#0B0B0B]">Select...</option>
+                    <option value="Never" className="bg-[#0B0B0B]">Never</option>
+                    <option value="Sometimes" className="bg-[#0B0B0B]">Sometimes</option>
+                    <option value="Regularly" className="bg-[#0B0B0B]">Regularly</option>
+                    <option value="Prefer not to say" className="bg-[#0B0B0B]">Prefer not to say</option>
+                  </select>
+                ) : (
+                  <p className="text-white">{myProfile.smoking || 'Not set'}</p>
+                )}
+              </div>
+            </div>
+          </CrossdCard>
+        </div>
+      </div>
+
+      {/* Dating & Relationships */}
+      <div className="mb-6">
+        <h2 className="text-white/65 text-sm font-medium mb-3">Dating & Relationships</h2>
+        <div className="space-y-3">
+          <CrossdCard>
+            <div className="flex items-center gap-3">
+              <div className="flex-1">
+                <p className="text-white/50 text-sm">Relationship Type</p>
+                {editMode ? (
+                  <select
+                    value={editedProfile?.relationship_type || ''}
+                    onChange={(e) => setEditedProfile({ ...editedProfile, relationship_type: e.target.value })}
+                    className="w-full bg-transparent text-white mt-1 focus:outline-none"
+                  >
+                    <option value="" className="bg-[#0B0B0B]">Select...</option>
+                    <option value="Monogamy" className="bg-[#0B0B0B]">Monogamy</option>
+                    <option value="Ethical non-monogamy" className="bg-[#0B0B0B]">Ethical non-monogamy</option>
+                    <option value="Open to either" className="bg-[#0B0B0B]">Open to either</option>
+                    <option value="Prefer not to say" className="bg-[#0B0B0B]">Prefer not to say</option>
+                  </select>
+                ) : (
+                  <p className="text-white">{myProfile.relationship_type || 'Not set'}</p>
+                )}
+              </div>
+            </div>
+          </CrossdCard>
+
+          <CrossdCard>
+            <div className="flex items-center gap-3">
+              <div className="flex-1">
+                <p className="text-white/50 text-sm">Dating Intentions</p>
+                {editMode ? (
+                  <select
+                    value={editedProfile?.dating_intentions || ''}
+                    onChange={(e) => setEditedProfile({ ...editedProfile, dating_intentions: e.target.value })}
+                    className="w-full bg-transparent text-white mt-1 focus:outline-none"
+                  >
+                    <option value="" className="bg-[#0B0B0B]">Select...</option>
+                    <option value="Long-term relationship" className="bg-[#0B0B0B]">Long-term relationship</option>
+                    <option value="Short-term fun" className="bg-[#0B0B0B]">Short-term fun</option>
+                    <option value="New friends" className="bg-[#0B0B0B]">New friends</option>
+                    <option value="Still figuring it out" className="bg-[#0B0B0B]">Still figuring it out</option>
+                  </select>
+                ) : (
+                  <p className="text-white">{myProfile.dating_intentions || 'Not set'}</p>
+                )}
+              </div>
+            </div>
+          </CrossdCard>
+
+          <CrossdCard>
+            <div className="flex items-center gap-3">
+              <div className="flex-1">
+                <p className="text-white/50 text-sm">Children</p>
+                {editMode ? (
+                  <select
+                    value={editedProfile?.children || ''}
+                    onChange={(e) => setEditedProfile({ ...editedProfile, children: e.target.value })}
+                    className="w-full bg-transparent text-white mt-1 focus:outline-none"
+                  >
+                    <option value="" className="bg-[#0B0B0B]">Select...</option>
+                    <option value="Don't have children" className="bg-[#0B0B0B]">Don't have children</option>
+                    <option value="Have children" className="bg-[#0B0B0B]">Have children</option>
+                    <option value="Prefer not to say" className="bg-[#0B0B0B]">Prefer not to say</option>
+                  </select>
+                ) : (
+                  <p className="text-white">{myProfile.children || 'Not set'}</p>
+                )}
+              </div>
+            </div>
+          </CrossdCard>
+
+          <CrossdCard>
+            <div className="flex items-center gap-3">
+              <div className="flex-1">
+                <p className="text-white/50 text-sm">Family Plans</p>
+                {editMode ? (
+                  <select
+                    value={editedProfile?.family_plans || ''}
+                    onChange={(e) => setEditedProfile({ ...editedProfile, family_plans: e.target.value })}
+                    className="w-full bg-transparent text-white mt-1 focus:outline-none"
+                  >
+                    <option value="" className="bg-[#0B0B0B]">Select...</option>
+                    <option value="Want children" className="bg-[#0B0B0B]">Want children</option>
+                    <option value="Don't want children" className="bg-[#0B0B0B]">Don't want children</option>
+                    <option value="Open to children" className="bg-[#0B0B0B]">Open to children</option>
+                    <option value="Not sure yet" className="bg-[#0B0B0B]">Not sure yet</option>
+                  </select>
+                ) : (
+                  <p className="text-white">{myProfile.family_plans || 'Not set'}</p>
+                )}
+              </div>
+            </div>
+          </CrossdCard>
+        </div>
+      </div>
+
       {/* MBTI */}
       {myProfile.mbti_type && (
         <CrossdCard className="mb-6">
