@@ -7,7 +7,7 @@ import StarBackground from '@/components/common/StarBackground';
 import FlowingGraphic from '@/components/common/FlowingGraphic';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import SparkIcon from '@/components/common/SparkIcon';
-import { MapPin, Sparkles, Heart, Shield, ChevronRight } from 'lucide-react';
+import { MapPin, Sparkles, Heart, Shield, ChevronRight, ArrowLeft } from 'lucide-react';
 
 export default function Welcome() {
   const [showDetails, setShowDetails] = useState(false);
@@ -161,8 +161,14 @@ export default function Welcome() {
         </CrossdButton>
       </div>
 
-      {/* Logo */}
-      <div className="absolute top-0 left-0 px-6 py-6 z-20">
+      {/* Logo and Back */}
+      <div className="absolute top-0 left-0 px-6 py-6 z-20 flex items-center gap-4">
+        <button
+          onClick={() => window.history.back()}
+          className="text-white/65 hover:text-white transition-colors"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </button>
         <CrossdLogo size="sm" />
       </div>
 
