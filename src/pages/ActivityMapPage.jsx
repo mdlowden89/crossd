@@ -8,6 +8,7 @@ import ActivityMap from '@/components/dashboard/ActivityMap';
 
 export default function ActivityMapPage() {
   const [user, setUser] = useState(null);
+  const [mapRef, setMapRef] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
