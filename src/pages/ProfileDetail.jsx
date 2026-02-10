@@ -250,6 +250,23 @@ export default function ProfileDetail() {
           </motion.div>
         )}
 
+        {/* Additional Photos (2-3) - After Bio */}
+        {photos.length > 1 && photos.slice(1, 3).length > 0 && (
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            {photos.slice(1, 3).map((photo, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.25 + index * 0.1 }}
+                className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10"
+              >
+                <img src={photo.url} alt="" className="w-full h-full object-cover" />
+              </motion.div>
+            ))}
+          </div>
+        )}
+
         {/* MBTI + Vibe Tags Row */}
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
@@ -327,6 +344,23 @@ export default function ProfileDetail() {
           </motion.div>
         )}
 
+        {/* Additional Photos (4-5) - After About */}
+        {photos.length > 3 && photos.slice(3, 5).length > 0 && (
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            {photos.slice(3, 5).map((photo, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.5 + index * 0.1 }}
+                className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10"
+              >
+                <img src={photo.url} alt="" className="w-full h-full object-cover" />
+              </motion.div>
+            ))}
+          </div>
+        )}
+
         {/* Prompts */}
         {profile.prompts && profile.prompts.length > 0 && (
           <div className="mb-6">
@@ -356,6 +390,23 @@ export default function ProfileDetail() {
                 </motion.div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Additional Photos (6+) - After Prompts */}
+        {photos.length > 5 && photos.slice(5).length > 0 && (
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            {photos.slice(5).map((photo, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.6 + index * 0.1 }}
+                className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10"
+              >
+                <img src={photo.url} alt="" className="w-full h-full object-cover" />
+              </motion.div>
+            ))}
           </div>
         )}
 
