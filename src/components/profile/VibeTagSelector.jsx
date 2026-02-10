@@ -139,12 +139,17 @@ const VIBE_TAG_CATEGORIES = {
   }
 };
 
-export default function VibeTagSelector({ selectedTags = [], onTagsChange, editMode = false }) {
+export default function VibeTagSelector({ selectedTags = [], onTagsChange, editMode = false, isPremium = false }) {
+  const MAX_TAGS = isPremium ? Infinity : 8;
+
   const handleToggleTag = (tagName) => {
-    const updatedTags = selectedTags.includes(tagName)
-      ? selectedTags.filter(t => t !== tagName)
-      : [...selectedTags, tagName];
-    onTagsChange(updatedTags);
+    if (selectedTags.includes(tagName)) {
+      const updatedTags = selectedTags.filter(t => t !== tagName);
+      onTagsChange(updatedTags);
+    } else if (selectedTags.length < MAX_TAGS) {
+      const updatedTags = [...selectedTags, tagName];
+      onTagsChange(updatedTags);
+    }
   };
 
   const handleRemoveTag = (tagName) => {
@@ -164,7 +169,10 @@ export default function VibeTagSelector({ selectedTags = [], onTagsChange, editM
       {/* Selected Tags */}
       {selectedTags.length > 0 && (
         <div>
-          <h3 className="text-white text-sm font-medium mb-3">Your current vibes</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-white text-sm font-medium">Your current vibes</h3>
+            {!isPremium && <span className="text-white/50 text-xs">{selectedTags.length}/{MAX_TAGS}</span>}
+          </div>
           <div className="flex flex-wrap gap-2">
             {selectedTags.map((tag) => (
               <div
@@ -199,14 +207,17 @@ export default function VibeTagSelector({ selectedTags = [], onTagsChange, editM
                 <div className="flex flex-wrap gap-2 mb-4">
                   {category.tags.map((tag) => (
                     <button
-                      key={tag.name}
-                      onClick={() => handleToggleTag(tag.name)}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-all ${
-                        selectedTags.includes(tag.name)
-                          ? 'bg-[#E70F72]/20 border-[#E70F72]/50'
-                          : 'bg-white/5 border-white/20 hover:border-[#E70F72]/50'
-                      }`}
-                    >
+                       key={tag.name}
+                       onClick={() => handleToggleTag(tag.name)}
+                       disabled={!selectedTags.includes(tag.name) && selectedTags.length >= MAX_TAGS}
+                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-all ${
+                         selectedTags.includes(tag.name)
+                           ? 'bg-[#E70F72]/20 border-[#E70F72]/50'
+                           : selectedTags.length >= MAX_TAGS
+                           ? 'bg-white/5 border-white/20 opacity-50 cursor-not-allowed'
+                           : 'bg-white/5 border-white/20 hover:border-[#E70F72]/50'
+                       }`}
+                     >
                       <span>{tag.emoji}</span>
                       <span className={selectedTags.includes(tag.name) ? 'text-[#E70F72]' : 'text-white/60'}>
                         {tag.name}
@@ -227,9 +238,12 @@ export default function VibeTagSelector({ selectedTags = [], onTagsChange, editM
                           <button
                             key={tag.name}
                             onClick={() => handleToggleTag(tag.name)}
+                            disabled={!selectedTags.includes(tag.name) && selectedTags.length >= MAX_TAGS}
                             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-all ${
                               selectedTags.includes(tag.name)
                                 ? 'bg-[#E70F72]/20 border-[#E70F72]/50'
+                                : selectedTags.length >= MAX_TAGS
+                                ? 'bg-white/5 border-white/20 opacity-50 cursor-not-allowed'
                                 : 'bg-white/5 border-white/20 hover:border-[#E70F72]/50'
                             }`}
                           >
