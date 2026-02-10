@@ -226,7 +226,7 @@ export default function ActivityMap({ moments, profile }) {
   }, [moments, profile]);
 
   return (
-    <div className="aspect-video rounded-2xl overflow-hidden border border-[#E70F72]/20 shadow-[0_0_30px_rgba(231,15,114,0.15)]">
+    <div className="w-full h-full overflow-hidden rounded-none border-0">
       <style>{`
         .leaflet-container {
           width: 100%;
