@@ -4,10 +4,10 @@ import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { 
-  Sparkles, CheckCircle2, Circle, Flame, Clock, 
-  Star, Zap, TrendingUp, Map, Award, Gift, Activity, ShieldCheck
-} from 'lucide-react';
+import {
+  Sparkles, CheckCircle2, Circle, Flame, Clock,
+  Star, Zap, TrendingUp, Map, Award, Gift, Activity, ShieldCheck } from
+'lucide-react';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import CrossdProgressRing from '@/components/ui/crossd-progress-ring';
 import ActivityMap from '@/components/dashboard/ActivityMap';
@@ -18,7 +18,7 @@ import { Progress } from '@/components/ui/progress';
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
-  
+
   useEffect(() => {
     base44.auth.me().then(setUser);
   }, []);
@@ -47,8 +47,8 @@ export default function Dashboard() {
     queryFn: async () => {
       if (!profile) return [];
       const allMatches = await base44.entities.Match.list();
-      return allMatches.filter(m => 
-        m.user_1_id === profile.id || m.user_2_id === profile.id
+      return allMatches.filter((m) =>
+      m.user_1_id === profile.id || m.user_2_id === profile.id
       );
     },
     enabled: !!profile
@@ -57,20 +57,20 @@ export default function Dashboard() {
   // Calculate profile strength
   const calculateProfileStrength = () => {
     if (!profile) return { percentage: 0, items: [] };
-    
+
     const items = [
-      { text: 'Upload at least 3 photos', completed: profile.photos?.length >= 3 },
-      { text: 'Answer at least 2 prompts', completed: profile.prompts?.length >= 2 },
-      { text: 'Select 5+ vibe tags', completed: profile.vibe_tags?.length >= 5 },
-      { text: 'Write a bio', completed: !!profile.bio },
-      { text: 'Set your dating intentions', completed: !!profile.interested_in },
-      { text: 'Verify your profile', completed: profile.verification_status === 'verified' },
-      { text: 'Set your home location', completed: !!profile.city }
-    ];
-    
-    const completed = items.filter(i => i.completed).length;
-    const percentage = Math.round((completed / items.length) * 100);
-    
+    { text: 'Upload at least 3 photos', completed: profile.photos?.length >= 3 },
+    { text: 'Answer at least 2 prompts', completed: profile.prompts?.length >= 2 },
+    { text: 'Select 5+ vibe tags', completed: profile.vibe_tags?.length >= 5 },
+    { text: 'Write a bio', completed: !!profile.bio },
+    { text: 'Set your dating intentions', completed: !!profile.interested_in },
+    { text: 'Verify your profile', completed: profile.verification_status === 'verified' },
+    { text: 'Set your home location', completed: !!profile.city }];
+
+
+    const completed = items.filter((i) => i.completed).length;
+    const percentage = Math.round(completed / items.length * 100);
+
     return { percentage, items };
   };
 
@@ -78,7 +78,7 @@ export default function Dashboard() {
   const calculateSparkEnergy = () => {
     const now = new Date();
     const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-    
+
     // Mock data (would come from backend in production)
     const mockData = {
       likesSentD1: 34,
@@ -87,50 +87,50 @@ export default function Dashboard() {
       isGlowActive: false,
       reportsW7: 0,
       blocksW7: 0,
-      spamScore: 0,
+      spamScore: 0
     };
-    
+
     // Component A: Activity (30%)
-    const momentsW7 = moments.filter(m => new Date(m.created_date) > weekAgo).length;
+    const momentsW7 = moments.filter((m) => new Date(m.created_date) > weekAgo).length;
     const cappedMoments = Math.min(momentsW7, 5);
     const cappedLikes = Math.min(mockData.likesSentD1, 50);
     const cappedSessions = Math.min(mockData.sessionsD1, 10);
-    const activityScore = ((cappedMoments / 5) + (cappedLikes / 50) + (cappedSessions / 10)) / 3 * 100;
-    
+    const activityScore = (cappedMoments / 5 + cappedLikes / 50 + cappedSessions / 10) / 3 * 100;
+
     // Component B: Streak (15%)
     const streakDays = calculateStreak();
-    const streakScore = (Math.min(streakDays, 7) / 7) * 100;
-    
+    const streakScore = Math.min(streakDays, 7) / 7 * 100;
+
     // Component C: Profile Quality (20%)
     const { percentage: profileStrength } = calculateProfileStrength();
     const qualityScore = Math.min(100, profileStrength + (profile.verification_status === 'verified' ? 10 : 0));
-    
+
     // Component D: Resonance (20%)
     const resonanceScore = mockData.resonanceValue * 100;
-    
+
     // Component E: Freshness (10%)
     const hoursSinceActive = (now.getTime() - new Date(profile.last_active_at || now).getTime()) / (1000 * 60 * 60);
     let freshnessScore = 10;
-    if (hoursSinceActive <= 24) freshnessScore = 100;
-    else if (hoursSinceActive <= 72) freshnessScore = 70;
-    else if (hoursSinceActive <= 168) freshnessScore = 40;
-    
+    if (hoursSinceActive <= 24) freshnessScore = 100;else
+    if (hoursSinceActive <= 72) freshnessScore = 70;else
+    if (hoursSinceActive <= 168) freshnessScore = 40;
+
     // Component F: Boosts
     const boostValue = (mockData.isGlowActive ? 20 : 0) + (profile.crossd_plus ? 5 : 0);
-    
+
     // Component G: Penalties
     const penaltyValue = Math.min(25, mockData.reportsW7 * 5 + mockData.blocksW7 * 3 + mockData.spamScore);
-    
+
     // Final Score
-    const baseScore = 
-      0.30 * activityScore +
-      0.15 * streakScore +
-      0.20 * qualityScore +
-      0.20 * resonanceScore +
-      0.10 * freshnessScore;
-    
+    const baseScore =
+    0.30 * activityScore +
+    0.15 * streakScore +
+    0.20 * qualityScore +
+    0.20 * resonanceScore +
+    0.10 * freshnessScore;
+
     const finalScore = Math.round(Math.max(0, Math.min(100, baseScore + boostValue - penaltyValue)));
-    
+
     return {
       score: finalScore,
       components: {
@@ -148,35 +148,35 @@ export default function Dashboard() {
   // Calculate day streak
   const calculateStreak = () => {
     if (moments.length === 0) return 0;
-    
-    const sortedMoments = [...moments].sort((a, b) => 
-      new Date(b.created_date) - new Date(a.created_date)
+
+    const sortedMoments = [...moments].sort((a, b) =>
+    new Date(b.created_date) - new Date(a.created_date)
     );
-    
+
     let streak = 0;
     let currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
-    
+
     for (const moment of sortedMoments) {
       const momentDate = new Date(moment.created_date);
       momentDate.setHours(0, 0, 0, 0);
-      
+
       const diffDays = Math.floor((currentDate - momentDate) / (1000 * 60 * 60 * 24));
-      
+
       if (diffDays === streak) {
         streak++;
       } else if (diffDays > streak) {
         break;
       }
     }
-    
+
     return streak;
   };
 
   // Calculate expiring moments (moments from over a week ago)
   const calculateExpiringMoments = () => {
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-    return moments.filter(m => new Date(m.created_date) < weekAgo).length;
+    return moments.filter((m) => new Date(m.created_date) < weekAgo).length;
   };
 
   // MBTI personality types with emojis and descriptions
@@ -311,16 +311,16 @@ export default function Dashboard() {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-white/65">Loading your dashboard...</div>
-      </div>
-    );
+      </div>);
+
   }
 
   const { percentage: profileStrength, items: profileItems } = calculateProfileStrength();
   const energyData = calculateSparkEnergy();
   const dayStreak = calculateStreak();
   const expiringMoments = calculateExpiringMoments();
-  const sparksThisWeek = moments.filter(m => 
-    new Date(m.created_date) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+  const sparksThisWeek = moments.filter((m) =>
+  new Date(m.created_date) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
   ).length;
 
   return (
@@ -335,16 +335,16 @@ export default function Dashboard() {
           style={{
             background: 'linear-gradient(135deg, #0B0B0B 0%, #1a0510 100%)',
             boxShadow: '0 0 40px rgba(231, 15, 114, 0.15)'
-          }}
-        >
+          }}>
+
           <div className="flex items-start gap-3">
             <Sparkles className="w-6 h-6 text-[#E70F72] mt-1 flex-shrink-0" />
             <div>
               <h1 className="text-3xl font-bold text-white mb-2">
                 Welcome back, {profile.display_name}!
               </h1>
-              <p className="text-white/65 text-lg">
-                Here's what's new on Crossd. Did you see anyone interesting today?
+              <p className="text-white/65 text-lg">Did you see anyone interesting today?
+
               </p>
             </div>
           </div>
@@ -355,8 +355,8 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30"
-        >
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30">
+
           <div className="flex items-center gap-2 mb-2">
             <Sparkles className="w-5 h-5 text-[#E70F72]" />
             <h2 className="text-2xl font-bold text-white">Profile Strength</h2>
@@ -368,28 +368,28 @@ export default function Dashboard() {
           <div className="grid md:grid-cols-2 gap-8">
             {/* Checklist */}
             <div className="space-y-3">
-              {profileItems.map((item, idx) => (
-                <div key={idx} className="flex items-center gap-3">
-                  {item.completed ? (
-                    <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
-                  ) : (
-                    <Circle className="w-5 h-5 text-white/30 flex-shrink-0" />
-                  )}
+              {profileItems.map((item, idx) =>
+              <div key={idx} className="flex items-center gap-3">
+                  {item.completed ?
+                <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" /> :
+
+                <Circle className="w-5 h-5 text-white/30 flex-shrink-0" />
+                }
                   <span className={item.completed ? 'text-white/90' : 'text-white/50'}>
                     {item.text}
                   </span>
                 </div>
-              ))}
+              )}
             </div>
             
             {/* Progress Ring */}
             <div className="flex items-center justify-center">
-              <CrossdProgressRing 
-                percentage={profileStrength} 
-                size={180} 
+              <CrossdProgressRing
+                percentage={profileStrength}
+                size={180}
                 strokeWidth={12}
-                showLabel={true}
-              />
+                showLabel={true} />
+
             </div>
           </div>
         </motion.div>
@@ -399,8 +399,8 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30"
-        >
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30">
+
           <div className="flex items-center gap-2 mb-2">
             <TrendingUp className="w-5 h-5 text-[#E70F72]" />
             <h2 className="text-2xl font-bold text-[#E70F72]">Spark Energy Meter</h2>
@@ -420,8 +420,8 @@ export default function Dashboard() {
                         initial={{ width: 0 }}
                         animate={{ width: `${energyData.score}%` }}
                         transition={{ duration: 1, ease: "easeOut" }}
-                        className="h-full bg-[#E70F72] rounded-full"
-                      />
+                        className="h-full bg-[#E70F72] rounded-full" />
+
                     </div>
                     <div className="text-center text-[#E70F72] font-bold mt-2">
                       {energyData.score}%
@@ -461,13 +461,13 @@ export default function Dashboard() {
                       <Progress value={energyData.components.freshness} className="w-24 h-2 bg-white/10" />
                       <span className="font-semibold w-10 text-right text-white">{energyData.components.freshness}%</span>
                     </div>
-                    {energyData.components.boosts > 0 && (
-                      <div className="flex items-center gap-3 text-sm">
+                    {energyData.components.boosts > 0 &&
+                    <div className="flex items-center gap-3 text-sm">
                         <TrendingUp className="w-4 h-4 text-green-400 flex-shrink-0" />
                         <span className="flex-1 text-white/90">Boosts</span>
                         <span className="font-semibold text-green-400">+{energyData.components.boosts}</span>
                       </div>
-                    )}
+                    }
                   </div>
                 </TooltipContent>
               </Tooltip>
@@ -500,8 +500,8 @@ export default function Dashboard() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
+          transition={{ delay: 0.3 }}>
+
           <PersonalityCard profile={profile} />
         </motion.div>
 
@@ -510,8 +510,8 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30"
-        >
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30">
+
           <div className="flex items-center gap-2 mb-2">
             <Map className="w-5 h-5 text-[#E70F72]" />
             <h2 className="text-2xl font-bold text-white">Your Activity Map</h2>
@@ -527,16 +527,16 @@ export default function Dashboard() {
         <ChallengesSection />
 
         {/* Crossd+ Upsell */}
-        {!profile.crossd_plus && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="relative overflow-hidden rounded-3xl p-12 text-center border border-[#E70F72]/30"
-            style={{
-              background: 'linear-gradient(135deg, #1a0510 0%, #0B0B0B 100%)'
-            }}
-          >
+        {!profile.crossd_plus &&
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="relative overflow-hidden rounded-3xl p-12 text-center border border-[#E70F72]/30"
+          style={{
+            background: 'linear-gradient(135deg, #1a0510 0%, #0B0B0B 100%)'
+          }}>
+
             <div className="w-16 h-16 bg-[#E70F72] rounded-full flex items-center justify-center mx-auto mb-6">
               <Star className="w-8 h-8 text-white" />
             </div>
@@ -546,23 +546,23 @@ export default function Dashboard() {
               and more exclusive perks!
             </p>
             <Link to={createPageUrl('CrossdPlus')} className="inline-block">
-              <CrossdButton 
-                className="bg-gradient-to-r from-[#E70F72] to-orange-500 text-white hover:shadow-lg hover:shadow-[#E70F72]/30"
-                size="lg"
-              >
+              <CrossdButton
+              className="bg-gradient-to-r from-[#E70F72] to-orange-500 text-white hover:shadow-lg hover:shadow-[#E70F72]/30"
+              size="lg">
+
                 Explore Premium Features
               </CrossdButton>
             </Link>
           </motion.div>
-        )}
+        }
 
         {/* À La Carte Boosters */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30"
-        >
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30">
+
           <div className="flex items-center gap-2 mb-2">
             <Gift className="w-5 h-5 text-[#E70F72]" />
             <h2 className="text-2xl font-bold text-white">À La Carte Boosters</h2>
@@ -597,6 +597,6 @@ export default function Dashboard() {
         </motion.div>
 
       </div>
-    </div>
-  );
+    </div>);
+
 }
