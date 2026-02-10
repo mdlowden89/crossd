@@ -9,7 +9,7 @@ export default function ExpandedActivityMap({ moments, profile, onClose }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black z-50 flex flex-col"
+      className="fixed inset-0 bg-black z-[999] flex flex-col"
     >
       {/* Close button */}
       <button
