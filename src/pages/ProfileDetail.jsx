@@ -224,66 +224,39 @@ export default function ProfileDetail() {
           transition={{ delay: 0.1 }}
           className="flex flex-wrap items-center gap-2 mb-6"
         >
-          {profile.job_title && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
-              <Briefcase className="w-3.5 h-3.5 text-[#E70F72]" />
-              <span className="text-white/80 text-sm">{profile.job_title}</span>
-            </div>
-          )}
-          {profile.city && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
-              <MapPin className="w-3.5 h-3.5 text-[#E70F72]" />
-              <span className="text-white/80 text-sm">{profile.city}</span>
-            </div>
-          )}
-          {profile.ethnicity && profile.ethnicity !== 'Prefer Not to Say' && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
-              <Users className="w-3.5 h-3.5 text-[#E70F72]" />
-              <span className="text-white/80 text-sm">{profile.ethnicity.replace('White/Caucasian', 'White').replace('Black/African Descent', 'Black')}</span>
-            </div>
-          )}
-          {profile.religion && profile.religion !== 'Prefer Not to Say' && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
-              <Church className="w-3.5 h-3.5 text-[#E70F72]" />
-              <span className="text-white/80 text-sm">{profile.religion}</span>
-            </div>
-          )}
-          {profile.zodiac_sign && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
-              <Star className="w-3.5 h-3.5 text-[#E70F72]" />
-              <span className="text-white/80 text-sm">{profile.zodiac_sign}</span>
-            </div>
-          )}
-          {profile.children && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
-              <Baby className="w-3.5 h-3.5 text-[#E70F72]" />
-              <span className="text-white/80 text-sm">{profile.children.replace("Don't have children", "Don't have kids")}</span>
-            </div>
-          )}
-          {profile.family_plans && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
-              <HeartHandshake className="w-3.5 h-3.5 text-[#E70F72]" />
-              <span className="text-white/80 text-sm">{profile.family_plans}</span>
-            </div>
-          )}
-          {profile.drinking && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
-              <Wine className="w-3.5 h-3.5 text-[#E70F72]" />
-              <span className="text-white/80 text-sm">Drinks {profile.drinking.toLowerCase()}</span>
-            </div>
-          )}
-          {profile.smoking && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
-              <Wind className="w-3.5 h-3.5 text-[#E70F72]" />
-              <span className="text-white/80 text-sm">Smokes {profile.smoking.toLowerCase()}</span>
-            </div>
-          )}
-          {profile.height && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
-              <Ruler className="w-3.5 h-3.5 text-[#E70F72]" />
-              <span className="text-white/80 text-sm">{Math.round(profile.height / 30.48 / 12)}'{Math.round((profile.height / 30.48) % 12)}"</span>
-            </div>
-          )}
+          {(() => {
+            const badges = [
+              profile.job_title && { icon: Briefcase, text: profile.job_title },
+              profile.city && { icon: MapPin, text: profile.city },
+              profile.ethnicity && profile.ethnicity !== 'Prefer Not to Say' && { 
+                icon: Users, 
+                text: profile.ethnicity.replace('White/Caucasian', 'White').replace('Black/African Descent', 'Black') 
+              },
+              profile.religion && profile.religion !== 'Prefer Not to Say' && { icon: Church, text: profile.religion },
+              profile.zodiac_sign && { icon: Star, text: profile.zodiac_sign },
+              profile.children && { 
+                icon: Baby, 
+                text: profile.children.replace("Don't have children", "Don't have kids") 
+              },
+              profile.family_plans && { icon: HeartHandshake, text: profile.family_plans },
+              profile.drinking && { icon: Wine, text: `Drinks ${profile.drinking.toLowerCase()}` },
+              profile.smoking && { icon: Wind, text: `Smokes ${profile.smoking.toLowerCase()}` },
+              profile.height && { 
+                icon: Ruler, 
+                text: `${Math.round(profile.height / 30.48 / 12)}'${Math.round((profile.height / 30.48) % 12)}"` 
+              }
+            ].filter(Boolean).slice(0, 4);
+
+            return badges.map((badge, index) => {
+              const Icon = badge.icon;
+              return (
+                <div key={index} className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
+                  <Icon className="w-3.5 h-3.5 text-[#E70F72]" />
+                  <span className="text-white/80 text-sm">{badge.text}</span>
+                </div>
+              );
+            });
+          })()}
         </motion.div>
 
         {/* Bio */}
