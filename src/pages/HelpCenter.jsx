@@ -174,6 +174,25 @@ export default function HelpCenter() {
         </div>
       </div>
 
+      {/* Safety & Privacy */}
+      <div className="mb-8">
+        <h2 className="text-white/65 text-sm font-medium mb-4 px-1">Resources</h2>
+        <button
+          onClick={() => window.location.href = createPageUrl('SafetyPrivacy')}
+          className="w-full"
+        >
+          <CrossdCard className="hover:border-[#E70F72]/40 transition-colors">
+            <div className="flex items-center gap-4">
+              <Shield className="w-5 h-5 text-[#E70F72]" />
+              <div className="flex-1 text-left">
+                <p className="text-white font-medium">Safety & Privacy</p>
+                <p className="text-white/50 text-sm">How we protect your data</p>
+              </div>
+            </div>
+          </CrossdCard>
+        </button>
+      </div>
+
       {/* Contact Form */}
       <div className="mb-8">
         <h2 className="text-white/65 text-sm font-medium mb-4 px-1">Still Need Help?</h2>
