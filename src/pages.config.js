@@ -47,6 +47,7 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import ActivityMapPage from './pages/ActivityMapPage';
 import AdminReports from './pages/AdminReports';
 import AdminVerification from './pages/AdminVerification';
 import Chat from './pages/Chat';
@@ -74,11 +75,11 @@ import TermsOfService from './pages/TermsOfService';
 import Trail from './pages/Trail';
 import Verification from './pages/Verification';
 import Welcome from './pages/Welcome';
-import ActivityMapPage from './pages/ActivityMapPage';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "ActivityMapPage": ActivityMapPage,
     "AdminReports": AdminReports,
     "AdminVerification": AdminVerification,
     "Chat": Chat,
@@ -106,7 +107,6 @@ export const PAGES = {
     "Trail": Trail,
     "Verification": Verification,
     "Welcome": Welcome,
-    "ActivityMapPage": ActivityMapPage,
 }
 
 export const pagesConfig = {
