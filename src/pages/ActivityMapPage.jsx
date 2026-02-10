@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { X, Heart, MapPin, Share2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 import ActivityMap from '@/components/dashboard/ActivityMap';
 
 export default function ActivityMapPage() {
