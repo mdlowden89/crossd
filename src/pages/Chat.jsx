@@ -58,7 +58,7 @@ export default function Chat() {
   // Fetch messages
   const { data: messages = [] } = useQuery({
     queryKey: ['messages', matchId],
-    queryFn: () => base44.entities.Message.filter({ match_id: matchId }, 'created_date', 100),
+    queryFn: () => base44.entities.Message.filter({ match_id: matchId }, '-created_date', 100).then(msgs => msgs.reverse()),
     enabled: !!matchId,
     refetchInterval: 3000
   });
