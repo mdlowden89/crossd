@@ -219,16 +219,17 @@ export default function Settings() {
       <div className="mb-8">
         <h2 className="text-white/65 text-sm font-medium mb-3 px-1">Support</h2>
         <div className="space-y-2">
-          <CrossdCard 
-            className="cursor-pointer hover:border-[#E70F72]/40"
-            onClick={() => window.location.href = createPageUrl('HelpCenter')}
-          >
-            <div className="flex items-center gap-4">
-              <HelpCircle className="w-5 h-5 text-white/40" />
-              <p className="text-white">Help Center</p>
-              <ChevronRight className="w-5 h-5 text-white/40 ml-auto" />
-            </div>
-          </CrossdCard>
+          <Link to={createPageUrl('HelpCenter')}>
+            <CrossdCard 
+              className="cursor-pointer hover:border-[#E70F72]/40"
+            >
+              <div className="flex items-center gap-4">
+                <HelpCircle className="w-5 h-5 text-white/40" />
+                <p className="text-white">Help Center</p>
+                <ChevronRight className="w-5 h-5 text-white/40 ml-auto" />
+              </div>
+            </CrossdCard>
+          </Link>
 
           <CrossdCard className="cursor-pointer hover:border-[#E70F72]/40">
             <div className="flex items-center gap-4">
