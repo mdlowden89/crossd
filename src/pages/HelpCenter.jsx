@@ -7,43 +7,98 @@ import { CrossdCard } from '@/components/ui/crossd-card';
 const FAQS = [
   {
     id: 1,
-    question: "How does Crossing work?",
-    answer: "Crossing detects when you and another user are at the same location at the same time. When you both log moments in the same area, the app notifies you that you've crossed paths. You can then decide if you'd like to connect!"
+    question: "What is Crossd?",
+    answer: "Crossd is a dating app built around real-world moments. Instead of endless swiping, Crossd helps you reconnect with people you may have crossed paths with — or feel genuinely compatible with — in real life. We focus on personality & energy, shared places and vibes, and intentional, meaningful connection. Crossd is about quality sparks, not volume."
   },
   {
     id: 2,
-    question: "How do I verify my identity?",
-    answer: "Go to Settings > Verification and upload a selfie. The app will compare your selfie with your profile photo to confirm your identity. This helps keep the community safe and builds trust."
+    question: "How is Crossd different from other dating apps?",
+    answer: "Most dating apps match based on photos and quick impressions. Crossd looks at personality & communication style, vibe tags and interests, the kinds of places you enjoy, and compatibility energy — not just attraction. You'll see fewer profiles, but the ones you do see are more relevant."
   },
   {
     id: 3,
-    question: "What is Glow Mode?",
-    answer: "Glow Mode is a premium feature that boosts your visibility in the discovery feed for 24 hours. Your profile appears more frequently to potential matches, and you'll see stats on how many people viewed your profile during the boost."
+    question: "Does Crossd track my location?",
+    answer: "Yes — but carefully and safely. We never show your exact location, live movement, or specific places and times. Instead, we use abstracted location signals (PlacesDNA) to understand types of places you enjoy — like cafés, parks, live music venues — not where you are right now. Your privacy always comes first."
   },
   {
     id: 4,
-    question: "How do I block or report someone?",
-    answer: "You can block a user from their profile or chat by tapping the block icon. To report inappropriate behavior, use the report button on their profile. Reports are reviewed by our safety team."
+    question: "What is PlacesDNA?",
+    answer: "PlacesDNA is Crossd's way of understanding where your energy feels most natural. It looks at categories of places you log moments at, the vibe of those environments (calm, social, creative, romantic), and patterns over time — never specific addresses. This helps us match you with people who feel sparks in similar environments."
   },
   {
     id: 5,
-    question: "What is Crossd Plus?",
-    answer: "Crossd Plus is a premium subscription that unlocks features like unlimited likes, advanced filters, seeing who liked you, and more. You can subscribe monthly or yearly."
+    question: "What is the personality quiz?",
+    answer: "The personality quiz is a short, optional setup that helps Crossd understand how you think, connect, and communicate. The basic quiz takes ~2 minutes with an optional extended version for deeper accuracy. No answers are \"good\" or \"bad\". Your personality helps us improve compatibility, suggest better matches, and tailor conversation dynamics."
   },
   {
     id: 6,
-    question: "How do moments work?",
-    answer: "Log a moment when you're at a venue or location. You can add a note or mood tags to describe what you're doing. Your moments are visible to other users nearby, and they help power the Crossing feature."
+    question: "What are Spark Swipes?",
+    answer: "Spark Swipes are Crossd's compatibility-based matching mode. Instead of endless swiping, Spark Swipes surface profiles based on personality compatibility, shared vibe tags, PlacesDNA overlap, and real-world proximity (abstracted). If no profiles are available, you'll see your own Spark card — showing how you appear to others and how to improve your spark."
   },
   {
     id: 7,
-    question: "Is my location data private?",
-    answer: "Yes. You control your location privacy with the privacy level setting on each moment (Venue, Approximate, or Hidden). Other users only see the information you've chosen to share."
+    question: "What does the compatibility percentage mean?",
+    answer: "The compatibility percentage reflects overall spark potential, not a guarantee. It's calculated using personality alignment and balance, communication style, shared vibes and interests, and place energy compatibility. High compatibility means easier conversations, better rhythm, and fewer mismatches — but chemistry still matters."
   },
   {
     id: 8,
-    question: "How can I delete my account?",
-    answer: "Go to Settings and scroll to the bottom. Tap 'Delete Account' to permanently remove your profile and all associated data. This action cannot be undone."
+    question: "What are vibe tags?",
+    answer: "Vibe tags help you express how you live and connect, not just what you do. Examples include Night Owl, Thoughtful, Romantic, Creative, Coffee Shops, and Live Music. Some tags you choose, others are inferred or earned over time based on activity."
+  },
+  {
+    id: 9,
+    question: "Can I change my personality or vibe tags?",
+    answer: "Yes. You can edit vibe tags anytime in your profile and retake or extend the personality quiz if you feel your result doesn't fit. Crossd is designed to evolve with you."
+  },
+  {
+    id: 10,
+    question: "What are challenges and rewards?",
+    answer: "Challenges are optional ways to explore the app, improve your profile, and unlock badges, features, or boosts. Examples include logging moments, responding to matches, exploring new areas, and building consistent streaks. Some rewards are cosmetic, others improve visibility or insights."
+  },
+  {
+    id: 11,
+    question: "What is Crossd+?",
+    answer: "Crossd+ is the premium version of Crossd. It unlocks deeper compatibility insights, full personality breakdowns, advanced Spark Swipes, enhanced visibility & glow features, extended chat tools, and exclusive badges and analytics. Crossd is fully usable for free — Crossd+ simply adds depth."
+  },
+  {
+    id: 12,
+    question: "Why can't I message someone?",
+    answer: "Messaging is only available once there is mutual interest. This ensures no unwanted messages, higher quality conversations, and better safety for everyone. Some features may also be unlocked through challenges or Crossd+."
+  },
+  {
+    id: 13,
+    question: "How does Crossd protect users?",
+    answer: "Safety is core to Crossd's design. We protect users by hiding precise locations and routines, limiting unsolicited messaging, allowing blocking and reporting, using progressive profile disclosure, and monitoring misuse patterns. You're always in control of what you share."
+  },
+  {
+    id: 14,
+    question: "How do I block or report someone?",
+    answer: "You can block or report a user directly from their profile, a chat, or the match menu. Reports are reviewed seriously and confidentially."
+  },
+  {
+    id: 15,
+    question: "Why am I not seeing many profiles?",
+    answer: "Crossd prioritises relevance over volume. You may see fewer profiles because we're waiting for stronger compatibility, there are fewer active users in your area, or your Spark profile can be improved. Completing challenges, adding vibe tags, or logging moments often increases visibility."
+  },
+  {
+    id: 16,
+    question: "The app isn't working properly — what should I do?",
+    answer: "Try closing and reopening the app, updating to the latest version, and checking your internet connection. If the issue continues, contact support via the Help section."
+  },
+  {
+    id: 17,
+    question: "Can I delete my account?",
+    answer: "Yes — anytime. Go to Profile → Settings → Account → Delete Account. All personal data is permanently removed."
+  },
+  {
+    id: 18,
+    question: "How can I contact support?",
+    answer: "You can reach us through the in-app Help section or support email (listed in-app). We aim to respond as quickly as possible."
+  },
+  {
+    id: 19,
+    question: "Final note",
+    answer: "Crossd works best when you complete your profile honestly, choose vibe tags that feel true, log moments naturally, and stay open, curious, and respectful. You're not here to impress — you're here to connect."
   }
 ];
 
