@@ -4,7 +4,7 @@ import { base44 } from '@/api/base44Client';
 import { ChevronLeft, MapPin, Loader2, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { createPageUrl } from '@/utils';
-import { LoadScript, StandaloneSearchBox } from '@react-google-maps/api';
+import { LoadScript, StandaloneSearchBox, GoogleMap, Marker } from '@react-google-maps/api';
 
 const geohash = (lat, lng, precision = 7) => {
   const base32 = '0123456789bcdefghjkmnpqrstuvwxyz';
