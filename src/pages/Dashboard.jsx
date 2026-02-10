@@ -523,7 +523,9 @@ export default function Dashboard() {
             A visual journey of your logged encounters.
           </p>
           
-          <ActivityMap moments={moments} profile={profile} />
+          <div className="h-80 rounded-2xl overflow-hidden">
+            <ActivityMap moments={moments} profile={profile} />
+          </div>
           <p className="text-white/50 text-xs text-center mt-3">Click to expand</p>
         </motion.div>
 
