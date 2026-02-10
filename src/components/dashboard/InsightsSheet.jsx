@@ -244,47 +244,27 @@ export default function InsightsSheet({ moments, profile, onClose }) {
             </section>
           )}
 
-          {/* Compatibility Overlay (Premium) */}
+          {/* Compatibility Insights */}
           <section>
             <h3 className="text-xl font-bold text-white mb-4">Compatibility Insights</h3>
-            {isPremium ? (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7 }}
-                className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/30 rounded-2xl p-6"
-              >
-                <p className="text-white/70 text-sm mb-2">Compatible energies in your zones</p>
-                <div className="flex gap-2 mb-4">
-                  {['INFJ', 'ISFP', 'ENFP'].map(type => (
-                    <span key={type} className="text-xs bg-green-500/20 text-green-300 px-3 py-1 rounded-full font-semibold">
-                      {type}
-                    </span>
-                  ))}
-                </div>
-                <p className="text-white/60 text-sm">
-                  Most active in creative and intimate environments, matching your vibe.
-                </p>
-              </motion.div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7 }}
-                className="bg-white/5 border border-white/10 rounded-2xl p-6 relative overflow-hidden"
-              >
-                <div className="blur-sm">
-                  <p className="text-white/50 text-sm mb-3">See who you're compatible with...</p>
-                </div>
-                <div className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-2xl backdrop-blur-sm">
-                  <div className="text-center">
-                    <Lock className="w-8 h-8 text-[#E70F72] mx-auto mb-2" />
-                    <p className="text-white font-semibold text-sm">Unlock deeper insights</p>
-                    <p className="text-white/50 text-xs mt-1">Available with Crossd+</p>
-                  </div>
-                </div>
-              </motion.div>
-            )}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7 }}
+              className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/30 rounded-2xl p-6"
+            >
+              <p className="text-white/70 text-sm mb-2">Compatible energies in your zones</p>
+              <div className="flex gap-2 mb-4">
+                {['INFJ', 'ISFP', 'ENFP'].map(type => (
+                  <span key={type} className="text-xs bg-green-500/20 text-green-300 px-3 py-1 rounded-full font-semibold">
+                    {type}
+                  </span>
+                ))}
+              </div>
+              <p className="text-white/60 text-sm">
+                Most active in creative and intimate environments, matching your vibe.
+              </p>
+            </motion.div>
           </section>
         </div>
       </motion.div>
