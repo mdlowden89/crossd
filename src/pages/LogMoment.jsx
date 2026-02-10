@@ -205,6 +205,41 @@ export default function LogMoment() {
                 </div>
               </div>
 
+              {/* Map */}
+              <div className="mb-6 rounded-xl overflow-hidden border border-white/15">
+                <GoogleMap
+                  mapContainerStyle={{ width: '100%', height: '300px' }}
+                  center={selectedPlace ? { lat: selectedPlace.lat, lng: selectedPlace.lng } : (userLocation || { lat: 51.5074, lng: -0.1278 })}
+                  zoom={selectedPlace ? 16 : 12}
+                  options={{
+                    styles: [
+                      { elementType: "geometry", stylers: [{ color: "#0B0B0B" }] },
+                      { elementType: "labels.text.stroke", stylers: [{ color: "#000000" }] },
+                      { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
+                      { featureType: "road", elementType: "geometry", stylers: [{ color: "#1a1a1a" }] },
+                      { featureType: "road", elementType: "labels.text.fill", stylers: [{ color: "#8a8a8a" }] },
+                      { featureType: "water", elementType: "geometry", stylers: [{ color: "#000000" }] }
+                    ],
+                    disableDefaultUI: true,
+                    zoomControl: true
+                  }}
+                >
+                  {selectedPlace && (
+                    <Marker
+                      position={{ lat: selectedPlace.lat, lng: selectedPlace.lng }}
+                      icon={{
+                        path: window.google.maps.SymbolPath.CIRCLE,
+                        scale: 12,
+                        fillColor: '#E70F72',
+                        fillOpacity: 1,
+                        strokeColor: '#ffffff',
+                        strokeWeight: 3
+                      }}
+                    />
+                  )}
+                </GoogleMap>
+              </div>
+
             {/* Selected Place */}
             {selectedPlace && (
               <div className="bg-[#0B0B0B] border border-[#E70F72]/50 rounded-xl p-4 mb-6">
