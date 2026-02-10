@@ -231,13 +231,13 @@ export default function CrossdPlus() {
           </div>
         </div>
       ) : (
-        // Upgrade Modal
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-sm mx-auto"
-        >
-          <CrossdCard className="border-[#E70F72]/50">
+        // Upgrade Paywall
+        <div className="space-y-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <CrossdCard className="border-[#E70F72]/50 text-center">
             {/* Icon */}
             <div className="flex justify-center mb-6">
               <div className="w-16 h-16 rounded-full border-2 border-[#E70F72] flex items-center justify-center">
@@ -323,9 +323,10 @@ export default function CrossdPlus() {
                 Upgrade to Crossd+
               </CrossdButton>
             </div>
-          </CrossdCard>
-        </motion.div>
-      )}
+            </CrossdCard>
+            </motion.div>
+            </div>
+            )}
     </div>
   );
 }
