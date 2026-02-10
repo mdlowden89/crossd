@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Camera, Edit2, BadgeCheck, Sparkles, Plus, X,
   ChevronRight, Upload, User, MapPin, Briefcase, Ruler, GraduationCap, Heart, Cake, Wand2,
-  Users, Church, Star, Wine, Wind, Baby, HeartHandshake
+  Users, Church, Star, Wine, Wind, Baby, HeartHandshake, Target
 } from 'lucide-react';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
@@ -608,6 +608,7 @@ export default function Profile() {
         <div className="space-y-3">
           <CrossdCard>
             <div className="flex items-center gap-3">
+              <Heart className="w-5 h-5 text-white/40" />
               <div className="flex-1">
                 <p className="text-white/50 text-sm">Relationship Type</p>
                 {editMode ? (
@@ -631,6 +632,7 @@ export default function Profile() {
 
           <CrossdCard>
             <div className="flex items-center gap-3">
+              <Target className="w-5 h-5 text-white/40" />
               <div className="flex-1">
                 <p className="text-white/50 text-sm">Dating Intentions</p>
                 {editMode ? (
