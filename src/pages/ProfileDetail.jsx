@@ -5,7 +5,8 @@ import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { 
   ChevronLeft, Heart, X, MapPin, Briefcase, BadgeCheck, 
-  Sparkles, Flag, Ban, ChevronRight 
+  Sparkles, Flag, Ban, ChevronRight, Ruler, Users, Baby, 
+  HeartHandshake, Wine, Star, Wind
 } from 'lucide-react';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
@@ -327,37 +328,76 @@ export default function ProfileDetail() {
         </motion.div>
 
         {/* Lifestyle Info Grid */}
-        {(profile.height || profile.ethnicity || profile.religion || profile.zodiac_sign || profile.drinking || profile.smoking) && (
+        {(profile.height || profile.ethnicity || profile.children || profile.family_plans || profile.drinking || profile.smoking || profile.zodiac_sign) && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45 }}
             className="mb-6"
           >
-            <p className="text-white/45 text-xs uppercase tracking-wider mb-3 ml-1">About</p>
+            <p className="text-white/45 text-xs uppercase tracking-wider mb-3 ml-1">Lifestyle & Background</p>
             <div className="grid grid-cols-2 gap-3">
               {profile.height && (
                 <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
-                  <p className="text-white/50 text-xs mb-1">Height</p>
-                  <p className="text-white font-medium">{profile.height} cm</p>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Ruler className="w-4 h-4 text-[#E70F72]" />
+                    <p className="text-white/50 text-xs">Height</p>
+                  </div>
+                  <p className="text-white font-medium">{Math.round(profile.height / 30.48 / 12)}'{Math.round((profile.height / 30.48) % 12)}"</p>
                 </div>
               )}
-              {profile.zodiac_sign && (
+              {profile.ethnicity && profile.ethnicity !== 'Prefer Not to Say' && (
                 <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
-                  <p className="text-white/50 text-xs mb-1">Zodiac</p>
-                  <p className="text-white font-medium">{profile.zodiac_sign}</p>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Users className="w-4 h-4 text-[#E70F72]" />
+                    <p className="text-white/50 text-xs">Ethnicity</p>
+                  </div>
+                  <p className="text-white font-medium">{profile.ethnicity.replace('White/Caucasian', 'White').replace('Black/African Descent', 'Black')}</p>
+                </div>
+              )}
+              {profile.children && (
+                <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Baby className="w-4 h-4 text-[#E70F72]" />
+                    <p className="text-white/50 text-xs">Children</p>
+                  </div>
+                  <p className="text-white font-medium">{profile.children.replace("Don't have children", "Don't have kids")}</p>
+                </div>
+              )}
+              {profile.family_plans && (
+                <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
+                  <div className="flex items-center gap-2 mb-2">
+                    <HeartHandshake className="w-4 h-4 text-[#E70F72]" />
+                    <p className="text-white/50 text-xs">Family Plans</p>
+                  </div>
+                  <p className="text-white font-medium">{profile.family_plans}</p>
                 </div>
               )}
               {profile.drinking && (
                 <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
-                  <p className="text-white/50 text-xs mb-1">Drinking</p>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Wine className="w-4 h-4 text-[#E70F72]" />
+                    <p className="text-white/50 text-xs">Drinking</p>
+                  </div>
                   <p className="text-white font-medium">{profile.drinking}</p>
                 </div>
               )}
               {profile.smoking && (
                 <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
-                  <p className="text-white/50 text-xs mb-1">Smoking</p>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Wind className="w-4 h-4 text-[#E70F72]" />
+                    <p className="text-white/50 text-xs">Smoking</p>
+                  </div>
                   <p className="text-white font-medium">{profile.smoking}</p>
+                </div>
+              )}
+              {profile.zodiac_sign && (
+                <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Star className="w-4 h-4 text-[#E70F72]" />
+                    <p className="text-white/50 text-xs">Zodiac</p>
+                  </div>
+                  <p className="text-white font-medium">{profile.zodiac_sign}</p>
                 </div>
               )}
             </div>
