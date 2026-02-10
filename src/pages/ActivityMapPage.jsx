@@ -71,9 +71,19 @@ export default function ActivityMapPage() {
               }
             });
           }}
-          className="absolute right-6 bottom-32 z-[9999] p-3 rounded-full bg-[#E70F72] hover:bg-[#ff1a8c] transition-all shadow-lg"
+          className="absolute right-6 bottom-40 z-[9999] p-3 rounded-full bg-[#E70F72] hover:bg-[#ff1a8c] transition-all shadow-lg"
         >
           <Compass className="w-6 h-6 text-white" />
+        </motion.button>
+
+        {/* Insights button - right side, lower */}
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setShowInsights(true)}
+          className="absolute right-6 bottom-32 z-[9999] p-3 rounded-full bg-[#E70F72] hover:bg-[#ff1a8c] transition-all shadow-lg"
+        >
+          <Zap className="w-6 h-6 text-white" />
         </motion.button>
       </div>
 
