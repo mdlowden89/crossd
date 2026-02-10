@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, X, ChevronLeft, ChevronRight, MapPin, Briefcase, BadgeCheck, Sparkles } from 'lucide-react';
+import { Heart, X, ChevronLeft, ChevronRight, MapPin, Briefcase, BadgeCheck, Sparkles, Flame, Music, Zap, Lightbulb } from 'lucide-react';
 import { CrossdCard } from '@/components/ui/crossd-card';
 
 export default function ProfileCard({ profile, onLike, onPass, onViewFull }) {
@@ -129,31 +129,75 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull }) {
           </div>
         </div>
 
-        {/* Prompts Preview */}
-        {profile.prompts && profile.prompts.length > 0 && (
-          <div className="p-5 border-t border-white/10">
-            <p className="text-[#E70F72] text-sm font-medium mb-1">
-              {profile.prompts[0].question}
-            </p>
-            <p className="text-white/80 line-clamp-2">
-              {profile.prompts[0].answer}
-            </p>
-          </div>
-        )}
+        {/* Creative Info Section */}
+        <div className="p-5 space-y-4 border-t border-white/10">
+          {/* Bio */}
+          {profile.bio && (
+            <div>
+              <p className="text-white/80 text-sm italic">"{profile.bio}"</p>
+            </div>
+          )}
 
-        {/* Vibe Tags */}
-        {profile.vibe_tags && profile.vibe_tags.length > 0 && (
-          <div className="px-5 pb-5 flex flex-wrap gap-2">
-            {profile.vibe_tags.slice(0, 3).map((tag, index) => (
-              <span
-                key={index}
-                className="px-3 py-1 rounded-full bg-white/10 text-white/70 text-sm"
-              >
-                {tag}
-              </span>
-            ))}
+          {/* Vibe Tags - More Creative Display */}
+          {profile.vibe_tags && profile.vibe_tags.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {profile.vibe_tags.slice(0, 4).map((tag, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1.5 rounded-full bg-gradient-to-r from-[#E70F72]/20 to-[#E70F72]/10 text-[#E70F72] text-xs font-medium border border-[#E70F72]/30"
+                >
+                  ✨ {tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Lifestyle Grid */}
+          <div className="grid grid-cols-2 gap-2">
+            {profile.drinking && (
+              <div className="px-3 py-2 rounded-lg bg-white/5 border border-white/10">
+                <p className="text-white/50 text-xs">Drinking</p>
+                <p className="text-white text-sm font-medium">{profile.drinking}</p>
+              </div>
+            )}
+            {profile.smoking && (
+              <div className="px-3 py-2 rounded-lg bg-white/5 border border-white/10">
+                <p className="text-white/50 text-xs">Smoking</p>
+                <p className="text-white text-sm font-medium">{profile.smoking}</p>
+              </div>
+            )}
+            {profile.zodiac_sign && (
+              <div className="px-3 py-2 rounded-lg bg-white/5 border border-white/10">
+                <p className="text-white/50 text-xs">Zodiac</p>
+                <p className="text-white text-sm font-medium">{profile.zodiac_sign}</p>
+              </div>
+            )}
+            {profile.height && (
+              <div className="px-3 py-2 rounded-lg bg-white/5 border border-white/10">
+                <p className="text-white/50 text-xs">Height</p>
+                <p className="text-white text-sm font-medium">{profile.height}cm</p>
+              </div>
+            )}
           </div>
-        )}
+
+          {/* Prompts - Featured Answer */}
+          {profile.prompts && profile.prompts.length > 0 && (
+            <div className="bg-gradient-to-r from-white/5 to-transparent rounded-xl p-3 border border-[#E70F72]/20">
+              <p className="text-[#E70F72] text-xs font-semibold mb-1 uppercase tracking-wider">
+                💭 {profile.prompts[0].question}
+              </p>
+              <p className="text-white text-sm">"{profile.prompts[0].answer}"</p>
+            </div>
+          )}
+
+          {/* Dating Intentions */}
+          {profile.dating_intentions && (
+            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#E70F72]/10 border border-[#E70F72]/30">
+              <Zap className="w-4 h-4 text-[#E70F72]" />
+              <span className="text-white text-sm font-medium">{profile.dating_intentions}</span>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Action Buttons */}

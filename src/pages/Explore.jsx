@@ -249,33 +249,7 @@ export default function Explore() {
         )}
       </AnimatePresence>
 
-      {/* Crossings Teaser */}
-      {profiles.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="mt-6"
-        >
-          <CrossdCard className="text-center">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <MapPin className="w-5 h-5 text-[#E70F72]" />
-              <span className="text-white font-medium">Crossed Paths</span>
-            </div>
-            <p className="text-white/65 text-sm">
-              Log moments to discover people you've crossed paths with in real life.
-            </p>
-            <CrossdButton 
-              variant="secondary" 
-              size="sm" 
-              className="mt-4"
-              onClick={() => window.location.href = createPageUrl('Moments')}
-            >
-              View Crossings
-            </CrossdButton>
-          </CrossdCard>
-        </motion.div>
-      )}
+
     </div>
   );
 }
