@@ -238,22 +238,50 @@ export default function ProfileDetail() {
           )}
           {profile.ethnicity && profile.ethnicity !== 'Prefer Not to Say' && (
             <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
-              <span className="text-white/80 text-sm">{profile.ethnicity}</span>
+              <Users className="w-3.5 h-3.5 text-[#E70F72]" />
+              <span className="text-white/80 text-sm">{profile.ethnicity.replace('White/Caucasian', 'White').replace('Black/African Descent', 'Black')}</span>
+            </div>
+          )}
+          {profile.religion && profile.religion !== 'Prefer Not to Say' && (
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
+              <Church className="w-3.5 h-3.5 text-[#E70F72]" />
+              <span className="text-white/80 text-sm">{profile.religion}</span>
+            </div>
+          )}
+          {profile.zodiac_sign && (
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
+              <Star className="w-3.5 h-3.5 text-[#E70F72]" />
+              <span className="text-white/80 text-sm">{profile.zodiac_sign}</span>
             </div>
           )}
           {profile.children && (
             <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
-              <span className="text-white/80 text-sm">{profile.children}</span>
+              <Baby className="w-3.5 h-3.5 text-[#E70F72]" />
+              <span className="text-white/80 text-sm">{profile.children.replace("Don't have children", "Don't have kids")}</span>
             </div>
           )}
           {profile.family_plans && (
             <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
+              <HeartHandshake className="w-3.5 h-3.5 text-[#E70F72]" />
               <span className="text-white/80 text-sm">{profile.family_plans}</span>
             </div>
           )}
           {profile.drinking && (
             <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
+              <Wine className="w-3.5 h-3.5 text-[#E70F72]" />
               <span className="text-white/80 text-sm">Drinks {profile.drinking.toLowerCase()}</span>
+            </div>
+          )}
+          {profile.smoking && (
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
+              <Wind className="w-3.5 h-3.5 text-[#E70F72]" />
+              <span className="text-white/80 text-sm">Smokes {profile.smoking.toLowerCase()}</span>
+            </div>
+          )}
+          {profile.height && (
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
+              <Ruler className="w-3.5 h-3.5 text-[#E70F72]" />
+              <span className="text-white/80 text-sm">{Math.round(profile.height / 30.48 / 12)}'{Math.round((profile.height / 30.48) % 12)}"</span>
             </div>
           )}
         </motion.div>
