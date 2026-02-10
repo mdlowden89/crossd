@@ -51,6 +51,7 @@ export default function LogMoment() {
 
   // Step 2: Details
   const [ethnicity, setEthnicity] = useState('');
+  const [hairColor, setHairColor] = useState('');
   const [otherDetails, setOtherDetails] = useState('');
   const [momentDescription, setMomentDescription] = useState('');
   const [interactionTypes, setInteractionTypes] = useState({
