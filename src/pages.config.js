@@ -72,6 +72,7 @@ import Verification from './pages/Verification';
 import Welcome from './pages/Welcome';
 import HelpCenter from './pages/HelpCenter';
 import SafetyPrivacy from './pages/SafetyPrivacy';
+import TermsOfService from './pages/TermsOfService';
 import __Layout from './Layout.jsx';
 
 
@@ -101,6 +102,7 @@ export const PAGES = {
     "Welcome": Welcome,
     "HelpCenter": HelpCenter,
     "SafetyPrivacy": SafetyPrivacy,
+    "TermsOfService": TermsOfService,
 }
 
 export const pagesConfig = {
