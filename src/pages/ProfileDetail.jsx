@@ -5,8 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { 
   ChevronLeft, Heart, X, MapPin, Briefcase, BadgeCheck, 
-  Sparkles, Flag, Ban, ChevronRight, Ruler, Users, Baby, 
-  ListChecks, Wine
+  Sparkles, Flag, Ban, ChevronRight 
 } from 'lucide-react';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
@@ -234,60 +233,6 @@ export default function ProfileDetail() {
             <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
               <MapPin className="w-3.5 h-3.5 text-[#E70F72]" />
               <span className="text-white/80 text-sm">{profile.city}</span>
-            </div>
-          )}
-        </motion.div>
-
-        {/* Quick Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15 }}
-          className="flex gap-3 overflow-x-auto pb-2 mb-6 -mx-6 px-6 scrollbar-hide"
-        >
-          {profile.height && (
-            <div className="flex flex-col items-center gap-2 min-w-[80px] p-4 bg-white/5 rounded-2xl border border-white/10">
-              <Ruler className="w-5 h-5 text-[#E70F72]" />
-              <div className="text-center">
-                <p className="text-white/50 text-xs">Height</p>
-                <p className="text-white text-sm font-medium">{Math.floor(profile.height / 30.48)}'{Math.round((profile.height % 30.48) / 2.54)}"</p>
-              </div>
-            </div>
-          )}
-          {profile.ethnicity && (
-            <div className="flex flex-col items-center gap-2 min-w-[80px] p-4 bg-white/5 rounded-2xl border border-white/10">
-              <Users className="w-5 h-5 text-[#E70F72]" />
-              <div className="text-center">
-                <p className="text-white/50 text-xs">Ethnicity</p>
-                <p className="text-white text-sm font-medium">{profile.ethnicity.split('/')[0]}</p>
-              </div>
-            </div>
-          )}
-          {profile.children && (
-            <div className="flex flex-col items-center gap-2 min-w-[80px] p-4 bg-white/5 rounded-2xl border border-white/10">
-              <Baby className="w-5 h-5 text-[#E70F72]" />
-              <div className="text-center">
-                <p className="text-white/50 text-xs">Children</p>
-                <p className="text-white text-sm font-medium">{profile.children.replace('Don\'t have children', 'Don\'t have c...')}</p>
-              </div>
-            </div>
-          )}
-          {profile.family_plans && (
-            <div className="flex flex-col items-center gap-2 min-w-[80px] p-4 bg-white/5 rounded-2xl border border-white/10">
-              <ListChecks className="w-5 h-5 text-[#E70F72]" />
-              <div className="text-center">
-                <p className="text-white/50 text-xs">Family Plans</p>
-                <p className="text-white text-sm font-medium">{profile.family_plans.replace('Not sure yet', 'Not Sure')}</p>
-              </div>
-            </div>
-          )}
-          {profile.drinking && (
-            <div className="flex flex-col items-center gap-2 min-w-[80px] p-4 bg-white/5 rounded-2xl border border-white/10">
-              <Wine className="w-5 h-5 text-[#E70F72]" />
-              <div className="text-center">
-                <p className="text-white/50 text-xs">Drinking</p>
-                <p className="text-white text-sm font-medium">{profile.drinking}</p>
-              </div>
             </div>
           )}
         </motion.div>
