@@ -12,6 +12,7 @@ import { AnimatePresence } from 'framer-motion';
 export default function ActivityMapPage() {
   const [user, setUser] = useState(null);
   const [mapRef, setMapRef] = useState(null);
+  const [showInsights, setShowInsights] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
