@@ -5,7 +5,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Camera, Edit2, BadgeCheck, Sparkles, Plus, X,
-  ChevronRight, Upload, User, MapPin, Briefcase, Ruler, GraduationCap, Heart, Cake, Wand2
+  ChevronRight, Upload, User, MapPin, Briefcase, Ruler, GraduationCap, Heart, Cake, Wand2,
+  Users, Church, Star, Wine, Wind, Baby, HeartHandshake
 } from 'lucide-react';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
@@ -455,6 +456,7 @@ export default function Profile() {
         <div className="space-y-3">
           <CrossdCard>
             <div className="flex items-center gap-3">
+              <Users className="w-5 h-5 text-white/40" />
               <div className="flex-1">
                 <p className="text-white/50 text-sm">Ethnicity</p>
                 {editMode ? (
@@ -485,6 +487,7 @@ export default function Profile() {
 
           <CrossdCard>
             <div className="flex items-center gap-3">
+              <Church className="w-5 h-5 text-white/40" />
               <div className="flex-1">
                 <p className="text-white/50 text-sm">Religion</p>
                 {editMode ? (
@@ -519,6 +522,7 @@ export default function Profile() {
 
           <CrossdCard>
             <div className="flex items-center gap-3">
+              <Star className="w-5 h-5 text-white/40" />
               <div className="flex-1">
                 <p className="text-white/50 text-sm">Zodiac Sign</p>
                 {editMode ? (
@@ -550,6 +554,7 @@ export default function Profile() {
 
           <CrossdCard>
             <div className="flex items-center gap-3">
+              <Wine className="w-5 h-5 text-white/40" />
               <div className="flex-1">
                 <p className="text-white/50 text-sm">Drinking</p>
                 {editMode ? (
@@ -573,6 +578,7 @@ export default function Profile() {
 
           <CrossdCard>
             <div className="flex items-center gap-3">
+              <Wind className="w-5 h-5 text-white/40" />
               <div className="flex-1">
                 <p className="text-white/50 text-sm">Smoking</p>
                 {editMode ? (
@@ -648,6 +654,7 @@ export default function Profile() {
 
           <CrossdCard>
             <div className="flex items-center gap-3">
+              <Baby className="w-5 h-5 text-white/40" />
               <div className="flex-1">
                 <p className="text-white/50 text-sm">Children</p>
                 {editMode ? (
@@ -670,6 +677,7 @@ export default function Profile() {
 
           <CrossdCard>
             <div className="flex items-center gap-3">
+              <HeartHandshake className="w-5 h-5 text-white/40" />
               <div className="flex-1">
                 <p className="text-white/50 text-sm">Family Plans</p>
                 {editMode ? (
