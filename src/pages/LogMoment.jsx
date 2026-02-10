@@ -330,5 +330,6 @@ export default function LogMoment() {
         )}
       </div>
     </div>
+    </LoadScript>
   );
 }
