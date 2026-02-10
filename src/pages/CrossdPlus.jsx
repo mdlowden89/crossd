@@ -252,9 +252,10 @@ export default function CrossdPlus() {
             {/* Features */}
             <div className="space-y-3 mb-8 py-6 border-t border-b border-white/10">
               {[
-                { icon: Eye, label: 'Unlimited Likes', desc: 'Swipe right as much as you want without daily limits' },
-                { icon: Sparkles, label: 'AI Spark Suggestions', desc: 'Get personalized profile recommendations where you vibe most' },
-                { icon: TrendingUp, label: 'VIP Profile Boost', desc: 'Get your profile seen by more people here' }
+                { icon: Eye, label: 'See Who Likes You', desc: 'Instantly match with people who\'ve already shown interest.' },
+                { icon: Heart, label: 'Unlimited Likes', desc: 'Swipe right as much as you want without daily limits.' },
+                { icon: Sparkles, label: 'AI Spark Suggestions', desc: 'Get personalized place recommendations where you vibe thrives.' },
+                { icon: TrendingUp, label: 'VIP Profile Boost', desc: 'Get your profile seen by more people, faster.' }
               ].map((feature, idx) => (
                 <div key={idx} className="flex gap-3">
                   <feature.icon className="w-5 h-5 text-[#E70F72] flex-shrink-0 mt-0.5" />
