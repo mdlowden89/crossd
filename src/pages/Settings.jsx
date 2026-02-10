@@ -202,19 +202,6 @@ export default function Settings() {
           <CrossdCard>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <MapPin className="w-5 h-5 text-white/40" />
-                <p className="text-white">Seen Again Near</p>
-              </div>
-              <Switch
-                checked={myProfile.notification_prefs?.seen_again_near !== false}
-                onCheckedChange={(checked) => updateNotificationPref('seen_again_near', checked)}
-              />
-            </div>
-          </CrossdCard>
-
-          <CrossdCard>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
                 <Bell className="w-5 h-5 text-white/40" />
                 <p className="text-white">Marketing</p>
               </div>
