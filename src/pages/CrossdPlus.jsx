@@ -317,7 +317,7 @@ export default function CrossdPlus() {
                   <div className="flex items-baseline gap-2 mb-1">
                     <span className="text-3xl font-bold text-white">£29.99</span>
                   </div>
-                  <p className="text-white/50 text-xs mb-2">3 billed every 3 months</p>
+                  <p className="text-white/50 text-xs mb-2">billed every 3 months</p>
                   <p className="text-[#E70F72] text-xs">Save £8.99</p>
                 </CrossdCard>
               </motion.div>
@@ -340,7 +340,7 @@ export default function CrossdPlus() {
                       <span className="text-3xl font-bold text-white">£44.99</span>
                       <span className="text-white/50 line-through text-sm">£82.94</span>
                     </div>
-                    <p className="text-white/50 text-xs">6 billed every 6 months</p>
+                    <p className="text-white/50 text-xs">billed every 6 months</p>
                   </div>
                 </CrossdCard>
               </motion.div>

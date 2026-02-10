@@ -51,7 +51,6 @@ import AdminReports from './pages/AdminReports';
 import AdminVerification from './pages/AdminVerification';
 import Chat from './pages/Chat';
 import ChatList from './pages/ChatList';
-import CrossdPlus from './pages/CrossdPlus';
 import Dashboard from './pages/Dashboard';
 import Explore from './pages/Explore';
 import FirstMoment from './pages/FirstMoment';
@@ -74,6 +73,7 @@ import TermsOfService from './pages/TermsOfService';
 import Trail from './pages/Trail';
 import Verification from './pages/Verification';
 import Welcome from './pages/Welcome';
+import CrossdPlus from './pages/CrossdPlus';
 import __Layout from './Layout.jsx';
 
 
@@ -82,7 +82,6 @@ export const PAGES = {
     "AdminVerification": AdminVerification,
     "Chat": Chat,
     "ChatList": ChatList,
-    "CrossdPlus": CrossdPlus,
     "Dashboard": Dashboard,
     "Explore": Explore,
     "FirstMoment": FirstMoment,
@@ -105,6 +104,7 @@ export const PAGES = {
     "Trail": Trail,
     "Verification": Verification,
     "Welcome": Welcome,
+    "CrossdPlus": CrossdPlus,
 }
 
 export const pagesConfig = {
