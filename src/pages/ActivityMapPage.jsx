@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { X, Heart, Compass, Share2 } from 'lucide-react';
+import { X, Heart, MapPin, Share2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import ActivityMap from '@/components/dashboard/ActivityMap';
 
