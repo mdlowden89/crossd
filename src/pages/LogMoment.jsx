@@ -328,8 +328,8 @@ export default function LogMoment() {
             </button>
           </motion.div>
         )}
+        </div>
       </div>
-    </div>
     </LoadScript>
   );
 }
