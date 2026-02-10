@@ -40,9 +40,9 @@ export default function ActivityMapPage() {
       {/* Close button */}
       <button
         onClick={() => navigate(createPageUrl('Dashboard'))}
-        className="absolute top-4 right-4 z-50 p-2 rounded-full bg-black/70 hover:bg-black/90 transition-colors"
+        className="absolute top-6 right-6 z-50 p-3 rounded-full bg-black border border-[#E70F72]/50 hover:bg-[#E70F72]/20 transition-all"
       >
-        <X className="w-6 h-6 text-white" />
+        <X className="w-6 h-6 text-[#E70F72]" />
       </button>
 
       {/* Map - fills most of screen */}
