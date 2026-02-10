@@ -40,6 +40,11 @@ export default function ActivityMapPage() {
 
   return (
     <div className="fixed inset-0 bg-black z-[999] flex flex-col safe-area-top safe-area-bottom">
+      <AnimatePresence>
+        {showInsights && (
+          <InsightsSheet moments={moments} profile={profile} onClose={() => setShowInsights(false)} />
+        )}
+      </AnimatePresence>
       {/* Close button */}
       <button
         onClick={() => navigate(createPageUrl('Dashboard'))}
