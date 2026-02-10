@@ -322,7 +322,7 @@ export default function CrossdPlus() {
                 </CrossdCard>
               </motion.div>
 
-              {/* 12 Months - Best Value */}
+              {/* 6 Months - Best Value */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -335,12 +335,12 @@ export default function CrossdPlus() {
                     Best Value
                   </div>
                   <div className="pt-4">
-                    <p className="text-white/65 text-sm mb-2">12 Months</p>
+                    <p className="text-white/65 text-sm mb-2">6 Months</p>
                     <div className="flex items-baseline gap-2 mb-1">
-                      <span className="text-3xl font-bold text-white">£89.99</span>
-                      <span className="text-white/50 line-through text-sm">£165.88</span>
+                      <span className="text-3xl font-bold text-white">£44.99</span>
+                      <span className="text-white/50 line-through text-sm">£82.94</span>
                     </div>
-                    <p className="text-white/50 text-xs">Billed once yearly</p>
+                    <p className="text-white/50 text-xs">6 billed every 6 months</p>
                   </div>
                 </CrossdCard>
               </motion.div>
