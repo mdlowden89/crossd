@@ -74,6 +74,7 @@ import TermsOfService from './pages/TermsOfService';
 import Trail from './pages/Trail';
 import Verification from './pages/Verification';
 import Welcome from './pages/Welcome';
+import ActivityMapPage from './pages/ActivityMapPage';
 import __Layout from './Layout.jsx';
 
 
@@ -105,6 +106,7 @@ export const PAGES = {
     "Trail": Trail,
     "Verification": Verification,
     "Welcome": Welcome,
+    "ActivityMapPage": ActivityMapPage,
 }
 
 export const pagesConfig = {
