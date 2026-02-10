@@ -125,7 +125,7 @@ export default function Verification() {
       color: 'text-yellow-500',
       bgColor: 'bg-yellow-500/20',
       title: 'Pending Review',
-      description: 'Your verification is being reviewed. This usually takes 24-48 hours.'
+      description: 'Your verification is being reviewed. We\'ll notify you once it\'s complete.'
     },
     verified: {
       icon: CheckCircle,
@@ -334,7 +334,7 @@ export default function Verification() {
               </div>
               <div>
                 <p className="text-white">Wait for review</p>
-                <p className="text-white/50 text-sm">Our team reviews submissions within 24-48 hours</p>
+                <p className="text-white/50 text-sm">Our team reviews your submission and verifies your identity</p>
               </div>
             </div>
 
