@@ -152,70 +152,125 @@ export default function ProfileDetail() {
 
       {/* Profile Info */}
       <div className="px-6 pb-32 -mt-16 relative">
-        <div className="flex items-center gap-2 mb-2">
-          <h1 className="text-3xl font-bold text-white">
-            {profile.display_name}{age ? `, ${age}` : ''}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-end gap-3 mb-4"
+        >
+          <h1 className="text-4xl font-bold text-white leading-none">
+            {profile.display_name}
+            <span className="text-white/50 font-normal">{age ? `, ${age}` : ''}</span>
           </h1>
           {profile.verification_status === 'verified' && (
-            <BadgeCheck className="w-7 h-7 text-[#E70F72]" />
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: "spring" }}
+            >
+              <BadgeCheck className="w-7 h-7 text-[#E70F72] mb-1" />
+            </motion.div>
           )}
           {isGlowing && (
-            <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 1.5, repeat: Infinity }}>
+            <motion.div 
+              animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }} 
+              transition={{ duration: 2, repeat: Infinity }}
+              className="mb-1"
+            >
               <Sparkles className="w-6 h-6 text-[#E70F72]" />
             </motion.div>
           )}
-        </div>
+        </motion.div>
 
-        <div className="flex items-center gap-4 text-white/70 mb-6">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1 }}
+          className="flex items-center gap-3 mb-6"
+        >
           {profile.job_title && (
-            <div className="flex items-center gap-1">
-              <Briefcase className="w-4 h-4" />
-              <span>{profile.job_title}</span>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
+              <Briefcase className="w-3.5 h-3.5 text-[#E70F72]" />
+              <span className="text-white/80 text-sm">{profile.job_title}</span>
             </div>
           )}
           {profile.city && (
-            <div className="flex items-center gap-1">
-              <MapPin className="w-4 h-4" />
-              <span>{profile.city}</span>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
+              <MapPin className="w-3.5 h-3.5 text-[#E70F72]" />
+              <span className="text-white/80 text-sm">{profile.city}</span>
             </div>
           )}
-        </div>
+        </motion.div>
 
         {/* Bio */}
         {profile.bio && (
-          <p className="text-white/80 mb-6">{profile.bio}</p>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <CrossdCard className="mb-6 bg-gradient-to-br from-[#0B0B0B] to-[#1a1a1a]">
+              <p className="text-white/90 text-base leading-relaxed">{profile.bio}</p>
+            </CrossdCard>
+          </motion.div>
         )}
 
-        {/* Vibe Tags */}
-        {profile.vibe_tags && profile.vibe_tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-6">
-            {profile.vibe_tags.map((tag, index) => (
-              <span
-                key={index}
-                className="px-4 py-2 rounded-full bg-[#E70F72]/10 text-[#E70F72] text-sm border border-[#E70F72]/30"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
-
-        {/* MBTI */}
-        {profile.mbti_type && (
-          <CrossdCard className="mb-6">
-            <div className="flex items-center justify-between">
-              <span className="text-white/65">Personality Type</span>
-              <span className="text-[#E70F72] font-bold text-xl">{profile.mbti_type}</span>
+        {/* MBTI + Vibe Tags Row */}
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mb-6"
+        >
+          {profile.mbti_type && (
+            <div className="mb-4">
+              <p className="text-white/45 text-xs uppercase tracking-wider mb-2 ml-1">Personality</p>
+              <div className="inline-flex items-center gap-3 px-5 py-3 bg-gradient-to-r from-[#E70F72]/15 to-[#E70F72]/5 border border-[#E70F72]/30 rounded-2xl">
+                <div className="w-10 h-10 bg-[#E70F72] rounded-xl flex items-center justify-center">
+                  <span className="text-black font-bold text-sm">{profile.mbti_type}</span>
+                </div>
+                <span className="text-white/65 text-sm">The {profile.mbti_type} Personality</span>
+              </div>
             </div>
-          </CrossdCard>
-        )}
+          )}
+
+          {profile.vibe_tags && profile.vibe_tags.length > 0 && (
+            <div>
+              <p className="text-white/45 text-xs uppercase tracking-wider mb-2 ml-1">Vibes</p>
+              <div className="flex flex-wrap gap-2">
+                {profile.vibe_tags.map((tag, index) => (
+                  <motion.span
+                    key={index}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.4 + index * 0.05 }}
+                    className="px-4 py-2 rounded-xl bg-white/5 text-white/90 text-sm border border-white/15 hover:border-[#E70F72]/40 transition-colors"
+                  >
+                    {tag}
+                  </motion.span>
+                ))}
+              </div>
+            </div>
+          )}
+        </motion.div>
 
         {/* Prompts */}
         {profile.prompts && profile.prompts.map((prompt, index) => (
-          <CrossdCard key={index} className="mb-4">
-            <p className="text-[#E70F72] text-sm font-medium mb-2">{prompt.question}</p>
-            <p className="text-white text-lg">{prompt.answer}</p>
-          </CrossdCard>
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 + index * 0.1 }}
+          >
+            <CrossdCard className="mb-4 hover:border-[#E70F72]/40 transition-colors cursor-default group">
+              <div className="flex items-start gap-3">
+                <div className="w-1 h-full bg-gradient-to-b from-[#E70F72] to-transparent rounded-full" />
+                <div className="flex-1">
+                  <p className="text-[#E70F72] text-xs font-semibold mb-2 uppercase tracking-wide">{prompt.question}</p>
+                  <p className="text-white text-lg leading-relaxed">{prompt.answer}</p>
+                </div>
+              </div>
+            </CrossdCard>
+          </motion.div>
         ))}
 
         {/* Safety Actions */}
