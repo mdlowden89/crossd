@@ -60,6 +60,18 @@ export default function LogMoment() {
   });
 
   useEffect(() => {
+    // Get API key from environment
+    const fetchApiKey = async () => {
+      try {
+        const key = await base44.functions.invoke('getGoogleApiKey');
+        setApiKey(key.data.apiKey);
+      } catch (error) {
+        console.error('Error fetching API key:', error);
+      }
+    };
+    fetchApiKey();
+
+    // Get user location
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setUserLocation({
@@ -71,52 +83,21 @@ export default function LogMoment() {
     );
   }, []);
 
-  const handleSearchInput = (value) => {
-    setSearchInput(value);
-    if (searchTimeout.current) clearTimeout(searchTimeout.current);
-
-    if (value.length < 2) {
-      setPredictions([]);
-      setSearchLoading(false);
-      return;
-    }
-
-    setSearchLoading(true);
-    searchTimeout.current = setTimeout(async () => {
-      try {
-        const response = await base44.functions.invoke('searchPlaces', {
-          input: value,
-          lat: userLocation?.lat,
-          lng: userLocation?.lng
-        });
-        setPredictions(response.data?.predictions || []);
-        setSearchLoading(false);
-      } catch (error) {
-        console.error('Search error:', error);
-        setSearchLoading(false);
-      }
-    }, 500);
+  const onLoad = (ref) => {
+    searchBoxRef.current = ref;
   };
 
-  const handleSelectPlace = async (prediction) => {
-    try {
-      setLoading(true);
-      const response = await base44.functions.invoke('getPlaceDetails', {
-        placeId: prediction.place_id
-      });
+  const onPlacesChanged = () => {
+    const places = searchBoxRef.current.getPlaces();
+    if (places && places.length > 0) {
+      const place = places[0];
       setSelectedPlace({
-        name: response.data.name,
-        address: response.data.address,
-        lat: response.data.lat,
-        lng: response.data.lng,
-        placeId: prediction.place_id
+        name: place.name,
+        address: place.formatted_address,
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+        placeId: place.place_id
       });
-      setSearchInput('');
-      setPredictions([]);
-    } catch (error) {
-      console.error('Error getting place details:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
