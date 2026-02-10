@@ -6,6 +6,8 @@ import { X, Heart, MapPin, Share2, Compass, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import ActivityMap from '@/components/dashboard/ActivityMap';
+import InsightsSheet from '@/components/dashboard/InsightsSheet';
+import { AnimatePresence } from 'framer-motion';
 
 export default function ActivityMapPage() {
   const [user, setUser] = useState(null);
