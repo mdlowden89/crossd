@@ -45,8 +45,8 @@ export default function ActivityMapPage() {
       </button>
 
       {/* Map - fills most of screen */}
-      <div className="flex-1 w-full h-full overflow-hidden">
-        {profile && <ActivityMap moments={moments} profile={profile} />}
+      <div className="flex-1 w-full h-full overflow-hidden" ref={setMapRef}>
+        {profile && <ActivityMap moments={moments} profile={profile} mapRef={mapRef} />}
       </div>
 
       {/* Bottom Action Buttons */}
