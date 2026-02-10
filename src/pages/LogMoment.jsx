@@ -206,19 +206,27 @@ export default function LogMoment() {
               </div>
 
               {/* Map */}
-              <div className="mb-6 rounded-xl overflow-hidden border border-white/15">
+              <div className="mb-6 rounded-xl overflow-hidden border border-[#E70F72]/25">
                 <GoogleMap
                   mapContainerStyle={{ width: '100%', height: '300px' }}
                   center={selectedPlace ? { lat: selectedPlace.lat, lng: selectedPlace.lng } : (userLocation || { lat: 51.5074, lng: -0.1278 })}
                   zoom={selectedPlace ? 16 : 12}
                   options={{
                     styles: [
-                      { elementType: "geometry", stylers: [{ color: "#0B0B0B" }] },
+                      { elementType: "geometry", stylers: [{ color: "#000000" }] },
                       { elementType: "labels.text.stroke", stylers: [{ color: "#000000" }] },
-                      { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
+                      { elementType: "labels.text.fill", stylers: [{ color: "#666666" }] },
+                      { featureType: "administrative", elementType: "geometry.stroke", stylers: [{ color: "#E70F72" }, { weight: 0.5 }] },
                       { featureType: "road", elementType: "geometry", stylers: [{ color: "#1a1a1a" }] },
-                      { featureType: "road", elementType: "labels.text.fill", stylers: [{ color: "#8a8a8a" }] },
-                      { featureType: "water", elementType: "geometry", stylers: [{ color: "#000000" }] }
+                      { featureType: "road", elementType: "geometry.stroke", stylers: [{ color: "#E70F72" }, { weight: 0.3 }] },
+                      { featureType: "road", elementType: "labels.text.fill", stylers: [{ color: "#999999" }] },
+                      { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#2a2a2a" }] },
+                      { featureType: "road.highway", elementType: "geometry.stroke", stylers: [{ color: "#E70F72" }, { weight: 0.5 }] },
+                      { featureType: "water", elementType: "geometry", stylers: [{ color: "#050505" }] },
+                      { featureType: "water", elementType: "geometry.stroke", stylers: [{ color: "#E70F72" }, { weight: 0.3 }] },
+                      { featureType: "poi", elementType: "geometry", stylers: [{ color: "#0B0B0B" }] },
+                      { featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }] },
+                      { featureType: "transit", stylers: [{ visibility: "off" }] }
                     ],
                     disableDefaultUI: true,
                     zoomControl: true
