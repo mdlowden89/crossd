@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronDown, ChevronUp, Send } from 'lucide-react';
+import { ChevronLeft, ChevronDown, ChevronUp, Send, Shield } from 'lucide-react';
+import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
