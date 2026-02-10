@@ -403,6 +403,7 @@ export default function Profile() {
           selectedTags={editedProfile?.vibe_tags || []}
           onTagsChange={(tags) => setEditedProfile({ ...editedProfile, vibe_tags: tags })}
           editMode={editMode}
+          isPremium={myProfile.crossd_plus === true}
         />
       </div>
 

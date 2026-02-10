@@ -63,6 +63,7 @@ import MomentDetail from './pages/MomentDetail';
 import Moments from './pages/Moments';
 import Notifications from './pages/Notifications';
 import Onboarding from './pages/Onboarding';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import Profile from './pages/Profile';
 import ProfileDetail from './pages/ProfileDetail';
 import Recaps from './pages/Recaps';
@@ -73,7 +74,6 @@ import TermsOfService from './pages/TermsOfService';
 import Trail from './pages/Trail';
 import Verification from './pages/Verification';
 import Welcome from './pages/Welcome';
-import PrivacyPolicy from './pages/PrivacyPolicy';
 import __Layout from './Layout.jsx';
 
 
@@ -94,6 +94,7 @@ export const PAGES = {
     "Moments": Moments,
     "Notifications": Notifications,
     "Onboarding": Onboarding,
+    "PrivacyPolicy": PrivacyPolicy,
     "Profile": Profile,
     "ProfileDetail": ProfileDetail,
     "Recaps": Recaps,
@@ -104,7 +105,6 @@ export const PAGES = {
     "Trail": Trail,
     "Verification": Verification,
     "Welcome": Welcome,
-    "PrivacyPolicy": PrivacyPolicy,
 }
 
 export const pagesConfig = {
