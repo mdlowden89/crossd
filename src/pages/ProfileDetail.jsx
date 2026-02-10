@@ -188,196 +188,205 @@ export default function ProfileDetail() {
 
       {/* Profile Info */}
       <div className="px-6 pb-32 -mt-16 relative">
-        {/* Name & Verification */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-4"
+          className="flex items-end gap-3 mb-4"
         >
-          <div className="flex items-center gap-2 mb-2">
-            <h1 className="text-4xl font-bold text-white">
-              {profile.display_name}, {age || '?'}
-            </h1>
-            {profile.verification_status === 'verified' && (
-              <BadgeCheck className="w-8 h-8 text-[#E70F72]" />
-            )}
-            {isGlowing && (
-              <motion.div animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity }}>
-                <Sparkles className="w-6 h-6 text-[#E70F72]" />
-              </motion.div>
-            )}
-          </div>
-          {(profile.job_title || profile.city) && (
-            <div className="flex items-center gap-2 text-white/70 text-base">
-              {profile.job_title && <span>{profile.job_title}</span>}
-              {profile.job_title && profile.city && <span>•</span>}
-              {profile.city && <span>{profile.city}</span>}
+          <h1 className="text-4xl font-bold text-white leading-none">
+            {profile.display_name}
+            <span className="text-white/50 font-normal">{age ? `, ${age}` : ''}</span>
+          </h1>
+          {profile.verification_status === 'verified' && (
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: "spring" }}
+            >
+              <BadgeCheck className="w-7 h-7 text-[#E70F72] mb-1" />
+            </motion.div>
+          )}
+          {isGlowing && (
+            <motion.div 
+              animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }} 
+              transition={{ duration: 2, repeat: Infinity }}
+              className="mb-1"
+            >
+              <Sparkles className="w-6 h-6 text-[#E70F72]" />
+            </motion.div>
+          )}
+        </motion.div>
+
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1 }}
+          className="flex items-center gap-3 mb-6"
+        >
+          {profile.job_title && (
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
+              <Briefcase className="w-3.5 h-3.5 text-[#E70F72]" />
+              <span className="text-white/80 text-sm">{profile.job_title}</span>
+            </div>
+          )}
+          {profile.city && (
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
+              <MapPin className="w-3.5 h-3.5 text-[#E70F72]" />
+              <span className="text-white/80 text-sm">{profile.city}</span>
             </div>
           )}
         </motion.div>
 
-        {/* Quick Info Icons Row */}
-        {(profile.smoking || profile.drinking || profile.ethnicity || profile.children || profile.family_plans) && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="flex gap-4 overflow-x-auto pb-4 mb-6 hide-scrollbar"
-          >
-            {profile.smoking && (
-              <div className="flex flex-col items-center gap-1 min-w-[60px]">
-                <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
-                  <span className="text-2xl">🚬</span>
-                </div>
-                <span className="text-white/50 text-xs text-center">{profile.smoking}</span>
-              </div>
-            )}
-            {profile.drinking && (
-              <div className="flex flex-col items-center gap-1 min-w-[60px]">
-                <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
-                  <span className="text-2xl">🍷</span>
-                </div>
-                <span className="text-white/50 text-xs text-center">{profile.drinking}</span>
-              </div>
-            )}
-            {profile.ethnicity && profile.ethnicity !== 'Prefer Not to Say' && (
-              <div className="flex flex-col items-center gap-1 min-w-[60px]">
-                <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
-                  <span className="text-2xl">🌍</span>
-                </div>
-                <span className="text-white/50 text-xs text-center">{profile.ethnicity}</span>
-              </div>
-            )}
-            {profile.children && (
-              <div className="flex flex-col items-center gap-1 min-w-[60px]">
-                <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
-                  <span className="text-2xl">👶</span>
-                </div>
-                <span className="text-white/50 text-xs text-center">{profile.children}</span>
-              </div>
-            )}
-            {profile.family_plans && (
-              <div className="flex flex-col items-center gap-1 min-w-[60px]">
-                <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
-                  <span className="text-2xl">👨‍👩‍👧</span>
-                </div>
-                <span className="text-white/50 text-xs text-center">{profile.family_plans}</span>
-              </div>
-            )}
-          </motion.div>
-        )}
-
-        {/* About Section */}
+        {/* Bio */}
         {profile.bio && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="mb-6"
           >
-            <h2 className="text-white font-bold text-xl mb-3">About {profile.display_name}</h2>
-            <p className="text-white/80 text-base leading-relaxed">{profile.bio}</p>
+            <CrossdCard className="mb-6 bg-gradient-to-br from-[#0B0B0B] to-[#1a1a1a]">
+              <p className="text-white/90 text-base leading-relaxed">{profile.bio}</p>
+            </CrossdCard>
           </motion.div>
         )}
 
-        {/* Photo Grid */}
-        {photos.length > 1 && (
+        {/* MBTI + Vibe Tags Row */}
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mb-6"
+        >
+          {profile.mbti_type && (
+            <div className="mb-4">
+              <p className="text-white/45 text-xs uppercase tracking-wider mb-2 ml-1">Personality</p>
+              <div className="inline-flex items-center gap-3 px-5 py-3 bg-gradient-to-r from-[#E70F72]/15 to-[#E70F72]/5 border border-[#E70F72]/30 rounded-2xl">
+                <div className="w-10 h-10 bg-[#E70F72] rounded-xl flex items-center justify-center">
+                  <span className="text-black font-bold text-sm">{profile.mbti_type}</span>
+                </div>
+                <span className="text-white/65 text-sm">The {profile.mbti_type} Personality</span>
+              </div>
+            </div>
+          )}
+
+          {profile.vibe_tags && profile.vibe_tags.length > 0 && (
+            <div>
+              <p className="text-white/45 text-xs uppercase tracking-wider mb-2 ml-1">Vibes</p>
+              <div className="flex flex-wrap gap-2">
+                {profile.vibe_tags.map((tag, index) => (
+                  <motion.span
+                    key={index}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.4 + index * 0.05 }}
+                    className="px-4 py-2 rounded-xl bg-white/5 text-white/90 text-sm border border-white/15 hover:border-[#E70F72]/40 transition-colors"
+                  >
+                    {tag}
+                  </motion.span>
+                ))}
+              </div>
+            </div>
+          )}
+        </motion.div>
+
+        {/* Lifestyle Info Grid */}
+        {(profile.height || profile.ethnicity || profile.religion || profile.zodiac_sign || profile.drinking || profile.smoking) && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25 }}
-            className="grid grid-cols-2 gap-3 mb-6"
+            transition={{ delay: 0.45 }}
+            className="mb-6"
           >
-            {photos.slice(1, 7).map((photo, index) => (
-              <div key={index} className="aspect-[3/4] rounded-2xl overflow-hidden">
-                <img src={photo.url} alt={`Photo ${index + 2}`} className="w-full h-full object-cover" />
-              </div>
-            ))}
-          </motion.div>
-        )}
-
-        {/* Prompts */}
-        {profile.prompts && profile.prompts.length > 0 && (
-          <div className="space-y-6 mb-6">
-            {profile.prompts.map((prompt, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 + index * 0.1 }}
-                className="bg-gradient-to-br from-[#0B0B0B] to-[#1a1a1a] border border-white/10 rounded-3xl p-6 hover:border-[#E70F72]/30 transition-colors"
-              >
-                <h3 className="text-[#E70F72] font-bold text-sm mb-3 uppercase tracking-wide">
-                  {prompt.question}
-                </h3>
-                <p className="text-white text-lg leading-relaxed">{prompt.answer}</p>
-              </motion.div>
-            ))}
-          </div>
-        )}
-
-        {/* Additional Info */}
-        {(profile.mbti_type || profile.height || profile.zodiac_sign || profile.relationship_type || profile.dating_intentions) && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="space-y-3 mb-6"
-          >
-            {profile.dating_intentions && (
-              <div className="bg-gradient-to-r from-[#E70F72]/15 to-transparent border border-[#E70F72]/30 rounded-2xl p-4">
-                <p className="text-[#E70F72] text-xs font-bold mb-1 uppercase">Looking For</p>
-                <p className="text-white font-medium">{profile.dating_intentions}</p>
-              </div>
-            )}
-            
+            <p className="text-white/45 text-xs uppercase tracking-wider mb-3 ml-1">About</p>
             <div className="grid grid-cols-2 gap-3">
-              {profile.mbti_type && (
-                <div className="bg-white/5 border border-white/10 rounded-xl p-4">
-                  <p className="text-white/50 text-xs mb-1">MBTI</p>
-                  <p className="text-white font-medium">{profile.mbti_type}</p>
-                </div>
-              )}
               {profile.height && (
-                <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
                   <p className="text-white/50 text-xs mb-1">Height</p>
                   <p className="text-white font-medium">{profile.height} cm</p>
                 </div>
               )}
               {profile.zodiac_sign && (
-                <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
                   <p className="text-white/50 text-xs mb-1">Zodiac</p>
                   <p className="text-white font-medium">{profile.zodiac_sign}</p>
                 </div>
               )}
-              {profile.relationship_type && (
-                <div className="bg-white/5 border border-white/10 rounded-xl p-4">
-                  <p className="text-white/50 text-xs mb-1">Relationship</p>
-                  <p className="text-white font-medium">{profile.relationship_type}</p>
+              {profile.drinking && (
+                <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
+                  <p className="text-white/50 text-xs mb-1">Drinking</p>
+                  <p className="text-white font-medium">{profile.drinking}</p>
+                </div>
+              )}
+              {profile.smoking && (
+                <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
+                  <p className="text-white/50 text-xs mb-1">Smoking</p>
+                  <p className="text-white font-medium">{profile.smoking}</p>
                 </div>
               )}
             </div>
           </motion.div>
         )}
 
-        {/* Vibe Tags */}
-        {profile.vibe_tags && profile.vibe_tags.length > 0 && (
+        {/* Prompts */}
+        {profile.prompts && profile.prompts.length > 0 && (
+          <div className="mb-6">
+            <p className="text-white/45 text-xs uppercase tracking-wider mb-3 ml-1">Prompts</p>
+            <div className="space-y-3">
+              {profile.prompts.map((prompt, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5 + index * 0.1 }}
+                  whileHover={{ x: 4 }}
+                  className="group"
+                >
+                  <div className="bg-gradient-to-br from-[#0B0B0B] via-[#1a1a1a] to-[#0B0B0B] border border-white/10 rounded-2xl p-5 hover:border-[#E70F72]/50 transition-all duration-300 shadow-lg">
+                    <div className="flex items-start gap-4">
+                      <div className="w-1.5 h-full bg-gradient-to-b from-[#E70F72] via-[#E70F72]/50 to-transparent rounded-full self-stretch min-h-[60px]" />
+                      <div className="flex-1">
+                        <p className="text-[#E70F72] text-xs font-bold mb-3 uppercase tracking-widest flex items-center gap-2">
+                          {prompt.question}
+                          <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </p>
+                        <p className="text-white/90 text-base leading-relaxed">{prompt.answer}</p>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Relationship Info */}
+        {(profile.relationship_type || profile.dating_intentions || profile.family_plans) && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.55 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
             className="mb-6"
           >
-            <h3 className="text-white/70 text-sm mb-3">My Vibes</h3>
-            <div className="flex flex-wrap gap-2">
-              {profile.vibe_tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="px-4 py-2 rounded-full bg-white/5 text-white/90 text-sm border border-white/10"
-                >
-                  {tag}
-                </span>
-              ))}
+            <p className="text-white/45 text-xs uppercase tracking-wider mb-3 ml-1">Looking For</p>
+            <div className="space-y-3">
+              {profile.dating_intentions && (
+                <div className="bg-gradient-to-r from-[#E70F72]/10 to-transparent border border-[#E70F72]/20 rounded-xl p-4">
+                  <p className="text-[#E70F72] text-xs mb-1.5 font-semibold">Dating Intentions</p>
+                  <p className="text-white font-medium">{profile.dating_intentions}</p>
+                </div>
+              )}
+              {profile.relationship_type && (
+                <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                  <p className="text-white/50 text-xs mb-1.5">Relationship Type</p>
+                  <p className="text-white font-medium">{profile.relationship_type}</p>
+                </div>
+              )}
+              {profile.family_plans && (
+                <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                  <p className="text-white/50 text-xs mb-1.5">Family Plans</p>
+                  <p className="text-white font-medium">{profile.family_plans}</p>
+                </div>
+              )}
             </div>
           </motion.div>
         )}
