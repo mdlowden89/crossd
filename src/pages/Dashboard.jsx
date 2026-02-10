@@ -19,7 +19,7 @@ import { Progress } from '@/components/ui/progress';
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
-  const [showExpandedMap, setShowExpandedMap] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     base44.auth.me().then(setUser);
