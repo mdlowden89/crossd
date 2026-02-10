@@ -16,7 +16,50 @@ const VIBE_TAG_CATEGORIES = {
       { name: 'Energetic', emoji: '⚙️' },
       { name: 'Romantic', emoji: '❤️' },
       { name: 'Witty', emoji: '😄' },
-    ]
+    ],
+    subcategories: {
+      cognitive: {
+        label: 'Mental Energy',
+        tags: [
+          { name: 'Deep Thinker', emoji: '🧩' },
+          { name: 'Overthinker', emoji: '🌀' },
+          { name: 'Focused', emoji: '🎯' },
+          { name: 'Go-with-the-flow', emoji: '🌊' },
+          { name: 'Curious', emoji: '🔍' },
+          { name: 'Analytical', emoji: '🧠' },
+          { name: 'Introspective', emoji: '💭' },
+          { name: 'Experimental', emoji: '🧪' },
+          { name: 'Mindful', emoji: '🧘' },
+        ]
+      },
+      communication: {
+        label: 'Communication & Social Style',
+        tags: [
+          { name: 'Great Listener', emoji: '🎤' },
+          { name: 'Storyteller', emoji: '🗣' },
+          { name: 'Flirty', emoji: '😏' },
+          { name: 'Emotionally Open', emoji: '🤍' },
+          { name: 'Guarded at First', emoji: '🧱' },
+          { name: 'Dry Humour', emoji: '🧊' },
+          { name: 'Playful Teaser', emoji: '😄' },
+          { name: 'Calm Communicator', emoji: '🧘' },
+          { name: 'Passionate Talker', emoji: '🔥' },
+        ]
+      },
+      energy: {
+        label: 'Energy Rhythm',
+        tags: [
+          { name: 'Sunrise Chaser', emoji: '🌅' },
+          { name: 'Late-Night Thinker', emoji: '🌙' },
+          { name: 'Burst Energy', emoji: '⚡' },
+          { name: 'Consistent Routine', emoji: '🔁' },
+          { name: 'Slow & Steady', emoji: '🐢' },
+          { name: 'Spontaneous Bursts', emoji: '🚀' },
+          { name: 'Recharge Alone', emoji: '🛌' },
+          { name: 'Social Battery Saver', emoji: '🔋' },
+        ]
+      }
+    }
   },
   activities: {
     label: 'Places & Activities',
@@ -50,47 +93,6 @@ const VIBE_TAG_CATEGORIES = {
       { name: 'Capricorn', emoji: '♑' },
       { name: 'Aquarius', emoji: '♒' },
       { name: 'Pisces', emoji: '♓' },
-    ]
-  },
-  cognitive: {
-    label: 'Mental Energy',
-    tags: [
-      { name: 'Deep Thinker', emoji: '🧩' },
-      { name: 'Overthinker', emoji: '🌀' },
-      { name: 'Focused', emoji: '🎯' },
-      { name: 'Go-with-the-flow', emoji: '🌊' },
-      { name: 'Curious', emoji: '🔍' },
-      { name: 'Analytical', emoji: '🧠' },
-      { name: 'Introspective', emoji: '💭' },
-      { name: 'Experimental', emoji: '🧪' },
-      { name: 'Mindful', emoji: '🧘' },
-    ]
-  },
-  communication: {
-    label: 'Communication & Social Style',
-    tags: [
-      { name: 'Great Listener', emoji: '🎤' },
-      { name: 'Storyteller', emoji: '🗣' },
-      { name: 'Flirty', emoji: '😏' },
-      { name: 'Emotionally Open', emoji: '🤍' },
-      { name: 'Guarded at First', emoji: '🧱' },
-      { name: 'Dry Humour', emoji: '🧊' },
-      { name: 'Playful Teaser', emoji: '😄' },
-      { name: 'Calm Communicator', emoji: '🧘' },
-      { name: 'Passionate Talker', emoji: '🔥' },
-    ]
-  },
-  energy: {
-    label: 'Energy Rhythm',
-    tags: [
-      { name: 'Sunrise Chaser', emoji: '🌅' },
-      { name: 'Late-Night Thinker', emoji: '🌙' },
-      { name: 'Burst Energy', emoji: '⚡' },
-      { name: 'Consistent Routine', emoji: '🔁' },
-      { name: 'Slow & Steady', emoji: '🐢' },
-      { name: 'Spontaneous Bursts', emoji: '🚀' },
-      { name: 'Recharge Alone', emoji: '🛌' },
-      { name: 'Social Battery Saver', emoji: '🔋' },
     ]
   },
   dating: {
@@ -191,24 +193,57 @@ export default function VibeTagSelector({ selectedTags = [], onTagsChange, editM
           {Object.entries(VIBE_TAG_CATEGORIES).map(([key, category]) => (
             <div key={key}>
               <h3 className="text-white/65 text-sm font-medium mb-3">{category.label}</h3>
-              <div className="flex flex-wrap gap-2">
-                {category.tags.map((tag) => (
-                  <button
-                    key={tag.name}
-                    onClick={() => handleToggleTag(tag.name)}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-all ${
-                      selectedTags.includes(tag.name)
-                        ? 'bg-[#E70F72]/20 border-[#E70F72]/50'
-                        : 'bg-white/5 border-white/20 hover:border-[#E70F72]/50'
-                    }`}
-                  >
-                    <span>{tag.emoji}</span>
-                    <span className={selectedTags.includes(tag.name) ? 'text-[#E70F72]' : 'text-white/60'}>
-                      {tag.name}
-                    </span>
-                  </button>
-                ))}
-              </div>
+              
+              {/* Main tags */}
+              {category.tags && (
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {category.tags.map((tag) => (
+                    <button
+                      key={tag.name}
+                      onClick={() => handleToggleTag(tag.name)}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-all ${
+                        selectedTags.includes(tag.name)
+                          ? 'bg-[#E70F72]/20 border-[#E70F72]/50'
+                          : 'bg-white/5 border-white/20 hover:border-[#E70F72]/50'
+                      }`}
+                    >
+                      <span>{tag.emoji}</span>
+                      <span className={selectedTags.includes(tag.name) ? 'text-[#E70F72]' : 'text-white/60'}>
+                        {tag.name}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* Subcategories */}
+              {category.subcategories && (
+                <div className="space-y-4 ml-2 border-l border-white/10 pl-4">
+                  {Object.entries(category.subcategories).map(([subkey, subcat]) => (
+                    <div key={subkey}>
+                      <h4 className="text-white/50 text-xs font-medium mb-2 uppercase tracking-wide">{subcat.label}</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {subcat.tags.map((tag) => (
+                          <button
+                            key={tag.name}
+                            onClick={() => handleToggleTag(tag.name)}
+                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-all ${
+                              selectedTags.includes(tag.name)
+                                ? 'bg-[#E70F72]/20 border-[#E70F72]/50'
+                                : 'bg-white/5 border-white/20 hover:border-[#E70F72]/50'
+                            }`}
+                          >
+                            <span>{tag.emoji}</span>
+                            <span className={selectedTags.includes(tag.name) ? 'text-[#E70F72]' : 'text-white/60'}>
+                              {tag.name}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
         </div>
