@@ -17,6 +17,7 @@ const GLOW_COOLDOWN_HOURS = 24;
 
 export default function CrossdPlus() {
   const [myProfile, setMyProfile] = useState(null);
+  const [selectedPlan, setSelectedPlan] = useState('monthly');
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -287,8 +288,10 @@ export default function CrossdPlus() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
+                onClick={() => setSelectedPlan('monthly')}
+                className="cursor-pointer"
               >
-                <CrossdCard>
+                <CrossdCard className={selectedPlan === 'monthly' ? 'border-[#E70F72] border-2' : ''}>
                   <p className="text-white/65 text-sm mb-2">1 Month</p>
                   <div className="flex items-baseline gap-2 mb-1">
                     <span className="text-3xl font-bold text-white">£9.99</span>
@@ -303,8 +306,10 @@ export default function CrossdPlus() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.45 }}
+                onClick={() => setSelectedPlan('quarterly')}
+                className="cursor-pointer"
               >
-                <CrossdCard glow className="relative">
+                <CrossdCard glow={selectedPlan === 'quarterly'} className={`relative ${selectedPlan === 'quarterly' ? 'border-[#E70F72] border-2' : ''}`}>
                   <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-[#E70F72] text-black text-xs font-bold px-2 py-0.5 rounded-full">
                     Most Popular
                   </div>
@@ -322,9 +327,10 @@ export default function CrossdPlus() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="col-span-2"
+                className="col-span-2 cursor-pointer"
+                onClick={() => setSelectedPlan('yearly')}
               >
-                <CrossdCard className="relative overflow-hidden">
+                <CrossdCard className={`relative overflow-hidden ${selectedPlan === 'yearly' ? 'border-[#E70F72] border-2' : ''}`}>
                   <div className="absolute top-0 left-4 bg-amber-500 text-black text-xs font-bold px-3 py-1 rounded-b-lg">
                     Best Value
                   </div>
@@ -350,7 +356,7 @@ export default function CrossdPlus() {
               Maybe Later
             </button>
             <CrossdButton
-              onClick={() => subscribeMutation.mutate('monthly')}
+              onClick={() => subscribeMutation.mutate(selectedPlan)}
               loading={subscribeMutation.isPending}
               className="flex-1"
             >
