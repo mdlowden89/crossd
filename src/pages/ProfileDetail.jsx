@@ -289,43 +289,130 @@ export default function ProfileDetail() {
           )}
         </motion.div>
 
-        {/* Prompts */}
-        {profile.prompts && profile.prompts.map((prompt, index) => (
+        {/* Lifestyle Info Grid */}
+        {(profile.height || profile.ethnicity || profile.religion || profile.zodiac_sign || profile.drinking || profile.smoking) && (
           <motion.div
-            key={index}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.5 + index * 0.1 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
+            className="mb-6"
           >
-            <CrossdCard className="mb-4 hover:border-[#E70F72]/40 transition-colors cursor-default group">
-              <div className="flex items-start gap-3">
-                <div className="w-1 h-full bg-gradient-to-b from-[#E70F72] to-transparent rounded-full" />
-                <div className="flex-1">
-                  <p className="text-[#E70F72] text-xs font-semibold mb-2 uppercase tracking-wide">{prompt.question}</p>
-                  <p className="text-white text-lg leading-relaxed">{prompt.answer}</p>
+            <p className="text-white/45 text-xs uppercase tracking-wider mb-3 ml-1">About</p>
+            <div className="grid grid-cols-2 gap-3">
+              {profile.height && (
+                <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
+                  <p className="text-white/50 text-xs mb-1">Height</p>
+                  <p className="text-white font-medium">{profile.height} cm</p>
                 </div>
-              </div>
-            </CrossdCard>
+              )}
+              {profile.zodiac_sign && (
+                <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
+                  <p className="text-white/50 text-xs mb-1">Zodiac</p>
+                  <p className="text-white font-medium">{profile.zodiac_sign}</p>
+                </div>
+              )}
+              {profile.drinking && (
+                <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
+                  <p className="text-white/50 text-xs mb-1">Drinking</p>
+                  <p className="text-white font-medium">{profile.drinking}</p>
+                </div>
+              )}
+              {profile.smoking && (
+                <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
+                  <p className="text-white/50 text-xs mb-1">Smoking</p>
+                  <p className="text-white font-medium">{profile.smoking}</p>
+                </div>
+              )}
+            </div>
           </motion.div>
-        ))}
+        )}
+
+        {/* Prompts */}
+        {profile.prompts && profile.prompts.length > 0 && (
+          <div className="mb-6">
+            <p className="text-white/45 text-xs uppercase tracking-wider mb-3 ml-1">Prompts</p>
+            <div className="space-y-3">
+              {profile.prompts.map((prompt, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5 + index * 0.1 }}
+                  whileHover={{ x: 4 }}
+                  className="group"
+                >
+                  <div className="bg-gradient-to-br from-[#0B0B0B] via-[#1a1a1a] to-[#0B0B0B] border border-white/10 rounded-2xl p-5 hover:border-[#E70F72]/50 transition-all duration-300 shadow-lg">
+                    <div className="flex items-start gap-4">
+                      <div className="w-1.5 h-full bg-gradient-to-b from-[#E70F72] via-[#E70F72]/50 to-transparent rounded-full self-stretch min-h-[60px]" />
+                      <div className="flex-1">
+                        <p className="text-[#E70F72] text-xs font-bold mb-3 uppercase tracking-widest flex items-center gap-2">
+                          {prompt.question}
+                          <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </p>
+                        <p className="text-white/90 text-base leading-relaxed">{prompt.answer}</p>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Relationship Info */}
+        {(profile.relationship_type || profile.dating_intentions || profile.family_plans) && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="mb-6"
+          >
+            <p className="text-white/45 text-xs uppercase tracking-wider mb-3 ml-1">Looking For</p>
+            <div className="space-y-3">
+              {profile.dating_intentions && (
+                <div className="bg-gradient-to-r from-[#E70F72]/10 to-transparent border border-[#E70F72]/20 rounded-xl p-4">
+                  <p className="text-[#E70F72] text-xs mb-1.5 font-semibold">Dating Intentions</p>
+                  <p className="text-white font-medium">{profile.dating_intentions}</p>
+                </div>
+              )}
+              {profile.relationship_type && (
+                <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                  <p className="text-white/50 text-xs mb-1.5">Relationship Type</p>
+                  <p className="text-white font-medium">{profile.relationship_type}</p>
+                </div>
+              )}
+              {profile.family_plans && (
+                <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                  <p className="text-white/50 text-xs mb-1.5">Family Plans</p>
+                  <p className="text-white font-medium">{profile.family_plans}</p>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
 
         {/* Safety Actions */}
-        <div className="flex gap-3 mt-8">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.7 }}
+          className="flex gap-4 mt-8 pt-6 border-t border-white/5"
+        >
           <button
             onClick={() => setShowReportModal(true)}
-            className="flex items-center gap-2 text-white/45 hover:text-white/65 transition-colors"
+            className="flex items-center gap-2 text-white/40 hover:text-white/70 transition-colors text-sm"
           >
             <Flag className="w-4 h-4" />
             Report
           </button>
           <button
             onClick={handleBlock}
-            className="flex items-center gap-2 text-white/45 hover:text-white/65 transition-colors"
+            className="flex items-center gap-2 text-white/40 hover:text-white/70 transition-colors text-sm"
           >
             <Ban className="w-4 h-4" />
             Block
           </button>
-        </div>
+        </motion.div>
       </div>
 
       {/* Fixed Action Buttons */}
