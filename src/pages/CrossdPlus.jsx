@@ -233,100 +233,136 @@ export default function CrossdPlus() {
       ) : (
         // Upgrade Paywall
         <div className="space-y-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <CrossdCard className="border-[#E70F72]/50 text-center">
-            {/* Icon */}
-            <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 rounded-full border-2 border-[#E70F72] flex items-center justify-center">
-                <Star className="w-8 h-8 text-[#E70F72]" />
-              </div>
-            </div>
-
-            {/* Title */}
-            <h2 className="text-2xl font-bold text-center text-white mb-2">Unlock Crossd+</h2>
-            <p className="text-center text-white/65 text-sm mb-6">Choose a plan to get unlimited access and premium features!</p>
-
-            {/* Features */}
-            <div className="space-y-3 mb-8 py-6 border-t border-b border-white/10">
-              {[
-                { icon: Eye, label: 'See Who Likes You', desc: 'Instantly match with people who\'ve already shown interest.' },
-                { icon: Heart, label: 'Unlimited Likes', desc: 'Swipe right as much as you want without daily limits.' },
-                { icon: Sparkles, label: 'AI Spark Suggestions', desc: 'Get personalized place recommendations where you vibe thrives.' },
-                { icon: TrendingUp, label: 'VIP Profile Boost', desc: 'Get your profile seen by more people, faster.' }
-              ].map((feature, idx) => (
-                <div key={idx} className="flex gap-3">
-                  <feature.icon className="w-5 h-5 text-[#E70F72] flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-white text-sm font-medium">{feature.label}</p>
-                    <p className="text-white/50 text-xs">{feature.desc}</p>
+          {/* Features */}
+          <div className="space-y-4">
+            {[
+              { 
+                icon: Eye, 
+                label: 'See Who Likes You', 
+                desc: 'Instantly match with people who\'ve already shown interest'
+              },
+              { 
+                icon: Heart, 
+                label: 'Unlimited Likes', 
+                desc: 'Swipe right as much as you want without daily limits'
+              },
+              { 
+                icon: Sparkles, 
+                label: 'AI Spark Suggestions', 
+                desc: 'Get personalized place recommendations where you vibe thrives'
+              },
+              { 
+                icon: TrendingUp, 
+                label: 'VIP Profile Boost', 
+                desc: 'Get your profile seen by more people, faster'
+              }
+            ].map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <CrossdCard>
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center bg-[#E70F72]/20">
+                      <feature.icon className="w-6 h-6 text-[#E70F72]" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-white">{feature.label}</h3>
+                      <p className="text-white/65 text-sm">{feature.desc}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                </CrossdCard>
+              </motion.div>
+            ))}
+          </div>
 
-            {/* Pricing Plans */}
-            <p className="text-white text-sm font-medium mb-4">Choose Your Plan:</p>
-            <div className="grid grid-cols-2 gap-3 mb-6">
+          {/* Pricing */}
+          <div className="space-y-4 pt-4">
+            <h3 className="text-white text-sm font-medium">Choose Your Plan:</h3>
+            <div className="grid grid-cols-2 gap-3">
               {/* 1 Month */}
-              <div className="border border-[#E70F72]/50 rounded-lg p-4 bg-black/40 text-center hover:border-[#E70F72] transition-colors cursor-pointer">
-                <p className="text-white/65 text-xs mb-1">1 Month</p>
-                <div className="text-white font-bold mb-1">
-                  <span className="text-xl">£9.99</span>
-                </div>
-                <p className="text-white/50 text-xs mb-2">per month</p>
-                <p className="text-[#E70F72] text-xs">Save £3.00</p>
-              </div>
-
-              {/* 3 Months */}
-              <div className="border-2 border-[#E70F72] rounded-lg p-4 bg-[#E70F72]/10 text-center relative">
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-[#E70F72] text-black text-xs font-bold px-2 py-0.5 rounded-full">
-                  Most Popular
-                </div>
-                <p className="text-white/65 text-xs mb-1">3 Months</p>
-                <div className="text-white font-bold mb-1">
-                  <span className="text-xl">£29.99</span>
-                </div>
-                <p className="text-white/50 text-xs mb-2">3 billed every 3 months</p>
-                <p className="text-[#E70F72] text-xs">Save £8.99</p>
-              </div>
-
-              {/* 12 Months */}
-              <div className="col-span-2 border border-[#E70F72]/50 rounded-lg p-4 bg-black/40 text-center hover:border-[#E70F72] transition-colors cursor-pointer relative">
-                <div className="absolute -top-2 left-4 bg-amber-500 text-black text-xs font-bold px-2 py-0.5 rounded">
-                  Best Value
-                </div>
-                <p className="text-white/65 text-xs mb-1">12 Months</p>
-                <div className="text-white font-bold mb-1">
-                  <span className="text-2xl">£89.99</span>
-                  <span className="text-sm text-white/50 line-through ml-2">£165.88</span>
-                </div>
-                <p className="text-white/50 text-xs">Billed once yearly</p>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex gap-3">
-              <button
-                onClick={() => window.history.back()}
-                className="flex-1 px-4 py-3 rounded-full border border-white/20 text-white text-sm font-medium hover:border-[#E70F72]/50 transition-colors"
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
               >
-                Maybe Later
-              </button>
-              <CrossdButton
-                onClick={() => subscribeMutation.mutate('monthly')}
-                loading={subscribeMutation.isPending}
-                className="flex-1"
+                <CrossdCard>
+                  <p className="text-white/65 text-sm mb-2">1 Month</p>
+                  <div className="flex items-baseline gap-2 mb-1">
+                    <span className="text-3xl font-bold text-white">£9.99</span>
+                  </div>
+                  <p className="text-white/50 text-xs mb-2">per month</p>
+                  <p className="text-[#E70F72] text-xs">Save £3.00</p>
+                </CrossdCard>
+              </motion.div>
+
+              {/* 3 Months - Most Popular */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.45 }}
               >
-                Upgrade to Crossd+
-              </CrossdButton>
+                <CrossdCard glow className="relative">
+                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-[#E70F72] text-black text-xs font-bold px-2 py-0.5 rounded-full">
+                    Most Popular
+                  </div>
+                  <p className="text-white/65 text-sm mb-2">3 Months</p>
+                  <div className="flex items-baseline gap-2 mb-1">
+                    <span className="text-3xl font-bold text-white">£29.99</span>
+                  </div>
+                  <p className="text-white/50 text-xs mb-2">3 billed every 3 months</p>
+                  <p className="text-[#E70F72] text-xs">Save £8.99</p>
+                </CrossdCard>
+              </motion.div>
+
+              {/* 12 Months - Best Value */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="col-span-2"
+              >
+                <CrossdCard className="relative overflow-hidden">
+                  <div className="absolute top-0 left-4 bg-amber-500 text-black text-xs font-bold px-3 py-1 rounded-b-lg">
+                    Best Value
+                  </div>
+                  <div className="pt-4">
+                    <p className="text-white/65 text-sm mb-2">12 Months</p>
+                    <div className="flex items-baseline gap-2 mb-1">
+                      <span className="text-3xl font-bold text-white">£89.99</span>
+                      <span className="text-white/50 line-through text-sm">£165.88</span>
+                    </div>
+                    <p className="text-white/50 text-xs">Billed once yearly</p>
+                  </div>
+                </CrossdCard>
+              </motion.div>
             </div>
-            </CrossdCard>
-            </motion.div>
-            </div>
-            )}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-3 pt-4">
+            <button
+              onClick={() => window.history.back()}
+              className="flex-1 px-4 py-3 rounded-full border border-white/20 text-white text-sm font-medium hover:border-[#E70F72]/50 transition-colors"
+            >
+              Maybe Later
+            </button>
+            <CrossdButton
+              onClick={() => subscribeMutation.mutate('monthly')}
+              loading={subscribeMutation.isPending}
+              className="flex-1"
+            >
+              Upgrade to Crossd+
+            </CrossdButton>
+          </div>
+
+          <p className="text-white/45 text-xs text-center">
+            Cancel anytime. Prices may vary by location.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
