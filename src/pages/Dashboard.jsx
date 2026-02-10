@@ -513,7 +513,7 @@ export default function Dashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
           className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30 cursor-pointer hover:border-[#E70F72]/50 transition-colors"
-          onClick={() => setShowExpandedMap(true)}
+          onClick={() => navigate(createPageUrl('ActivityMapPage'))}
         >
           <div className="flex items-center gap-2 mb-2">
             <Map className="w-5 h-5 text-[#E70F72]" />
