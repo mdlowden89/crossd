@@ -602,16 +602,6 @@ export default function Dashboard() {
 
       </div>
 
-      {/* Expanded Map Modal */}
-      <AnimatePresence>
-        {showExpandedMap && (
-          <ExpandedActivityMap
-            moments={moments}
-            profile={profile}
-            onClose={() => setShowExpandedMap(false)}
-          />
-        )}
-      </AnimatePresence>
     </div>
   );
 }
