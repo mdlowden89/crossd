@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPageUrl } from '@/utils';
+import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
 import { 
@@ -237,16 +238,17 @@ export default function Settings() {
             </div>
           </CrossdCard>
 
-          <CrossdCard 
-            className="cursor-pointer hover:border-[#E70F72]/40"
-            onClick={() => window.location.href = createPageUrl('TermsOfService')}
-          >
-            <div className="flex items-center gap-4">
-              <FileText className="w-5 h-5 text-white/40" />
-              <p className="text-white">Terms of Service</p>
-              <ChevronRight className="w-5 h-5 text-white/40 ml-auto" />
-            </div>
-          </CrossdCard>
+          <Link to={createPageUrl('TermsOfService')}>
+            <CrossdCard 
+              className="cursor-pointer hover:border-[#E70F72]/40"
+            >
+              <div className="flex items-center gap-4">
+                <FileText className="w-5 h-5 text-white/40" />
+                <p className="text-white">Terms of Service</p>
+                <ChevronRight className="w-5 h-5 text-white/40 ml-auto" />
+              </div>
+            </CrossdCard>
+          </Link>
         </div>
       </div>
 

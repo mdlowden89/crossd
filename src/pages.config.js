@@ -55,6 +55,7 @@ import CrossdPlus from './pages/CrossdPlus';
 import Dashboard from './pages/Dashboard';
 import Explore from './pages/Explore';
 import FirstMoment from './pages/FirstMoment';
+import HelpCenter from './pages/HelpCenter';
 import Home from './pages/Home';
 import LogMoment from './pages/LogMoment';
 import MBTIQuiz from './pages/MBTIQuiz';
@@ -65,14 +66,13 @@ import Onboarding from './pages/Onboarding';
 import Profile from './pages/Profile';
 import ProfileDetail from './pages/ProfileDetail';
 import Recaps from './pages/Recaps';
+import SafetyPrivacy from './pages/SafetyPrivacy';
 import Settings from './pages/Settings';
 import SetupProfile from './pages/SetupProfile';
+import TermsOfService from './pages/TermsOfService';
 import Trail from './pages/Trail';
 import Verification from './pages/Verification';
 import Welcome from './pages/Welcome';
-import HelpCenter from './pages/HelpCenter';
-import SafetyPrivacy from './pages/SafetyPrivacy';
-import TermsOfService from './pages/TermsOfService';
 import __Layout from './Layout.jsx';
 
 
@@ -85,6 +85,7 @@ export const PAGES = {
     "Dashboard": Dashboard,
     "Explore": Explore,
     "FirstMoment": FirstMoment,
+    "HelpCenter": HelpCenter,
     "Home": Home,
     "LogMoment": LogMoment,
     "MBTIQuiz": MBTIQuiz,
@@ -95,14 +96,13 @@ export const PAGES = {
     "Profile": Profile,
     "ProfileDetail": ProfileDetail,
     "Recaps": Recaps,
+    "SafetyPrivacy": SafetyPrivacy,
     "Settings": Settings,
     "SetupProfile": SetupProfile,
+    "TermsOfService": TermsOfService,
     "Trail": Trail,
     "Verification": Verification,
     "Welcome": Welcome,
-    "HelpCenter": HelpCenter,
-    "SafetyPrivacy": SafetyPrivacy,
-    "TermsOfService": TermsOfService,
 }
 
 export const pagesConfig = {
