@@ -48,6 +48,25 @@ export default function ActivityMapPage() {
       {/* Map - fills most of screen */}
       <div className="flex-1 w-full h-full overflow-hidden" ref={setMapRef}>
         {profile && <ActivityMap moments={moments} profile={profile} mapRef={mapRef} />}
+        
+        {/* Location button - right side, bottom third */}
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => {
+            navigator.geolocation.getCurrentPosition((pos) => {
+              if (mapRef) {
+                const leafletMap = mapRef.querySelector('.leaflet-container')?._leaflet_map;
+                if (leafletMap) {
+                  leafletMap.setView([pos.coords.latitude, pos.coords.longitude], 15);
+                }
+              }
+            });
+          }}
+          className="absolute right-6 bottom-32 z-[9999] p-3 rounded-full bg-[#E70F72] hover:bg-[#ff1a8c] transition-all shadow-lg"
+        >
+          <Compass className="w-6 h-6 text-white" />
+        </motion.button>
       </div>
 
       {/* Bottom Action Buttons */}
