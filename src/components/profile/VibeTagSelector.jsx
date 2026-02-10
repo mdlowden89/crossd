@@ -51,6 +51,89 @@ const VIBE_TAG_CATEGORIES = {
       { name: 'Aquarius', emoji: '♒' },
       { name: 'Pisces', emoji: '♓' },
     ]
+  },
+  cognitive: {
+    label: 'Mental Energy',
+    tags: [
+      { name: 'Deep Thinker', emoji: '🧩' },
+      { name: 'Overthinker', emoji: '🌀' },
+      { name: 'Focused', emoji: '🎯' },
+      { name: 'Go-with-the-flow', emoji: '🌊' },
+      { name: 'Curious', emoji: '🔍' },
+      { name: 'Analytical', emoji: '🧠' },
+      { name: 'Introspective', emoji: '💭' },
+      { name: 'Experimental', emoji: '🧪' },
+      { name: 'Mindful', emoji: '🧘' },
+    ]
+  },
+  communication: {
+    label: 'Communication & Social Style',
+    tags: [
+      { name: 'Great Listener', emoji: '🎤' },
+      { name: 'Storyteller', emoji: '🗣' },
+      { name: 'Flirty', emoji: '😏' },
+      { name: 'Emotionally Open', emoji: '🤍' },
+      { name: 'Guarded at First', emoji: '🧱' },
+      { name: 'Dry Humour', emoji: '🧊' },
+      { name: 'Playful Teaser', emoji: '😄' },
+      { name: 'Calm Communicator', emoji: '🧘' },
+      { name: 'Passionate Talker', emoji: '🔥' },
+    ]
+  },
+  energy: {
+    label: 'Energy Rhythm',
+    tags: [
+      { name: 'Sunrise Chaser', emoji: '🌅' },
+      { name: 'Late-Night Thinker', emoji: '🌙' },
+      { name: 'Burst Energy', emoji: '⚡' },
+      { name: 'Consistent Routine', emoji: '🔁' },
+      { name: 'Slow & Steady', emoji: '🐢' },
+      { name: 'Spontaneous Bursts', emoji: '🚀' },
+      { name: 'Recharge Alone', emoji: '🛌' },
+      { name: 'Social Battery Saver', emoji: '🔋' },
+    ]
+  },
+  dating: {
+    label: 'Dating & Connection Style',
+    tags: [
+      { name: 'Slow Burn', emoji: '🕯' },
+      { name: 'Instant Spark', emoji: '⚡' },
+      { name: 'Emotional First', emoji: '🧠' },
+      { name: 'Physical Chemistry Matters', emoji: '🔥' },
+      { name: 'Friends-to-Lovers', emoji: '💬' },
+      { name: 'Intentional Dating', emoji: '🧭' },
+      { name: 'Emotional Adventurer', emoji: '🎢' },
+      { name: 'Mutual Effort Matters', emoji: '🪞' },
+      { name: 'Low-Drama', emoji: '🧘' },
+    ]
+  },
+  lifestyle: {
+    label: 'Lifestyle & Values',
+    tags: [
+      { name: 'Eco-Conscious', emoji: '🌱' },
+      { name: 'Health-Focused', emoji: '🏋️' },
+      { name: 'Wellness-Oriented', emoji: '🧘' },
+      { name: 'Minimalist', emoji: '🎒' },
+      { name: 'Career-Driven', emoji: '💼' },
+      { name: 'Homebody', emoji: '🏡' },
+      { name: 'Global Citizen', emoji: '🌍' },
+      { name: 'Aesthetic-Led', emoji: '🎨' },
+      { name: 'Values Freedom', emoji: '🕊' },
+    ]
+  },
+  culture: {
+    label: 'Culture & Sensory',
+    tags: [
+      { name: 'Live Sets', emoji: '🎧' },
+      { name: 'Acoustic Lover', emoji: '🎼' },
+      { name: 'Indie Films', emoji: '🎥' },
+      { name: 'Bookish', emoji: '📚' },
+      { name: 'Casual Gamer', emoji: '🎮' },
+      { name: 'Visual Thinker', emoji: '🎨' },
+      { name: 'Candlelit Everything', emoji: '🕯' },
+      { name: 'Coffee Over Cocktails', emoji: '☕' },
+      { name: 'Wine Nights', emoji: '🍷' },
+    ]
   }
 };
 
