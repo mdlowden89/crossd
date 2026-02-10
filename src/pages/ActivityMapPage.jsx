@@ -107,13 +107,14 @@ export default function ActivityMapPage() {
           <MapPin className="w-6 h-6 md:w-7 md:h-7 text-[#E70F72]" />
         </motion.button>
 
-        {/* Button 3 - Share */}
+        {/* Button 3 - Insights */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
+          onClick={() => setShowInsights(true)}
           className="flex-1 h-14 md:h-16 rounded-2xl bg-gradient-to-b from-[#E70F72]/20 to-[#E70F72]/10 border border-[#E70F72]/30 flex items-center justify-center hover:border-[#E70F72]/50 transition-colors"
         >
-          <Share2 className="w-6 h-6 md:w-7 md:h-7 text-[#E70F72]" />
+          <Zap className="w-6 h-6 md:w-7 md:h-7 text-[#E70F72]" />
         </motion.button>
       </div>
     </div>
