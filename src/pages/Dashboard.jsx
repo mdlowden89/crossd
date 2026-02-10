@@ -512,8 +512,9 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30">
-
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30 cursor-pointer hover:border-[#E70F72]/50 transition-colors"
+          onClick={() => setShowExpandedMap(true)}
+        >
           <div className="flex items-center gap-2 mb-2">
             <Map className="w-5 h-5 text-[#E70F72]" />
             <h2 className="text-2xl font-bold text-white">Your Activity Map</h2>
@@ -523,6 +524,7 @@ export default function Dashboard() {
           </p>
           
           <ActivityMap moments={moments} profile={profile} />
+          <p className="text-white/50 text-xs text-center mt-3">Click to expand</p>
         </motion.div>
 
         {/* Challenges Section */}
