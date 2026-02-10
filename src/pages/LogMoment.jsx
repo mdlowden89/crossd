@@ -308,6 +308,26 @@ export default function LogMoment() {
               </select>
             </div>
 
+            {/* Hair Color */}
+            <div className="mb-6">
+              <label className="block text-sm font-medium mb-3">Their Hair Colour</label>
+              <select
+                value={hairColor}
+                onChange={(e) => setHairColor(e.target.value)}
+                className="w-full bg-[#0B0B0B] border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#E70F72] transition-colors"
+              >
+                <option value="">Prefer not to describe</option>
+                <option value="black">Black</option>
+                <option value="brown">Brown</option>
+                <option value="blonde">Blonde</option>
+                <option value="red">Red</option>
+                <option value="grey">Grey</option>
+                <option value="white">White</option>
+                <option value="dyed">Dyed/Coloured</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
             {/* Other Details */}
             <div className="mb-6">
               <label className="block text-sm font-medium mb-3">Other details about them (Optional)</label>
