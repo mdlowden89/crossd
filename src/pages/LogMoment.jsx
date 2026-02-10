@@ -36,6 +36,8 @@ const geohash = (lat, lng, precision = 7) => {
   return hash;
 };
 
+const libraries = ['places'];
+
 export default function LogMoment() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
@@ -43,11 +45,9 @@ export default function LogMoment() {
   const [userLocation, setUserLocation] = useState(null);
 
   // Step 1: Location
-  const [searchInput, setSearchInput] = useState('');
-  const [predictions, setPredictions] = useState([]);
   const [selectedPlace, setSelectedPlace] = useState(null);
-  const [searchLoading, setSearchLoading] = useState(false);
-  const searchTimeout = useRef(null);
+  const searchBoxRef = useRef(null);
+  const [apiKey, setApiKey] = useState(null);
 
   // Step 2: Details
   const [ethnicity, setEthnicity] = useState('');
