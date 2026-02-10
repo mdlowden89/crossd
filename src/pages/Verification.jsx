@@ -14,6 +14,7 @@ export default function Verification() {
   const [capturing, setCapturing] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
+  const [verificationResult, setVerificationResult] = useState(null);
   const videoRef = useRef(null);
   const streamRef = useRef(null);
 
@@ -53,32 +54,52 @@ export default function Verification() {
   const capturePhoto = async () => {
     if (!videoRef.current) return;
     setUploading(true);
+    setError('');
 
     const canvas = document.createElement('canvas');
     canvas.width = videoRef.current.videoWidth;
     canvas.height = videoRef.current.videoHeight;
     canvas.getContext('2d').drawImage(videoRef.current, 0, 0);
-    
+
     canvas.toBlob(async (blob) => {
       const file = new File([blob], 'verification-selfie.jpg', { type: 'image/jpeg' });
-      
+
       try {
         const { file_url } = await base44.integrations.Core.UploadFile({ file });
-        
-        await base44.entities.Profile.update(myProfile.id, {
-          verification_selfie_url: file_url,
-          verification_status: 'pending'
+
+        // Get primary profile photo
+        const primaryPhoto = myProfile.photos?.find(p => p.is_primary) || myProfile.photos?.[0];
+        if (!primaryPhoto) {
+          setError('No profile photo found. Please add a profile photo first.');
+          setUploading(false);
+          return;
+        }
+
+        // Compare selfie with profile photo
+        const { data: verification } = await base44.functions.invoke('verifyIdentity', {
+          selfie_url: file_url,
+          profile_photo_url: primaryPhoto.url
         });
+
+        setVerificationResult(verification);
+
+        // Only mark as pending if recommendation is not reject
+        if (verification.recommendation !== 'reject') {
+          await base44.entities.Profile.update(myProfile.id, {
+            verification_selfie_url: file_url,
+            verification_status: 'pending'
+          });
+        }
 
         // Stop camera
         if (streamRef.current) {
           streamRef.current.getTracks().forEach(track => track.stop());
         }
-        
+
         setCapturing(false);
         loadProfile();
       } catch (err) {
-        setError('Failed to upload photo. Please try again.');
+        setError('Failed to process photo. Please try again.');
       }
       setUploading(false);
     }, 'image/jpeg', 0.9);
@@ -147,7 +168,63 @@ export default function Verification() {
         <h1 className="text-xl font-bold text-white">Verification</h1>
       </div>
 
-      {capturing ? (
+      {verificationResult && !capturing ? (
+        // Verification Result View
+        <div className="space-y-6">
+          <CrossdCard className={`text-center py-8 border-2 ${
+            verificationResult.is_match 
+              ? 'border-green-500/50 bg-green-500/10' 
+              : 'border-red-500/50 bg-red-500/10'
+          }`}>
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className={`w-20 h-20 mx-auto rounded-full ${
+                verificationResult.is_match 
+                  ? 'bg-green-500/20' 
+                  : 'bg-red-500/20'
+              } flex items-center justify-center mb-4`}
+            >
+              {verificationResult.is_match ? (
+                <CheckCircle className="w-10 h-10 text-green-500" />
+              ) : (
+                <XCircle className="w-10 h-10 text-red-500" />
+              )}
+            </motion.div>
+            <h2 className="text-xl font-bold text-white mb-2">
+              {verificationResult.is_match ? 'Identity Verified!' : 'Identity Mismatch'}
+            </h2>
+            <p className="text-white/65 mb-4">{verificationResult.feedback}</p>
+            <div className="text-sm text-white/50">
+              Match Score: {verificationResult.match_score}% ({verificationResult.confidence} confidence)
+            </div>
+          </CrossdCard>
+
+          {/* Reasons */}
+          {verificationResult.reasons && verificationResult.reasons.length > 0 && (
+            <div className="space-y-2">
+              <p className="text-white/65 text-sm">Analysis:</p>
+              {verificationResult.reasons.map((reason, idx) => (
+                <div key={idx} className="flex items-start gap-2 p-3 bg-white/5 rounded-lg">
+                  <span className="text-[#E70F72] mt-0.5">•</span>
+                  <span className="text-white/75 text-sm">{reason}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <CrossdButton 
+            className="w-full" 
+            size="lg" 
+            onClick={() => {
+              setVerificationResult(null);
+              loadProfile();
+            }}
+          >
+            Continue
+          </CrossdButton>
+        </div>
+      ) : capturing ? (
         // Camera View
         <div className="space-y-6">
           <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-[#0B0B0B]">

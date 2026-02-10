@@ -63,13 +63,13 @@ import Moments from './pages/Moments';
 import Notifications from './pages/Notifications';
 import Onboarding from './pages/Onboarding';
 import Profile from './pages/Profile';
+import ProfileDetail from './pages/ProfileDetail';
 import Recaps from './pages/Recaps';
 import Settings from './pages/Settings';
 import SetupProfile from './pages/SetupProfile';
 import Trail from './pages/Trail';
 import Verification from './pages/Verification';
 import Welcome from './pages/Welcome';
-import ProfileDetail from './pages/ProfileDetail';
 import __Layout from './Layout.jsx';
 
 
@@ -90,13 +90,13 @@ export const PAGES = {
     "Notifications": Notifications,
     "Onboarding": Onboarding,
     "Profile": Profile,
+    "ProfileDetail": ProfileDetail,
     "Recaps": Recaps,
     "Settings": Settings,
     "SetupProfile": SetupProfile,
     "Trail": Trail,
     "Verification": Verification,
     "Welcome": Welcome,
-    "ProfileDetail": ProfileDetail,
 }
 
 export const pagesConfig = {
