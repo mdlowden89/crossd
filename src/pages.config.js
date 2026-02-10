@@ -71,6 +71,7 @@ import Trail from './pages/Trail';
 import Verification from './pages/Verification';
 import Welcome from './pages/Welcome';
 import HelpCenter from './pages/HelpCenter';
+import SafetyPrivacy from './pages/SafetyPrivacy';
 import __Layout from './Layout.jsx';
 
 
@@ -99,6 +100,7 @@ export const PAGES = {
     "Verification": Verification,
     "Welcome": Welcome,
     "HelpCenter": HelpCenter,
+    "SafetyPrivacy": SafetyPrivacy,
 }
 
 export const pagesConfig = {
