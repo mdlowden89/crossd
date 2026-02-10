@@ -143,70 +143,67 @@ export default function LogMoment() {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-      <div className="sticky top-0 z-10 bg-black/80 backdrop-blur border-b border-white/10 px-4 py-4">
-        <div className="flex items-center justify-between">
-          <button
-            onClick={() => step === 1 ? navigate(createPageUrl('Moments')) : setStep(1)}
-            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-          <h1 className="text-lg font-semibold">
-            {step === 1 ? 'Log a Moment' : 'Describe the Moment'}
-          </h1>
-          <div className="w-10" />
-        </div>
+  if (!apiKey) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-[#E70F72] animate-spin" />
       </div>
+    );
+  }
 
-      <div className="px-4 py-6">
-        {step === 1 ? (
-          // Step 1: Location Selection
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-2xl mx-auto"
-          >
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2">Set Your Location</h2>
-              <p className="text-white/60">Step 1 of 2</p>
-            </div>
+  return (
+    <LoadScript googleMapsApiKey={apiKey} libraries={libraries}>
+      <div className="min-h-screen bg-black text-white">
+        {/* Header */}
+        <div className="sticky top-0 z-10 bg-black/80 backdrop-blur border-b border-white/10 px-4 py-4">
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => step === 1 ? navigate(createPageUrl('Moments')) : setStep(1)}
+              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <h1 className="text-lg font-semibold">
+              {step === 1 ? 'Log a Moment' : 'Describe the Moment'}
+            </h1>
+            <div className="w-10" />
+          </div>
+        </div>
 
-            {/* Search Input */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium mb-3">Search for a place or address</label>
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
-                <input
-                  type="text"
-                  value={searchInput}
-                  onChange={(e) => handleSearchInput(e.target.value)}
-                  placeholder="e.g., Coffee shop in Purley..."
-                  className="w-full bg-[#0B0B0B] border border-white/15 rounded-xl pl-12 pr-4 py-3.5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#E70F72] transition-colors"
-                />
-                {searchLoading && (
-                  <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#E70F72] animate-spin" />
-                )}
+        <div className="px-4 py-6">
+          {step === 1 ? (
+            // Step 1: Location Selection
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="max-w-2xl mx-auto"
+            >
+              <div className="mb-6">
+                <h2 className="text-2xl font-bold mb-2">Set Your Location</h2>
+                <p className="text-white/60">Step 1 of 2</p>
               </div>
 
-              {/* Predictions Dropdown */}
-              {predictions.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-[#0B0B0B] border border-white/15 rounded-xl overflow-hidden shadow-lg z-20">
-                  {predictions.map((prediction) => (
-                    <button
-                      key={prediction.place_id}
-                      onClick={() => handleSelectPlace(prediction)}
-                      className="w-full px-4 py-3 text-left hover:bg-white/10 transition-colors border-b border-white/10 last:border-b-0"
-                    >
-                      <p className="font-medium text-white">{prediction.main_text}</p>
-                      <p className="text-sm text-white/60">{prediction.secondary_text}</p>
-                    </button>
-                  ))}
+              {/* Search Input with Google Places Autocomplete */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium mb-3">Search for a place or address</label>
+                <div className="relative">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40 z-10 pointer-events-none" />
+                  <StandaloneSearchBox
+                    onLoad={onLoad}
+                    onPlacesChanged={onPlacesChanged}
+                    bounds={userLocation ? new window.google.maps.LatLngBounds(
+                      new window.google.maps.LatLng(userLocation.lat - 0.1, userLocation.lng - 0.1),
+                      new window.google.maps.LatLng(userLocation.lat + 0.1, userLocation.lng + 0.1)
+                    ) : undefined}
+                  >
+                    <input
+                      type="text"
+                      placeholder="e.g., Coffee shop in Purley..."
+                      className="w-full bg-[#0B0B0B] border border-white/15 rounded-xl pl-12 pr-4 py-3.5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#E70F72] transition-colors"
+                    />
+                  </StandaloneSearchBox>
                 </div>
-              )}
-            </div>
+              </div>
 
             {/* Selected Place */}
             {selectedPlace && (
