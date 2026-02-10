@@ -243,7 +243,7 @@ export default function ProfileDetail() {
               profile.smoking && { icon: Wind, text: `Smokes ${profile.smoking.toLowerCase()}` },
               profile.height && { 
                 icon: Ruler, 
-                text: `${Math.floor(profile.height / 30.48)}'${Math.round((profile.height % 30.48) / 2.54)}"` 
+                text: `${Math.floor((profile.height / 2.54) / 12)}'${Math.round((profile.height / 2.54) % 12)}"` 
               }
             ].filter(Boolean).slice(0, 4);
 
