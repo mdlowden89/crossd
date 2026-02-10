@@ -60,13 +60,23 @@ export default function ActivityMapPage() {
           <Heart className="w-6 h-6 md:w-7 md:h-7 text-[#E70F72]" />
         </motion.button>
 
-        {/* Button 2 - Compass */}
+        {/* Button 2 - Location */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
+          onClick={() => {
+            navigator.geolocation.getCurrentPosition((pos) => {
+              if (mapRef) {
+                const leafletMap = mapRef.querySelector('.leaflet-container')?._leaflet_map;
+                if (leafletMap) {
+                  leafletMap.setView([pos.coords.latitude, pos.coords.longitude], 15);
+                }
+              }
+            });
+          }}
           className="flex-1 h-14 md:h-16 rounded-2xl bg-gradient-to-b from-[#E70F72]/20 to-[#E70F72]/10 border border-[#E70F72]/30 flex items-center justify-center hover:border-[#E70F72]/50 transition-colors"
         >
-          <Compass className="w-6 h-6 md:w-7 md:h-7 text-[#E70F72]" />
+          <MapPin className="w-6 h-6 md:w-7 md:h-7 text-[#E70F72]" />
         </motion.button>
 
         {/* Button 3 - Share */}
