@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { 
   ChevronLeft, Heart, X, MapPin, Briefcase, BadgeCheck, 
   Sparkles, Flag, Ban, ChevronRight, Ruler, Users, Baby, 
-  HeartHandshake, Wine, Star, Wind
+  HeartHandshake, Wine, Star, Wind, Church
 } from 'lucide-react';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
@@ -328,7 +328,7 @@ export default function ProfileDetail() {
         </motion.div>
 
         {/* Lifestyle Info Grid */}
-        {(profile.height || profile.ethnicity || profile.children || profile.family_plans || profile.drinking || profile.smoking || profile.zodiac_sign) && (
+        {(profile.height || profile.ethnicity || profile.religion || profile.children || profile.family_plans || profile.drinking || profile.smoking || profile.zodiac_sign) && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -353,6 +353,15 @@ export default function ProfileDetail() {
                     <p className="text-white/50 text-xs">Ethnicity</p>
                   </div>
                   <p className="text-white font-medium">{profile.ethnicity.replace('White/Caucasian', 'White').replace('Black/African Descent', 'Black')}</p>
+                </div>
+              )}
+              {profile.religion && profile.religion !== 'Prefer Not to Say' && (
+                <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Church className="w-4 h-4 text-[#E70F72]" />
+                    <p className="text-white/50 text-xs">Religion</p>
+                  </div>
+                  <p className="text-white font-medium">{profile.religion}</p>
                 </div>
               )}
               {profile.children && (
