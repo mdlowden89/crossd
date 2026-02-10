@@ -221,7 +221,7 @@ export default function ProfileDetail() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.1 }}
-          className="flex items-center gap-3 mb-6"
+          className="flex flex-wrap items-center gap-2 mb-6"
         >
           {profile.job_title && (
             <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
@@ -233,6 +233,26 @@ export default function ProfileDetail() {
             <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
               <MapPin className="w-3.5 h-3.5 text-[#E70F72]" />
               <span className="text-white/80 text-sm">{profile.city}</span>
+            </div>
+          )}
+          {profile.ethnicity && profile.ethnicity !== 'Prefer Not to Say' && (
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
+              <span className="text-white/80 text-sm">{profile.ethnicity}</span>
+            </div>
+          )}
+          {profile.children && (
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
+              <span className="text-white/80 text-sm">{profile.children}</span>
+            </div>
+          )}
+          {profile.family_plans && (
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
+              <span className="text-white/80 text-sm">{profile.family_plans}</span>
+            </div>
+          )}
+          {profile.drinking && (
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
+              <span className="text-white/80 text-sm">Drinks {profile.drinking.toLowerCase()}</span>
             </div>
           )}
         </motion.div>
