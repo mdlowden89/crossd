@@ -94,60 +94,96 @@ export default function ProfileDetail() {
   return (
     <div className="min-h-screen bg-black">
       {/* Photo Gallery */}
-      <div className="relative">
-        <div className="aspect-[3/4] max-h-[70vh]">
+      <div className="relative overflow-hidden">
+        <motion.div 
+          className="aspect-[3/4] max-h-[70vh] relative"
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           {photos.length > 0 ? (
-            <img
+            <motion.img
+              key={currentPhotoIndex}
               src={photos[currentPhotoIndex]?.url}
               alt={profile.display_name}
               className="w-full h-full object-cover"
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4 }}
             />
           ) : (
-            <div className="w-full h-full bg-[#1a1a1a] flex items-center justify-center">
+            <div className="w-full h-full bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] flex items-center justify-center">
               <span className="text-white/40">No photos</span>
             </div>
           )}
-        </div>
+          
+          {/* Animated gradient overlays */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-60" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#E70F72]/10 via-transparent to-transparent mix-blend-overlay" />
+        </motion.div>
 
-        {/* Photo Indicators */}
+        {/* Photo Indicators - redesigned */}
         {photos.length > 1 && (
-          <div className="absolute top-4 left-4 right-4 flex gap-1">
+          <div className="absolute top-6 left-6 right-6 flex gap-1.5 z-20">
             {photos.map((_, index) => (
-              <button
+              <motion.button
                 key={index}
                 onClick={() => setCurrentPhotoIndex(index)}
-                className={`h-1 flex-1 rounded-full transition-colors ${
-                  index === currentPhotoIndex ? 'bg-white' : 'bg-white/30'
+                whileHover={{ scale: 1.2 }}
+                className={`h-1 flex-1 rounded-full transition-all duration-300 ${
+                  index === currentPhotoIndex 
+                    ? 'bg-white shadow-lg shadow-white/50' 
+                    : 'bg-white/25 backdrop-blur-sm'
                 }`}
               />
             ))}
           </div>
         )}
 
-        {/* Back Button */}
-        <button
+        {/* Back Button - glassmorphic */}
+        <motion.button
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
           onClick={() => window.history.back()}
-          className="absolute top-4 left-4 w-10 h-10 bg-black/50 rounded-full flex items-center justify-center mt-4"
+          className="absolute top-16 left-6 w-11 h-11 bg-black/40 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/10 z-20"
         >
           <ChevronLeft className="w-6 h-6 text-white" />
-        </button>
+        </motion.button>
+
+        {/* Glow badge if active */}
+        {isGlowing && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="absolute top-16 right-6 z-20"
+          >
+            <div className="px-4 py-2 bg-[#E70F72]/90 backdrop-blur-xl rounded-full border border-[#E70F72] shadow-lg shadow-[#E70F72]/50 flex items-center gap-2">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              >
+                <Sparkles className="w-4 h-4 text-white" />
+              </motion.div>
+              <span className="text-white text-xs font-semibold">GLOW MODE</span>
+            </div>
+          </motion.div>
+        )}
 
         {/* Photo Navigation */}
         {photos.length > 1 && (
           <>
             <button
               onClick={() => setCurrentPhotoIndex(Math.max(0, currentPhotoIndex - 1))}
-              className="absolute left-0 top-0 bottom-0 w-1/3"
+              className="absolute left-0 top-0 bottom-0 w-1/3 z-10"
+              disabled={currentPhotoIndex === 0}
             />
             <button
               onClick={() => setCurrentPhotoIndex(Math.min(photos.length - 1, currentPhotoIndex + 1))}
-              className="absolute right-0 top-0 bottom-0 w-1/3"
+              className="absolute right-0 top-0 bottom-0 w-1/3 z-10"
+              disabled={currentPhotoIndex === photos.length - 1}
             />
           </>
         )}
-
-        {/* Gradient Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent" />
       </div>
 
       {/* Profile Info */}
