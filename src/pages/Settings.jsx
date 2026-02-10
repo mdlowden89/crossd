@@ -231,13 +231,15 @@ export default function Settings() {
             </CrossdCard>
           </Link>
 
-          <CrossdCard className="cursor-pointer hover:border-[#E70F72]/40">
-            <div className="flex items-center gap-4">
-              <FileText className="w-5 h-5 text-white/40" />
-              <p className="text-white">Privacy Policy</p>
-              <ChevronRight className="w-5 h-5 text-white/40 ml-auto" />
-            </div>
-          </CrossdCard>
+          <Link to={createPageUrl('PrivacyPolicy')}>
+            <CrossdCard className="cursor-pointer hover:border-[#E70F72]/40">
+              <div className="flex items-center gap-4">
+                <FileText className="w-5 h-5 text-white/40" />
+                <p className="text-white">Privacy Policy</p>
+                <ChevronRight className="w-5 h-5 text-white/40 ml-auto" />
+              </div>
+            </CrossdCard>
+          </Link>
 
           <Link to={createPageUrl('TermsOfService')}>
             <CrossdCard 
