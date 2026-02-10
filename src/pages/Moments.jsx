@@ -14,6 +14,9 @@ import { CrossdInput } from '@/components/ui/crossd-input';
 import { CrossdModal } from '@/components/ui/crossd-modal';
 import { format } from 'date-fns';
 import MomentsTrail from '@/components/moments/MomentsTrail';
+import SparkSuggestionsSection from '@/components/moments/SparkSuggestionsSection';
+import SparkSuggestionsUpsell from '@/components/moments/SparkSuggestionsUpsell';
+import { LoadScript } from '@react-google-maps/api';
 
 // Geohash encoder
 function encodeGeohash(lat, lng, precision = 7) {
@@ -160,18 +163,31 @@ const generateSampleMoments = () => {
   ];
 };
 
+const libraries = ['places'];
+
 export default function Moments() {
   const [myProfile, setMyProfile] = useState(null);
+  const [apiKey, setApiKey] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     loadProfile();
+    fetchApiKey();
   }, []);
 
   const loadProfile = async () => {
     const user = await base44.auth.me();
     const profiles = await base44.entities.Profile.filter({ user_id: user.id });
     if (profiles.length > 0) setMyProfile(profiles[0]);
+  };
+
+  const fetchApiKey = async () => {
+    try {
+      const key = await base44.functions.invoke('getGoogleApiKey');
+      setApiKey(key.data.apiKey);
+    } catch (error) {
+      console.error('Error fetching API key:', error);
+    }
   };
 
   const { data: moments = [], isLoading } = useQuery({
@@ -193,8 +209,17 @@ export default function Moments() {
     enabled: !!myProfile
   });
 
+  if (!apiKey) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-[#E70F72] animate-spin" />
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-black px-4 py-4">
+    <LoadScript googleMapsApiKey={apiKey} libraries={libraries}>
+      <div className="min-h-screen bg-black px-4 py-4">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
@@ -265,7 +290,16 @@ export default function Moments() {
          </>
        )}
 
+       {/* Spark Suggestions */}
+       {moments.length > 0 && myProfile && (
+         myProfile.crossd_plus ? (
+           <SparkSuggestionsSection profile={myProfile} apiKey={apiKey} />
+         ) : (
+           <SparkSuggestionsUpsell />
+         )
+       )}
 
-    </div>
+      </div>
+    </LoadScript>
   );
 }
