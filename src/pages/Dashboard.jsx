@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import {
@@ -11,6 +11,7 @@ import {
 import { CrossdButton } from '@/components/ui/crossd-button';
 import CrossdProgressRing from '@/components/ui/crossd-progress-ring';
 import ActivityMap from '@/components/dashboard/ActivityMap';
+import ExpandedActivityMap from '@/components/dashboard/ExpandedActivityMap';
 import PersonalityCard from '@/components/mbti/PersonalityCard';
 import ChallengesSection from '@/components/dashboard/ChallengesSection';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -18,6 +19,7 @@ import { Progress } from '@/components/ui/progress';
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
+  const [showExpandedMap, setShowExpandedMap] = useState(false);
 
   useEffect(() => {
     base44.auth.me().then(setUser);
@@ -597,6 +599,17 @@ export default function Dashboard() {
         </motion.div>
 
       </div>
-    </div>);
 
+      {/* Expanded Map Modal */}
+      <AnimatePresence>
+        {showExpandedMap && (
+          <ExpandedActivityMap
+            moments={moments}
+            profile={profile}
+            onClose={() => setShowExpandedMap(false)}
+          />
+        )}
+      </AnimatePresence>
+    </div>
+  );
 }
