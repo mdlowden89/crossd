@@ -17,6 +17,7 @@ const GLOW_COOLDOWN_HOURS = 24;
 
 export default function CrossdPlus() {
   const [myProfile, setMyProfile] = useState(null);
+  const [selectedPlan, setSelectedPlan] = useState('monthly');
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -237,25 +238,24 @@ export default function CrossdPlus() {
           <div className="space-y-4">
             {[
               { 
-                icon: Zap, 
-                label: 'Glow Mode', 
-                desc: 'Boost your profile to the top for 24 hours',
-                highlight: true
-              },
-              { 
-                icon: BarChart2, 
-                label: 'Weekly Recaps', 
-                desc: 'Beautiful shareable stats like Spotify Wrapped'
-              },
-              { 
-                icon: Crown, 
-                label: 'Premium Badge', 
-                desc: 'Stand out with the Crossd+ badge'
-              },
-              { 
                 icon: Eye, 
                 label: 'See Who Likes You', 
-                desc: 'Know who\'s interested before you swipe'
+                desc: 'Instantly match with people who\'ve already shown interest'
+              },
+              { 
+                icon: Heart, 
+                label: 'Unlimited Likes', 
+                desc: 'Swipe right as much as you want without daily limits'
+              },
+              { 
+                icon: Sparkles, 
+                label: 'AI Spark Suggestions', 
+                desc: 'Get personalized place recommendations where you vibe thrives'
+              },
+              { 
+                icon: TrendingUp, 
+                label: 'VIP Profile Boost', 
+                desc: 'Get your profile seen by more people, faster'
               }
             ].map((feature, index) => (
               <motion.div
@@ -264,12 +264,10 @@ export default function CrossdPlus() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <CrossdCard glow={feature.highlight}>
+                <CrossdCard>
                   <div className="flex items-center gap-4">
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                      feature.highlight ? 'bg-[#E70F72]' : 'bg-[#E70F72]/20'
-                    }`}>
-                      <feature.icon className={`w-6 h-6 ${feature.highlight ? 'text-black' : 'text-[#E70F72]'}`} />
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center bg-[#E70F72]/20">
+                      <feature.icon className="w-6 h-6 text-[#E70F72]" />
                     </div>
                     <div>
                       <h3 className="font-bold text-white">{feature.label}</h3>
@@ -283,54 +281,87 @@ export default function CrossdPlus() {
 
           {/* Pricing */}
           <div className="space-y-4 pt-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              <CrossdCard glow className="relative overflow-hidden">
-                <div className="absolute top-0 right-0 bg-[#E70F72] text-black text-xs font-bold px-3 py-1 rounded-bl-xl">
-                  BEST VALUE
-                </div>
-                <div className="pt-4">
-                  <p className="text-white/65 text-sm">Yearly</p>
-                  <div className="flex items-baseline gap-2 mb-2">
-                    <span className="text-4xl font-bold text-white">$9.99</span>
-                    <span className="text-white/50">/month</span>
+            <h3 className="text-white text-sm font-medium">Choose Your Plan:</h3>
+            <div className="grid grid-cols-2 gap-3">
+              {/* 1 Month */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                onClick={() => setSelectedPlan('monthly')}
+                className="cursor-pointer"
+              >
+                <CrossdCard className={selectedPlan === 'monthly' ? 'border-[#E70F72] border-2' : ''}>
+                  <p className="text-white/65 text-sm mb-2">1 Month</p>
+                  <div className="flex items-baseline gap-2 mb-1">
+                    <span className="text-3xl font-bold text-white">£9.99</span>
                   </div>
-                  <p className="text-[#E70F72] text-sm mb-4">Save 50%</p>
-                  <CrossdButton 
-                    className="w-full"
-                    onClick={() => subscribeMutation.mutate('yearly')}
-                    loading={subscribeMutation.isPending}
-                  >
-                    Get Crossd+ Yearly
-                  </CrossdButton>
-                </div>
-              </CrossdCard>
-            </motion.div>
+                  <p className="text-white/50 text-xs mb-2">per month</p>
+                  <p className="text-[#E70F72] text-xs">Save £3.00</p>
+                </CrossdCard>
+              </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
+              {/* 3 Months - Most Popular */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.45 }}
+                onClick={() => setSelectedPlan('quarterly')}
+                className="cursor-pointer"
+              >
+                <CrossdCard glow={selectedPlan === 'quarterly'} className={`relative ${selectedPlan === 'quarterly' ? 'border-[#E70F72] border-2' : ''}`}>
+                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-[#E70F72] text-black text-xs font-bold px-2 py-0.5 rounded-full">
+                    Most Popular
+                  </div>
+                  <p className="text-white/65 text-sm mb-2">3 Months</p>
+                  <div className="flex items-baseline gap-2 mb-1">
+                    <span className="text-3xl font-bold text-white">£29.99</span>
+                  </div>
+                  <p className="text-white/50 text-xs mb-2">3 billed every 3 months</p>
+                  <p className="text-[#E70F72] text-xs">Save £8.99</p>
+                </CrossdCard>
+              </motion.div>
+
+              {/* 6 Months - Best Value */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="col-span-2 cursor-pointer"
+                onClick={() => setSelectedPlan('yearly')}
+              >
+                <CrossdCard className={`relative overflow-hidden ${selectedPlan === 'yearly' ? 'border-[#E70F72] border-2' : ''}`}>
+                  <div className="absolute top-0 left-4 bg-amber-500 text-black text-xs font-bold px-3 py-1 rounded-b-lg">
+                    Best Value
+                  </div>
+                  <div className="pt-4">
+                    <p className="text-white/65 text-sm mb-2">6 Months</p>
+                    <div className="flex items-baseline gap-2 mb-1">
+                      <span className="text-3xl font-bold text-white">£44.99</span>
+                      <span className="text-white/50 line-through text-sm">£82.94</span>
+                    </div>
+                    <p className="text-white/50 text-xs">6 billed every 6 months</p>
+                  </div>
+                </CrossdCard>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-3 pt-4">
+            <button
+              onClick={() => window.history.back()}
+              className="flex-1 px-4 py-3 rounded-full border border-white/20 text-white text-sm font-medium hover:border-[#E70F72]/50 transition-colors"
             >
-              <CrossdCard>
-                <p className="text-white/65 text-sm">Monthly</p>
-                <div className="flex items-baseline gap-2 mb-4">
-                  <span className="text-3xl font-bold text-white">$19.99</span>
-                  <span className="text-white/50">/month</span>
-                </div>
-                <CrossdButton 
-                  variant="secondary" 
-                  className="w-full"
-                  onClick={() => subscribeMutation.mutate('monthly')}
-                  loading={subscribeMutation.isPending}
-                >
-                  Get Crossd+ Monthly
-                </CrossdButton>
-              </CrossdCard>
-            </motion.div>
+              Maybe Later
+            </button>
+            <CrossdButton
+              onClick={() => subscribeMutation.mutate(selectedPlan)}
+              loading={subscribeMutation.isPending}
+              className="flex-1"
+            >
+              Upgrade to Crossd+
+            </CrossdButton>
           </div>
 
           <p className="text-white/45 text-xs text-center">
