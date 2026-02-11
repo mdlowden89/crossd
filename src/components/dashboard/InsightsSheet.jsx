@@ -62,123 +62,185 @@ export default function InsightsSheet({ moments, profile, onClose }) {
 
 
 
-    // PlacesDNA Archetypes - map Google Places types to DNA categories
-    const venueTypeToDNA = {
-      // Romantic
-      'restaurant': { name: 'Romantic', color: '#E74C78', icon: '❤️' },
-      'cafe': { name: 'Romantic', color: '#E74C78', icon: '❤️' },
-      'bakery': { name: 'Romantic', color: '#E74C78', icon: '❤️' },
-      'florist': { name: 'Romantic', color: '#E74C78', icon: '❤️' },
-      'spa': { name: 'Romantic', color: '#E74C78', icon: '❤️' },
-      
-      // Social
-      'bar': { name: 'Social', color: '#FF6B3D', icon: '🎉' },
-      'night_club': { name: 'Social', color: '#FF6B3D', icon: '🎉' },
-      'bowling_alley': { name: 'Social', color: '#FF6B3D', icon: '🎉' },
-      'shopping_mall': { name: 'Social', color: '#FF6B3D', icon: '🎉' },
-      'movie_theater': { name: 'Social', color: '#FF6B3D', icon: '🎉' },
-      
-      // Creative
-      'art_gallery': { name: 'Creative', color: '#9B5DE5', icon: '🎨' },
-      'museum': { name: 'Creative', color: '#9B5DE5', icon: '🎨' },
-      'book_store': { name: 'Creative', color: '#9B5DE5', icon: '🎨' },
-      'library': { name: 'Creative', color: '#9B5DE5', icon: '🎨' },
-      'craft_store': { name: 'Creative', color: '#9B5DE5', icon: '🎨' },
-      
-      // Low-Key
-      'park': { name: 'Low-Key', color: '#6A8F7A', icon: '🌿' },
-      'campground': { name: 'Low-Key', color: '#6A8F7A', icon: '🌿' },
-      'rv_park': { name: 'Low-Key', color: '#6A8F7A', icon: '🌿' },
-      'natural_feature': { name: 'Low-Key', color: '#6A8F7A', icon: '🌿' },
-      
-      // High-Energy
-      'gym': { name: 'High-Energy', color: '#F6C90E', icon: '⚡' },
-      'amusement_park': { name: 'High-Energy', color: '#F6C90E', icon: '⚡' },
-      'stadium': { name: 'High-Energy', color: '#F6C90E', icon: '⚡' },
-      'casino': { name: 'High-Energy', color: '#F6C90E', icon: '⚡' },
-      
-      // Adventurous
-      'tourist_attraction': { name: 'Adventurous', color: '#1CA7A6', icon: '🧭' },
-      'aquarium': { name: 'Adventurous', color: '#1CA7A6', icon: '🧭' },
-      'zoo': { name: 'Adventurous', color: '#1CA7A6', icon: '🧭' },
-      'travel_agency': { name: 'Adventurous', color: '#1CA7A6', icon: '🧭' },
-      
-      // Intellectual
-      'university': { name: 'Intellectual', color: '#4169E1', icon: '🧠' },
-      'school': { name: 'Intellectual', color: '#4169E1', icon: '🧠' },
-      'courthouse': { name: 'Intellectual', color: '#4169E1', icon: '🧠' },
-      'city_hall': { name: 'Intellectual', color: '#4169E1', icon: '🧠' },
-      
-      // Wellness
-      'yoga_studio': { name: 'Wellness', color: '#4FC3F7', icon: '🧘' },
-      'health': { name: 'Wellness', color: '#4FC3F7', icon: '🧘' },
-      'beauty_salon': { name: 'Wellness', color: '#4FC3F7', icon: '🧘' },
-      'hair_care': { name: 'Wellness', color: '#4FC3F7', icon: '🧘' }
-    };
-    
-    // Helper to get DNA from venue types
-    const getDNAFromVenueTypes = (venueTypes) => {
-      if (!venueTypes || venueTypes.length === 0) return null;
-      
-      for (const type of venueTypes) {
-        if (venueTypeToDNA[type]) {
-          return venueTypeToDNA[type];
-        }
-      }
-      return null;
+    // Define 10 PlacesDNA Archetypes
+    const ARCHETYPES = {
+      romantic: { name: 'Romantic', color: '#E74C78', icon: '💞', desc: 'Intimate, warm, connection-focused' },
+      calm_cozy: { name: 'Calm & Cozy', color: '#C49A6C', icon: '☕', desc: 'Relaxed, low-pressure, reflective' },
+      creative: { name: 'Creative', color: '#9B5DE5', icon: '🎨', desc: 'Expressive, artsy, stimulating' },
+      social_buzzing: { name: 'Social & Buzzing', color: '#FF6B3D', icon: '🌆', desc: 'High-energy, group dynamic' },
+      nature_grounded: { name: 'Nature & Grounded', color: '#6A8F7A', icon: '🌿', desc: 'Outdoors, mindful, slow' },
+      live_electric: { name: 'Live & Electric', color: '#F6C90E', icon: '🎵', desc: 'Music, movement, sensory' },
+      deep_intellectual: { name: 'Deep & Intellectual', color: '#4169E1', icon: '🧠', desc: 'Conversation-heavy' },
+      active_energetic: { name: 'Active & Energetic', color: '#FF4081', icon: '🏃', desc: 'Physical, dynamic' },
+      spontaneous_nightlife: { name: 'Spontaneous & Nightlife', color: '#B026FF', icon: '🍸', desc: 'Impulsive, late-night' },
+      intimate_local: { name: 'Intimate Local', color: '#8B7355', icon: '🏡', desc: 'Familiar, neighborhood-feel' }
     };
 
-    // Assign DNA to each zone based on venue types
+    // Category → Archetype mapping (can assign multiple archetypes with weights)
+    const CATEGORY_TO_ARCHETYPES = {
+      cafe: [{ archetype: 'calm_cozy', weight: 0.7 }, { archetype: 'creative', weight: 0.3 }],
+      coffee_shop: [{ archetype: 'calm_cozy', weight: 0.7 }, { archetype: 'creative', weight: 0.3 }],
+      book_store: [{ archetype: 'calm_cozy', weight: 0.5 }, { archetype: 'deep_intellectual', weight: 0.5 }],
+      library: [{ archetype: 'calm_cozy', weight: 0.4 }, { archetype: 'deep_intellectual', weight: 0.6 }],
+      art_gallery: [{ archetype: 'creative', weight: 1.0 }],
+      museum: [{ archetype: 'creative', weight: 0.6 }, { archetype: 'deep_intellectual', weight: 0.4 }],
+      park: [{ archetype: 'nature_grounded', weight: 1.0 }],
+      campground: [{ archetype: 'nature_grounded', weight: 1.0 }],
+      natural_feature: [{ archetype: 'nature_grounded', weight: 1.0 }],
+      beach: [{ archetype: 'nature_grounded', weight: 0.7 }, { archetype: 'social_buzzing', weight: 0.3 }],
+      night_club: [{ archetype: 'spontaneous_nightlife', weight: 0.7 }, { archetype: 'live_electric', weight: 0.3 }],
+      bar: [{ archetype: 'social_buzzing', weight: 0.5 }, { archetype: 'spontaneous_nightlife', weight: 0.5 }],
+      pub: [{ archetype: 'intimate_local', weight: 0.6 }, { archetype: 'social_buzzing', weight: 0.4 }],
+      restaurant: [{ archetype: 'romantic', weight: 0.6 }, { archetype: 'social_buzzing', weight: 0.4 }],
+      movie_theater: [{ archetype: 'romantic', weight: 0.4 }, { archetype: 'social_buzzing', weight: 0.4 }, { archetype: 'creative', weight: 0.2 }],
+      concert_hall: [{ archetype: 'live_electric', weight: 1.0 }],
+      music_venue: [{ archetype: 'live_electric', weight: 1.0 }],
+      gym: [{ archetype: 'active_energetic', weight: 1.0 }],
+      stadium: [{ archetype: 'active_energetic', weight: 0.6 }, { archetype: 'social_buzzing', weight: 0.4 }],
+      amusement_park: [{ archetype: 'social_buzzing', weight: 0.6 }, { archetype: 'active_energetic', weight: 0.4 }],
+      university: [{ archetype: 'deep_intellectual', weight: 1.0 }],
+      school: [{ archetype: 'deep_intellectual', weight: 1.0 }],
+      bakery: [{ archetype: 'calm_cozy', weight: 0.5 }, { archetype: 'intimate_local', weight: 0.5 }],
+      yoga_studio: [{ archetype: 'nature_grounded', weight: 0.7 }, { archetype: 'calm_cozy', weight: 0.3 }],
+      spa: [{ archetype: 'romantic', weight: 0.5 }, { archetype: 'calm_cozy', weight: 0.5 }],
+      wine_bar: [{ archetype: 'romantic', weight: 0.7 }, { archetype: 'intimate_local', weight: 0.3 }],
+      rooftop_bar: [{ archetype: 'spontaneous_nightlife', weight: 0.6 }, { archetype: 'romantic', weight: 0.4 }]
+    };
+
+    // Vibe tags → Archetype mapping
+    const VIBE_TAG_TO_ARCHETYPES = {
+      'Romantic': [{ archetype: 'romantic', weight: 1.0 }],
+      'Flirty': [{ archetype: 'romantic', weight: 0.8 }, { archetype: 'spontaneous_nightlife', weight: 0.2 }],
+      'Cozy': [{ archetype: 'calm_cozy', weight: 0.8 }, { archetype: 'intimate_local', weight: 0.2 }],
+      'Calm': [{ archetype: 'calm_cozy', weight: 0.7 }, { archetype: 'nature_grounded', weight: 0.3 }],
+      'Creative': [{ archetype: 'creative', weight: 1.0 }],
+      'Artistic': [{ archetype: 'creative', weight: 1.0 }],
+      'Social': [{ archetype: 'social_buzzing', weight: 1.0 }],
+      'Energetic': [{ archetype: 'social_buzzing', weight: 0.5 }, { archetype: 'active_energetic', weight: 0.5 }],
+      'Vibrant': [{ archetype: 'social_buzzing', weight: 0.7 }, { archetype: 'live_electric', weight: 0.3 }],
+      'Peaceful': [{ archetype: 'nature_grounded', weight: 0.8 }, { archetype: 'calm_cozy', weight: 0.2 }],
+      'Natural': [{ archetype: 'nature_grounded', weight: 1.0 }],
+      'Loud': [{ archetype: 'live_electric', weight: 0.6 }, { archetype: 'spontaneous_nightlife', weight: 0.4 }],
+      'Deep talk': [{ archetype: 'deep_intellectual', weight: 0.7 }, { archetype: 'romantic', weight: 0.3 }],
+      'Intellectual': [{ archetype: 'deep_intellectual', weight: 1.0 }],
+      'Active': [{ archetype: 'active_energetic', weight: 1.0 }],
+      'Spontaneous': [{ archetype: 'spontaneous_nightlife', weight: 0.6 }, { archetype: 'social_buzzing', weight: 0.4 }],
+      'Low-key': [{ archetype: 'intimate_local', weight: 0.6 }, { archetype: 'calm_cozy', weight: 0.4 }]
+    };
+
+    // Time-based modifiers (hour of day affects archetype)
+    const getTimeModifier = (hour) => {
+      if (hour >= 22 || hour < 2) return { spontaneous_nightlife: 1.4, romantic: 1.2 };
+      if (hour >= 18 && hour < 22) return { romantic: 1.3, social_buzzing: 1.2, intimate_local: 1.1 };
+      if (hour >= 12 && hour < 17) return { calm_cozy: 1.2, social_buzzing: 1.1 };
+      if (hour >= 9 && hour < 12) return { calm_cozy: 1.3, intimate_local: 1.2 };
+      return {};
+    };
+
+    // Calculate archetype scores for a moment
+    const calculateArchetypeScores = (moment) => {
+      const scores = {};
+      
+      // Initialize all archetypes to 0
+      Object.keys(ARCHETYPES).forEach(key => scores[key] = 0);
+      
+      // 1. Base layer: Category mapping (40% weight)
+      if (moment.venue_types && moment.venue_types.length > 0) {
+        moment.venue_types.forEach(type => {
+          const mappings = CATEGORY_TO_ARCHETYPES[type];
+          if (mappings) {
+            mappings.forEach(({ archetype, weight }) => {
+              scores[archetype] += weight * 0.4;
+            });
+          }
+        });
+      }
+      
+      // 2. Vibe tags (25% weight)
+      if (moment.mood_tags && moment.mood_tags.length > 0) {
+        moment.mood_tags.forEach(tag => {
+          const mappings = VIBE_TAG_TO_ARCHETYPES[tag];
+          if (mappings) {
+            mappings.forEach(({ archetype, weight }) => {
+              scores[archetype] += weight * 0.25;
+            });
+          }
+        });
+      }
+      
+      // 3. Time context (15% weight)
+      const hour = new Date(moment.created_date).getHours();
+      const timeModifiers = getTimeModifier(hour);
+      Object.entries(timeModifiers).forEach(([archetype, multiplier]) => {
+        scores[archetype] *= multiplier;
+      });
+      
+      return scores;
+    };
+
+    // Get top archetypes from scores
+    const getTopArchetypes = (scores, count = 2) => {
+      return Object.entries(scores)
+        .filter(([_, score]) => score > 0)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, count)
+        .map(([key, score]) => ({
+          ...ARCHETYPES[key],
+          score: score
+        }));
+    };
+
+    // Assign DNA to each zone based on weighted scoring
     const topZones = Object.values(zoneMap)
       .sort((a, b) => b.count - a.count)
       .slice(0, 5)
       .map(zone => {
-        const dnaTypes = {};
+        // Aggregate archetype scores across all moments in this zone
+        const aggregatedScores = {};
+        Object.keys(ARCHETYPES).forEach(key => aggregatedScores[key] = 0);
         
-        // Get DNA from venue types in this zone
         zone.moments.forEach(moment => {
-          const dna = getDNAFromVenueTypes(moment.venue_types);
-          if (dna) {
-            dnaTypes[dna.name] = (dnaTypes[dna.name] || 0) + 1;
-          }
+          const scores = calculateArchetypeScores(moment);
+          Object.entries(scores).forEach(([archetype, score]) => {
+            aggregatedScores[archetype] += score;
+          });
         });
         
-        const primaryDNA = Object.entries(dnaTypes)
-          .sort((a, b) => b[1] - a[1])
-          .slice(0, 2)
-          .map(([name]) => {
-            const dnaInfo = Object.values(venueTypeToDNA).find(d => d.name === name);
-            return dnaInfo;
-          })
-          .filter(Boolean);
+        // Normalize by number of moments
+        Object.keys(aggregatedScores).forEach(key => {
+          aggregatedScores[key] /= zone.moments.length;
+        });
+        
+        const primaryDNA = getTopArchetypes(aggregatedScores, 2);
 
         return {
           ...zone,
           frequency: Math.round((zone.count / moments.length) * 100),
           topVibes: [...new Set(zone.vibes)].slice(0, 2),
-          dna: primaryDNA.length > 0 ? primaryDNA : [{ name: 'Social', color: '#FF6B3D', icon: '🎉' }]
+          dna: primaryDNA.length > 0 ? primaryDNA : [ARCHETYPES.social_buzzing]
         };
       });
 
-    // Calculate overall PlacesDNA for personality summary based on venue types
-    const dnaFreq = {};
+    // Calculate overall PlacesDNA for personality summary
+    const overallScores = {};
+    Object.keys(ARCHETYPES).forEach(key => overallScores[key] = 0);
+    
     moments.forEach(m => {
-      const dna = getDNAFromVenueTypes(m.venue_types);
-      if (dna) {
-        dnaFreq[dna.name] = (dnaFreq[dna.name] || 0) + 1;
-      }
-    });
-
-    const placesDNA = Object.entries(dnaFreq)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 2)
-      .map(([name, count]) => {
-        const dnaInfo = Object.values(venueTypeToDNA).find(d => d.name === name);
-        return {
-          ...dnaInfo,
-          percentage: Math.round((count / moments.length) * 100)
-        };
+      const scores = calculateArchetypeScores(m);
+      Object.entries(scores).forEach(([archetype, score]) => {
+        overallScores[archetype] += score;
       });
+    });
+    
+    // Normalize
+    Object.keys(overallScores).forEach(key => {
+      overallScores[key] /= moments.length;
+    });
+    
+    const placesDNA = getTopArchetypes(overallScores, 2).map(dna => ({
+      ...dna,
+      percentage: Math.round((dna.score / Math.max(...Object.values(overallScores))) * 100)
+    }));
 
     // Peak Times - hourly distribution
     const hourMap = {};
