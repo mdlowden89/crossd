@@ -47,11 +47,13 @@ export default function InsightsSheet({ moments, profile, onClose }) {
             area: m.venue_name?.split(',')[0] || m.geohash,
             count: 0,
             vibes: [],
+            moments: [],
             lat: m.lat,
             lng: m.lng
           };
         }
         zoneMap[zone].count++;
+        zoneMap[zone].moments.push(m);
         if (m.mood_tags) {
           zoneMap[zone].vibes.push(...m.mood_tags);
         }
@@ -60,39 +62,82 @@ export default function InsightsSheet({ moments, profile, onClose }) {
 
 
 
-    // PlacesDNA Archetypes - map vibes to primary DNA types with colors
-    const dnaMapping = {
-      'Romantic': { name: 'Romantic', color: '#E74C78', icon: '❤️' },
-      'Cozy': { name: 'Romantic', color: '#E74C78', icon: '❤️' },
-      'Intimate': { name: 'Romantic', color: '#E74C78', icon: '❤️' },
-      'Social': { name: 'Social', color: '#FF6B3D', icon: '🎉' },
-      'Energetic': { name: 'Social', color: '#FF6B3D', icon: '🎉' },
-      'Vibrant': { name: 'Social', color: '#FF6B3D', icon: '🎉' },
-      'Creative': { name: 'Creative', color: '#9B5DE5', icon: '🎨' },
-      'Artistic': { name: 'Creative', color: '#9B5DE5', icon: '🎨' },
-      'Calm': { name: 'Low-Key', color: '#6A8F7A', icon: '🌿' },
-      'Peaceful': { name: 'Low-Key', color: '#6A8F7A', icon: '🌿' },
-      'Quiet': { name: 'Low-Key', color: '#6A8F7A', icon: '🌿' },
-      'Loud': { name: 'High-Energy', color: '#F6C90E', icon: '⚡' },
-      'Intense': { name: 'High-Energy', color: '#F6C90E', icon: '⚡' },
-      'Adventurous': { name: 'Adventurous', color: '#1CA7A6', icon: '🧭' },
-      'Spontaneous': { name: 'Adventurous', color: '#1CA7A6', icon: '🧭' },
-      'Bold': { name: 'Adventurous', color: '#1CA7A6', icon: '🧭' },
-      'Cultural': { name: 'Intellectual', color: '#4169E1', icon: '🧠' },
-      'Intellectual': { name: 'Intellectual', color: '#4169E1', icon: '🧠' },
-      'Curious': { name: 'Intellectual', color: '#4169E1', icon: '🧠' },
-      'Natural': { name: 'Wellness', color: '#4FC3F7', icon: '🧘' },
-      'Mindful': { name: 'Wellness', color: '#4FC3F7', icon: '🧘' }
+    // PlacesDNA Archetypes - map Google Places types to DNA categories
+    const venueTypeToDNA = {
+      // Romantic
+      'restaurant': { name: 'Romantic', color: '#E74C78', icon: '❤️' },
+      'cafe': { name: 'Romantic', color: '#E74C78', icon: '❤️' },
+      'bakery': { name: 'Romantic', color: '#E74C78', icon: '❤️' },
+      'florist': { name: 'Romantic', color: '#E74C78', icon: '❤️' },
+      'spa': { name: 'Romantic', color: '#E74C78', icon: '❤️' },
+      
+      // Social
+      'bar': { name: 'Social', color: '#FF6B3D', icon: '🎉' },
+      'night_club': { name: 'Social', color: '#FF6B3D', icon: '🎉' },
+      'bowling_alley': { name: 'Social', color: '#FF6B3D', icon: '🎉' },
+      'shopping_mall': { name: 'Social', color: '#FF6B3D', icon: '🎉' },
+      'movie_theater': { name: 'Social', color: '#FF6B3D', icon: '🎉' },
+      
+      // Creative
+      'art_gallery': { name: 'Creative', color: '#9B5DE5', icon: '🎨' },
+      'museum': { name: 'Creative', color: '#9B5DE5', icon: '🎨' },
+      'book_store': { name: 'Creative', color: '#9B5DE5', icon: '🎨' },
+      'library': { name: 'Creative', color: '#9B5DE5', icon: '🎨' },
+      'craft_store': { name: 'Creative', color: '#9B5DE5', icon: '🎨' },
+      
+      // Low-Key
+      'park': { name: 'Low-Key', color: '#6A8F7A', icon: '🌿' },
+      'campground': { name: 'Low-Key', color: '#6A8F7A', icon: '🌿' },
+      'rv_park': { name: 'Low-Key', color: '#6A8F7A', icon: '🌿' },
+      'natural_feature': { name: 'Low-Key', color: '#6A8F7A', icon: '🌿' },
+      
+      // High-Energy
+      'gym': { name: 'High-Energy', color: '#F6C90E', icon: '⚡' },
+      'amusement_park': { name: 'High-Energy', color: '#F6C90E', icon: '⚡' },
+      'stadium': { name: 'High-Energy', color: '#F6C90E', icon: '⚡' },
+      'casino': { name: 'High-Energy', color: '#F6C90E', icon: '⚡' },
+      
+      // Adventurous
+      'tourist_attraction': { name: 'Adventurous', color: '#1CA7A6', icon: '🧭' },
+      'aquarium': { name: 'Adventurous', color: '#1CA7A6', icon: '🧭' },
+      'zoo': { name: 'Adventurous', color: '#1CA7A6', icon: '🧭' },
+      'travel_agency': { name: 'Adventurous', color: '#1CA7A6', icon: '🧭' },
+      
+      // Intellectual
+      'university': { name: 'Intellectual', color: '#4169E1', icon: '🧠' },
+      'school': { name: 'Intellectual', color: '#4169E1', icon: '🧠' },
+      'courthouse': { name: 'Intellectual', color: '#4169E1', icon: '🧠' },
+      'city_hall': { name: 'Intellectual', color: '#4169E1', icon: '🧠' },
+      
+      // Wellness
+      'yoga_studio': { name: 'Wellness', color: '#4FC3F7', icon: '🧘' },
+      'health': { name: 'Wellness', color: '#4FC3F7', icon: '🧘' },
+      'beauty_salon': { name: 'Wellness', color: '#4FC3F7', icon: '🧘' },
+      'hair_care': { name: 'Wellness', color: '#4FC3F7', icon: '🧘' }
+    };
+    
+    // Helper to get DNA from venue types
+    const getDNAFromVenueTypes = (venueTypes) => {
+      if (!venueTypes || venueTypes.length === 0) return null;
+      
+      for (const type of venueTypes) {
+        if (venueTypeToDNA[type]) {
+          return venueTypeToDNA[type];
+        }
+      }
+      return null;
     };
 
-    // Assign DNA to each zone
+    // Assign DNA to each zone based on venue types
     const topZones = Object.values(zoneMap)
       .sort((a, b) => b.count - a.count)
       .slice(0, 5)
       .map(zone => {
         const dnaTypes = {};
-        zone.vibes.forEach(vibe => {
-          const dna = dnaMapping[vibe];
+        
+        // Get DNA from venue types in this zone
+        zone.moments.forEach(moment => {
+          const dna = getDNAFromVenueTypes(moment.venue_types);
           if (dna) {
             dnaTypes[dna.name] = (dnaTypes[dna.name] || 0) + 1;
           }
@@ -102,7 +147,7 @@ export default function InsightsSheet({ moments, profile, onClose }) {
           .sort((a, b) => b[1] - a[1])
           .slice(0, 2)
           .map(([name]) => {
-            const dnaInfo = Object.values(dnaMapping).find(d => d.name === name);
+            const dnaInfo = Object.values(venueTypeToDNA).find(d => d.name === name);
             return dnaInfo;
           })
           .filter(Boolean);
@@ -115,21 +160,12 @@ export default function InsightsSheet({ moments, profile, onClose }) {
         };
       });
 
-    // Calculate overall PlacesDNA for personality summary
-    const vibeFreq = {};
-    moments.forEach(m => {
-      if (m.mood_tags) {
-        m.mood_tags.forEach(vibe => {
-          vibeFreq[vibe] = (vibeFreq[vibe] || 0) + 1;
-        });
-      }
-    });
-
+    // Calculate overall PlacesDNA for personality summary based on venue types
     const dnaFreq = {};
-    Object.entries(vibeFreq).forEach(([vibe, count]) => {
-      const dna = dnaMapping[vibe];
+    moments.forEach(m => {
+      const dna = getDNAFromVenueTypes(m.venue_types);
       if (dna) {
-        dnaFreq[dna.name] = (dnaFreq[dna.name] || 0) + count;
+        dnaFreq[dna.name] = (dnaFreq[dna.name] || 0) + 1;
       }
     });
 
@@ -137,7 +173,7 @@ export default function InsightsSheet({ moments, profile, onClose }) {
       .sort((a, b) => b[1] - a[1])
       .slice(0, 2)
       .map(([name, count]) => {
-        const dnaInfo = Object.values(dnaMapping).find(d => d.name === name);
+        const dnaInfo = Object.values(venueTypeToDNA).find(d => d.name === name);
         return {
           ...dnaInfo,
           percentage: Math.round((count / moments.length) * 100)

@@ -22,7 +22,7 @@ Deno.serve(async (req) => {
 
     const url = new URL('https://maps.googleapis.com/maps/api/place/details/json');
     url.searchParams.append('place_id', placeId);
-    url.searchParams.append('fields', 'geometry,formatted_address,name');
+    url.searchParams.append('fields', 'geometry,formatted_address,name,types');
     url.searchParams.append('key', apiKey);
 
     const response = await fetch(url.toString());
@@ -32,13 +32,14 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Place not found' }, { status: 404 });
     }
 
-    const { geometry, formatted_address, name } = data.result;
+    const { geometry, formatted_address, name, types } = data.result;
 
     return Response.json({
       lat: geometry.location.lat,
       lng: geometry.location.lng,
       address: formatted_address,
-      name: name
+      name: name,
+      types: types || []
     }, { status: 200 });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
