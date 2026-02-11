@@ -106,63 +106,48 @@ const getMarkerState = (moment, allMoments, profile) => {
 
 // Create custom marker icon based on state
 const createMarkerIcon = (state, moment) => {
-  const { color, fillColor, glowIntensity, isExpired, hasMatch, isReSight, reSightCount, isToday, placeIcon } = state;
+  const { color, fillColor, glowIntensity, isExpired, hasMatch, isReSight, reSightCount, isToday } = state;
   
   const glowAnimation = !isExpired && state.isExpiringSoon
     ? 'animation: pulse 2s ease-in-out infinite;'
     : '';
   
   const matchBadge = hasMatch 
-    ? `<div style="position: absolute; top: -10px; right: -10px; background: ${COLORS.GREEN}; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 14px; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">🌟</div>`
+    ? `<div style="position: absolute; top: -4px; right: -4px; background: ${COLORS.GREEN}; border-radius: 50%; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; font-size: 10px; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">✓</div>`
     : '';
   
   const reSightBadge = isReSight
-    ? `<div style="position: absolute; top: -12px; right: -12px; background: ${COLORS.PURPLE}; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">×${reSightCount}</div>`
+    ? `<div style="position: absolute; top: -6px; right: -6px; background: ${COLORS.PURPLE}; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: bold; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">${reSightCount}</div>`
     : '';
-  
-  const todayBadge = isToday
-    ? `<div style="position: absolute; top: -16px; left: -16px; background: ${COLORS.ORANGE}; color: white; border-radius: 6px; padding: 3px 6px; font-size: 10px; font-weight: bold; box-shadow: 0 2px 8px rgba(0,0,0,0.3); border: 1px solid #fff;">TODAY</div>`
-    : '';
-  
-  const placeTypeIcon = `<div style="position: absolute; top: -8px; left: -8px; font-size: 16px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));">${placeIcon}</div>`;
   
   return L.divIcon({
     className: 'custom-crossd-marker',
     html: `
       <style>
         @keyframes pulse {
-          0%, 100% { box-shadow: 0 0 25px rgba(255, 216, 77, 0.4); }
-          50% { box-shadow: 0 0 50px rgba(255, 216, 77, 0.7); }
-        }
-        @keyframes shimmer {
-          0% { transform: rotate(-45deg) scale(1); }
-          50% { transform: rotate(-45deg) scale(1.15); }
-          100% { transform: rotate(-45deg) scale(1); }
+          0%, 100% { box-shadow: 0 0 0 0 rgba(231, 15, 114, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3); }
+          50% { box-shadow: 0 0 0 8px rgba(231, 15, 114, 0), 0 2px 8px rgba(0, 0, 0, 0.3); }
         }
       </style>
-      <div style="position: relative; width: 36px; height: 36px; cursor: pointer;">
-        ${placeTypeIcon}
+      <div style="position: relative; width: 24px; height: 24px; cursor: pointer;">
         <div style="
-          background: linear-gradient(135deg, ${fillColor}, ${color}); 
-          width: 36px; 
-          height: 36px; 
-          border-radius: 50% 50% 50% 0; 
-          transform: rotate(-45deg); 
-          border: 4px solid #fff; 
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 ${25 * glowIntensity}px rgba(231, 15, 114, ${glowIntensity});
-          opacity: ${isExpired ? 0.5 : 1};
+          background: ${color}; 
+          width: 24px; 
+          height: 24px; 
+          border-radius: 50%; 
+          border: 3px solid #fff; 
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+          opacity: ${isExpired ? 0.4 : 1};
           ${glowAnimation}
-          ${hasMatch ? 'animation: shimmer 1s ease-in-out;' : ''}
           transition: transform 0.2s ease;
         "></div>
         ${matchBadge}
         ${reSightBadge}
-        ${todayBadge}
       </div>
     `,
-    iconSize: [36, 36],
-    iconAnchor: [18, 36],
-    popupAnchor: [0, -36]
+    iconSize: [24, 24],
+    iconAnchor: [12, 12],
+    popupAnchor: [0, -12]
   });
 };
 
@@ -272,7 +257,7 @@ export default function ActivityMap({ moments, profile }) {
           color: #ff1a8c !important;
         }
         .custom-crossd-marker:hover div > div {
-          transform: rotate(-45deg) scale(1.1) !important;
+          transform: scale(1.15) !important;
         }
       `}</style>
       <MapContainer
