@@ -2,6 +2,29 @@ import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { X, Lock, MapPin, Clock, Sparkles } from 'lucide-react';
 
+// Get compatible MBTI types based on user's type
+const getCompatibleTypes = (mbtiType) => {
+  const compatibility = {
+    'INTJ': ['ENTP', 'ENFP', 'ENTJ'],
+    'INTP': ['ENTJ', 'ENTP', 'INFJ'],
+    'ENTJ': ['INTP', 'INTJ', 'ENFP'],
+    'ENTP': ['INFJ', 'INTJ', 'ENFJ'],
+    'INFJ': ['ENTP', 'ENFP', 'INFP'],
+    'INFP': ['ENFJ', 'ENTJ', 'INFJ'],
+    'ENFJ': ['INFP', 'ENFP', 'INFJ'],
+    'ENFP': ['INTJ', 'INFJ', 'ENFJ'],
+    'ISTJ': ['ESTP', 'ESFP', 'ESTJ'],
+    'ISFJ': ['ESFP', 'ESTP', 'ISFP'],
+    'ESTJ': ['ISTP', 'ISTJ', 'ESFJ'],
+    'ESFJ': ['ISFP', 'ISTP', 'ESTJ'],
+    'ISTP': ['ESTJ', 'ESFJ', 'ESTP'],
+    'ISFP': ['ESFJ', 'ENFJ', 'ESTJ'],
+    'ESTP': ['ISFJ', 'ISTJ', 'ESFP'],
+    'ESFP': ['ISTJ', 'ISFJ', 'ESTP']
+  };
+  return compatibility[mbtiType] || ['INFJ', 'ISFP', 'ENFP'];
+};
+
 export default function InsightsSheet({ moments, profile, onClose }) {
   // Calculate insights data
   const insights = useMemo(() => {
@@ -157,7 +180,12 @@ export default function InsightsSheet({ moments, profile, onClose }) {
         : 'spontaneous, social, and open to connection'
     } : null;
 
-    return { topZones, placesDNA, peakTime, recommendation };
+    // Compatible MBTI types based on user's type (if available)
+    const compatibleTypes = profile?.mbti_type 
+      ? getCompatibleTypes(profile.mbti_type)
+      : ['INFJ', 'ISFP', 'ENFP'];
+
+    return { topZones, placesDNA, peakTime, recommendation, compatibleTypes };
   }, [moments]);
 
   const isPremium = profile?.crossd_plus;
@@ -376,27 +404,77 @@ export default function InsightsSheet({ moments, profile, onClose }) {
             </section>
           )}
 
-          {/* Compatibility Insights */}
+          {/* Compatibility Overlay - Premium Feature */}
           <section>
-            <h3 className="text-xl font-bold text-white mb-4">Compatibility Insights</h3>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7 }}
-              className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/30 rounded-2xl p-6"
-            >
-              <p className="text-white/70 text-sm mb-2">Compatible energies in your zones</p>
-              <div className="flex gap-2 mb-4">
-                {['INFJ', 'ISFP', 'ENFP'].map(type => (
-                  <span key={type} className="text-xs bg-green-500/20 text-green-300 px-3 py-1 rounded-full font-semibold">
-                    {type}
-                  </span>
-                ))}
-              </div>
-              <p className="text-white/60 text-sm">
-                Most active in creative and intimate environments, matching your vibe.
-              </p>
-            </motion.div>
+            <h3 className="text-xl font-bold text-white mb-2">Compatibility Overlay</h3>
+            <p className="text-white/50 text-sm mb-4">Who you're compatible with — and where they go</p>
+            
+            {isPremium ? (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+                className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/30 rounded-2xl p-6"
+              >
+                <div className="mb-4">
+                  <p className="text-white/70 text-sm mb-3">Compatible energies frequent your zones</p>
+                  <div className="flex gap-2 mb-4 flex-wrap">
+                    {insights.compatibleTypes.map(type => (
+                      <span key={type} className="text-sm bg-green-500/20 text-green-300 px-3 py-2 rounded-full font-semibold">
+                        {type}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="text-white/60 text-sm leading-relaxed">
+                    Most active in {insights.topZones[0]?.topVibes[0] || 'creative'} + {insights.topZones[0]?.topVibes[1]?.toLowerCase() || 'intimate'} areas.
+                  </p>
+                </div>
+                
+                {insights.peakTime && (
+                  <div className="pt-4 border-t border-green-500/20">
+                    <p className="text-white/70 text-sm mb-2">People you're most compatible with tend to show up here on</p>
+                    <p className="text-white font-semibold">
+                      {insights.peakTime.day} evenings & weekend afternoons
+                    </p>
+                  </div>
+                )}
+              </motion.div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+                className="relative overflow-hidden bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/30 rounded-2xl p-6"
+              >
+                {/* Blurred content */}
+                <div className="relative">
+                  <div className="filter blur-md select-none pointer-events-none">
+                    <p className="text-white/70 text-sm mb-3">Compatible energies frequent your zones</p>
+                    <div className="flex gap-2 mb-4">
+                      {['INFJ', 'ISFP', 'ENFP'].map(type => (
+                        <span key={type} className="text-sm bg-green-500/20 text-green-300 px-3 py-2 rounded-full font-semibold">
+                          {type}
+                        </span>
+                      ))}
+                    </div>
+                    <p className="text-white/60 text-sm">
+                      Most active in creative and intimate areas matching your vibe
+                    </p>
+                  </div>
+                  
+                  {/* Overlay with CTA */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm">
+                    <Lock className="w-10 h-10 text-[#E70F72] mb-3" />
+                    <p className="text-white font-semibold text-center mb-2 px-4">
+                      Unlock who you're most compatible with — and where they actually go
+                    </p>
+                    <button className="mt-4 px-6 py-3 bg-[#E70F72] text-white font-semibold rounded-xl hover:bg-[#ff1a8c] transition-colors flex items-center gap-2">
+                      Unlock deeper insights 🔓
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
           </section>
         </div>
       </motion.div>
