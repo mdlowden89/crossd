@@ -1,6 +1,9 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, MapPin, Clock, Calendar } from 'lucide-react';
+import { X, MapPin, Clock, Calendar, Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
+import { CrossdButton } from '@/components/ui/crossd-button';
 
 export default function MomentsListSheet({ moments, onClose }) {
   const navigate = useNavigate();
@@ -33,17 +36,30 @@ export default function MomentsListSheet({ moments, onClose }) {
       className="fixed inset-x-0 bottom-0 z-[10000] bg-black rounded-t-3xl border-t border-[#E70F72]/30 max-h-[80vh] overflow-hidden flex flex-col safe-area-bottom"
     >
       {/* Header */}
-      <div className="flex items-center justify-between p-6 border-b border-[#E70F72]/20">
-        <div>
-          <h2 className="text-2xl font-bold text-white">Your Moments</h2>
-          <p className="text-white/60 text-sm mt-1">{moments.length} logged encounters</p>
+      <div className="p-6 border-b border-[#E70F72]/20">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-2xl font-bold text-white">Your Moments</h2>
+            <p className="text-white/60 text-sm mt-1">{moments.length} logged encounters</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-full bg-[#E70F72]/20 hover:bg-[#E70F72]/30 transition-colors"
+          >
+            <X className="w-6 h-6 text-[#E70F72]" />
+          </button>
         </div>
-        <button
-          onClick={onClose}
-          className="p-2 rounded-full bg-[#E70F72]/20 hover:bg-[#E70F72]/30 transition-colors"
+        
+        <CrossdButton
+          onClick={() => {
+            onClose();
+            navigate(createPageUrl('LogMoment'));
+          }}
+          className="w-full bg-[#E70F72] hover:bg-[#ff1a8c]"
         >
-          <X className="w-6 h-6 text-[#E70F72]" />
-        </button>
+          <Plus className="w-5 h-5 mr-2" />
+          Log New Moment
+        </CrossdButton>
       </div>
 
       {/* Scrollable moments list */}
