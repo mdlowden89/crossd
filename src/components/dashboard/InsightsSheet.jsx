@@ -58,16 +58,64 @@ export default function InsightsSheet({ moments, profile, onClose }) {
       }
     });
 
+
+
+    // PlacesDNA Archetypes - map vibes to primary DNA types with colors
+    const dnaMapping = {
+      'Romantic': { name: 'Romantic', color: '#E74C78', icon: '❤️' },
+      'Cozy': { name: 'Romantic', color: '#E74C78', icon: '❤️' },
+      'Intimate': { name: 'Romantic', color: '#E74C78', icon: '❤️' },
+      'Social': { name: 'Social', color: '#FF6B3D', icon: '🎉' },
+      'Energetic': { name: 'Social', color: '#FF6B3D', icon: '🎉' },
+      'Vibrant': { name: 'Social', color: '#FF6B3D', icon: '🎉' },
+      'Creative': { name: 'Creative', color: '#9B5DE5', icon: '🎨' },
+      'Artistic': { name: 'Creative', color: '#9B5DE5', icon: '🎨' },
+      'Calm': { name: 'Low-Key', color: '#6A8F7A', icon: '🌿' },
+      'Peaceful': { name: 'Low-Key', color: '#6A8F7A', icon: '🌿' },
+      'Quiet': { name: 'Low-Key', color: '#6A8F7A', icon: '🌿' },
+      'Loud': { name: 'High-Energy', color: '#F6C90E', icon: '⚡' },
+      'Intense': { name: 'High-Energy', color: '#F6C90E', icon: '⚡' },
+      'Adventurous': { name: 'Adventurous', color: '#1CA7A6', icon: '🧭' },
+      'Spontaneous': { name: 'Adventurous', color: '#1CA7A6', icon: '🧭' },
+      'Bold': { name: 'Adventurous', color: '#1CA7A6', icon: '🧭' },
+      'Cultural': { name: 'Intellectual', color: '#4169E1', icon: '🧠' },
+      'Intellectual': { name: 'Intellectual', color: '#4169E1', icon: '🧠' },
+      'Curious': { name: 'Intellectual', color: '#4169E1', icon: '🧠' },
+      'Natural': { name: 'Wellness', color: '#4FC3F7', icon: '🧘' },
+      'Mindful': { name: 'Wellness', color: '#4FC3F7', icon: '🧘' }
+    };
+
+    // Assign DNA to each zone
     const topZones = Object.values(zoneMap)
       .sort((a, b) => b.count - a.count)
       .slice(0, 5)
-      .map(zone => ({
-        ...zone,
-        frequency: Math.round((zone.count / moments.length) * 100),
-        topVibes: [...new Set(zone.vibes)].slice(0, 2)
-      }));
+      .map(zone => {
+        const dnaTypes = {};
+        zone.vibes.forEach(vibe => {
+          const dna = dnaMapping[vibe];
+          if (dna) {
+            dnaTypes[dna.name] = (dnaTypes[dna.name] || 0) + 1;
+          }
+        });
+        
+        const primaryDNA = Object.entries(dnaTypes)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 2)
+          .map(([name]) => {
+            const dnaInfo = Object.values(dnaMapping).find(d => d.name === name);
+            return dnaInfo;
+          })
+          .filter(Boolean);
 
-    // PlacesDNA - environment personality archetypes
+        return {
+          ...zone,
+          frequency: Math.round((zone.count / moments.length) * 100),
+          topVibes: [...new Set(zone.vibes)].slice(0, 2),
+          dna: primaryDNA.length > 0 ? primaryDNA : [{ name: 'Social', color: '#FF6B3D', icon: '🎉' }]
+        };
+      });
+
+    // Calculate overall PlacesDNA for personality summary
     const vibeFreq = {};
     moments.forEach(m => {
       if (m.mood_tags) {
@@ -77,68 +125,24 @@ export default function InsightsSheet({ moments, profile, onClose }) {
       }
     });
 
-    // Define archetype combinations with emotional meanings
-    const archetypes = [
-      {
-        vibes: ['Romantic', 'Calm', 'Cozy'],
-        icon: '🕯️',
-        title: 'Romantic + Calm',
-        meaning: "You're drawn to places that invite presence, not performance."
-      },
-      {
-        vibes: ['Creative', 'Intimate', 'Artistic'],
-        icon: '🎨',
-        title: 'Creative + Intimate',
-        meaning: 'Sparks for you start with atmosphere, not noise.'
-      },
-      {
-        vibes: ['Social', 'Energetic', 'Vibrant'],
-        icon: '✨',
-        title: 'Social + Vibrant',
-        meaning: 'You thrive in places where energy flows and connections happen naturally.'
-      },
-      {
-        vibes: ['Cultural', 'Curious', 'Intellectual'],
-        icon: '📚',
-        title: 'Cultural + Curious',
-        meaning: 'You seek spaces that spark thought and invite exploration.'
-      },
-      {
-        vibes: ['Adventurous', 'Spontaneous', 'Bold'],
-        icon: '🌟',
-        title: 'Adventurous + Spontaneous',
-        meaning: 'You find magic in the unexpected and embrace the unknown.'
-      },
-      {
-        vibes: ['Calm', 'Natural', 'Peaceful'],
-        icon: '🌿',
-        title: 'Natural + Peaceful',
-        meaning: 'You connect best in environments that feel grounding and authentic.'
+    const dnaFreq = {};
+    Object.entries(vibeFreq).forEach(([vibe, count]) => {
+      const dna = dnaMapping[vibe];
+      if (dna) {
+        dnaFreq[dna.name] = (dnaFreq[dna.name] || 0) + count;
       }
-    ];
+    });
 
-    // Match user's vibes to archetypes
-    const matchedArchetypes = archetypes
-      .map(archetype => {
-        const score = archetype.vibes.reduce((sum, vibe) => sum + (vibeFreq[vibe] || 0), 0);
-        return { ...archetype, score };
-      })
-      .filter(a => a.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 3);
-
-    const placesDNA = matchedArchetypes.length > 0 ? matchedArchetypes : [
-      {
-        icon: '✨',
-        title: 'Social + Vibrant',
-        meaning: 'You thrive in places where energy flows and connections happen naturally.'
-      },
-      {
-        icon: '🎨',
-        title: 'Creative + Intimate',
-        meaning: 'Sparks for you start with atmosphere, not noise.'
-      }
-    ];
+    const placesDNA = Object.entries(dnaFreq)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 2)
+      .map(([name, count]) => {
+        const dnaInfo = Object.values(dnaMapping).find(d => d.name === name);
+        return {
+          ...dnaInfo,
+          percentage: Math.round((count / moments.length) * 100)
+        };
+      });
 
     // Peak Times - hourly distribution
     const hourMap = {};
@@ -245,34 +249,63 @@ export default function InsightsSheet({ moments, profile, onClose }) {
                     transition={{ delay: idx * 0.1 }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="bg-gradient-to-r from-[#0B0B0B] to-[#050505] border border-[#E70F72]/20 rounded-2xl p-5 hover:border-[#E70F72]/40 transition-colors cursor-pointer"
+                    className="bg-gradient-to-r from-[#0B0B0B] to-[#050505] border rounded-2xl p-5 hover:shadow-lg transition-all cursor-pointer"
+                    style={{ 
+                      borderColor: `${zone.dna[0]?.color}40`,
+                      boxShadow: `0 0 20px ${zone.dna[0]?.color}15`
+                    }}
                   >
-                    <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-start gap-4 mb-3">
+                      {/* DNA Icon Badge */}
+                      <div 
+                        className="w-14 h-14 rounded-full flex items-center justify-center text-2xl flex-shrink-0"
+                        style={{ 
+                          backgroundColor: `${zone.dna[0]?.color}20`,
+                          border: `2px solid ${zone.dna[0]?.color}60`
+                        }}
+                      >
+                        {zone.dna[0]?.icon}
+                      </div>
+                      
                       <div className="flex-1">
                         <h4 className="text-white font-semibold text-lg mb-2">{zone.area}</h4>
-                        {zone.topVibes.length > 0 && (
-                          <div className="flex gap-2 flex-wrap">
-                            {zone.topVibes.map((vibe, i) => (
-                              <span key={i} className="text-xs bg-[#E70F72]/20 text-[#E70F72] px-3 py-1 rounded-full font-medium">
-                                {vibe}
-                              </span>
-                            ))}
-                          </div>
-                        )}
+                        
+                        {/* DNA Type Pills */}
+                        <div className="flex gap-2 flex-wrap mb-2">
+                          {zone.dna.map((dna, i) => (
+                            <span 
+                              key={i} 
+                              className="text-xs px-3 py-1 rounded-full font-medium"
+                              style={{ 
+                                backgroundColor: `${dna.color}25`,
+                                color: dna.color,
+                                border: `1px solid ${dna.color}40`
+                              }}
+                            >
+                              {dna.icon} {dna.name}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                      <div className="text-right ml-4">
-                        <div className="text-[#E70F72] text-2xl font-bold">{zone.frequency}%</div>
+                      
+                      <div className="text-right ml-2">
+                        <div className="text-2xl font-bold" style={{ color: zone.dna[0]?.color }}>
+                          {zone.frequency}%
+                        </div>
                         <div className="text-white/50 text-xs mt-1">{zone.count} visits</div>
                       </div>
                     </div>
                     
-                    {/* Spark bar - frequency indicator */}
+                    {/* DNA-colored progress bar */}
                     <div className="relative h-2 bg-white/10 rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${zone.frequency}%` }}
                         transition={{ delay: 0.2 + idx * 0.1, duration: 0.8, ease: "easeOut" }}
-                        className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#E70F72] to-[#ff1a8c] rounded-full"
+                        className="absolute inset-y-0 left-0 rounded-full"
+                        style={{ 
+                          background: `linear-gradient(90deg, ${zone.dna[0]?.color}, ${zone.dna[1]?.color || zone.dna[0]?.color})`
+                        }}
                       />
                     </div>
                   </motion.div>
@@ -285,33 +318,40 @@ export default function InsightsSheet({ moments, profile, onClose }) {
             </section>
           )}
 
-          {/* Your PlacesDNA - Environment Personality */}
+          {/* Your PlacesDNA - Overall Personality Summary */}
           {insights.placesDNA.length > 0 && (
             <section>
-              <h3 className="text-xl font-bold text-white mb-2">Your Environment Personality</h3>
-              <p className="text-white/50 text-sm mb-4">Your PlacesDNA</p>
-              <div className="space-y-4">
-                {insights.placesDNA.map((dna, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.3 + idx * 0.1 }}
-                    className="bg-gradient-to-r from-[#E70F72]/15 to-[#E70F72]/5 border border-[#E70F72]/30 rounded-2xl px-6 py-5"
-                  >
-                    <div className="flex items-center gap-3 mb-3">
-                      <span className="text-2xl">{dna.icon}</span>
-                      <h4 className="text-white font-bold text-lg">{dna.title}</h4>
+              <h3 className="text-xl font-bold text-white mb-2">Your PlacesDNA</h3>
+              <p className="text-white/50 text-sm mb-4">Your dominant environmental energies</p>
+              
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3 }}
+                className="bg-gradient-to-br from-[#0B0B0B] to-[#050505] border border-white/10 rounded-2xl p-6"
+              >
+                <div className="flex items-center gap-4 mb-4">
+                  {insights.placesDNA.map((dna, idx) => (
+                    <div 
+                      key={idx}
+                      className="flex items-center gap-2 px-4 py-2 rounded-full font-semibold"
+                      style={{ 
+                        backgroundColor: `${dna.color}20`,
+                        color: dna.color,
+                        border: `2px solid ${dna.color}50`
+                      }}
+                    >
+                      <span className="text-xl">{dna.icon}</span>
+                      <span>{dna.name}</span>
+                      <span className="text-sm opacity-70">{dna.percentage}%</span>
                     </div>
-                    <p className="text-white/70 text-sm leading-relaxed italic">
-                      {dna.meaning}
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
-              <p className="text-white/50 text-sm mt-4 leading-relaxed">
-                We use this to match you with people who feel sparks in similar environments.
-              </p>
+                  ))}
+                </div>
+                
+                <p className="text-white/60 text-sm leading-relaxed">
+                  We use this to match you with people who feel sparks in similar environments.
+                </p>
+              </motion.div>
             </section>
           )}
 
