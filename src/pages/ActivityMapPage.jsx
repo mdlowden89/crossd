@@ -35,7 +35,86 @@ export default function ActivityMapPage() {
     queryKey: ['my-moments'],
     queryFn: async () => {
       if (!profile) return [];
-      return await base44.entities.Moment.filter({ user_id: profile.id }, '-created_date', 100);
+      const realMoments = await base44.entities.Moment.filter({ user_id: profile.id }, '-created_date', 100);
+      
+      // If no real moments, show sample data
+      if (realMoments.length === 0) {
+        const baseDate = new Date();
+        return [
+          {
+            id: 'sample-1',
+            user_id: profile.id,
+            venue_name: 'Covent Garden',
+            lat: 51.3130,
+            lng: -0.1233,
+            geohash: 'u10hkq',
+            created_date: new Date(baseDate.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+            note: 'Watching the street performers. Someone next to me had the most infectious laugh.'
+          },
+          {
+            id: 'sample-2',
+            user_id: profile.id,
+            venue_name: 'The Shard',
+            lat: 51.5045,
+            lng: -0.0865,
+            geohash: 'u10j5n',
+            created_date: new Date(baseDate.getTime() - 6 * 24 * 60 * 60 * 1000).toISOString(),
+            note: 'The view was incredible, and I noticed someone with a great sense of style near the window.'
+          },
+          {
+            id: 'sample-3',
+            user_id: profile.id,
+            venue_name: 'Tower of London',
+            lat: 51.5055,
+            lng: -0.0754,
+            geohash: 'u10j5q',
+            created_date: new Date(baseDate.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+            note: 'Fascinating history. Saw someone else who seemed just as captivated by the Crown Jewels.'
+          },
+          {
+            id: 'sample-4',
+            user_id: profile.id,
+            venue_name: 'British Museum',
+            lat: 51.5194,
+            lng: -0.1270,
+            geohash: 'u10h9u',
+            created_date: new Date(baseDate.getTime() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+            note: 'Lost in the Egyptian exhibit. There was a quiet intensity about someone sketching near the Rosetta Stone.'
+          },
+          {
+            id: 'sample-5',
+            user_id: profile.id,
+            venue_name: 'Tate Modern',
+            lat: 51.5076,
+            lng: -0.0994,
+            geohash: 'u10j4u',
+            created_date: new Date(baseDate.getTime() - 9 * 24 * 60 * 60 * 1000).toISOString(),
+            note: 'The abstract art was moving. I shared a smile with someone who was also staring at a Rothko painting.'
+          },
+          {
+            id: 'sample-6',
+            user_id: profile.id,
+            venue_name: 'Borough Market',
+            lat: 51.5052,
+            lng: -0.0971,
+            geohash: 'u10j4y',
+            created_date: new Date(baseDate.getTime() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+            note: 'The energy was amazing! So many great smells. Laughed with a stranger over a ridiculously large cheese wheel.'
+          },
+          {
+            id: 'sample-7',
+            user_id: profile.id,
+            venue_name: 'Buckingham Palace',
+            lat: 51.5007,
+            lng: -0.1415,
+            geohash: 'u10h8e',
+            created_date: new Date(baseDate.getTime() - 11 * 24 * 60 * 60 * 1000).toISOString(),
+            note: 'Classic tourist moment. Saw someone else looking just as impressed by the guards.'
+          }
+        ];
+      }
+      
+      return realMoments;
     },
     enabled: !!profile
   });
