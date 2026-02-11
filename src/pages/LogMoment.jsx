@@ -192,7 +192,7 @@ export default function LogMoment() {
                   <StandaloneSearchBox
                     onLoad={onLoad}
                     onPlacesChanged={onPlacesChanged}
-                    bounds={userLocation ? new window.google.maps.LatLngBounds(
+                    bounds={userLocation && window.google?.maps ? new window.google.maps.LatLngBounds(
                       new window.google.maps.LatLng(userLocation.lat - 0.1, userLocation.lng - 0.1),
                       new window.google.maps.LatLng(userLocation.lat + 0.1, userLocation.lng + 0.1)
                     ) : undefined}
@@ -233,7 +233,7 @@ export default function LogMoment() {
                     zoomControl: true
                   }}
                 >
-                  {selectedPlace && (
+                  {selectedPlace && window.google?.maps && (
                     <Marker
                       position={{ lat: selectedPlace.lat, lng: selectedPlace.lng }}
                       icon={{
