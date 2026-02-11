@@ -8,6 +8,7 @@ import { createPageUrl } from '@/utils';
 import ActivityMap from '@/components/dashboard/ActivityMap';
 import InsightsSheet from '@/components/dashboard/InsightsSheet';
 import MomentsListSheet from '@/components/dashboard/MomentsListSheet';
+import NearbySheet from '@/components/dashboard/NearbySheet';
 import { AnimatePresence } from 'framer-motion';
 
 export default function ActivityMapPage() {
@@ -15,10 +16,23 @@ export default function ActivityMapPage() {
   const [mapRef, setMapRef] = useState(null);
   const [showInsights, setShowInsights] = useState(false);
   const [showMoments, setShowMoments] = useState(false);
+  const [showNearby, setShowNearby] = useState(false);
+  const [userLocation, setUserLocation] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     base44.auth.me().then(setUser);
+    
+    // Get user location
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUserLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        });
+      },
+      () => console.log('Location access denied')
+    );
   }, []);
 
   const { data: profile } = useQuery({
@@ -208,6 +222,9 @@ export default function ActivityMapPage() {
         {showMoments && (
           <MomentsListSheet moments={moments} onClose={() => setShowMoments(false)} />
         )}
+        {showNearby && (
+          <NearbySheet onClose={() => setShowNearby(false)} userLocation={userLocation} />
+        )}
       </AnimatePresence>
       {/* Close button */}
       <button
@@ -253,20 +270,11 @@ export default function ActivityMapPage() {
           <Sparkles className="w-6 h-6 md:w-7 md:h-7 text-[#E70F72]" />
         </motion.button>
 
-        {/* Button 2 - Location */}
+        {/* Button 2 - Nearby */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => {
-            navigator.geolocation.getCurrentPosition((pos) => {
-              if (mapRef) {
-                const leafletMap = mapRef.querySelector('.leaflet-container')?._leaflet_map;
-                if (leafletMap) {
-                  leafletMap.setView([pos.coords.latitude, pos.coords.longitude], 15);
-                }
-              }
-            });
-          }}
+          onClick={() => setShowNearby(true)}
           className="flex-1 h-14 md:h-16 rounded-2xl bg-gradient-to-b from-[#E70F72]/20 to-[#E70F72]/10 border border-[#E70F72]/30 flex items-center justify-center hover:border-[#E70F72]/50 transition-colors"
         >
           <MapPin className="w-6 h-6 md:w-7 md:h-7 text-[#E70F72]" />
