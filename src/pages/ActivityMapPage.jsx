@@ -2,17 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { X, Heart, MapPin, Share2, Compass, Zap } from 'lucide-react';
+import { X, Sparkles, MapPin, Share2, Compass, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import ActivityMap from '@/components/dashboard/ActivityMap';
 import InsightsSheet from '@/components/dashboard/InsightsSheet';
+import MomentsListSheet from '@/components/dashboard/MomentsListSheet';
 import { AnimatePresence } from 'framer-motion';
 
 export default function ActivityMapPage() {
   const [user, setUser] = useState(null);
   const [mapRef, setMapRef] = useState(null);
   const [showInsights, setShowInsights] = useState(false);
+  const [showMoments, setShowMoments] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,6 +45,9 @@ export default function ActivityMapPage() {
       <AnimatePresence>
         {showInsights && (
           <InsightsSheet moments={moments} profile={profile} onClose={() => setShowInsights(false)} />
+        )}
+        {showMoments && (
+          <MomentsListSheet moments={moments} onClose={() => setShowMoments(false)} />
         )}
       </AnimatePresence>
       {/* Close button */}
@@ -79,13 +84,14 @@ export default function ActivityMapPage() {
 
       {/* Bottom Action Buttons */}
       <div className="bg-black border-t border-[#E70F72]/20 px-4 md:px-6 py-3 md:py-4 flex gap-3 md:gap-4">
-        {/* Button 1 - Heart */}
+        {/* Button 1 - Moments */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
+          onClick={() => setShowMoments(true)}
           className="flex-1 h-14 md:h-16 rounded-2xl bg-gradient-to-b from-[#E70F72]/20 to-[#E70F72]/10 border border-[#E70F72]/30 flex items-center justify-center hover:border-[#E70F72]/50 transition-colors"
         >
-          <Heart className="w-6 h-6 md:w-7 md:h-7 text-[#E70F72]" />
+          <Sparkles className="w-6 h-6 md:w-7 md:h-7 text-[#E70F72]" />
         </motion.button>
 
         {/* Button 2 - Location */}
