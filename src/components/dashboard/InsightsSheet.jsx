@@ -274,23 +274,53 @@ export default function InsightsSheet({ moments, profile, onClose }) {
             </section>
           )}
 
-          {/* Peak Times */}
+          {/* Peak Times - When your energy is strongest */}
           {insights.peakTime && (
             <section>
-              <h3 className="text-xl font-bold text-white mb-4">Your Peak Spark Time</h3>
+              <h3 className="text-xl font-bold text-white mb-2">When Your Energy is Strongest</h3>
+              <p className="text-white/50 text-sm mb-4">Your peak spark time</p>
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
                 className="bg-gradient-to-r from-[#E70F72]/20 to-[#E70F72]/5 border border-[#E70F72]/30 rounded-2xl p-6"
               >
-                <div className="flex items-center gap-3 mb-3">
-                  <Clock className="w-5 h-5 text-[#E70F72]" />
-                  <p className="text-white font-bold">
-                    {insights.peakTime.day} · {insights.peakTime.hour}
-                  </p>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-[#E70F72]/20 flex items-center justify-center">
+                    <Clock className="w-6 h-6 text-[#E70F72]" />
+                  </div>
+                  <div>
+                    <p className="text-white font-bold text-xl">
+                      {insights.peakTime.day} · {insights.peakTime.hour}
+                    </p>
+                    <p className="text-white/50 text-xs mt-1">Your most active window</p>
+                  </div>
                 </div>
-                <p className="text-white/70 text-sm">
+                
+                {/* Time visualization bar */}
+                <div className="mb-4">
+                  <div className="flex justify-between text-xs text-white/40 mb-2">
+                    <span>12am</span>
+                    <span>6am</span>
+                    <span>12pm</span>
+                    <span>6pm</span>
+                    <span>12am</span>
+                  </div>
+                  <div className="relative h-2 bg-white/10 rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.6 }}
+                      className="absolute inset-y-0 bg-[#E70F72] rounded-full"
+                      style={{
+                        left: `${(parseInt(insights.peakTime.hour) / 24) * 100}%`,
+                        width: '20%'
+                      }}
+                    />
+                  </div>
+                </div>
+                
+                <p className="text-white/70 text-sm leading-relaxed">
                   You tend to log moments when you're most open, social, and present.
                 </p>
               </motion.div>
