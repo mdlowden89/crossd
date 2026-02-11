@@ -137,11 +137,24 @@ export default function InsightsSheet({ moments, profile, onClose }) {
       count: peakHour[1]
     } : null;
 
-    // Spark Potential recommendation
-    const recommendation = topZones[0] ? {
+    // Spark Potential recommendation with enhanced formatting
+    const recommendation = topZones[0] && peakTime ? {
       zone: topZones[0].area,
       vibes: topZones[0].topVibes,
-      time: peakTime?.hour
+      time: peakTime?.hour,
+      dayPart: (() => {
+        const hour = parseInt(peakTime.hour);
+        if (hour >= 5 && hour < 12) return `${peakTime.day} morning`;
+        if (hour >= 12 && hour < 17) return `${peakTime.day} afternoon`;
+        if (hour >= 17 && hour < 21) return `${peakTime.day} evening`;
+        return `${peakTime.day} night`;
+      })(),
+      placeType: topZones[0].topVibes.length > 0 
+        ? `${topZones[0].topVibes[0].toLowerCase()}, ${topZones[0].topVibes[1]?.toLowerCase() || 'social'} spots`
+        : 'your favorite spots',
+      mood: placesDNA[0]?.title.toLowerCase().includes('calm') || placesDNA[0]?.title.toLowerCase().includes('intimate')
+        ? 'unplanned, relaxed, and present'
+        : 'spontaneous, social, and open to connection'
     } : null;
 
     return { topZones, placesDNA, peakTime, recommendation };
@@ -327,23 +340,38 @@ export default function InsightsSheet({ moments, profile, onClose }) {
             </section>
           )}
 
-          {/* Spark Potential */}
+          {/* Spark Potential - How to use this */}
           {insights.recommendation && (
             <section>
-              <h3 className="text-xl font-bold text-white mb-4">Spark Potential</h3>
+              <h3 className="text-xl font-bold text-white mb-2">How to Use This</h3>
+              <p className="text-white/50 text-sm mb-4">Your spark potential</p>
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
-                className="bg-gradient-to-br from-[#0B0B0B] to-[#050505] border border-[#E70F72]/20 rounded-2xl p-6"
+                className="bg-gradient-to-br from-[#E70F72]/15 to-[#E70F72]/5 border border-[#E70F72]/30 rounded-2xl p-6"
               >
-                <p className="text-white/70 text-sm mb-2">Best time to find your vibe</p>
-                <p className="text-white font-bold text-lg mb-4">
-                  {insights.recommendation.time} in {insights.recommendation.zone}
-                </p>
-                <button className="w-full py-3 bg-[#E70F72] text-white font-semibold rounded-xl hover:bg-[#ff1a8c] transition-colors">
-                  Plan a Moment
-                </button>
+                <div className="mb-6">
+                  <p className="text-white/60 text-sm mb-2">Best time to find your vibe</p>
+                  <p className="text-white font-bold text-xl leading-relaxed">
+                    {insights.recommendation.dayPart} in {insights.recommendation.placeType}
+                  </p>
+                </div>
+                
+                <div className="mb-6 p-4 bg-black/20 rounded-xl border border-white/10">
+                  <p className="text-white/70 text-sm leading-relaxed italic">
+                    Your sparks happen most often when you're {insights.recommendation.mood}
+                  </p>
+                </div>
+                
+                <div className="flex gap-3">
+                  <button className="flex-1 py-3 bg-[#E70F72] text-white font-semibold rounded-xl hover:bg-[#ff1a8c] transition-colors">
+                    Plan a Moment
+                  </button>
+                  <button className="flex-1 py-3 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors border border-white/20">
+                    Log a Moment
+                  </button>
+                </div>
               </motion.div>
             </section>
           )}
