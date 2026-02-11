@@ -44,7 +44,7 @@ export default function InsightsSheet({ moments, profile, onClose }) {
         topVibes: [...new Set(zone.vibes)].slice(0, 2)
       }));
 
-    // Places DNA - aggregate vibe tags
+    // PlacesDNA - environment personality archetypes
     const vibeFreq = {};
     moments.forEach(m => {
       if (m.mood_tags) {
@@ -54,10 +54,68 @@ export default function InsightsSheet({ moments, profile, onClose }) {
       }
     });
 
-    const placesDNA = Object.entries(vibeFreq)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 3)
-      .map(([vibe]) => vibe);
+    // Define archetype combinations with emotional meanings
+    const archetypes = [
+      {
+        vibes: ['Romantic', 'Calm', 'Cozy'],
+        icon: '🕯️',
+        title: 'Romantic + Calm',
+        meaning: "You're drawn to places that invite presence, not performance."
+      },
+      {
+        vibes: ['Creative', 'Intimate', 'Artistic'],
+        icon: '🎨',
+        title: 'Creative + Intimate',
+        meaning: 'Sparks for you start with atmosphere, not noise.'
+      },
+      {
+        vibes: ['Social', 'Energetic', 'Vibrant'],
+        icon: '✨',
+        title: 'Social + Vibrant',
+        meaning: 'You thrive in places where energy flows and connections happen naturally.'
+      },
+      {
+        vibes: ['Cultural', 'Curious', 'Intellectual'],
+        icon: '📚',
+        title: 'Cultural + Curious',
+        meaning: 'You seek spaces that spark thought and invite exploration.'
+      },
+      {
+        vibes: ['Adventurous', 'Spontaneous', 'Bold'],
+        icon: '🌟',
+        title: 'Adventurous + Spontaneous',
+        meaning: 'You find magic in the unexpected and embrace the unknown.'
+      },
+      {
+        vibes: ['Calm', 'Natural', 'Peaceful'],
+        icon: '🌿',
+        title: 'Natural + Peaceful',
+        meaning: 'You connect best in environments that feel grounding and authentic.'
+      }
+    ];
+
+    // Match user's vibes to archetypes
+    const matchedArchetypes = archetypes
+      .map(archetype => {
+        const score = archetype.vibes.reduce((sum, vibe) => sum + (vibeFreq[vibe] || 0), 0);
+        return { ...archetype, score };
+      })
+      .filter(a => a.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3);
+
+    const placesDNA = matchedArchetypes.length > 0 ? matchedArchetypes : [
+      {
+        icon: '✨',
+        title: 'Social + Vibrant',
+        meaning: 'You thrive in places where energy flows and connections happen naturally.'
+      },
+      {
+        icon: '🎨',
+        title: 'Creative + Intimate',
+        meaning: 'Sparks for you start with atmosphere, not noise.'
+      }
+    ];
 
     // Peak Times - hourly distribution
     const hourMap = {};
@@ -186,27 +244,31 @@ export default function InsightsSheet({ moments, profile, onClose }) {
             </section>
           )}
 
-          {/* Places DNA */}
+          {/* Your PlacesDNA - Environment Personality */}
           {insights.placesDNA.length > 0 && (
             <section>
-              <h3 className="text-xl font-bold text-white mb-4">Your Environment Personality</h3>
-              <div className="space-y-3">
+              <h3 className="text-xl font-bold text-white mb-2">Your Environment Personality</h3>
+              <p className="text-white/50 text-sm mb-4">Your PlacesDNA</p>
+              <div className="space-y-4">
                 {insights.placesDNA.map((dna, idx) => (
                   <motion.div
                     key={idx}
-                    initial={{ opacity: 0, scale: 0.9 }}
+                    initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.3 + idx * 0.1 }}
-                    className="bg-[#E70F72]/10 border border-[#E70F72]/30 rounded-2xl px-6 py-4"
+                    className="bg-gradient-to-r from-[#E70F72]/15 to-[#E70F72]/5 border border-[#E70F72]/30 rounded-2xl px-6 py-5"
                   >
-                    <p className="text-white font-semibold">{dna}</p>
-                    <p className="text-white/60 text-sm mt-2">
-                      You're drawn to places that match this energy.
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="text-2xl">{dna.icon}</span>
+                      <h4 className="text-white font-bold text-lg">{dna.title}</h4>
+                    </div>
+                    <p className="text-white/70 text-sm leading-relaxed italic">
+                      {dna.meaning}
                     </p>
                   </motion.div>
                 ))}
               </div>
-              <p className="text-white/50 text-xs mt-4">
+              <p className="text-white/50 text-sm mt-4 leading-relaxed">
                 We use this to match you with people who feel sparks in similar environments.
               </p>
             </section>
