@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, MapPin, Clock, Calendar } from 'lucide-react';
 
 export default function MomentsListSheet({ moments, onClose }) {
+  const navigate = useNavigate();
   const sortedMoments = [...moments].sort((a, b) => 
     new Date(b.created_date) - new Date(a.created_date)
   );
