@@ -132,10 +132,11 @@ export default function InsightsSheet({ moments, profile, onClose }) {
 
         {/* Content */}
         <div className="px-6 py-6 space-y-8 pb-20">
-          {/* Top Zones */}
+          {/* Your Vibe Hotspots */}
           {insights.topZones.length > 0 && (
             <section>
-              <h3 className="text-xl font-bold text-white mb-4">Your Vibe Hotspots</h3>
+              <h3 className="text-xl font-bold text-white mb-2">Your Vibe Hotspots</h3>
+              <p className="text-white/50 text-sm mb-4">Where you're drawn to most often</p>
               <div className="space-y-3">
                 {insights.topZones.map((zone, idx) => (
                   <motion.div
@@ -143,34 +144,45 @@ export default function InsightsSheet({ moments, profile, onClose }) {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: idx * 0.1 }}
-                    className="bg-gradient-to-r from-[#0B0B0B] to-[#050505] border border-[#E70F72]/20 rounded-2xl p-4 hover:border-[#E70F72]/40 transition-colors cursor-pointer"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="bg-gradient-to-r from-[#0B0B0B] to-[#050505] border border-[#E70F72]/20 rounded-2xl p-5 hover:border-[#E70F72]/40 transition-colors cursor-pointer"
                   >
                     <div className="flex items-start justify-between mb-3">
-                      <div>
-                        <h4 className="text-white font-semibold">{zone.area}</h4>
+                      <div className="flex-1">
+                        <h4 className="text-white font-semibold text-lg mb-2">{zone.area}</h4>
                         {zone.topVibes.length > 0 && (
-                          <div className="flex gap-2 mt-2">
+                          <div className="flex gap-2 flex-wrap">
                             {zone.topVibes.map((vibe, i) => (
-                              <span key={i} className="text-xs bg-[#E70F72]/20 text-[#E70F72] px-2 py-1 rounded-full">
+                              <span key={i} className="text-xs bg-[#E70F72]/20 text-[#E70F72] px-3 py-1 rounded-full font-medium">
                                 {vibe}
                               </span>
                             ))}
                           </div>
                         )}
                       </div>
-                      <span className="text-2xl font-bold text-[#E70F72]">{zone.frequency}%</span>
+                      <div className="text-right ml-4">
+                        <div className="text-[#E70F72] text-2xl font-bold">{zone.frequency}%</div>
+                        <div className="text-white/50 text-xs mt-1">{zone.count} visits</div>
+                      </div>
                     </div>
-                    <div className="w-full bg-white/5 rounded-full h-2 overflow-hidden">
+                    
+                    {/* Spark bar - frequency indicator */}
+                    <div className="relative h-2 bg-white/10 rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${zone.frequency}%` }}
-                        transition={{ delay: 0.2 + idx * 0.1, duration: 0.8 }}
-                        className="h-full bg-[#E70F72]"
+                        transition={{ delay: 0.2 + idx * 0.1, duration: 0.8, ease: "easeOut" }}
+                        className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#E70F72] to-[#ff1a8c] rounded-full"
                       />
                     </div>
                   </motion.div>
                 ))}
               </div>
+              <p className="text-white/40 text-xs mt-4 italic flex items-center gap-1">
+                <Sparkles className="w-3 h-3" />
+                Tap a zone to see it on the map
+              </p>
             </section>
           )}
 
