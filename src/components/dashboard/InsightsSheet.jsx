@@ -277,7 +277,7 @@ export default function InsightsSheet({ moments, profile, onClose }) {
       placeType: topZones[0].topVibes.length > 0 
         ? `${topZones[0].topVibes[0].toLowerCase()}, ${topZones[0].topVibes[1]?.toLowerCase() || 'social'} spots`
         : 'your favorite spots',
-      mood: placesDNA[0]?.title.toLowerCase().includes('calm') || placesDNA[0]?.title.toLowerCase().includes('intimate')
+      mood: placesDNA[0]?.name.toLowerCase().includes('calm') || placesDNA[0]?.name.toLowerCase().includes('intimate')
         ? 'unplanned, relaxed, and present'
         : 'spontaneous, social, and open to connection'
     } : null;
