@@ -12,8 +12,6 @@ import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
 import { CrossdModal } from '@/components/ui/crossd-modal';
 import SparkSignatureRow from '@/components/profile/SparkSignatureRow';
-import MomentTimelineNew from '@/components/profile/MomentTimelineNew';
-import { buildSparkSignals } from '@/components/spark/signalsGenerator';
 
 export default function ProfileDetail() {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
@@ -37,15 +35,6 @@ export default function ProfileDetail() {
       const profiles = await base44.entities.Profile.filter({ user_id: user.id });
       return profiles[0];
     }
-  });
-
-  const { data: moments = [] } = useQuery({
-    queryKey: ['profile-moments', profileId],
-    queryFn: async () => {
-      if (!profileId) return [];
-      return base44.entities.Moment.filter({ user_id: profileId }, '-created_date', 10);
-    },
-    enabled: !!profileId
   });
 
   const handleLike = async () => {
@@ -396,15 +385,7 @@ export default function ProfileDetail() {
         )}
 
         {/* Spark Signature Row */}
-        <SparkSignatureRow profile={profile} moments={moments} />
-
-        {/* Moment Timeline */}
-        {moments.length > 0 && (
-          <MomentTimelineNew 
-            moments={moments} 
-            sparkSignals={buildSparkSignals(profile, moments)} 
-          />
-        )}
+        <SparkSignatureRow profile={profile} moments={[]} />
 
         {/* Additional Photos (2-3) - After Bio */}
         {photos.length > 1 && photos.slice(1, 3).length > 0 && (

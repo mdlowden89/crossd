@@ -1,24 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, X, ChevronLeft, ChevronRight, MapPin, Briefcase, BadgeCheck, Sparkles, Flame, Music, Zap, Lightbulb, Info } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
-import { base44 } from '@/api/base44Client';
 import { CrossdCard } from '@/components/ui/crossd-card';
 import SparkSignatureRow from '@/components/profile/SparkSignatureRow';
-import { buildSparkSignals } from '@/components/spark/signalsGenerator';
 
 export default function ProfileCard({ profile, onLike, onPass, onViewFull }) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const photos = profile.photos || [];
-
-  const { data: moments = [] } = useQuery({
-    queryKey: ['profile-moments', profile.id],
-    queryFn: async () => {
-      if (!profile.id) return [];
-      return base44.entities.Moment.filter({ user_id: profile.id }, '-created_date', 10);
-    },
-    enabled: !!profile.id
-  });
 
   const nextPhoto = (e) => {
     e.stopPropagation();
@@ -281,9 +269,7 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull }) {
           )}
 
           {/* Spark Signature Row */}
-          <SparkSignatureRow profile={profile} moments={moments} />
-
-
+          <SparkSignatureRow profile={profile} moments={[]} />
 
           {/* Vibe Tags - More Creative Display */}
           {profile.vibe_tags && profile.vibe_tags.length > 0 && (
