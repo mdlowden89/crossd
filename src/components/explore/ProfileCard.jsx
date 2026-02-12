@@ -93,39 +93,82 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull }) {
             </div>
           )}
 
+          {/* Animated Aura Behind Name */}
+          {profile.mbti_type && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="absolute bottom-16 left-1/2 -translate-x-1/2 w-40 h-40 rounded-full blur-3xl pointer-events-none"
+              style={{
+                background: `radial-gradient(circle, ${(() => {
+                  const mbtiColors = {
+                    'ENFJ': '#E74C78', 'ENFP': '#FF6B3D', 'INFJ': '#C49A6C', 'INFP': '#9B5DE5',
+                    'ENTJ': '#F6C90E', 'ENTP': '#6A8F7A', 'INTJ': '#4169E1', 'INTP': '#4169E1',
+                    'ESFJ': '#E74C78', 'ESFP': '#FF6B3D', 'ISFJ': '#C49A6C', 'ISFP': '#9B5DE5',
+                    'ESTJ': '#F6C90E', 'ESTP': '#FF4081', 'ISTJ': '#8B7355', 'ISTP': '#FF4081'
+                  };
+                  return mbtiColors[profile.mbti_type] || '#E70F72';
+                })()} 30%, transparent 70%)`,
+              }}
+            >
+              <motion.div
+                animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.7, 0.4] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                className="w-full h-full"
+              />
+            </motion.div>
+          )}
+
           {/* Info Overlay */}
-          <div className="absolute bottom-0 left-0 right-0 p-5">
-            <div className="flex items-center gap-2 mb-2">
+          <div className="absolute bottom-0 left-0 right-0 p-5 relative z-10">
+            <div className="flex items-center gap-2 mb-1">
               <h2 className="text-2xl font-bold text-white">
                 {profile.display_name}{age ? `, ${age}` : ''}
               </h2>
+              <span className="text-lg">✨</span>
               {profile.verification_status === 'verified' && (
-                <BadgeCheck className="w-6 h-6 text-[#E70F72]" />
+                <BadgeCheck className="w-5 h-5 text-[#E70F72]" />
               )}
               {isGlowing && (
                 <motion.div
                   animate={{ scale: [1, 1.2, 1] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
                 >
-                  <Sparkles className="w-5 h-5 text-[#E70F72]" />
+                  <Sparkles className="w-4 h-4 text-[#E70F72]" />
                 </motion.div>
               )}
             </div>
             
-            <div className="flex items-center gap-4 text-white/70 text-sm">
-              {profile.job_title && (
-                <div className="flex items-center gap-1">
-                  <Briefcase className="w-4 h-4" />
-                  <span>{profile.job_title}</span>
-                </div>
-              )}
+            <div className="flex items-center gap-2 text-white/60 text-sm mb-2">
               {profile.city && (
-                <div className="flex items-center gap-1">
-                  <MapPin className="w-4 h-4" />
+                <>
+                  <MapPin className="w-3.5 h-3.5" />
                   <span>{profile.city}</span>
-                </div>
+                </>
+              )}
+              {profile.verification_status === 'verified' && (
+                <>
+                  <span className="text-white/30">·</span>
+                  <span className="text-[#E70F72] font-medium">Verified</span>
+                </>
               )}
             </div>
+
+            {profile.mbti_type && (
+              <div className="flex items-center gap-1.5 mt-2">
+                <span className="text-white/90 font-semibold text-sm">
+                  {profile.mbti_type} · {(() => {
+                    const mbtiNames = {
+                      'ENFJ': 'Protagonist', 'ENFP': 'Campaigner', 'INFJ': 'Advocate', 'INFP': 'Mediator',
+                      'ENTJ': 'Commander', 'ENTP': 'Debater', 'INTJ': 'Architect', 'INTP': 'Logician',
+                      'ESFJ': 'Consul', 'ESFP': 'Entertainer', 'ISFJ': 'Defender', 'ISFP': 'Adventurer',
+                      'ESTJ': 'Executive', 'ESTP': 'Entrepreneur', 'ISTJ': 'Logistician', 'ISTP': 'Virtuoso'
+                    };
+                    return mbtiNames[profile.mbti_type] || 'Personality';
+                  })()}
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
