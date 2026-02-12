@@ -9,7 +9,7 @@ export default function SparkSignatureRow({ profile, moments = [] }) {
   if (signals.length === 0) return null;
   
   return (
-    <div className="relative mb-6">
+    <div className="relative mb-6 -mx-5 px-5">
       {/* Signals Row */}
       <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
         {signals.map((signal, idx) => (
