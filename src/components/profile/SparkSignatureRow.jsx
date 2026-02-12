@@ -18,7 +18,10 @@ export default function SparkSignatureRow({ profile, moments = [] }) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.1 }}
-            onClick={() => setSelectedSignal(signal)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedSignal(signal);
+            }}
             className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-full border transition-all hover:scale-105"
             style={{
               borderColor: `${signal.color}40`,
