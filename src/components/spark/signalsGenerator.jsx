@@ -243,7 +243,7 @@ function pickCreativeSignal(traits, boosts, vibeTags) {
     icon: '🌍',
     dimension: 'creative',
     strength: clamp01(0.56 + (Seff - 0.5)),
-    reason: 'You prefer what's concrete over theoretical',
+    reason: 'You prefer what is concrete over theoretical',
     color: '#6A8F7A'
   };
 }
