@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, X, ChevronLeft, ChevronRight, MapPin, Briefcase, BadgeCheck, Sparkles, Flame, Music, Zap, Lightbulb } from 'lucide-react';
+import { Heart, X, ChevronLeft, ChevronRight, MapPin, Briefcase, BadgeCheck, Sparkles, Flame, Music, Zap, Lightbulb, Info } from 'lucide-react';
 import { CrossdCard } from '@/components/ui/crossd-card';
 import SparkSignatureRow from '@/components/profile/SparkSignatureRow';
 
@@ -334,34 +334,32 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull }) {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-col items-center gap-4 mt-6">
-        <div className="flex items-center justify-center gap-6">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={onPass}
-            className="w-16 h-16 rounded-full border-2 border-white/20 flex items-center justify-center hover:border-white/40 transition-colors"
-          >
-            <X className="w-8 h-8 text-white/60" />
-          </motion.button>
-          
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={onLike}
-            className="w-20 h-20 rounded-full bg-[#E70F72] flex items-center justify-center shadow-[0_0_30px_rgba(231,15,114,0.4)]"
-          >
-            <Heart className="w-10 h-10 text-black" fill="black" />
-          </motion.button>
-        </div>
+      <div className="flex items-center justify-center gap-6 mt-6">
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={onPass}
+          className="w-16 h-16 rounded-full border-2 border-white/20 flex items-center justify-center hover:border-white/40 transition-colors"
+        >
+          <X className="w-8 h-8 text-white/60" />
+        </motion.button>
         
         <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
           onClick={onViewFull}
-          className="px-6 py-3 rounded-full border border-white/20 text-white/80 text-sm font-medium hover:border-white/40 hover:text-white transition-colors"
+          className="w-16 h-16 rounded-full border-2 border-white/20 flex items-center justify-center hover:border-white/40 transition-colors"
         >
-          View Full Profile
+          <Info className="w-7 h-7 text-white/60" />
+        </motion.button>
+        
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={onLike}
+          className="w-20 h-20 rounded-full bg-[#E70F72] flex items-center justify-center shadow-[0_0_30px_rgba(231,15,114,0.4)]"
+        >
+          <Heart className="w-10 h-10 text-black" fill="black" />
         </motion.button>
       </div>
     </motion.div>
