@@ -189,22 +189,62 @@ export default function ProfileDetail() {
 
       {/* Profile Info */}
       <div className="px-6 pb-32 -mt-16 relative">
+        {/* Animated Aura Background */}
+        {profile.mbti_type && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="absolute -top-8 left-1/2 -translate-x-1/2 w-32 h-32 rounded-full blur-3xl pointer-events-none"
+            style={{
+              background: `radial-gradient(circle, ${(() => {
+                // Dominant vibe color based on MBTI or first vibe tag
+                const mbtiColors = {
+                  'ENFJ': '#E74C78', // Romantic
+                  'ENFP': '#FF6B3D', // Social & Buzzing
+                  'INFJ': '#C49A6C', // Calm & Cozy
+                  'INFP': '#9B5DE5', // Creative
+                  'ENTJ': '#F6C90E', // Live & Electric
+                  'ENTP': '#6A8F7A', // Nature & Grounded
+                  'INTJ': '#4169E1', // Deep & Intellectual
+                  'INTP': '#4169E1', // Deep & Intellectual
+                  'ESFJ': '#E74C78', // Romantic
+                  'ESFP': '#FF6B3D', // Social & Buzzing
+                  'ISFJ': '#C49A6C', // Calm & Cozy
+                  'ISFP': '#9B5DE5', // Creative
+                  'ESTJ': '#F6C90E', // Live & Electric
+                  'ESTP': '#FF4081', // Active & Energetic
+                  'ISTJ': '#8B7355', // Intimate Local
+                  'ISTP': '#FF4081'  // Active & Energetic
+                };
+                return mbtiColors[profile.mbti_type] || '#E70F72';
+              })()} 20%, transparent 70%)`,
+            }}
+          >
+            <motion.div
+              animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="w-full h-full"
+            />
+          </motion.div>
+        )}
+
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-end gap-3 mb-4"
+          className="flex items-end gap-2 mb-2 relative z-10"
         >
           <h1 className="text-4xl font-bold text-white leading-none">
             {profile.display_name}
             <span className="text-white/50 font-normal">{age ? `, ${age}` : ''}</span>
           </h1>
+          <span className="text-2xl mb-1">✨</span>
           {profile.verification_status === 'verified' && (
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.2, type: "spring" }}
             >
-              <BadgeCheck className="w-7 h-7 text-[#E70F72] mb-1" />
+              <BadgeCheck className="w-6 h-6 text-[#E70F72] mb-1" />
             </motion.div>
           )}
           {isGlowing && (
@@ -213,21 +253,92 @@ export default function ProfileDetail() {
               transition={{ duration: 2, repeat: Infinity }}
               className="mb-1"
             >
-              <Sparkles className="w-6 h-6 text-[#E70F72]" />
+              <Sparkles className="w-5 h-5 text-[#E70F72]" />
             </motion.div>
+          )}
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1 }}
+          className="mb-6 relative z-10"
+        >
+          <div className="flex items-center gap-2 text-white/60 text-sm mb-1">
+            <MapPin className="w-4 h-4" />
+            <span>{profile.city || 'London'}</span>
+            {profile.verification_status === 'verified' && (
+              <>
+                <span className="text-white/30">·</span>
+                <span className="text-[#E70F72] font-medium">Verified</span>
+              </>
+            )}
+          </div>
+
+          {profile.mbti_type && (
+            <div className="mt-3">
+              <div className="inline-flex items-center gap-2">
+                <span className="text-xl">✨</span>
+                <span className="text-white font-semibold text-base">
+                  {profile.mbti_type} · The {(() => {
+                    const mbtiNames = {
+                      'ENFJ': 'Protagonist',
+                      'ENFP': 'Campaigner',
+                      'INFJ': 'Advocate',
+                      'INFP': 'Mediator',
+                      'ENTJ': 'Commander',
+                      'ENTP': 'Debater',
+                      'INTJ': 'Architect',
+                      'INTP': 'Logician',
+                      'ESFJ': 'Consul',
+                      'ESFP': 'Entertainer',
+                      'ISFJ': 'Defender',
+                      'ISFP': 'Adventurer',
+                      'ESTJ': 'Executive',
+                      'ESTP': 'Entrepreneur',
+                      'ISTJ': 'Logistician',
+                      'ISTP': 'Virtuoso'
+                    };
+                    return mbtiNames[profile.mbti_type] || 'Personality';
+                  })()}
+                </span>
+              </div>
+              <p className="text-white/60 text-sm mt-1.5 leading-relaxed">
+                {(() => {
+                  const mbtiDescs = {
+                    'ENFJ': 'High-energy connector with a love for discovery.',
+                    'ENFP': 'Enthusiastic and creative free spirit.',
+                    'INFJ': 'Quiet and mystical, yet inspiring.',
+                    'INFP': 'Poetic, kind, and altruistic.',
+                    'ENTJ': 'Bold, imaginative, and strong-willed.',
+                    'ENTP': 'Smart and curious thinker.',
+                    'INTJ': 'Imaginative and strategic thinker.',
+                    'INTP': 'Innovative inventor with endless curiosity.',
+                    'ESFJ': 'Caring and social helper.',
+                    'ESFP': 'Spontaneous and energetic entertainer.',
+                    'ISFJ': 'Warm and dedicated protector.',
+                    'ISFP': 'Flexible and charming artist.',
+                    'ESTJ': 'Excellent administrator and manager.',
+                    'ESTP': 'Smart and energetic perceiver.',
+                    'ISTJ': 'Practical and fact-minded individual.',
+                    'ISTP': 'Bold and practical experimenter.'
+                  };
+                  return mbtiDescs[profile.mbti_type] || 'Unique personality with strong values.';
+                })()}
+              </p>
+            </div>
           )}
         </motion.div>
 
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.1 }}
+          transition={{ delay: 0.15 }}
           className="flex flex-wrap items-center gap-2 mb-6"
         >
           {(() => {
             const badges = [
               profile.job_title && { icon: Briefcase, text: profile.job_title },
-              profile.city && { icon: MapPin, text: profile.city },
               profile.ethnicity && profile.ethnicity !== 'Prefer Not to Say' && { 
                 icon: Users, 
                 text: profile.ethnicity.replace('White/Caucasian', 'White').replace('Black/African Descent', 'Black') 
