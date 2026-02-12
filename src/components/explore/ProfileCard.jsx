@@ -5,7 +5,6 @@ import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { CrossdCard } from '@/components/ui/crossd-card';
 import SparkSignatureRow from '@/components/profile/SparkSignatureRow';
-import MomentTimelineNew from '@/components/profile/MomentTimelineNew';
 import { buildSparkSignals } from '@/components/spark/signalsGenerator';
 
 export default function ProfileCard({ profile, onLike, onPass, onViewFull }) {
@@ -284,13 +283,7 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull }) {
           {/* Spark Signature Row */}
           <SparkSignatureRow profile={profile} moments={moments} />
 
-          {/* Moment Timeline */}
-          {moments.length > 0 && (
-            <MomentTimelineNew 
-              moments={moments} 
-              sparkSignals={buildSparkSignals(profile, moments)} 
-            />
-          )}
+
 
           {/* Vibe Tags - More Creative Display */}
           {profile.vibe_tags && profile.vibe_tags.length > 0 && (
