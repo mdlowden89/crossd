@@ -209,7 +209,7 @@ export default function SparkSignatureRow({ profile, moments = [] }) {
                 style={{ color: signal.color }}
               />
               <span 
-                className="text-sm font-semibold whitespace-nowrap"
+                className="text-sm font-bold whitespace-nowrap uppercase tracking-wide"
                 style={{ color: signal.color }}
               >
                 {signal.label}
