@@ -15,8 +15,8 @@ const navItems = [
 
 export default function BottomNav({ currentPage }) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-lg border-t border-white/10 z-40 safe-area-bottom">
-      <div className="flex items-center justify-around py-2 px-2">
+    <nav className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-lg border-t border-white/10 z-40 pb-safe">
+      <div className="flex items-center justify-around py-3 px-2 max-w-screen-lg mx-auto">
         {navItems.map((item) => {
           const isActive = currentPage === item.page;
           const Icon = item.icon;
