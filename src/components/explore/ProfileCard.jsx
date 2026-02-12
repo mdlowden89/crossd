@@ -35,9 +35,55 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull }) {
       exit={{ scale: 0.9, opacity: 0 }}
     >
       <div 
-        className={`relative rounded-3xl overflow-hidden bg-[#0B0B0B] ${
-          isGlowing ? 'ring-2 ring-[#E70F72] shadow-[0_0_40px_rgba(231,15,114,0.3)]' : ''
-        }`}
+        className="relative rounded-3xl overflow-hidden bg-[#0B0B0B]"
+        style={{
+          border: profile.vibe_tags && profile.vibe_tags.length > 0 ? `3px solid ${(() => {
+            const vibeColors = {
+              'Romantic': '#E74C78',
+              'Flirty': '#FF6B9D',
+              'Cozy': '#C49A6C',
+              'Calm': '#6A8F7A',
+              'Creative': '#9B5DE5',
+              'Artistic': '#8A63F6',
+              'Social': '#FFB800',
+              'Energetic': '#FF6B3D',
+              'Vibrant': '#FF4081',
+              'Peaceful': '#4169E1',
+              'Natural': '#2DD881',
+              'Spontaneous': '#F6C90E',
+              'Adventurous': '#FF6B35',
+              'Deep talk': '#4169E1',
+              'Intellectual': '#8B7355',
+              'Active': '#FF4081',
+              'Low-key': '#8B7355',
+              'Outgoing': '#FFB800'
+            };
+            return vibeColors[profile.vibe_tags[0]] || '#E70F72';
+          })()}` : isGlowing ? '2px solid #E70F72' : '1px solid rgba(255,255,255,0.1)',
+          boxShadow: profile.vibe_tags && profile.vibe_tags.length > 0 ? `0 0 40px ${(() => {
+            const vibeColors = {
+              'Romantic': '#E74C78',
+              'Flirty': '#FF6B9D',
+              'Cozy': '#C49A6C',
+              'Calm': '#6A8F7A',
+              'Creative': '#9B5DE5',
+              'Artistic': '#8A63F6',
+              'Social': '#FFB800',
+              'Energetic': '#FF6B3D',
+              'Vibrant': '#FF4081',
+              'Peaceful': '#4169E1',
+              'Natural': '#2DD881',
+              'Spontaneous': '#F6C90E',
+              'Adventurous': '#FF6B35',
+              'Deep talk': '#4169E1',
+              'Intellectual': '#8B7355',
+              'Active': '#FF4081',
+              'Low-key': '#8B7355',
+              'Outgoing': '#FFB800'
+            };
+            return vibeColors[profile.vibe_tags[0]] || '#E70F72';
+          })()}30` : isGlowing ? '0 0 40px rgba(231,15,114,0.3)' : 'none'
+        }}
         onClick={onViewFull}
       >
         {/* Photo Section */}
