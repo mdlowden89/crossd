@@ -26,15 +26,15 @@ const VIBE_TAG_MAP = {
   party: { social: { boost: 0.25, hint: 'You like high-energy scenes' } },
   'small circles': { social: { boost: -0.10, hint: 'You prefer 1:1 or small groups' } },
   'art lover': { creative: { boost: 0.30, hint: 'You lean creative' } },
-  creative: { creative: { boost: 0.25, hint: 'You're drawn to creativity' } },
+  creative: { creative: { boost: 0.25, hint: 'You are drawn to creativity' } },
   bookish: { creative: { boost: 0.10, hint: 'You like ideas + meaning' } },
   'deep talk': { communication: { boost: 0.40, hint: 'You like deep conversation' } },
   thoughtful: { communication: { boost: 0.15, hint: 'You prefer depth over noise' } },
   witty: { communication: { boost: 0.20, hint: 'You like playful back-and-forth' } },
   banter: { communication: { boost: 0.25, hint: 'You like playful banter' } },
   direct: { communication: { boost: -0.10, hint: 'You prefer clarity + directness' } },
-  'night owl': { rhythm: { boost: 0.40, hint: 'You're active later' } },
-  'early bird': { rhythm: { boost: 0.30, hint: 'You're active earlier' } },
+  'night owl': { rhythm: { boost: 0.40, hint: 'You are active later' } },
+  'early bird': { rhythm: { boost: 0.30, hint: 'You are active earlier' } },
   romantic: { environment: { boost: 0.25, hint: 'You lean romantic' } },
   foodie: { environment: { boost: 0.15, hint: 'You like experience-driven spots' } },
   'live music': { environment: { boost: 0.25, hint: 'You like live energy' } },
@@ -207,7 +207,7 @@ function pickCreativeSignal(traits, boosts, vibeTags) {
       icon: '🎭',
       dimension: 'creative',
       strength: clamp01(0.60 + (Neff - 0.5)),
-      reason: 'You're drawn to expressive, creative environments',
+      reason: 'You are drawn to expressive, creative environments',
       color: '#9B5DE5'
     };
   }
@@ -483,7 +483,7 @@ function pickTempoSignal(traits, intent, boosts, vibeTags) {
       icon: '🌊',
       dimension: 'tempo',
       strength: clamp01(0.58 + (Peff - 0.5)),
-      reason: 'You're flexible and let connection unfold naturally',
+      reason: 'You are flexible and let connection unfold naturally',
       color: '#4169E1'
     };
   }
@@ -494,7 +494,7 @@ function pickTempoSignal(traits, intent, boosts, vibeTags) {
     icon: '🌿',
     dimension: 'tempo',
     strength: clamp01(0.56 + Math.abs(Peff - 0.5)),
-    reason: 'You're balanced—intentional, but not rigid',
+    reason: 'You are balanced - intentional, but not rigid',
     color: '#6A8F7A'
   };
 }
