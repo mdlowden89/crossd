@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, X, ChevronLeft, ChevronRight, MapPin, Briefcase, BadgeCheck, Sparkles, Flame, Music, Zap, Lightbulb } from 'lucide-react';
 import { CrossdCard } from '@/components/ui/crossd-card';
-import SparkSignatureRow from './SparkSignatureRow';
 
 export default function ProfileCard({ profile, onLike, onPass, onViewFull }) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
@@ -268,9 +267,6 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull }) {
               <p className="text-white/80 text-sm italic">"{profile.bio}"</p>
             </div>
           )}
-
-          {/* Spark Signature Row */}
-          <SparkSignatureRow profile={profile} />
 
           {/* Vibe Tags - More Creative Display */}
           {profile.vibe_tags && profile.vibe_tags.length > 0 && (
