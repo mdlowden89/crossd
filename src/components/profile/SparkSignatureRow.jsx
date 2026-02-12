@@ -58,7 +58,11 @@ export default function SparkSignatureRow({ profile, moments = [] }) {
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[90%] max-w-sm"
+              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[90%] max-w-sm max-h-[80vh] overflow-y-auto"
+              style={{ 
+                maxHeight: 'calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 80px)',
+                top: 'calc(50% - env(safe-area-inset-top) / 2)'
+              }}
             >
               <div 
                 className="bg-[#0B0B0B] border-2 rounded-2xl p-6 shadow-2xl"
