@@ -12,7 +12,7 @@ import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
 import { CrossdModal } from '@/components/ui/crossd-modal';
 import SparkSignatureRow from '@/components/profile/SparkSignatureRow';
-import MomentTimeline from '@/components/profile/MomentTimeline';
+import MomentTimelineNew from '@/components/profile/MomentTimelineNew';
 import { buildSparkSignals } from '@/components/spark/signalsGenerator';
 
 export default function ProfileDetail() {
@@ -400,7 +400,7 @@ export default function ProfileDetail() {
 
         {/* Moment Timeline */}
         {moments.length > 0 && (
-          <MomentTimeline 
+          <MomentTimelineNew 
             moments={moments} 
             sparkSignals={buildSparkSignals(profile, moments)} 
           />
