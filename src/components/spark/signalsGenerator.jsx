@@ -275,7 +275,7 @@ function pickCommunicationSignal(traits, boosts, vibeTags) {
       icon: '🌙',
       dimension: 'communication',
       strength: clamp01(0.60 + (Feff - 0.5)),
-      reason: 'You open gradually, but go deep when it's right',
+      reason: 'You open gradually, but go deep when it is right',
       color: '#8A63F6'
     };
   }
