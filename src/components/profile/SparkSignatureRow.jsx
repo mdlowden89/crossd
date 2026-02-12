@@ -84,7 +84,10 @@ export default function SparkSignatureRow({ profile, moments = [] }) {
                   {selectedSignal.reason}
                 </p>
                 <button
-                  onClick={() => setSelectedSignal(null)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedSignal(null);
+                  }}
                   className="mt-4 w-full py-2.5 rounded-full font-semibold text-sm"
                   style={{
                     background: `${selectedSignal.color}20`,
