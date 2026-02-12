@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { buildSparkSignals } from '@/lib/spark/signals';
+import { buildSparkSignals } from '@/components/spark/signalsGenerator';
 
 export default function SparkSignatureRow({ profile, moments = [] }) {
   const [selectedSignal, setSelectedSignal] = useState(null);
