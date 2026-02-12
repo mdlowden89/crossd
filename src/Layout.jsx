@@ -76,7 +76,7 @@ export default function Layout({ children, currentPageName }) {
         />
       )}
       
-      <main className={showNav ? 'pt-16 pb-20' : ''}>
+      <main className={showNav ? 'pt-16 pb-24' : ''}>
         {children}
       </main>
       
