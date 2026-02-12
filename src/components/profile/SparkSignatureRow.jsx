@@ -11,7 +11,7 @@ export default function SparkSignatureRow({ profile, moments = [] }) {
   return (
     <div className="relative mb-6 -mx-5 px-5">
       {/* Signals Row */}
-      <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+      <div className="flex flex-wrap gap-3 pb-2">
         {signals.map((signal, idx) => (
           <motion.button
             key={signal.id}
