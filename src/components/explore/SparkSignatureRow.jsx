@@ -161,7 +161,7 @@ const SparkSignatureRow = ({ profile }) => {
           icon: '🎵',
           label: 'Live & Electric',
           color: '#F6C90E',
-          description: 'You're drawn to sensory, expressive spaces.',
+          description: "You're drawn to sensory, expressive spaces.",
           dimension: 'environment'
         });
       } else if (['Peaceful', 'Natural'].includes(dominantVibe)) {
