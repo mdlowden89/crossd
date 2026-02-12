@@ -40,9 +40,10 @@ export default function ProfileDetail() {
   });
 
   const { data: moments = [] } = useQuery({
-    queryKey: ['profile-moments', profileId],
-    queryFn: () => base44.entities.Moment.filter({ user_id: profileId }, '-created_date', 10),
-    enabled: !!profileId
+    queryKey: ['profile-moments', profile?.id],
+    queryFn: () => base44.entities.Moment.filter({ user_id: profile?.id }, '-created_date', 10),
+    enabled: !!profile?.id,
+    refetchOnMount: true
   });
 
   const handleLike = async () => {
