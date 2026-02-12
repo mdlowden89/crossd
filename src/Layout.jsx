@@ -36,7 +36,7 @@ export default function Layout({ children, currentPageName }) {
   const showNav = isAuthenticated && !authPages.includes(currentPageName) && !adminPages.includes(currentPageName) && !fullScreenPages.includes(currentPageName);
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white relative">
       <style>{`
         :root {
           --crossd-pink: #E70F72;
