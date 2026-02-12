@@ -11,6 +11,7 @@ import {
 import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
 import { CrossdModal } from '@/components/ui/crossd-modal';
+import SparkSignatureRow from '@/components/profile/SparkSignatureRow';
 
 export default function ProfileDetail() {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
@@ -382,6 +383,9 @@ export default function ProfileDetail() {
             </CrossdCard>
           </motion.div>
         )}
+
+        {/* Spark Signature Row */}
+        <SparkSignatureRow profile={profile} moments={[]} />
 
         {/* Additional Photos (2-3) - After Bio */}
         {photos.length > 1 && photos.slice(1, 3).length > 0 && (
