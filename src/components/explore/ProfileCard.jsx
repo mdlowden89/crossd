@@ -93,27 +93,46 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull }) {
             </div>
           )}
 
-          {/* Animated Aura Behind Name */}
-          {profile.mbti_type && (
+          {/* Animated Aura Behind Name - Based on Dominant Vibe */}
+          {profile.vibe_tags && profile.vibe_tags.length > 0 && (
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="absolute bottom-16 left-1/2 -translate-x-1/2 w-40 h-40 rounded-full blur-3xl pointer-events-none"
+              className="absolute bottom-16 left-1/2 -translate-x-1/2 w-48 h-48 rounded-full blur-3xl pointer-events-none"
               style={{
                 background: `radial-gradient(circle, ${(() => {
-                  const mbtiColors = {
-                    'ENFJ': '#E74C78', 'ENFP': '#FF6B3D', 'INFJ': '#C49A6C', 'INFP': '#9B5DE5',
-                    'ENTJ': '#F6C90E', 'ENTP': '#6A8F7A', 'INTJ': '#4169E1', 'INTP': '#4169E1',
-                    'ESFJ': '#E74C78', 'ESFP': '#FF6B3D', 'ISFJ': '#C49A6C', 'ISFP': '#9B5DE5',
-                    'ESTJ': '#F6C90E', 'ESTP': '#FF4081', 'ISTJ': '#8B7355', 'ISTP': '#FF4081'
+                  const vibeColors = {
+                    'Romantic': '#E74C78',
+                    'Flirty': '#FF6B9D',
+                    'Cozy': '#C49A6C',
+                    'Calm': '#6A8F7A',
+                    'Creative': '#9B5DE5',
+                    'Artistic': '#8A63F6',
+                    'Social': '#FFB800',
+                    'Energetic': '#FF6B3D',
+                    'Vibrant': '#FF4081',
+                    'Peaceful': '#4169E1',
+                    'Natural': '#2DD881',
+                    'Spontaneous': '#F6C90E',
+                    'Adventurous': '#FF6B35',
+                    'Deep talk': '#4169E1',
+                    'Intellectual': '#8B7355',
+                    'Active': '#FF4081',
+                    'Low-key': '#8B7355',
+                    'Outgoing': '#FFB800'
                   };
-                  return mbtiColors[profile.mbti_type] || '#E70F72';
-                })()} 30%, transparent 70%)`,
+                  const dominantVibe = profile.vibe_tags[0];
+                  return vibeColors[dominantVibe] || '#E70F72';
+                })()} 25%, transparent 70%)`,
               }}
             >
               <motion.div
-                animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.7, 0.4] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                animate={{ 
+                  scale: [1, 1.3, 1], 
+                  opacity: [0.3, 0.6, 0.3],
+                  rotate: [0, 5, 0]
+                }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 className="w-full h-full"
               />
             </motion.div>
