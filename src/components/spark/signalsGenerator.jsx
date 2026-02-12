@@ -97,7 +97,7 @@ function inferRhythm(peakTime) {
     day:     { id: 'rhythm_daytime_energy', label: 'Daytime Energy', icon: '☀️', base: 0.70, reason: 'You show up most in the daytime', color: '#FFD700' },
     evening: { id: 'rhythm_golden_hour_soul', label: 'Golden Hour', icon: '🌇', base: 0.78, reason: 'Your peak energy is evenings', color: '#FF8C42' },
     night:   { id: 'rhythm_night_energy', label: 'Night Energy', icon: '🌃', base: 0.82, reason: 'Your moments peak at night', color: '#8A63F6' },
-    late:    { id: 'rhythm_late_thinker', label: 'Late Thinker', icon: '🌙', base: 0.86, reason: 'You're active late into the night', color: '#9B5DE5' },
+    late:    { id: 'rhythm_late_thinker', label: 'Late Thinker', icon: '🌙', base: 0.86, reason: 'You are active late into the night', color: '#9B5DE5' },
     weekend: { id: 'rhythm_weekend_pulse', label: 'Weekend Pulse', icon: '🎉', base: 0.75, reason: 'Your moments spike on weekends', color: '#FF6B9D' },
     weekday: { id: 'rhythm_structured_rhythm', label: 'Structured Rhythm', icon: '🗂', base: 0.72, reason: 'Your moments are strongest on weekdays', color: '#6A8F7A' },
   };
