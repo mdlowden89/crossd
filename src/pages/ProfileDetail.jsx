@@ -384,6 +384,85 @@ export default function ProfileDetail() {
           </motion.div>
         )}
 
+        {/* Key Attributes */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="mb-6"
+        >
+          <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+            {profile.height && (
+              <div className="flex flex-col items-center gap-2 min-w-[80px]">
+                <div className="w-12 h-12 rounded-full bg-[#E70F72]/10 border border-[#E70F72]/30 flex items-center justify-center">
+                  <svg className="w-6 h-6 text-[#E70F72]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 2v20M8 6l4-4 4 4M8 18l4 4 4-4" />
+                  </svg>
+                </div>
+                <div className="text-center">
+                  <p className="text-white/50 text-xs">Height</p>
+                  <p className="text-white text-sm font-medium">{Math.floor(profile.height / 30.48)}'{Math.round((profile.height % 30.48) / 2.54)}"</p>
+                </div>
+              </div>
+            )}
+            {profile.ethnicity && (
+              <div className="flex flex-col items-center gap-2 min-w-[80px]">
+                <div className="w-12 h-12 rounded-full bg-[#E70F72]/10 border border-[#E70F72]/30 flex items-center justify-center">
+                  <svg className="w-6 h-6 text-[#E70F72]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </div>
+                <div className="text-center">
+                  <p className="text-white/50 text-xs">Ethnicity</p>
+                  <p className="text-white text-sm font-medium">{profile.ethnicity.split('/')[0]}</p>
+                </div>
+              </div>
+            )}
+            {profile.children && (
+              <div className="flex flex-col items-center gap-2 min-w-[80px]">
+                <div className="w-12 h-12 rounded-full bg-[#E70F72]/10 border border-[#E70F72]/30 flex items-center justify-center">
+                  <svg className="w-6 h-6 text-[#E70F72]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="8" r="4" />
+                    <path d="M12 14c-4 0-7 2-7 5v2h14v-2c0-3-3-5-7-5z" />
+                  </svg>
+                </div>
+                <div className="text-center">
+                  <p className="text-white/50 text-xs">Children</p>
+                  <p className="text-white text-sm font-medium">{profile.children === "Don't have children" ? "Don't have c..." : profile.children}</p>
+                </div>
+              </div>
+            )}
+            {profile.family_plans && (
+              <div className="flex flex-col items-center gap-2 min-w-[80px]">
+                <div className="w-12 h-12 rounded-full bg-[#E70F72]/10 border border-[#E70F72]/30 flex items-center justify-center">
+                  <svg className="w-6 h-6 text-[#E70F72]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M9 11l3 3L22 4" />
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                  </svg>
+                </div>
+                <div className="text-center">
+                  <p className="text-white/50 text-xs">Family Plans</p>
+                  <p className="text-white text-sm font-medium">{profile.family_plans === "Not sure yet" ? "Not Sure" : profile.family_plans.split(' ')[0]}</p>
+                </div>
+              </div>
+            )}
+            {profile.drinking && (
+              <div className="flex flex-col items-center gap-2 min-w-[80px]">
+                <div className="w-12 h-12 rounded-full bg-[#E70F72]/10 border border-[#E70F72]/30 flex items-center justify-center">
+                  <svg className="w-6 h-6 text-[#E70F72]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M6 2v20M6 7h5M6 12h5" />
+                    <path d="M16 4v4a2 2 0 0 0 2 2h2v10a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V4" />
+                  </svg>
+                </div>
+                <div className="text-center">
+                  <p className="text-white/50 text-xs">Drinking</p>
+                  <p className="text-white text-sm font-medium">{profile.drinking}</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </motion.div>
+
         {/* Spark Signature Row */}
         <SparkSignatureRow profile={profile} moments={[]} />
 
