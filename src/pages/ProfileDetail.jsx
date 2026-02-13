@@ -46,7 +46,9 @@ export default function ProfileDetail() {
     queryKey: ['profile-moments', profileId],
     queryFn: async () => {
       if (!profile) return [];
+      console.log('Fetching moments for profile:', profile.id);
       const moments = await base44.entities.Moment.filter({ user_id: profile.id }, '-created_date', 10);
+      console.log('Found moments:', moments.length, moments);
       return moments;
     },
     enabled: !!profile
