@@ -12,6 +12,8 @@ import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
 import { CrossdModal } from '@/components/ui/crossd-modal';
 import SparkSignatureRow from '@/components/profile/SparkSignatureRow';
+import { buildSparkSignals } from '@/components/spark/signalsGenerator';
+import { generateSparkPattern, generateCompatibilityTease } from '@/components/spark/sparkPatternGenerator';
 
 export default function ProfileDetail() {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
@@ -92,6 +94,11 @@ export default function ProfileDetail() {
     ? Math.floor((new Date() - new Date(profile.birthdate)) / (365.25 * 24 * 60 * 60 * 1000))
     : null;
   const isGlowing = profile.glow_active_until && new Date(profile.glow_active_until) > new Date();
+  
+  // Generate Spark Pattern and Compatibility
+  const signals = buildSparkSignals(profile, []);
+  const sparkPattern = generateSparkPattern(profile, signals);
+  const compatibilityTease = generateCompatibilityTease(profile, signals);
 
   return (
     <div className="min-h-screen bg-black">
@@ -386,6 +393,60 @@ export default function ProfileDetail() {
 
         {/* Spark Signature Row */}
         <SparkSignatureRow profile={profile} moments={[]} />
+
+        {/* Spark Pattern Insight */}
+        {sparkPattern && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="mb-6 -mt-3"
+          >
+            <div className="relative group">
+              <motion.div
+                animate={{ opacity: [0.3, 0.6, 0.3] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-0 bg-gradient-to-r from-[#E70F72]/10 via-[#E70F72]/20 to-[#E70F72]/10 rounded-2xl blur-xl"
+              />
+              <div className="relative bg-gradient-to-br from-[#1a1a1a] to-[#0B0B0B] border border-[#E70F72]/30 rounded-2xl p-5">
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">🪄</span>
+                  <div className="flex-1">
+                    <p className="text-[#E70F72] text-xs font-bold mb-2 uppercase tracking-wider">Spark Pattern</p>
+                    <p className="text-white/90 text-base italic leading-relaxed">{sparkPattern}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Compatibility Tease */}
+        {compatibilityTease && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35 }}
+            className="mb-6"
+          >
+            <div className="bg-gradient-to-r from-[#E70F72]/10 via-[#E70F72]/5 to-transparent border border-[#E70F72]/20 rounded-xl p-4 hover:border-[#E70F72]/40 transition-all cursor-pointer group">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="text-xl">💞</span>
+                  <div>
+                    <p className="text-white font-medium text-sm">{compatibilityTease.text}</p>
+                    <p className="text-white/50 text-xs mt-0.5 group-hover:text-[#E70F72] transition-colors">Tap to learn why</p>
+                  </div>
+                </div>
+                {profile.crossd_plus && (
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-[#E70F72]/20 rounded-full border border-[#E70F72]/40">
+                    <span className="text-white text-xs font-bold">{compatibilityTease.compatibility}%</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {/* Additional Photos (2-3) - After Bio */}
         {photos.length > 1 && photos.slice(1, 3).length > 0 && (
