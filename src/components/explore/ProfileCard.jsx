@@ -269,8 +269,9 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull }) {
           )}
 
           {/* Key Attributes */}
-          <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-            {profile.height && (
+          {(profile.height || profile.ethnicity || profile.children || profile.family_plans || profile.drinking) && (
+            <div className="flex gap-4 overflow-x-auto pb-2">
+              {profile.height && (
               <div className="flex flex-col items-center gap-2 min-w-[80px]">
                 <div className="w-12 h-12 rounded-full bg-[#E70F72]/10 border border-[#E70F72]/30 flex items-center justify-center">
                   <svg className="w-6 h-6 text-[#E70F72]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -338,7 +339,8 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull }) {
                 </div>
               </div>
             )}
-          </div>
+            </div>
+          )}
 
           {/* Spark Signature Row */}
           <SparkSignatureRow profile={profile} moments={[]} />
