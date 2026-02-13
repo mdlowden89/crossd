@@ -12,12 +12,14 @@ import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
 import { CrossdModal } from '@/components/ui/crossd-modal';
 import SparkSignatureRow from '@/components/profile/SparkSignatureRow';
+import CompatibilityBreakdown from '@/components/profile/CompatibilityBreakdown';
 import { buildSparkSignals } from '@/components/spark/signalsGenerator';
 import { generateSparkPattern, generateCompatibilityTease } from '@/components/spark/sparkPatternGenerator';
 
 export default function ProfileDetail() {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [showReportModal, setShowReportModal] = useState(false);
+  const [showCompatibilityModal, setShowCompatibilityModal] = useState(false);
   const [reportReason, setReportReason] = useState('');
   const [reportDetails, setReportDetails] = useState('');
 
@@ -429,7 +431,10 @@ export default function ProfileDetail() {
             transition={{ delay: 0.35 }}
             className="mb-6"
           >
-            <div className="bg-gradient-to-r from-[#E70F72]/10 via-[#E70F72]/5 to-transparent border border-[#E70F72]/20 rounded-xl p-4 hover:border-[#E70F72]/40 transition-all cursor-pointer group">
+            <button
+              onClick={() => setShowCompatibilityModal(true)}
+              className="w-full bg-gradient-to-r from-[#E70F72]/10 via-[#E70F72]/5 to-transparent border border-[#E70F72]/20 rounded-xl p-4 hover:border-[#E70F72]/40 transition-all cursor-pointer group text-left"
+            >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className="text-xl">💞</span>
@@ -444,7 +449,7 @@ export default function ProfileDetail() {
                   </div>
                 )}
               </div>
-            </div>
+            </button>
           </motion.div>
         )}
 
@@ -730,6 +735,16 @@ export default function ProfileDetail() {
           </motion.button>
         </div>
       </div>
+
+      {/* Compatibility Breakdown Modal */}
+      <CompatibilityBreakdown
+        isOpen={showCompatibilityModal}
+        onClose={() => setShowCompatibilityModal(false)}
+        profile={profile}
+        signals={signals}
+        compatibility={compatibilityTease?.compatibility}
+        isPremium={myProfile?.crossd_plus || false}
+      />
 
       {/* Report Modal */}
       <CrossdModal
