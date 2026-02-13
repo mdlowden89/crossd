@@ -22,11 +22,13 @@ export default function ProfileDetail() {
   const urlParams = new URLSearchParams(window.location.search);
   const profileId = urlParams.get('id');
 
-  const { data: profile, isLoading } = useQuery({
+  const { data: profileData, isLoading } = useQuery({
     queryKey: ['profile', profileId],
     queryFn: () => base44.entities.Profile.filter({ id: profileId }).then(p => p[0]),
     enabled: !!profileId
   });
+
+  const profile = profileData?.data ? { ...profileData.data, id: profileData.id } : profileData;
 
   const { data: myProfile } = useQuery({
     queryKey: ['my-profile'],
