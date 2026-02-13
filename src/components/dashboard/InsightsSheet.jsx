@@ -25,7 +25,7 @@ const getCompatibleTypes = (mbtiType) => {
   return compatibility[mbtiType] || ['INFJ', 'ISFP', 'ENFP'];
 };
 
-export default function InsightsSheet({ moments, profile, onClose }) {
+export default function InsightsSheet({ moments = [], profile, onClose }) {
   // Calculate insights data
   const insights = useMemo(() => {
     if (!moments || moments.length === 0) {
@@ -33,7 +33,8 @@ export default function InsightsSheet({ moments, profile, onClose }) {
         topZones: [],
         placesDNA: [],
         peakTime: null,
-        recommendation: null
+        recommendation: null,
+        compatibleTypes: []
       };
     }
 
