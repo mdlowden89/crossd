@@ -13,6 +13,7 @@ import { CrossdCard } from '@/components/ui/crossd-card';
 import { CrossdModal } from '@/components/ui/crossd-modal';
 import SparkSignatureRow from '@/components/profile/SparkSignatureRow';
 import CompatibilityBreakdown from '@/components/profile/CompatibilityBreakdown';
+import MomentTimeline from '@/components/profile/MomentTimeline';
 import { buildSparkSignals } from '@/components/spark/signalsGenerator';
 import { generateSparkPattern, generateCompatibilityTease } from '@/components/spark/sparkPatternGenerator';
 
@@ -452,6 +453,9 @@ export default function ProfileDetail() {
             </button>
           </motion.div>
         )}
+
+        {/* Moment Timeline */}
+        <MomentTimeline moments={profileMoments} profile={profile} />
 
         {/* Additional Photos (2-3) - After Bio */}
         {photos.length > 1 && photos.slice(1, 3).length > 0 && (
