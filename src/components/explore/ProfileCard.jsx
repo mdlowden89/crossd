@@ -28,6 +28,97 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull }) {
 
   const isGlowing = profile.glow_active_until && new Date(profile.glow_active_until) > new Date();
 
+  // Get 5 profile details to display
+  const getProfileDetails = () => {
+    const details = [];
+    
+    // Priority order: Height, Ethnicity, Children, Family Plans, Drinking
+    if (profile.height) {
+      details.push({ 
+        icon: Ruler, 
+        label: 'Height', 
+        value: `${Math.floor(profile.height / 30.48)}'${Math.round((profile.height % 30.48) / 2.54)}"` 
+      });
+    }
+    
+    if (profile.ethnicity && profile.ethnicity !== 'Prefer Not to Say') {
+      details.push({ 
+        icon: Users, 
+        label: 'Ethnicity', 
+        value: profile.ethnicity.length > 15 ? profile.ethnicity.substring(0, 12) + '...' : profile.ethnicity
+      });
+    }
+    
+    if (profile.children) {
+      details.push({ 
+        icon: Baby, 
+        label: 'Children', 
+        value: profile.children === "Don't have children" ? "Don't have c..." : profile.children.length > 15 ? profile.children.substring(0, 12) + '...' : profile.children
+      });
+    }
+    
+    if (profile.family_plans) {
+      details.push({ 
+        icon: HeartIcon, 
+        label: 'Family Plans', 
+        value: profile.family_plans === 'Not sure yet' ? 'Not Sure' : profile.family_plans
+      });
+    }
+    
+    if (profile.drinking) {
+      details.push({ 
+        icon: Wine, 
+        label: 'Drinking', 
+        value: profile.drinking
+      });
+    }
+    
+    // Fallback details if we don't have 5 yet
+    if (details.length < 5 && profile.smoking) {
+      details.push({ 
+        icon: Cigarette, 
+        label: 'Smoking', 
+        value: profile.smoking
+      });
+    }
+    
+    if (details.length < 5 && profile.zodiac_sign) {
+      details.push({ 
+        icon: Star, 
+        label: 'Zodiac', 
+        value: profile.zodiac_sign
+      });
+    }
+    
+    if (details.length < 5 && profile.university) {
+      details.push({ 
+        icon: GraduationCap, 
+        label: 'University', 
+        value: profile.university.length > 15 ? profile.university.substring(0, 12) + '...' : profile.university
+      });
+    }
+    
+    if (details.length < 5 && profile.religion && profile.religion !== 'Prefer Not to Say') {
+      details.push({ 
+        icon: Church, 
+        label: 'Religion', 
+        value: profile.religion
+      });
+    }
+    
+    if (details.length < 5 && profile.relationship_type) {
+      details.push({ 
+        icon: Heart, 
+        label: 'Relationship', 
+        value: profile.relationship_type.length > 15 ? profile.relationship_type.substring(0, 12) + '...' : profile.relationship_type
+      });
+    }
+    
+    return details.slice(0, 5);
+  };
+
+  const profileDetails = getProfileDetails();
+
   return (
     <motion.div
       className="w-full max-w-sm mx-auto"
