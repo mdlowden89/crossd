@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, X, ChevronLeft, ChevronRight, MapPin, Briefcase, BadgeCheck, Sparkles, Flame, Music, Zap, Lightbulb, Info } from 'lucide-react';
+import { Heart, X, ChevronLeft, ChevronRight, MapPin, Briefcase, BadgeCheck, Sparkles, Flame, Music, Zap, Lightbulb, Info, Ruler, Users, Baby, Heart as HeartIcon, Wine, Cigarette, Star, GraduationCap, Church } from 'lucide-react';
 import { CrossdCard } from '@/components/ui/crossd-card';
 import SparkSignatureRow from '@/components/profile/SparkSignatureRow';
 
