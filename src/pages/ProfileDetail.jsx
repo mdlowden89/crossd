@@ -42,6 +42,16 @@ export default function ProfileDetail() {
     }
   });
 
+  const { data: profileMoments = [] } = useQuery({
+    queryKey: ['profile-moments', profileId],
+    queryFn: async () => {
+      if (!profile) return [];
+      const moments = await base44.entities.Moment.filter({ user_id: profile.id }, '-created_date', 10);
+      return moments;
+    },
+    enabled: !!profile
+  });
+
   const handleLike = async () => {
     if (!myProfile || !profile) return;
 
