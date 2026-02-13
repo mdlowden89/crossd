@@ -548,34 +548,30 @@ export default function ProfileDetail() {
 
         {/* Prompts */}
         {profile.prompts && profile.prompts.length > 0 && (
-          <div className="mb-6">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="mb-6"
+          >
             <p className="text-white/45 text-xs uppercase tracking-wider mb-3 ml-1">Prompts</p>
             <div className="space-y-3">
               {profile.prompts.map((prompt, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.5 + index * 0.1 }}
-                  whileHover={{ x: 4 }}
-                  className="group"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 + index * 0.05 }}
+                  className="bg-gradient-to-br from-[#1a1a1a] via-[#0B0B0B] to-[#1a1a1a] border border-[#E70F72]/30 rounded-2xl p-5 shadow-lg hover:shadow-[#E70F72]/10 transition-shadow"
                 >
-                  <div className="bg-gradient-to-br from-[#0B0B0B] via-[#1a1a1a] to-[#0B0B0B] border border-white/10 rounded-2xl p-5 hover:border-[#E70F72]/50 transition-all duration-300 shadow-lg">
-                    <div className="flex items-start gap-4">
-                      <div className="w-1.5 h-full bg-gradient-to-b from-[#E70F72] via-[#E70F72]/50 to-transparent rounded-full self-stretch min-h-[60px]" />
-                      <div className="flex-1">
-                        <p className="text-[#E70F72] text-xs font-bold mb-3 uppercase tracking-widest flex items-center gap-2">
-                          {prompt.question}
-                          <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </p>
-                        <p className="text-white/90 text-base leading-relaxed">{prompt.answer}</p>
-                      </div>
-                    </div>
-                  </div>
+                  <p className="text-[#E70F72] text-sm font-bold mb-2">
+                    {prompt.question}
+                  </p>
+                  <p className="text-white text-base leading-relaxed">{prompt.answer}</p>
                 </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Additional Photos (6+) - After Prompts */}
