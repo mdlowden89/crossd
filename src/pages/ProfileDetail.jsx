@@ -384,14 +384,35 @@ export default function ProfileDetail() {
           </motion.div>
         )}
 
-        {/* Key Attributes */}
+        {/* Spark Signature Row */}
+        <SparkSignatureRow profile={profile} moments={[]} />
+
+        {/* Additional Photos (2-3) - After Bio */}
+        {photos.length > 1 && photos.slice(1, 3).length > 0 && (
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            {photos.slice(1, 3).map((photo, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.25 + index * 0.1 }}
+                className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10"
+              >
+                <img src={photo.url} alt="" className="w-full h-full object-cover" />
+              </motion.div>
+            ))}
+          </div>
+        )}
+
+        {/* Key Attributes - Moved here to test visibility */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25 }}
+          transition={{ delay: 0.3 }}
           className="mb-6"
         >
-          <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+          <p className="text-white/45 text-xs uppercase tracking-wider mb-3 ml-1">Quick Facts</p>
+          <div className="flex gap-4 overflow-x-auto pb-2">
             {profile.height && (
               <div className="flex flex-col items-center gap-2 min-w-[80px]">
                 <div className="w-12 h-12 rounded-full bg-[#E70F72]/10 border border-[#E70F72]/30 flex items-center justify-center">
@@ -428,7 +449,7 @@ export default function ProfileDetail() {
                 </div>
                 <div className="text-center">
                   <p className="text-white/50 text-xs">Children</p>
-                  <p className="text-white text-sm font-medium">{profile.children === "Don't have children" ? "Don't have c..." : profile.children}</p>
+                  <p className="text-white text-sm font-medium">{profile.children === "Don't have children" ? "None" : profile.children}</p>
                 </div>
               </div>
             )}
@@ -462,26 +483,6 @@ export default function ProfileDetail() {
             )}
           </div>
         </motion.div>
-
-        {/* Spark Signature Row */}
-        <SparkSignatureRow profile={profile} moments={[]} />
-
-        {/* Additional Photos (2-3) - After Bio */}
-        {photos.length > 1 && photos.slice(1, 3).length > 0 && (
-          <div className="grid grid-cols-2 gap-3 mb-6">
-            {photos.slice(1, 3).map((photo, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.25 + index * 0.1 }}
-                className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10"
-              >
-                <img src={photo.url} alt="" className="w-full h-full object-cover" />
-              </motion.div>
-            ))}
-          </div>
-        )}
 
         {/* MBTI + Vibe Tags Row */}
         <motion.div 
