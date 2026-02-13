@@ -409,10 +409,10 @@ export default function ProfileDetail() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="mb-6"
+          className="mb-6 bg-red-500/20 p-4 rounded-xl"
         >
-          <p className="text-white/45 text-xs uppercase tracking-wider mb-3 ml-1">Quick Facts</p>
-          <div className="flex gap-4 overflow-x-auto pb-2">
+          <p className="text-white text-xs uppercase tracking-wider mb-3 ml-1">Quick Facts (Height: {profile.height || 'none'}, Ethnicity: {profile.ethnicity || 'none'})</p>
+          <div className="flex gap-4 pb-2 bg-blue-500/20 p-4">
             {profile.height && (
               <div className="flex flex-col items-center gap-2 min-w-[80px]">
                 <div className="w-12 h-12 rounded-full bg-[#E70F72]/10 border border-[#E70F72]/30 flex items-center justify-center">
