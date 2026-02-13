@@ -359,6 +359,22 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull }) {
             </div>
           )}
 
+          {/* Profile Details - 5 Key Stats */}
+          {profileDetails.length > 0 && (
+            <div className="grid grid-cols-5 gap-2">
+              {profileDetails.map((detail, index) => {
+                const Icon = detail.icon;
+                return (
+                  <div key={index} className="flex flex-col items-center text-center">
+                    <Icon className="w-6 h-6 text-[#E70F72] mb-1" />
+                    <p className="text-white/60 text-[10px] font-medium mb-0.5">{detail.label}</p>
+                    <p className="text-white text-[11px] font-semibold leading-tight">{detail.value}</p>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
           {/* Spark Signature Row */}
           <SparkSignatureRow profile={profile} moments={[]} />
 
