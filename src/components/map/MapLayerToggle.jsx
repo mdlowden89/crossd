@@ -10,8 +10,9 @@ export default function MapLayerToggle({ activeLayer, onLayerChange, isPremium }
   ];
 
   return (
-    <div className="absolute top-6 left-6 z-[9999] bg-black/80 backdrop-blur-xl border border-[#E70F72]/30 rounded-2xl p-2 flex gap-2">
-      {layers.map(layer => {
+    <div className="absolute top-6 left-6 right-6 z-[9999] overflow-x-auto scrollbar-hide">
+      <div className="inline-flex bg-black/80 backdrop-blur-xl border border-[#E70F72]/30 rounded-2xl p-2 gap-2 min-w-min">
+        {layers.map(layer => {
         const Icon = layer.icon;
         const isLocked = !layer.free && !isPremium;
         const isActive = activeLayer === layer.id;
@@ -39,6 +40,17 @@ export default function MapLayerToggle({ activeLayer, onLayerChange, isPremium }
           </motion.button>
         );
       })}
+      </div>
+      
+      <style jsx>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </div>
   );
 }
