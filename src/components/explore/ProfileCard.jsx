@@ -300,9 +300,9 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull }) {
                 return (
                   <span
                     key={index}
-                    className="px-3 py-1.5 rounded-full bg-gradient-to-r from-[#E70F72]/20 to-[#E70F72]/10 text-[#E70F72] text-xs font-medium border border-[#E70F72]/30 capitalize"
+                    className="px-3 py-1.5 rounded-full bg-gradient-to-r from-[#E70F72]/20 to-[#E70F72]/10 text-[#E70F72] text-xs font-medium border border-[#E70F72]/30"
                   >
-                    {emoji} {tag}
+                    {emoji} {tag.charAt(0).toUpperCase() + tag.slice(1)}
                   </span>
                 );
               })}
