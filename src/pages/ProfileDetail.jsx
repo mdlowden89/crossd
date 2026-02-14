@@ -505,17 +505,45 @@ export default function ProfileDetail() {
             <div>
               <p className="text-white/45 text-xs uppercase tracking-wider mb-2 ml-1">Vibes</p>
               <div className="flex flex-wrap gap-2">
-                {profile.vibe_tags.map((tag, index) => (
-                  <motion.span
-                    key={index}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.4 + index * 0.05 }}
-                    className="px-4 py-2 rounded-xl bg-white/5 text-white/90 text-sm border border-white/15 hover:border-[#E70F72]/40 transition-colors"
-                  >
-                    {tag}
-                  </motion.span>
-                ))}
+                {profile.vibe_tags.map((tag, index) => {
+                  const vibeEmojis = {
+                    'Romantic': '💕',
+                    'Flirty': '😏',
+                    'Cozy': '🕯️',
+                    'Calm': '🌊',
+                    'Creative': '🎨',
+                    'Artistic': '🖼️',
+                    'Social': '🎉',
+                    'Energetic': '⚡',
+                    'Vibrant': '🌟',
+                    'Peaceful': '🕊️',
+                    'Natural': '🌿',
+                    'Spontaneous': '🎲',
+                    'Adventurous': '🧗',
+                    'Deep talk': '💭',
+                    'Intellectual': '📚',
+                    'Active': '🏃',
+                    'Low-key': '🤫',
+                    'Outgoing': '🎊',
+                    'adventurous': '🧗',
+                    'foodie': '🍽️',
+                    'art lover': '🎨',
+                    'spontaneous': '🎲'
+                  };
+                  const emoji = vibeEmojis[tag] || '✨';
+                  
+                  return (
+                    <motion.span
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.4 + index * 0.05 }}
+                      className="px-4 py-2 rounded-xl bg-white/5 text-white/90 text-sm border border-white/15 hover:border-[#E70F72]/40 transition-colors"
+                    >
+                      {emoji} {tag}
+                    </motion.span>
+                  );
+                })}
               </div>
             </div>
           )}
