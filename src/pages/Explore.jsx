@@ -224,6 +224,8 @@ export default function Explore() {
           <ProfileCard
             key={currentProfile.id}
             profile={currentProfile}
+            myProfile={myProfile}
+            myMoments={[]}
             onLike={handleLike}
             onPass={handlePass}
             onViewFull={handleViewProfile}
