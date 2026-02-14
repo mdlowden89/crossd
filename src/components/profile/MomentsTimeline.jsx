@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
 
 /**
  * Generates a creative moment title based on archetype, time, and venue type
@@ -195,6 +196,35 @@ function getEnergyChips(moment, archetype) {
 }
 
 export default function MomentsTimeline({ moments = [] }) {
+  const [photoUrls, setPhotoUrls] = useState({});
+
+  useEffect(() => {
+    const fetchPhotos = async () => {
+      const urls = {};
+      for (const moment of moments.slice(0, 5)) {
+        if (moment.venue_name) {
+          try {
+            const response = await base44.functions.invoke('getPlacePhoto', {
+              venue_name: moment.venue_name,
+              lat: moment.lat,
+              lng: moment.lng
+            });
+            if (response.data?.photo_url) {
+              urls[moment.id] = response.data.photo_url;
+            }
+          } catch (error) {
+            console.error('Failed to fetch photo for moment:', moment.id, error);
+          }
+        }
+      }
+      setPhotoUrls(urls);
+    };
+
+    if (moments.length > 0) {
+      fetchPhotos();
+    }
+  }, [moments]);
+
   if (!moments || moments.length === 0) {
     return null;
   }
@@ -246,65 +276,79 @@ export default function MomentsTimeline({ moments = [] }) {
 
                 {/* Card */}
                 <div
-                  className="bg-white/5 border rounded-xl p-4 hover:border-white/20 transition-all cursor-pointer"
+                  className="bg-white/5 border rounded-xl overflow-hidden hover:border-white/20 transition-all cursor-pointer"
                   style={{ borderColor: `${color}30` }}
                 >
-                  <div className="flex items-start justify-between mb-2">
-                    <div className="flex-1">
-                      <h4 className="text-white font-semibold text-sm mb-1">{title}</h4>
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <span
-                          className="text-xs font-bold px-2 py-0.5 rounded-full"
-                          style={{
-                            backgroundColor: `${color}20`,
-                            color: color,
-                            border: `1px solid ${color}40`
-                          }}
-                        >
-                          {label}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="text-white/60 text-xs italic mb-2">
-                    {(() => {
-                      const descriptions = {
-                        creative: 'Drawn to culture + meaning.',
-                        romantic: 'Warm lights, low volume, real conversation.',
-                        nature_grounded: 'Quiet reset energy.',
-                        social_buzzing: 'Energy + connection.',
-                        nightlife: 'Late night, big energy.',
-                        cozy_intimate: 'Small moments, deep connection.'
-                      };
-                      return descriptions[archetype] || 'Good vibes.';
-                    })()}
-                  </p>
-
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-white/40 text-xs">{relativeTime}</span>
-                    {energyChips.map((chip, idx) => (
-                      <span
-                        key={idx}
-                        className="text-xs px-2 py-0.5 bg-white/5 rounded-full border border-white/10 flex items-center gap-1"
-                      >
-                        <span>{chip.icon}</span>
-                        <span className="text-white/60">{chip.label}</span>
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Optional: Blurred zone indicator */}
-                  {moment.venue_name && (
-                    <div className="mt-2 pt-2 border-t border-white/5 flex items-center gap-1.5">
-                      <MapPin className="w-3 h-3 text-white/30" />
-                      <span className="text-white/30 text-xs">
-                        {moment.venue_name.length > 25 
-                          ? `${moment.venue_name.substring(0, 25)}...` 
-                          : moment.venue_name}
-                      </span>
+                  {/* Place Photo */}
+                  {photoUrls[moment.id] && (
+                    <div className="relative h-32 w-full overflow-hidden">
+                      <img 
+                        src={photoUrls[moment.id]} 
+                        alt={title}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                     </div>
                   )}
+
+                  <div className="p-4">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1">
+                        <h4 className="text-white font-semibold text-sm mb-1">{title}</h4>
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <span
+                            className="text-xs font-bold px-2 py-0.5 rounded-full"
+                            style={{
+                              backgroundColor: `${color}20`,
+                              color: color,
+                              border: `1px solid ${color}40`
+                            }}
+                          >
+                            {label}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className="text-white/60 text-xs italic mb-2">
+                      {(() => {
+                        const descriptions = {
+                          creative: 'Drawn to culture + meaning.',
+                          romantic: 'Warm lights, low volume, real conversation.',
+                          nature_grounded: 'Quiet reset energy.',
+                          social_buzzing: 'Energy + connection.',
+                          nightlife: 'Late night, big energy.',
+                          cozy_intimate: 'Small moments, deep connection.'
+                        };
+                        return descriptions[archetype] || 'Good vibes.';
+                      })()}
+                    </p>
+
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-white/40 text-xs">{relativeTime}</span>
+                      {energyChips.map((chip, idx) => (
+                        <span
+                          key={idx}
+                          className="text-xs px-2 py-0.5 bg-white/5 rounded-full border border-white/10 flex items-center gap-1"
+                        >
+                          <span>{chip.icon}</span>
+                          <span className="text-white/60">{chip.label}</span>
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Optional: Blurred zone indicator */}
+                    {moment.venue_name && (
+                      <div className="mt-2 pt-2 border-t border-white/5 flex items-center gap-1.5">
+                        <MapPin className="w-3 h-3 text-white/30" />
+                        <span className="text-white/30 text-xs">
+                          {moment.venue_name.length > 25 
+                            ? `${moment.venue_name.substring(0, 25)}...` 
+                            : moment.venue_name}
+                        </span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </motion.div>
             );
