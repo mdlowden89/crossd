@@ -168,7 +168,7 @@ export default function ProfileDetail() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           onClick={() => window.history.back()}
-          className="absolute top-16 left-6 w-11 h-11 bg-black/40 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/10 z-20"
+          className="absolute top-6 left-6 w-11 h-11 bg-black/40 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/10 z-20"
         >
           <ChevronLeft className="w-6 h-6 text-white" />
         </motion.button>
@@ -178,7 +178,7 @@ export default function ProfileDetail() {
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="absolute top-16 right-6 z-20"
+            className="absolute top-6 right-6 z-20"
           >
             <div className="px-4 py-2 bg-[#E70F72]/90 backdrop-blur-xl rounded-full border border-[#E70F72] shadow-lg shadow-[#E70F72]/50 flex items-center gap-2">
               <motion.div
