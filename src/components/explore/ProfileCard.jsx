@@ -274,14 +274,38 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull }) {
           {/* Vibe Tags - More Creative Display */}
           {profile.vibe_tags && profile.vibe_tags.length > 0 && (
             <div className="flex flex-wrap gap-2">
-              {profile.vibe_tags.slice(0, 4).map((tag, index) => (
-                <span
-                  key={index}
-                  className="px-3 py-1.5 rounded-full bg-gradient-to-r from-[#E70F72]/20 to-[#E70F72]/10 text-[#E70F72] text-xs font-medium border border-[#E70F72]/30 capitalize"
-                >
-                  ✨ {tag}
-                </span>
-              ))}
+              {profile.vibe_tags.slice(0, 4).map((tag, index) => {
+                const vibeEmojis = {
+                  'Romantic': '💕',
+                  'Flirty': '😏',
+                  'Cozy': '🕯️',
+                  'Calm': '🌊',
+                  'Creative': '🎨',
+                  'Artistic': '🖼️',
+                  'Social': '🎉',
+                  'Energetic': '⚡',
+                  'Vibrant': '🌟',
+                  'Peaceful': '🕊️',
+                  'Natural': '🌿',
+                  'Spontaneous': '🎲',
+                  'Adventurous': '🧗',
+                  'Deep talk': '💭',
+                  'Intellectual': '📚',
+                  'Active': '🏃',
+                  'Low-key': '🤫',
+                  'Outgoing': '🎊'
+                };
+                const emoji = vibeEmojis[tag] || '✨';
+                
+                return (
+                  <span
+                    key={index}
+                    className="px-3 py-1.5 rounded-full bg-gradient-to-r from-[#E70F72]/20 to-[#E70F72]/10 text-[#E70F72] text-xs font-medium border border-[#E70F72]/30 capitalize"
+                  >
+                    {emoji} {tag}
+                  </span>
+                );
+              })}
             </div>
           )}
 
