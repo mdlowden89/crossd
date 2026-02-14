@@ -829,7 +829,10 @@ export default function ProfileDetail() {
         isOpen={showCompatibilityModal}
         onClose={() => setShowCompatibilityModal(false)}
         profile={profile}
+        myProfile={myProfile}
         signals={signals}
+        myMoments={[]}
+        theirMoments={moments}
         compatibility={compatibilityTease?.compatibility}
         isPremium={myProfile?.crossd_plus || false}
       />
