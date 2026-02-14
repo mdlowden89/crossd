@@ -4,12 +4,17 @@ import { X, MapPin, Clock, Sparkles, Lock } from 'lucide-react';
 import { getArchetypeInfo } from '@/components/spark/placesDnaEngine';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import { createPageUrl } from '@/utils';
+import { calculateZoneRarity } from '@/components/spark/rarityEngine';
+import RarityBadge from '@/components/profile/RarityBadge';
 
 export default function ZoneCard({ zone, onClose, isPremium }) {
   if (!zone) return null;
 
   const primary = getArchetypeInfo(zone.primaryArchetype);
   const secondary = zone.secondaryArchetype ? getArchetypeInfo(zone.secondaryArchetype) : null;
+  
+  // Calculate zone rarity
+  const zoneRarity = calculateZoneRarity(zone);
 
   return (
     <>
@@ -42,6 +47,13 @@ export default function ZoneCard({ zone, onClose, isPremium }) {
         </div>
 
         <div className="px-6 py-6 space-y-5">
+          {/* Zone Rarity Badge */}
+          {zoneRarity && !zoneRarity.hidden && (
+            <div className="flex justify-center -mt-2 mb-3">
+              <RarityBadge rarity={zoneRarity} showPercentage={isPremium} />
+            </div>
+          )}
+          
           {/* Zone Type */}
           <div>
             <p className="text-white/45 text-xs uppercase tracking-wider mb-2">Zone Vibe</p>

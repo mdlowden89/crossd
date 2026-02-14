@@ -16,11 +16,15 @@ import CompatibilityBreakdown from '@/components/profile/CompatibilityBreakdown'
 import MomentsTimeline from '@/components/profile/MomentsTimeline';
 import { buildSparkSignals } from '@/components/spark/signalsGenerator';
 import { generateSparkPattern, generateCompatibilityTease } from '@/components/spark/sparkPatternGenerator';
+import { calculateArchetypeRarity } from '@/components/spark/rarityEngine';
+import RarityBadge from '@/components/profile/RarityBadge';
+import RarityCard from '@/components/profile/RarityCard';
 
 export default function ProfileDetail() {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [showReportModal, setShowReportModal] = useState(false);
   const [showCompatibilityModal, setShowCompatibilityModal] = useState(false);
+  const [showRarityCard, setShowRarityCard] = useState(false);
   const [reportReason, setReportReason] = useState('');
   const [reportDetails, setReportDetails] = useState('');
 
@@ -113,6 +117,11 @@ export default function ProfileDetail() {
   const signals = buildSparkSignals(profile, []);
   const sparkPattern = generateSparkPattern(profile, signals);
   const compatibilityTease = generateCompatibilityTease(profile, signals);
+  
+  // Calculate rarity
+  const primaryArchetype = signals.find(s => s.dimension === 'environment')?.type || 'Social';
+  const secondaryArchetype = signals.find(s => s.dimension === 'creative')?.type || 'Buzzing';
+  const archetypeRarity = calculateArchetypeRarity(primaryArchetype, secondaryArchetype, profile.city || 'London');
 
   return (
     <div className="min-h-screen bg-black">
@@ -278,6 +287,20 @@ export default function ProfileDetail() {
               <Sparkles className="w-5 h-5 text-[#E70F72]" />
             </motion.div>
           )}
+        </motion.div>
+        
+        {/* Rarity Badge */}
+        {archetypeRarity && !archetypeRarity.hidden && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+            onClick={() => setShowRarityCard(true)}
+            className="cursor-pointer"
+          >
+            <RarityBadge rarity={archetypeRarity} showPercentage={myProfile?.crossd_plus} />
+          </motion.div>
+        )}
         </motion.div>
 
         <motion.div
@@ -824,6 +847,17 @@ export default function ProfileDetail() {
         </div>
       </div>
 
+      {/* Rarity Card Modal */}
+      <AnimatePresence>
+        {showRarityCard && (
+          <RarityCard
+            rarity={archetypeRarity}
+            isPremium={myProfile?.crossd_plus || false}
+            onClose={() => setShowRarityCard(false)}
+          />
+        )}
+      </AnimatePresence>
+      
       {/* Compatibility Breakdown Modal */}
       <CompatibilityBreakdown
         isOpen={showCompatibilityModal}
