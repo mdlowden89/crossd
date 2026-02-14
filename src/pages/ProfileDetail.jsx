@@ -296,12 +296,11 @@ export default function ProfileDetail() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3 }}
             onClick={() => setShowRarityCard(true)}
-            className="cursor-pointer"
+            className="cursor-pointer mb-4"
           >
             <RarityBadge rarity={archetypeRarity} showPercentage={myProfile?.crossd_plus} />
           </motion.div>
         )}
-        </motion.div>
 
         <motion.div
           initial={{ opacity: 0 }}
