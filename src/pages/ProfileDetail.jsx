@@ -13,7 +13,6 @@ import { CrossdCard } from '@/components/ui/crossd-card';
 import { CrossdModal } from '@/components/ui/crossd-modal';
 import SparkSignatureRow from '@/components/profile/SparkSignatureRow';
 import CompatibilityBreakdown from '@/components/profile/CompatibilityBreakdown';
-import MomentTimeline from '@/components/profile/MomentTimeline';
 import { buildSparkSignals } from '@/components/spark/signalsGenerator';
 import { generateSparkPattern, generateCompatibilityTease } from '@/components/spark/sparkPatternGenerator';
 
@@ -40,18 +39,6 @@ export default function ProfileDetail() {
       const profiles = await base44.entities.Profile.filter({ user_id: user.id });
       return profiles[0];
     }
-  });
-
-  const { data: profileMoments = [] } = useQuery({
-    queryKey: ['profile-moments', profileId],
-    queryFn: async () => {
-      if (!profile) return [];
-      console.log('Fetching moments for profile:', profile.id);
-      const moments = await base44.entities.Moment.filter({ user_id: profile.id }, '-created_date', 10);
-      console.log('Found moments:', moments.length, moments);
-      return moments;
-    },
-    enabled: !!profile
   });
 
   const handleLike = async () => {
@@ -211,7 +198,7 @@ export default function ProfileDetail() {
       </div>
 
       {/* Profile Info */}
-      <div className="px-6 pb-40 -mt-16 relative">
+      <div className="px-6 pb-32 -mt-16 relative">
         {/* Animated Aura Background */}
         {profile.mbti_type && (
           <motion.div
@@ -465,9 +452,6 @@ export default function ProfileDetail() {
             </button>
           </motion.div>
         )}
-
-        {/* Moment Timeline */}
-        <MomentTimeline moments={profileMoments} profile={profile} />
 
         {/* Additional Photos (2-3) - After Bio */}
         {photos.length > 1 && photos.slice(1, 3).length > 0 && (

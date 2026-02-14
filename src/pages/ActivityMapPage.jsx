@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { X, Sparkles, MapPin, Share2, Compass, Zap, Plus, SlidersHorizontal } from 'lucide-react';
+import { X, Sparkles, MapPin, Share2, Compass, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import ActivityMap from '@/components/dashboard/ActivityMap';
@@ -17,9 +17,6 @@ export default function ActivityMapPage() {
   const [showInsights, setShowInsights] = useState(false);
   const [showMoments, setShowMoments] = useState(false);
   const [showNearby, setShowNearby] = useState(false);
-  const [showFilter, setShowFilter] = useState(false);
-  const [timeFilter, setTimeFilter] = useState('7days');
-  const [vibeFilter, setVibeFilter] = useState('all');
   const [userLocation, setUserLocation] = useState(null);
   const navigate = useNavigate();
 
@@ -216,128 +213,17 @@ export default function ActivityMapPage() {
     enabled: !!profile
   });
 
-  // Filter moments based on selected filters
-  const filteredMoments = moments.filter(m => {
-    const momentDate = new Date(m.created_date);
-    const now = new Date();
-    const daysDiff = Math.floor((now - momentDate) / (1000 * 60 * 60 * 24));
-    
-    // Time filter
-    if (timeFilter === 'today' && daysDiff > 0) return false;
-    if (timeFilter === '7days' && daysDiff > 7) return false;
-    if (timeFilter === '30days' && daysDiff > 30) return false;
-    
-    // Vibe filter (based on venue_types for now - can be enhanced)
-    if (vibeFilter !== 'all') {
-      const vibeMapping = {
-        'romantic': ['restaurant', 'bar', 'night_club'],
-        'calm': ['cafe', 'park', 'library'],
-        'social': ['night_club', 'bar', 'restaurant'],
-        'creative': ['art_gallery', 'museum', 'cafe']
-      };
-      const vibeTypes = vibeMapping[vibeFilter] || [];
-      if (!m.venue_types?.some(type => vibeTypes.includes(type))) return false;
-    }
-    
-    return true;
-  });
-
   return (
     <div className="fixed inset-0 bg-black z-[999] flex flex-col safe-area-top safe-area-bottom">
       <AnimatePresence>
         {showInsights && (
-          <InsightsSheet moments={filteredMoments} profile={profile} onClose={() => setShowInsights(false)} />
+          <InsightsSheet moments={moments} profile={profile} onClose={() => setShowInsights(false)} />
         )}
         {showMoments && (
-          <MomentsListSheet moments={filteredMoments} onClose={() => setShowMoments(false)} />
+          <MomentsListSheet moments={moments} onClose={() => setShowMoments(false)} />
         )}
         {showNearby && (
           <NearbySheet onClose={() => setShowNearby(false)} userLocation={userLocation} />
-        )}
-        {showFilter && (
-          <motion.div
-            initial={{ opacity: 0, y: '100%' }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: '100%' }}
-            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed inset-x-0 bottom-0 z-[9999] bg-[#0B0B0B] rounded-t-3xl max-h-[70vh] overflow-y-auto border-t border-[#E70F72]/20"
-          >
-            <div className="sticky top-0 bg-[#0B0B0B] border-b border-white/10 px-6 py-4 flex items-center justify-between z-10">
-              <h2 className="text-xl font-bold text-white">Filter Moments</h2>
-              <button
-                onClick={() => setShowFilter(false)}
-                className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center"
-              >
-                <X className="w-5 h-5 text-white/60" />
-              </button>
-            </div>
-            
-            <div className="px-6 py-6 space-y-6">
-              {/* Time Filter */}
-              <div>
-                <h3 className="text-white font-semibold mb-3">Time Range</h3>
-                <div className="grid grid-cols-2 gap-3">
-                  {[
-                    { value: 'today', label: 'Today' },
-                    { value: '7days', label: 'Last 7 Days' },
-                    { value: '30days', label: 'Last 30 Days' },
-                    { value: 'all', label: 'All Time' }
-                  ].map(option => (
-                    <button
-                      key={option.value}
-                      onClick={() => setTimeFilter(option.value)}
-                      className={`px-4 py-3 rounded-xl border transition-all ${
-                        timeFilter === option.value
-                          ? 'bg-[#E70F72] border-[#E70F72] text-white'
-                          : 'bg-white/5 border-white/10 text-white/70 hover:border-[#E70F72]/30'
-                      }`}
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Vibe Filter */}
-              <div>
-                <h3 className="text-white font-semibold mb-3">Vibe</h3>
-                <div className="grid grid-cols-2 gap-3">
-                  {[
-                    { value: 'all', label: 'All Vibes', icon: '✨' },
-                    { value: 'romantic', label: 'Romantic', icon: '🌹' },
-                    { value: 'calm', label: 'Calm', icon: '🍃' },
-                    { value: 'social', label: 'Social', icon: '🎉' },
-                    { value: 'creative', label: 'Creative', icon: '🎨' }
-                  ].map(option => (
-                    <button
-                      key={option.value}
-                      onClick={() => setVibeFilter(option.value)}
-                      className={`px-4 py-3 rounded-xl border transition-all flex items-center gap-2 ${
-                        vibeFilter === option.value
-                          ? 'bg-[#E70F72] border-[#E70F72] text-white'
-                          : 'bg-white/5 border-white/10 text-white/70 hover:border-[#E70F72]/30'
-                      }`}
-                    >
-                      <span>{option.icon}</span>
-                      <span>{option.label}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Reset Button */}
-              <button
-                onClick={() => {
-                  setTimeFilter('7days');
-                  setVibeFilter('all');
-                  setShowFilter(false);
-                }}
-                className="w-full px-4 py-3 rounded-xl border border-white/20 text-white/70 hover:border-[#E70F72]/30 transition-all"
-              >
-                Reset Filters
-              </button>
-            </div>
-          </motion.div>
         )}
       </AnimatePresence>
       {/* Close button */}
@@ -350,7 +236,7 @@ export default function ActivityMapPage() {
 
       {/* Map - fills most of screen */}
       <div className="flex-1 w-full h-full overflow-hidden" ref={setMapRef}>
-        {profile && <ActivityMap moments={filteredMoments} profile={profile} mapRef={mapRef} />}
+        {profile && <ActivityMap moments={moments} profile={profile} mapRef={mapRef} />}
         
         {/* Location button - right side, bottom third */}
         <motion.button
@@ -373,27 +259,25 @@ export default function ActivityMapPage() {
       </div>
 
       {/* Bottom Action Buttons */}
-      <div className="bg-black border-t border-[#E70F72]/20 px-4 md:px-6 py-3 md:py-4 flex items-center gap-3 md:gap-4">
-        {/* Button 1 - Filter */}
+      <div className="bg-black border-t border-[#E70F72]/20 px-4 md:px-6 py-3 md:py-4 flex gap-3 md:gap-4">
+        {/* Button 1 - Moments */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => setShowFilter(true)}
-          className="flex-1 h-14 md:h-16 rounded-2xl bg-gradient-to-b from-[#E70F72]/20 to-[#E70F72]/10 border border-[#E70F72]/30 flex flex-col items-center justify-center gap-1 hover:border-[#E70F72]/50 transition-colors"
+          onClick={() => setShowMoments(true)}
+          className="flex-1 h-14 md:h-16 rounded-2xl bg-gradient-to-b from-[#E70F72]/20 to-[#E70F72]/10 border border-[#E70F72]/30 flex items-center justify-center hover:border-[#E70F72]/50 transition-colors"
         >
-          <SlidersHorizontal className="w-5 h-5 md:w-6 md:h-6 text-[#E70F72]" />
-          <span className="text-[#E70F72] text-xs font-medium">Filter</span>
+          <Sparkles className="w-6 h-6 md:w-7 md:h-7 text-[#E70F72]" />
         </motion.button>
 
-        {/* Button 2 - Log Moment (Center, Larger) */}
+        {/* Button 2 - Nearby */}
         <motion.button
-          whileHover={{ scale: 1.08 }}
+          whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => navigate(createPageUrl('LogMoment'))}
-          className="h-16 md:h-18 px-6 md:px-8 rounded-2xl bg-[#E70F72] border-2 border-[#E70F72] flex items-center justify-center gap-2 hover:bg-[#ff1a8c] transition-all shadow-[0_0_30px_rgba(231,15,114,0.4)]"
+          onClick={() => setShowNearby(true)}
+          className="flex-1 h-14 md:h-16 rounded-2xl bg-gradient-to-b from-[#E70F72]/20 to-[#E70F72]/10 border border-[#E70F72]/30 flex items-center justify-center hover:border-[#E70F72]/50 transition-colors"
         >
-          <Plus className="w-6 h-6 md:w-7 md:h-7 text-white" />
-          <span className="text-white font-semibold text-sm md:text-base">Log Moment</span>
+          <MapPin className="w-6 h-6 md:w-7 md:h-7 text-[#E70F72]" />
         </motion.button>
 
         {/* Button 3 - Insights */}
@@ -401,10 +285,9 @@ export default function ActivityMapPage() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setShowInsights(true)}
-          className="flex-1 h-14 md:h-16 rounded-2xl bg-gradient-to-b from-[#E70F72]/20 to-[#E70F72]/10 border border-[#E70F72]/30 flex flex-col items-center justify-center gap-1 hover:border-[#E70F72]/50 transition-colors"
+          className="flex-1 h-14 md:h-16 rounded-2xl bg-gradient-to-b from-[#E70F72]/20 to-[#E70F72]/10 border border-[#E70F72]/30 flex items-center justify-center hover:border-[#E70F72]/50 transition-colors"
         >
-          <Zap className="w-5 h-5 md:w-6 md:h-6 text-[#E70F72]" />
-          <span className="text-[#E70F72] text-xs font-medium">Insights</span>
+          <Zap className="w-6 h-6 md:w-7 md:h-7 text-[#E70F72]" />
         </motion.button>
       </div>
     </div>
