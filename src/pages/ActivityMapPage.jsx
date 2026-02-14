@@ -9,11 +9,15 @@ import ActivityMap from '@/components/dashboard/ActivityMap';
 import InsightsSheet from '@/components/dashboard/InsightsSheet';
 import MomentsListSheet from '@/components/dashboard/MomentsListSheet';
 import NearbySheet from '@/components/dashboard/NearbySheet';
+import MapLayerToggle from '@/components/map/MapLayerToggle';
+import ZoneCard from '@/components/map/ZoneCard';
 import { AnimatePresence } from 'framer-motion';
 
 export default function ActivityMapPage() {
   const [user, setUser] = useState(null);
   const [mapRef, setMapRef] = useState(null);
+  const [activeLayer, setActiveLayer] = useState('moments');
+  const [selectedZone, setSelectedZone] = useState(null);
   const [showInsights, setShowInsights] = useState(false);
   const [showMoments, setShowMoments] = useState(false);
   const [showNearby, setShowNearby] = useState(false);
