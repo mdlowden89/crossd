@@ -229,7 +229,28 @@ export default function ActivityMapPage() {
         {showNearby && (
           <NearbySheet onClose={() => setShowNearby(false)} userLocation={userLocation} />
         )}
+        {selectedZone && (
+          <ZoneCard 
+            zone={selectedZone} 
+            onClose={() => setSelectedZone(null)} 
+            isPremium={profile?.crossd_plus || false}
+          />
+        )}
       </AnimatePresence>
+      
+      {/* Layer Toggle */}
+      <MapLayerToggle 
+        activeLayer={activeLayer}
+        onLayerChange={(layer) => {
+          if (layer === 'overlap' && !profile?.crossd_plus) {
+            navigate(createPageUrl('CrossdPlus'));
+          } else {
+            setActiveLayer(layer);
+          }
+        }}
+        isPremium={profile?.crossd_plus || false}
+      />
+      
       {/* Close button */}
       <button
         onClick={() => navigate(createPageUrl('Dashboard'))}
@@ -240,7 +261,15 @@ export default function ActivityMapPage() {
 
       {/* Map - fills most of screen */}
       <div className="flex-1 w-full h-full overflow-hidden" ref={setMapRef}>
-        {profile && <ActivityMap moments={moments} profile={profile} mapRef={mapRef} />}
+        {profile && (
+          <ActivityMap 
+            moments={moments} 
+            profile={profile} 
+            mapRef={mapRef}
+            activeLayer={activeLayer}
+            onZoneClick={setSelectedZone}
+          />
+        )}
         
         {/* Location button - right side, bottom third */}
         <motion.button
