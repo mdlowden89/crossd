@@ -211,7 +211,7 @@ export default function ProfileDetail() {
       </div>
 
       {/* Profile Info */}
-      <div className="px-6 pb-32 -mt-16 relative">
+      <div className="px-6 pb-40 -mt-16 relative">
         {/* Animated Aura Background */}
         {profile.mbti_type && (
           <motion.div
