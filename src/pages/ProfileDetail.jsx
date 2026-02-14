@@ -585,7 +585,7 @@ export default function ProfileDetail() {
                       transition={{ delay: 0.4 + index * 0.05 }}
                       className="px-4 py-2 rounded-xl bg-white/5 text-white/90 text-sm border border-white/15 hover:border-[#E70F72]/40 transition-colors"
                     >
-                      {emoji} {tag}
+                      {emoji} {tag.charAt(0).toUpperCase() + tag.slice(1)}
                     </motion.span>
                   );
                 })}
