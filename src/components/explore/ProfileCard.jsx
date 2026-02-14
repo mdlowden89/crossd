@@ -3,9 +3,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, X, ChevronLeft, ChevronRight, MapPin, Briefcase, BadgeCheck, Sparkles, Flame, Music, Zap, Lightbulb, Info } from 'lucide-react';
 import { CrossdCard } from '@/components/ui/crossd-card';
 import SparkSignatureRow from '@/components/profile/SparkSignatureRow';
+import { calculateMatchRarity } from '@/components/spark/rarityEngine';
+import RareMatchBadge from '@/components/profile/RareMatchBadge';
 
-export default function ProfileCard({ profile, onLike, onPass, onViewFull }) {
+export default function ProfileCard({ profile, onLike, onPass, onViewFull, myProfile, myMoments = [] }) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+  
+  // Calculate match rarity
+  const matchRarity = myProfile ? calculateMatchRarity(myProfile, profile, myMoments, []) : null;
   const photos = profile.photos || [];
 
   const nextPhoto = (e) => {
@@ -154,6 +159,9 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull }) {
 
               {/* Gradient Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
+              
+              {/* Rare Match Badge */}
+              {matchRarity && !matchRarity.hidden && <RareMatchBadge matchRarity={matchRarity} />}
             </>
           ) : (
             <div className="w-full h-full bg-[#1a1a1a] flex items-center justify-center">
