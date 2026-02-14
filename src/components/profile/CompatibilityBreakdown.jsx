@@ -3,16 +3,32 @@ import { motion } from 'framer-motion';
 import { X, Lock, Sparkles, MapPin, Clock, Heart } from 'lucide-react';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import { createPageUrl } from '@/utils';
+import { calculateCompatibility, getCompatibilityLabel } from '@/components/spark/compatibilityEngine';
+import { calculateUserPlacesDNA, getArchetypeInfo } from '@/components/spark/placesDnaEngine';
 
 export default function CompatibilityBreakdown({ 
   isOpen, 
   onClose, 
-  profile, 
-  signals = [], 
+  profile,
+  myProfile,
+  signals = [],
+  myMoments = [],
+  theirMoments = [],
   compatibility = 85,
   isPremium = false 
 }) {
   if (!isOpen) return null;
+
+  // Calculate multi-layer compatibility
+  const compatibilityData = myProfile && profile 
+    ? calculateCompatibility(myProfile, profile, myMoments, theirMoments)
+    : { total: compatibility, breakdown: { mbti: compatibility, places: 0, zones: 0, rhythm: 0 } };
+  
+  const compatibilityLabel = getCompatibilityLabel(compatibilityData);
+  
+  // Calculate PlacesDNA profiles
+  const theirPlacesDNA = calculateUserPlacesDNA(theirMoments);
+  const myPlacesDNA = calculateUserPlacesDNA(myMoments);
 
   const socialSignal = signals.find(s => s.dimension === 'social');
   const environmentSignal = signals.find(s => s.dimension === 'environment');
@@ -80,7 +96,7 @@ export default function CompatibilityBreakdown({
         <div className="px-6 py-6 space-y-6">
           {/* Compatibility Score */}
           {isPremium ? (
-            <div className="text-center">
+            <div className="text-center mb-6">
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
@@ -88,10 +104,14 @@ export default function CompatibilityBreakdown({
                 className="inline-flex items-center justify-center w-32 h-32 rounded-full bg-gradient-to-br from-[#E70F72] to-[#FF6B9D] relative mb-4"
               >
                 <div className="absolute inset-2 bg-[#0B0B0B] rounded-full flex items-center justify-center">
-                  <span className="text-4xl font-bold text-white">{compatibility}%</span>
+                  <span className="text-4xl font-bold text-white">{compatibilityData.total}%</span>
                 </div>
               </motion.div>
-              <p className="text-white/60 text-sm">Overall Compatibility</p>
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <span className="text-xl">{compatibilityLabel.label.split(' ')[0]}</span>
+                <p className="text-white font-semibold text-lg">{compatibilityLabel.label.substring(2)}</p>
+              </div>
+              <p className="text-white/60 text-sm">{compatibilityLabel.description}</p>
             </div>
           ) : (
             <div className="bg-gradient-to-br from-[#E70F72]/20 to-[#E70F72]/5 border border-[#E70F72]/30 rounded-2xl p-6 text-center">
@@ -105,6 +125,77 @@ export default function CompatibilityBreakdown({
                 <Sparkles className="w-4 h-4 mr-2" />
                 Upgrade to Crossd+
               </CrossdButton>
+            </div>
+          )}
+
+          {/* Multi-Layer Breakdown */}
+          {isPremium && (
+            <div className="mb-6 space-y-3">
+              <p className="text-white/45 text-xs uppercase tracking-wider mb-3">Compatibility Layers</p>
+              
+              {/* MBTI Layer */}
+              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-white/70 text-sm">🧬 Personality (MBTI)</span>
+                  <span className="text-[#E70F72] font-bold">{compatibilityData.breakdown.mbti}%</span>
+                </div>
+                <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${compatibilityData.breakdown.mbti}%` }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                    className="h-full bg-gradient-to-r from-[#E70F72] to-[#FF6B9D]"
+                  />
+                </div>
+              </div>
+
+              {/* PlacesDNA Layer */}
+              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-white/70 text-sm">🌍 Lifestyle Energy</span>
+                  <span className="text-[#E70F72] font-bold">{compatibilityData.breakdown.places}%</span>
+                </div>
+                <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${compatibilityData.breakdown.places}%` }}
+                    transition={{ duration: 0.8, delay: 0.3 }}
+                    className="h-full bg-gradient-to-r from-[#9B5DE5] to-[#C49A6C]"
+                  />
+                </div>
+              </div>
+
+              {/* Zone Overlap Layer */}
+              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-white/70 text-sm">📍 Shared Zones</span>
+                  <span className="text-[#E70F72] font-bold">{compatibilityData.breakdown.zones}%</span>
+                </div>
+                <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${compatibilityData.breakdown.zones}%` }}
+                    transition={{ duration: 0.8, delay: 0.4 }}
+                    className="h-full bg-gradient-to-r from-[#FFB800] to-[#F6C90E]"
+                  />
+                </div>
+              </div>
+
+              {/* Rhythm Alignment Layer */}
+              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-white/70 text-sm">⏰ Time Rhythm</span>
+                  <span className="text-[#E70F72] font-bold">{compatibilityData.breakdown.rhythm}%</span>
+                </div>
+                <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${compatibilityData.breakdown.rhythm}%` }}
+                    transition={{ duration: 0.8, delay: 0.5 }}
+                    className="h-full bg-gradient-to-r from-[#4169E1] to-[#2DD881]"
+                  />
+                </div>
+              </div>
             </div>
           )}
 
