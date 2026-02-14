@@ -491,15 +491,7 @@ export default function ProfileDetail() {
         >
           {profile.mbti_type && (
             <div className="mb-4">
-              <div className="flex items-center justify-between mb-2 ml-1">
-                <p className="text-white/45 text-xs uppercase tracking-wider">Personality</p>
-                <button
-                  onClick={() => window.history.back()}
-                  className="w-8 h-8 bg-white/5 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors border border-white/10"
-                >
-                  <ChevronLeft className="w-5 h-5 text-white/60" />
-                </button>
-              </div>
+              <p className="text-white/45 text-xs uppercase tracking-wider mb-2 ml-1">Personality</p>
               <div className="bg-gradient-to-r from-[#E70F72]/15 to-[#E70F72]/5 border border-[#E70F72]/30 rounded-2xl p-4">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-10 h-10 bg-[#E70F72] rounded-xl flex items-center justify-center">
