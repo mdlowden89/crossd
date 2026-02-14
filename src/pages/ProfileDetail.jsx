@@ -492,11 +492,56 @@ export default function ProfileDetail() {
           {profile.mbti_type && (
             <div className="mb-4">
               <p className="text-white/45 text-xs uppercase tracking-wider mb-2 ml-1">Personality</p>
-              <div className="inline-flex items-center gap-3 px-5 py-3 bg-gradient-to-r from-[#E70F72]/15 to-[#E70F72]/5 border border-[#E70F72]/30 rounded-2xl">
-                <div className="w-10 h-10 bg-[#E70F72] rounded-xl flex items-center justify-center">
-                  <span className="text-black font-bold text-sm">{profile.mbti_type}</span>
+              <div className="bg-gradient-to-r from-[#E70F72]/15 to-[#E70F72]/5 border border-[#E70F72]/30 rounded-2xl p-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 bg-[#E70F72] rounded-xl flex items-center justify-center">
+                    <span className="text-black font-bold text-sm">{profile.mbti_type}</span>
+                  </div>
+                  <span className="text-white font-semibold text-base">The {(() => {
+                    const mbtiNames = {
+                      'ENFJ': 'Protagonist',
+                      'ENFP': 'Campaigner',
+                      'INFJ': 'Advocate',
+                      'INFP': 'Mediator',
+                      'ENTJ': 'Commander',
+                      'ENTP': 'Debater',
+                      'INTJ': 'Architect',
+                      'INTP': 'Logician',
+                      'ESFJ': 'Consul',
+                      'ESFP': 'Entertainer',
+                      'ISFJ': 'Defender',
+                      'ISFP': 'Adventurer',
+                      'ESTJ': 'Executive',
+                      'ESTP': 'Entrepreneur',
+                      'ISTJ': 'Logistician',
+                      'ISTP': 'Virtuoso'
+                    };
+                    return mbtiNames[profile.mbti_type] || 'Personality';
+                  })()}</span>
                 </div>
-                <span className="text-white/65 text-sm">The {profile.mbti_type} Personality</span>
+                <p className="text-white/70 text-sm leading-relaxed">
+                  {(() => {
+                    const mbtiDescs = {
+                      'ENFJ': 'High-energy connector with a love for discovery.',
+                      'ENFP': 'Enthusiastic and creative free spirit.',
+                      'INFJ': 'Quiet and mystical, yet inspiring.',
+                      'INFP': 'Poetic, kind, and altruistic.',
+                      'ENTJ': 'Bold, imaginative, and strong-willed.',
+                      'ENTP': 'Smart and curious thinker.',
+                      'INTJ': 'Imaginative and strategic thinker.',
+                      'INTP': 'Innovative inventor with endless curiosity.',
+                      'ESFJ': 'Caring and social helper.',
+                      'ESFP': 'Spontaneous and energetic entertainer.',
+                      'ISFJ': 'Warm and dedicated protector.',
+                      'ISFP': 'Flexible and charming artist.',
+                      'ESTJ': 'Excellent administrator and manager.',
+                      'ESTP': 'Smart and energetic perceiver.',
+                      'ISTJ': 'Practical and fact-minded individual.',
+                      'ISTP': 'Bold and practical experimenter.'
+                    };
+                    return mbtiDescs[profile.mbti_type] || 'Unique personality with strong values.';
+                  })()}
+                </p>
               </div>
             </div>
           )}
