@@ -13,6 +13,7 @@ import { CrossdCard } from '@/components/ui/crossd-card';
 import { CrossdModal } from '@/components/ui/crossd-modal';
 import SparkSignatureRow from '@/components/profile/SparkSignatureRow';
 import CompatibilityBreakdown from '@/components/profile/CompatibilityBreakdown';
+import MomentsTimeline from '@/components/profile/MomentsTimeline';
 import { buildSparkSignals } from '@/components/spark/signalsGenerator';
 import { generateSparkPattern, generateCompatibilityTease } from '@/components/spark/sparkPatternGenerator';
 
@@ -39,6 +40,17 @@ export default function ProfileDetail() {
       const profiles = await base44.entities.Profile.filter({ user_id: user.id });
       return profiles[0];
     }
+  });
+
+  const { data: moments = [] } = useQuery({
+    queryKey: ['profile-moments', profileId],
+    queryFn: async () => {
+      if (!profile) return [];
+      const allMoments = await base44.entities.Moment.filter({ user_id: profile.id });
+      // Sort by most recent and take top 5
+      return allMoments.sort((a, b) => new Date(b.created_date) - new Date(a.created_date)).slice(0, 5);
+    },
+    enabled: !!profile
   });
 
   const handleLike = async () => {
@@ -508,6 +520,9 @@ export default function ProfileDetail() {
             </div>
           )}
         </motion.div>
+
+        {/* Moments Timeline */}
+        <MomentsTimeline moments={moments} />
 
         {/* Lifestyle Info Grid */}
         {(profile.height || profile.ethnicity || profile.religion || profile.children || profile.family_plans || profile.drinking || profile.smoking || profile.zodiac_sign) && (
