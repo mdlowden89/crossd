@@ -991,11 +991,11 @@ export default function Profile() {
             <CrossdButton
               variant="secondary"
               size="sm"
-              onClick={() => window.location.href = createPageUrl('LogMoment')}
+              onClick={() => window.location.href = createPageUrl('ProfileDetail') + `?id=${myProfile.id}`}
               className="w-full"
             >
-              <MapPin className="w-4 h-4 mr-2" />
-              Log Moment
+              <User className="w-4 h-4 mr-2" />
+              View Your Card
             </CrossdButton>
           </div>
         )}
