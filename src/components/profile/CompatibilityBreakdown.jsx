@@ -149,20 +149,32 @@ export default function CompatibilityBreakdown({
                 </div>
               </div>
 
-              {/* PlacesDNA Layer */}
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+              {/* PlacesDNA Layer - Crossd's Core Magic */}
+              <div className="bg-gradient-to-br from-purple-500/20 to-purple-500/5 rounded-xl p-4 border-2 border-purple-500/40">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-white/70 text-sm">🌍 Lifestyle Energy</span>
-                  <span className="text-[#E70F72] font-bold">{compatibilityData.breakdown.places}%</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-white/90 text-sm font-semibold">🌍 PlacesDNA Match</span>
+                    <span className="text-xs text-purple-400 px-2 py-0.5 bg-purple-500/20 rounded-full">
+                      Core
+                    </span>
+                  </div>
+                  <span className="text-purple-400 font-bold text-lg">{compatibilityData.breakdown.places}%</span>
                 </div>
-                <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                <div className="h-2 bg-white/10 rounded-full overflow-hidden mb-2">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${compatibilityData.breakdown.places}%` }}
                     transition={{ duration: 0.8, delay: 0.3 }}
-                    className="h-full bg-gradient-to-r from-[#9B5DE5] to-[#C49A6C]"
+                    className="h-full bg-gradient-to-r from-purple-500 to-purple-400 shadow-lg shadow-purple-500/50"
                   />
                 </div>
+                <p className="text-white/70 text-xs">
+                  {compatibilityData.breakdown.places >= 80 
+                    ? 'You inhabit the same emotional landscapes'
+                    : compatibilityData.breakdown.places >= 60
+                    ? 'Strong place energy alignment'
+                    : 'Complementary place patterns'}
+                </p>
               </div>
 
               {/* Zone Overlap Layer */}
