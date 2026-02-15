@@ -131,15 +131,16 @@ export function getRhythmAlignmentScore(momentsA, momentsB) {
 
 /**
  * Multi-layer compatibility calculation
+ * PlacesDNA is a core compatibility factor - where you go reveals who you are
  */
 export function calculateCompatibility(profileA, profileB, momentsA = [], momentsB = []) {
-  // Layer 1: MBTI Base Score (40% weight)
+  // Layer 1: MBTI Base Score (35% weight)
   const mbtiScore = getMBTIScore(profileA.mbti_type, profileB.mbti_type);
   
-  // Layer 2: PlacesDNA Alignment (30% weight)
+  // Layer 2: PlacesDNA Alignment (40% weight) - INCREASED: this is the magic
   const placesScore = getPlacesDNAScore(momentsA, momentsB);
   
-  // Layer 3: Zone Overlap (20% weight)
+  // Layer 3: Zone Overlap (15% weight)
   const zoneScore = getZoneOverlapScore(momentsA, momentsB);
   
   // Layer 4: Rhythm Alignment (10% weight)
@@ -147,10 +148,10 @@ export function calculateCompatibility(profileA, profileB, momentsA = [], moment
   
   // Weighted combination
   const finalScore = Math.round(
-    mbtiScore * 0.4 +
-    placesScore * 0.3 +
-    zoneScore * 0.2 +
-    rhythmScore * 0.1
+    mbtiScore * 0.35 +
+    placesScore * 0.40 +
+    zoneScore * 0.15 +
+    rhythmScore * 0.10
   );
   
   return {
@@ -174,29 +175,34 @@ export function getCompatibilityLabel(compatibility) {
   const placesHigh = breakdown.places >= 70;
   const zonesHigh = breakdown.zones >= 60;
   
-  if (mbtiHigh && placesHigh && zonesHigh) {
-    return { label: '🔥 Lifestyle Mirror', description: 'Same wavelength, same world' };
-  }
-  
-  if (mbtiHigh && !placesHigh) {
-    return { label: '⚡ Chemistry + Contrast', description: 'Strong connection, fresh perspectives' };
-  }
-  
-  if (!mbtiHigh && placesHigh) {
-    return { label: '💫 Mind Opposites, Same World', description: 'Different minds, shared spaces' };
+  // PlacesDNA-first matching (Crossd's core magic)
+  if (placesHigh && mbtiHigh && zonesHigh) {
+    return { label: '🔥 Energy Twin', description: 'Same personality + same world = magic' };
   }
   
   if (placesHigh && zonesHigh) {
-    return { label: '🌍 World Aligned', description: 'You navigate the same landscapes' };
+    return { label: '🌍 PlacesDNA Match', description: 'You inhabit the same emotional landscapes' };
   }
   
-  if (mbtiHigh) {
-    return { label: '💞 Personality Match', description: 'Natural mental connection' };
+  if (placesHigh && mbtiHigh) {
+    return { label: '✨ Vibe Alignment', description: 'Personality + place energy in sync' };
+  }
+  
+  if (!mbtiHigh && placesHigh) {
+    return { label: '💫 Opposite Minds, Same Vibes', description: 'Different personalities, shared place energy' };
+  }
+  
+  if (mbtiHigh && !placesHigh) {
+    return { label: '⚡ Personality Match', description: 'Mental connection, explore new places together' };
+  }
+  
+  if (placesHigh) {
+    return { label: '🎯 Place Energy Match', description: 'Your worlds naturally overlap' };
   }
   
   if (compatibility.total >= 75) {
-    return { label: '✨ Strong Connection', description: 'Multiple points of alignment' };
+    return { label: '✨ Strong Connection', description: 'Multiple compatibility signals' };
   }
   
-  return { label: '💫 Promising Spark', description: 'Interesting compatibility potential' };
+  return { label: '💫 Promising Spark', description: 'Intriguing potential' };
 }

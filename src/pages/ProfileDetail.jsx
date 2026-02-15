@@ -14,6 +14,7 @@ import { CrossdModal } from '@/components/ui/crossd-modal';
 import SparkSignatureRow from '@/components/profile/SparkSignatureRow';
 import CompatibilityBreakdown from '@/components/profile/CompatibilityBreakdown';
 import MomentsTimeline from '@/components/profile/MomentsTimeline';
+import PlacesDNAProfile from '@/components/profile/PlacesDNAProfile';
 import { buildSparkSignals } from '@/components/spark/signalsGenerator';
 import { generateSparkPattern, generateCompatibilityTease } from '@/components/spark/sparkPatternGenerator';
 import { calculateArchetypeRarity } from '@/components/spark/rarityEngine';
@@ -615,6 +616,9 @@ export default function ProfileDetail() {
             </div>
           )}
         </motion.div>
+
+        {/* PlacesDNA Profile */}
+        <PlacesDNAProfile profile={profile} moments={moments} />
 
         {/* Moments Timeline */}
         <MomentsTimeline moments={moments} />
