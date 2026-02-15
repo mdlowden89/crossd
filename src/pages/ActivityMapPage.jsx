@@ -11,6 +11,7 @@ import MomentsListSheet from '@/components/dashboard/MomentsListSheet';
 import NearbySheet from '@/components/dashboard/NearbySheet';
 import MapLayerToggle from '@/components/map/MapLayerToggle';
 import ZoneCard from '@/components/map/ZoneCard';
+import MapFilters from '@/components/map/MapFilters';
 import { AnimatePresence } from 'framer-motion';
 
 export default function ActivityMapPage() {
@@ -22,6 +23,13 @@ export default function ActivityMapPage() {
   const [showMoments, setShowMoments] = useState(false);
   const [showNearby, setShowNearby] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
+  const [filters, setFilters] = useState({
+    time: 'all',
+    type: 'myMoments',
+    vibe: null,
+    matchMomentsOnly: false,
+    intensity: 'medium'
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -217,6 +225,53 @@ export default function ActivityMapPage() {
     enabled: !!profile
   });
 
+  // Filter moments based on active filters
+  const filteredMoments = React.useMemo(() => {
+    if (!moments) return [];
+    
+    let filtered = [...moments];
+    
+    // Time filter
+    if (filters.time !== 'all') {
+      const now = new Date();
+      let cutoffDate;
+      if (filters.time === 'today') {
+        cutoffDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      } else if (filters.time === '7days') {
+        cutoffDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      } else if (filters.time === '30days') {
+        cutoffDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+      }
+      if (cutoffDate) {
+        filtered = filtered.filter(m => new Date(m.created_date) >= cutoffDate);
+      }
+    }
+    
+    // Vibe filter (map to mood_tags or venue_types)
+    if (filters.vibe) {
+      const vibeMap = {
+        calm: ['cafe', 'park', 'museum', 'library'],
+        social: ['restaurant', 'bar', 'night_club'],
+        romantic: ['restaurant', 'bar', 'wine_bar'],
+        creative: ['art_gallery', 'museum', 'bookstore'],
+        highEnergy: ['night_club', 'gym', 'sports_complex']
+      };
+      const targetTypes = vibeMap[filters.vibe] || [];
+      filtered = filtered.filter(m => 
+        m.venue_types?.some(vt => targetTypes.includes(vt)) ||
+        m.mood_tags?.some(tag => tag.toLowerCase().includes(filters.vibe))
+      );
+    }
+    
+    // Match moments only filter (placeholder - would need match data)
+    if (filters.matchMomentsOnly) {
+      // Filter moments that led to matches (would need crossing/match data)
+      // For now, just return all as we don't have that relationship data here
+    }
+    
+    return filtered;
+  }, [moments, filters]);
+
   return (
     <div className="fixed inset-0 bg-black z-[999] flex flex-col safe-area-top safe-area-bottom">
       <AnimatePresence>
@@ -251,6 +306,13 @@ export default function ActivityMapPage() {
         isPremium={profile?.crossd_plus || false}
       /> */}
       
+      {/* Map Filters */}
+      <MapFilters 
+        filters={filters}
+        onFiltersChange={setFilters}
+        isPremium={profile?.crossd_plus || false}
+      />
+      
       {/* Close button */}
       <button
         onClick={() => navigate(createPageUrl('Dashboard'))}
@@ -263,7 +325,7 @@ export default function ActivityMapPage() {
       <div className="flex-1 w-full h-full overflow-hidden" ref={setMapRef}>
         {profile && (
           <ActivityMap 
-            moments={moments} 
+            moments={filteredMoments} 
             profile={profile} 
             mapRef={mapRef}
             activeLayer={activeLayer}
