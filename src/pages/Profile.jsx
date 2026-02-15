@@ -813,6 +813,198 @@ export default function Profile() {
           </div>
         </CrossdCard>
       )}
+
+      {/* Spark Readiness Section */}
+      <div className="mb-6 space-y-4">
+        <h2 className="text-white/65 text-sm font-medium">Your Spark Profile</h2>
+        
+        {/* Spark Readiness Meter */}
+        <CrossdCard className="bg-gradient-to-br from-[#E70F72]/10 to-[#E70F72]/5 border-[#E70F72]/30">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="relative w-16 h-16">
+              <svg className="transform -rotate-90 w-16 h-16">
+                <circle
+                  cx="32"
+                  cy="32"
+                  r="28"
+                  stroke="rgba(231, 15, 114, 0.2)"
+                  strokeWidth="6"
+                  fill="none"
+                />
+                <circle
+                  cx="32"
+                  cy="32"
+                  r="28"
+                  stroke="#E70F72"
+                  strokeWidth="6"
+                  fill="none"
+                  strokeDasharray={`${(completionPercentage / 100) * 176} 176`}
+                  strokeLinecap="round"
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-white font-bold text-sm">{Math.round(completionPercentage / 20)}/5</span>
+              </div>
+            </div>
+            <div className="flex-1">
+              <p className="text-white font-semibold mb-1">Spark Profile Strength</p>
+              <p className="text-white/70 text-sm">
+                {completionPercentage >= 80 
+                  ? 'Your profile is sparking! ✨'
+                  : `Add ${Math.ceil((100 - completionPercentage) / 20)} more ${Math.ceil((100 - completionPercentage) / 20) === 1 ? 'item' : 'items'} to complete`
+                }
+              </p>
+            </div>
+          </div>
+          
+          {/* Suggestions */}
+          {completionPercentage < 100 && (
+            <div className="space-y-2">
+              {(!myProfile.vibe_tags || myProfile.vibe_tags.length < 3) && (
+                <div className="flex items-center gap-2 text-white/80 text-sm">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#E70F72]" />
+                  <span>Add {3 - (myProfile.vibe_tags?.length || 0)} more vibe tags</span>
+                </div>
+              )}
+              {(!myProfile.photos || myProfile.photos.length < 3) && (
+                <div className="flex items-center gap-2 text-white/80 text-sm">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#E70F72]" />
+                  <span>Upload {3 - (myProfile.photos?.length || 0)} more {(3 - (myProfile.photos?.length || 0)) === 1 ? 'photo' : 'photos'}</span>
+                </div>
+              )}
+              {(!myProfile.prompts || myProfile.prompts.length < 2) && (
+                <div className="flex items-center gap-2 text-white/80 text-sm">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#E70F72]" />
+                  <span>Complete {2 - (myProfile.prompts?.length || 0)} more {(2 - (myProfile.prompts?.length || 0)) === 1 ? 'prompt' : 'prompts'}</span>
+                </div>
+              )}
+              {myProfile.verification_status !== 'verified' && (
+                <div className="flex items-center gap-2 text-white/80 text-sm">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#E70F72]" />
+                  <span>Get verified</span>
+                </div>
+              )}
+            </div>
+          )}
+        </CrossdCard>
+
+        {/* How Others See You */}
+        {myProfile.mbti_type && (
+          <CrossdCard>
+            <div className="flex items-start gap-3">
+              <span className="text-2xl">👁️</span>
+              <div className="flex-1">
+                <p className="text-white/50 text-xs font-semibold uppercase tracking-wider mb-2">How others might see you</p>
+                <p className="text-white/90 text-base italic leading-relaxed">
+                  {(() => {
+                    const perspectives = {
+                      'ENFJ': 'Warm, curious energy that draws people in naturally.',
+                      'ENFP': 'Spontaneous and inspiring—always up for the next adventure.',
+                      'INFJ': 'Deep talks > small talk. A bit mysterious, but worth knowing.',
+                      'INFP': 'Poetic soul who sees beauty in the everyday.',
+                      'ENTJ': 'Confident and ambitious—knows what they want.',
+                      'ENTP': 'Quick-witted debater who makes everything interesting.',
+                      'INTJ': 'Strategic mind with a calm, intense energy.',
+                      'INTP': 'Thoughtful analyst who loves diving deep into ideas.',
+                      'ESFJ': 'Caring connector who makes everyone feel welcome.',
+                      'ESFP': 'Life of the party—spontaneous and fun-loving.',
+                      'ISFJ': 'Warm protector with a heart of gold.',
+                      'ISFP': 'Free spirit with an artistic eye for life.',
+                      'ESTJ': 'Reliable leader who gets things done.',
+                      'ESTP': 'Bold adventurer living in the moment.',
+                      'ISTJ': 'Grounded and dependable—values substance over flash.',
+                      'ISTP': 'Cool, hands-on problem solver with quiet confidence.'
+                    };
+                    return perspectives[myProfile.mbti_type] || 'You come across as genuine and intriguing.';
+                  })()}
+                </p>
+              </div>
+            </div>
+          </CrossdCard>
+        )}
+
+        {/* Spark Potential */}
+        <CrossdCard>
+          <div className="flex items-start gap-3">
+            <span className="text-2xl">✨</span>
+            <div className="flex-1">
+              <p className="text-white/50 text-xs font-semibold uppercase tracking-wider mb-2">People likely to spark with you</p>
+              <div className="space-y-2">
+                {myProfile.mbti_type && (() => {
+                  const matches = {
+                    'ENFJ': ['Deep introverts who love discovering hidden gems', 'Creative extroverts with a taste for adventure'],
+                    'ENFP': ['Open-minded explorers who embrace spontaneity', 'Artistic souls who see life as a canvas'],
+                    'INFJ': ['Thoughtful minds who value meaningful connection', 'Creative introverts who haunt the same coffee spots'],
+                    'INFP': ['Empathetic dreamers who love deep conversations', 'Artistic spirits drawn to quiet beauty'],
+                    'ENTJ': ['Ambitious minds who appreciate directness', 'Strategic thinkers who love a challenge'],
+                    'ENTP': ['Intellectually curious debaters', 'Open-minded innovators who think differently'],
+                    'INTJ': ['Strategic thinkers who value depth over breadth', 'Independent minds who appreciate intensity'],
+                    'INTP': ['Analytical explorers who love thought experiments', 'Curious minds who question everything'],
+                    'ESFJ': ['Warm social butterflies who care deeply', 'Community-minded connectors'],
+                    'ESFP': ['Spontaneous adventurers who live in the moment', 'Energetic spirits who love making memories'],
+                    'ISFJ': ['Caring souls who value tradition and loyalty', 'Thoughtful nurturers seeking genuine connection'],
+                    'ISFP': ['Free-spirited artists who feel deeply', 'Gentle adventurers who move with grace'],
+                    'ESTJ': ['Goal-oriented achievers who value structure', 'Reliable partners who appreciate honesty'],
+                    'ESTP': ['Bold risk-takers who embrace life fully', 'Active adventurers always seeking the next thrill'],
+                    'ISTJ': ['Dependable pragmatists who value depth', 'Traditional souls who appreciate authenticity'],
+                    'ISTP': ['Hands-on problem solvers with quiet confidence', 'Independent spirits who value action']
+                  };
+                  return (matches[myProfile.mbti_type] || ['Open-minded individuals', 'Authentic souls seeking real connection']).map((match, i) => (
+                    <div key={i} className="flex items-start gap-2 text-white/80 text-sm">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#E70F72] mt-1.5" />
+                      <span>{match}</span>
+                    </div>
+                  ));
+                })()}
+              </div>
+              {myProfile.crossd_plus && myProfile.mbti_type && (
+                <div className="mt-3 pt-3 border-t border-white/10">
+                  <p className="text-[#E70F72] text-xs">
+                    <span className="font-semibold">Rare type:</span> Only ~{(() => {
+                      const rarities = {
+                        'INFJ': 2, 'INTJ': 3, 'ENTJ': 3, 'ENFJ': 3,
+                        'INFP': 4, 'INTP': 4, 'ENTP': 4, 'ENFP': 8,
+                        'ISTJ': 12, 'ISFJ': 14, 'ESTJ': 9, 'ESFJ': 12,
+                        'ISTP': 5, 'ISFP': 9, 'ESTP': 4, 'ESFP': 9
+                      };
+                      return rarities[myProfile.mbti_type] || 5;
+                    })()}% of people share your personality energy.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </CrossdCard>
+
+        {/* Action CTA */}
+        {completionPercentage < 100 && (
+          <div className="grid grid-cols-2 gap-3">
+            <CrossdButton
+              variant="secondary"
+              size="sm"
+              onClick={() => setEditMode(true)}
+              className="w-full"
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              Improve Profile
+            </CrossdButton>
+            <CrossdButton
+              variant="secondary"
+              size="sm"
+              onClick={() => window.location.href = createPageUrl('LogMoment')}
+              className="w-full"
+            >
+              <MapPin className="w-4 h-4 mr-2" />
+              Log Moment
+            </CrossdButton>
+          </div>
+        )}
+
+        {/* Educational Copy */}
+        <p className="text-white/40 text-xs leading-relaxed text-center px-4">
+          This is how your card appears in Spark Swipes. When more people with your vibe show up, we'll surface them here first.
+        </p>
+      </div>
     </div>
   );
 }
