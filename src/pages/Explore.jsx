@@ -92,7 +92,7 @@ export default function Explore() {
       });
 
       // Filter profiles
-      return allProfiles.filter(p => {
+      const filteredProfiles = allProfiles.filter(p => {
         if (p.id === myProfile.id) return false;
         if (blockedIds.has(p.id)) return false;
         if (likedIds.has(p.id)) return false;
@@ -104,6 +104,19 @@ export default function Explore() {
         
         return true;
       });
+      
+      // Sort by compatibility - high energy matches float to top
+      const { calculateCompatibility } = await import('@/components/spark/compatibilityEngine');
+      
+      const profilesWithCompatibility = filteredProfiles.map(p => ({
+        profile: p,
+        compatibility: calculateCompatibility(myProfile, p, [], []).total
+      }));
+      
+      // Sort by compatibility descending
+      profilesWithCompatibility.sort((a, b) => b.compatibility - a.compatibility);
+      
+      return profilesWithCompatibility.map(p => p.profile);
     },
     enabled: !!myProfile
   });

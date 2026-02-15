@@ -5,12 +5,17 @@ import { CrossdCard } from '@/components/ui/crossd-card';
 import SparkSignatureRow from '@/components/profile/SparkSignatureRow';
 import { calculateMatchRarity } from '@/components/spark/rarityEngine';
 import RareMatchBadge from '@/components/profile/RareMatchBadge';
+import { calculateCompatibility } from '@/components/spark/compatibilityEngine';
 
 export default function ProfileCard({ profile, onLike, onPass, onViewFull, myProfile, myMoments = [] }) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   
   // Calculate match rarity
   const matchRarity = myProfile ? calculateMatchRarity(myProfile, profile, myMoments, []) : null;
+  
+  // Calculate compatibility
+  const compatibility = myProfile ? calculateCompatibility(myProfile, profile, myMoments, []) : null;
+  const isHighCompatibility = compatibility && compatibility.total >= 75;
   const photos = profile.photos || [];
 
   const nextPhoto = (e) => {
@@ -250,7 +255,17 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull, myPro
             </div>
 
             {profile.mbti_type && (
-              <div className="flex items-center gap-1.5 mt-2">
+              <motion.div 
+                className="flex items-center gap-1.5 mt-2"
+                animate={isHighCompatibility ? {
+                  boxShadow: [
+                    '0 0 0px rgba(231, 15, 114, 0)',
+                    '0 0 15px rgba(231, 15, 114, 0.4)',
+                    '0 0 0px rgba(231, 15, 114, 0)'
+                  ]
+                } : {}}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
                 <span className="text-white/90 font-semibold text-sm">
                   {profile.mbti_type} · {(() => {
                     const mbtiNames = {
@@ -262,7 +277,43 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull, myPro
                     return mbtiNames[profile.mbti_type] || 'Personality';
                   })()}
                 </span>
-              </div>
+              </motion.div>
+            )}
+            
+            {/* Compatibility Badge */}
+            {compatibility && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="mt-2"
+              >
+                <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-xl ${
+                  isHighCompatibility 
+                    ? 'bg-[#E70F72]/90 border border-[#E70F72]' 
+                    : 'bg-black/70 border border-white/20'
+                }`}
+                  style={isHighCompatibility ? {
+                    boxShadow: '0 0 20px rgba(231, 15, 114, 0.4)'
+                  } : {}}
+                >
+                  <motion.span
+                    animate={isHighCompatibility ? { 
+                      scale: [1, 1.2, 1],
+                      rotate: [0, 10, -10, 0]
+                    } : {}}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="text-base"
+                  >
+                    {isHighCompatibility ? '⚡' : '✨'}
+                  </motion.span>
+                  <span className={`text-xs font-bold ${
+                    isHighCompatibility ? 'text-black' : 'text-white'
+                  }`}>
+                    {compatibility.total}% Energy Match
+                  </span>
+                </div>
+              </motion.div>
             )}
           </div>
         </div>
