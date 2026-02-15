@@ -238,8 +238,8 @@ export default function ActivityMapPage() {
         )}
       </AnimatePresence>
       
-      {/* Layer Toggle */}
-      <MapLayerToggle 
+      {/* Layer Toggle - temporarily hidden */}
+      {/* <MapLayerToggle 
         activeLayer={activeLayer}
         onLayerChange={(layer) => {
           if (layer === 'overlap' && !profile?.crossd_plus) {
@@ -249,7 +249,7 @@ export default function ActivityMapPage() {
           }
         }}
         isPremium={profile?.crossd_plus || false}
-      />
+      /> */}
       
       {/* Close button */}
       <button
