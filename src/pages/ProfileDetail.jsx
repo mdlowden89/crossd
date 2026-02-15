@@ -215,6 +215,28 @@ export default function ProfileDetail() {
               className="absolute right-0 top-0 bottom-0 w-1/3 z-10"
               disabled={currentPhotoIndex === photos.length - 1}
             />
+            
+            {/* Visible Navigation Arrows */}
+            {currentPhotoIndex > 0 && (
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                onClick={() => setCurrentPhotoIndex(currentPhotoIndex - 1)}
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/40 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/10 z-20 hover:bg-black/60 transition-colors"
+              >
+                <ChevronLeft className="w-6 h-6 text-white" />
+              </motion.button>
+            )}
+            {currentPhotoIndex < photos.length - 1 && (
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                onClick={() => setCurrentPhotoIndex(currentPhotoIndex + 1)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/40 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/10 z-20 hover:bg-black/60 transition-colors"
+              >
+                <ChevronRight className="w-6 h-6 text-white" />
+              </motion.button>
+            )}
           </>
         )}
       </div>
