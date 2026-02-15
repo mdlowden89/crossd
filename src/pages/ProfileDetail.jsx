@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ChevronLeft, Heart, X, MapPin, Briefcase, BadgeCheck, 
   Sparkles, Flag, Ban, ChevronRight, Ruler, Users, Baby, 
