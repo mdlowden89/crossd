@@ -12,6 +12,7 @@ import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
 import { CrossdModal } from '@/components/ui/crossd-modal';
 import { format } from 'date-fns';
+import SparkAssist from '@/components/chat/SparkAssist';
 
 export default function Chat() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -368,13 +369,11 @@ export default function Chat() {
       <div className="px-4 py-4 border-t border-white/10 safe-area-bottom">
         <div className="flex items-center gap-3">
           {!isRecording && (
-            <button
-              onClick={loadSuggestions}
-              disabled={loadingSuggestions}
-              className="w-10 h-10 flex items-center justify-center text-white/40 hover:text-[#E70F72]"
-            >
-              <Lightbulb className={`w-5 h-5 ${loadingSuggestions ? 'animate-pulse' : ''}`} />
-            </button>
+            <SparkAssist 
+              myProfile={myProfile} 
+              otherProfile={otherProfile}
+              onSelectMessage={setNewMessage}
+            />
           )}
           
           {isRecording ? (
