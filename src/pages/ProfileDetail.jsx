@@ -303,6 +303,27 @@ export default function ProfileDetail() {
           </motion.div>
         )}
 
+        {/* Intent Chips */}
+        {(profile.dating_intentions || profile.relationship_type) && (
+          <motion.div
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35 }}
+            className="flex flex-wrap gap-2 mb-4"
+          >
+            {profile.dating_intentions && (
+              <div className="px-3 py-1.5 bg-[#E70F72]/10 border border-[#E70F72]/30 rounded-full">
+                <span className="text-[#E70F72] text-xs font-medium">{profile.dating_intentions}</span>
+              </div>
+            )}
+            {profile.relationship_type && (
+              <div className="px-3 py-1.5 bg-white/5 border border-white/15 rounded-full">
+                <span className="text-white/70 text-xs font-medium">{profile.relationship_type}</span>
+              </div>
+            )}
+          </motion.div>
+        )}
+
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
