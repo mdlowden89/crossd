@@ -15,7 +15,7 @@ export default function PlacesDNAProfile({ profile, moments = [] }) {
   // Generate insight based on MBTI + PlacesDNA
   const getPersonalityPlaceInsight = () => {
     const mbtiType = profile.mbti_type;
-    const primaryArchetype = topArchetypes[0];
+    const primaryArchetype = topArchetypes[0]?.archetype || topArchetypes[0];
     
     const insights = {
       'INFP': {
@@ -93,14 +93,15 @@ export default function PlacesDNAProfile({ profile, moments = [] }) {
 
       {/* Dominant Archetypes */}
       <div className="grid grid-cols-3 gap-2">
-        {topArchetypes.map((archetype, index) => {
-          const info = getArchetypeInfo(archetype);
-          const Icon = getArchetypeIcon(archetype);
-          const percentage = Math.round((dnaProfile.archetypes[archetype] || 0) * 100);
+        {topArchetypes.map((item, index) => {
+          const archetypeName = item.archetype || item;
+          const info = getArchetypeInfo(archetypeName);
+          const Icon = getArchetypeIcon(archetypeName);
+          const percentage = Math.round((item.score || dnaProfile.archetypes[archetypeName] || 0) * 100);
           
           return (
             <motion.div
-              key={archetype}
+              key={archetypeName}
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.5 + index * 0.1 }}
@@ -137,13 +138,13 @@ export default function PlacesDNAProfile({ profile, moments = [] }) {
       </div>
 
       {/* MBTI + PlacesDNA Connection */}
-      {profile.mbti_type && (
+      {profile.mbti_type && topArchetypes[0] && (
         <div className="mt-4 px-4 py-3 bg-white/5 rounded-xl border border-white/10">
           <p className="text-white/60 text-xs">
             <span className="text-[#E70F72] font-semibold">{profile.mbti_type}</span>
             {' × '}
-            <span className="font-semibold" style={{ color: getArchetypeInfo(topArchetypes[0]).color }}>
-              {topArchetypes[0]}
+            <span className="font-semibold" style={{ color: getArchetypeInfo(topArchetypes[0].archetype || topArchetypes[0]).color }}>
+              {topArchetypes[0].archetype || topArchetypes[0]}
             </span>
             {' '} vibes = Your unique energy signature
           </p>
