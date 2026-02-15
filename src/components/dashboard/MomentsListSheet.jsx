@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, MapPin, Clock, Calendar, Plus } from 'lucide-react';
+import { X, MapPin, Clock, Calendar, Plus, Trash2, Archive } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { CrossdButton } from '@/components/ui/crossd-button';
+import { base44 } from '@/api/base44Client';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function MomentsListSheet({ moments, onClose }) {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const [swipedMoment, setSwipedMoment] = useState(null);
+  
   const sortedMoments = [...moments].sort((a, b) => 
     new Date(b.created_date) - new Date(a.created_date)
   );
@@ -25,6 +30,33 @@ export default function MomentsListSheet({ moments, onClose }) {
       month: 'short', 
       year: 'numeric' 
     });
+  };
+
+  const getPlacePhotoUrl = (moment) => {
+    if (!moment.venue_id) return null;
+    return `https://qtrypzzcjebvfcihiynt.supabase.co/functions/v1/getPlacePhoto?place_id=${moment.venue_id}&max_width=400`;
+  };
+
+  const getVibeEmoji = (moment) => {
+    const types = moment.venue_types || [];
+    if (types.includes('cafe') || types.includes('coffee_shop')) return '☕';
+    if (types.includes('restaurant')) return '🍽️';
+    if (types.includes('bar') || types.includes('night_club')) return '🍸';
+    if (types.includes('park')) return '🌳';
+    if (types.includes('museum') || types.includes('art_gallery')) return '🎨';
+    if (types.includes('gym')) return '💪';
+    if (types.includes('tourist_attraction')) return '✨';
+    return '📍';
+  };
+
+  const handleDelete = async (momentId) => {
+    try {
+      await base44.entities.Moment.delete(momentId);
+      queryClient.invalidateQueries(['my-moments']);
+      setSwipedMoment(null);
+    } catch (error) {
+      console.error('Failed to delete moment:', error);
+    }
   };
 
   return (
@@ -73,54 +105,90 @@ export default function MomentsListSheet({ moments, onClose }) {
           sortedMoments.map((moment) => (
             <motion.div
               key={moment.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl p-4 border border-[#E70F72]/20 hover:border-[#E70F72]/40 transition-colors"
+              drag="x"
+              dragConstraints={{ left: -100, right: 0 }}
+              dragElastic={0.1}
+              onDragEnd={(e, info) => {
+                if (info.offset.x < -80) {
+                  setSwipedMoment(moment.id);
+                } else {
+                  setSwipedMoment(null);
+                }
+              }}
+              className="relative"
             >
-              <div className="flex items-start gap-3">
-                <div className="w-12 h-12 rounded-xl bg-[#E70F72]/20 flex items-center justify-center flex-shrink-0">
-                  <MapPin className="w-6 h-6 text-[#E70F72]" />
-                </div>
-                
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-white font-semibold text-lg mb-1">
-                    {moment.venue_name || 'Unknown Location'}
-                  </h3>
-                  
-                  <div className="flex items-center gap-4 text-white/50 text-sm mb-2">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
-                      {formatDate(moment.created_date)}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-4 h-4" />
-                      {new Date(moment.created_date).toLocaleTimeString('en-GB', { 
-                        hour: '2-digit', 
-                        minute: '2-digit' 
-                      })}
-                    </span>
+              {/* Delete button revealed on swipe */}
+              {swipedMoment === moment.id && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="absolute inset-y-0 right-0 flex items-center gap-2 pr-4"
+                >
+                  <button
+                    onClick={() => handleDelete(moment.id)}
+                    className="p-3 rounded-xl bg-red-600 hover:bg-red-700 transition-colors"
+                  >
+                    <Trash2 className="w-5 h-5 text-white" />
+                  </button>
+                </motion.div>
+              )}
+
+              {/* Moment Card */}
+              <motion.div
+                onClick={() => {
+                  onClose();
+                  navigate(createPageUrl('MomentDetail') + `?id=${moment.id}`);
+                }}
+                className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl overflow-hidden border border-[#E70F72]/20 hover:border-[#E70F72]/40 transition-colors cursor-pointer"
+              >
+                <div className="flex gap-3">
+                  {/* Place Photo */}
+                  <div className="w-24 h-24 flex-shrink-0 bg-[#E70F72]/10 relative overflow-hidden">
+                    {getPlacePhotoUrl(moment) ? (
+                      <img
+                        src={getPlacePhotoUrl(moment)}
+                        alt={moment.venue_name}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <MapPin className="w-8 h-8 text-[#E70F72]" />
+                      </div>
+                    )}
                   </div>
 
-                  {moment.note && (
-                    <p className="text-white/70 text-sm italic mb-2 bg-white/5 px-3 py-2 rounded-lg">
-                      "{moment.note}"
-                    </p>
-                  )}
-
-                  {moment.mood_tags && moment.mood_tags.length > 0 && (
-                    <div className="flex gap-2 flex-wrap">
-                      {moment.mood_tags.map((tag, idx) => (
-                        <span
-                          key={idx}
-                          className="text-xs font-medium bg-[#E70F72]/20 text-[#E70F72] px-2 py-1 rounded-full"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+                  {/* Content */}
+                  <div className="flex-1 min-w-0 py-3 pr-4">
+                    <h3 className="text-white font-semibold text-base mb-1.5 truncate">
+                      {moment.venue_name || 'Unknown Location'}
+                    </h3>
+                    
+                    <div className="flex items-center gap-3 text-white/50 text-xs mb-2">
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3.5 h-3.5" />
+                        {new Date(moment.created_date).toLocaleTimeString('en-GB', { 
+                          hour: '2-digit', 
+                          minute: '2-digit' 
+                        })}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-3.5 h-3.5" />
+                        {formatDate(moment.created_date)}
+                      </span>
                     </div>
-                  )}
+
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-lg">{getVibeEmoji(moment)}</span>
+                      <span className="text-xs text-white/60">
+                        {moment.venue_types?.[0]?.replace(/_/g, ' ') || 'Place'}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
           ))
         )}
