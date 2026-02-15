@@ -982,7 +982,10 @@ export default function Profile() {
             <CrossdButton
               variant="secondary"
               size="sm"
-              onClick={() => setEditMode(true)}
+              onClick={() => {
+                if (!editMode) setEditMode(true);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
               className="w-full"
             >
               <Sparkles className="w-4 h-4 mr-2" />
