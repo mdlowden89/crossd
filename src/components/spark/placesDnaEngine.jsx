@@ -1,7 +1,10 @@
 /**
  * PlacesDNA Engine V1 - Locked Weighting Model
  * Multi-channel evidence-based archetype scoring
+ * Now integrated with Google Places API data
  */
+
+import { getArchetypeScoresFromPlace, filterRelevantTypes } from './placeTypeMapper';
 
 export const ARCHETYPES = {
   ROMANTIC: 'romantic',
@@ -110,8 +113,9 @@ const TIME_SIGNATURES = {
 
 /**
  * Calculate archetype scores for a place using multi-channel evidence model
+ * Now supports Google Places data for deterministic categorization
  */
-export function calculatePlaceDNA(moments = [], primaryCategory = null) {
+export function calculatePlaceDNA(moments = [], primaryCategory = null, placeData = null) {
   if (!moments || moments.length === 0) {
     return null;
   }
@@ -119,33 +123,41 @@ export function calculatePlaceDNA(moments = [], primaryCategory = null) {
   const archetypes = {};
   Object.values(ARCHETYPES).forEach(arch => archetypes[arch] = 0);
 
-  // Calculate preliminary scores (without consistency)
-  const prelimScores = {};
-  Object.values(ARCHETYPES).forEach(arch => {
-    const C = calculateCategoryPrior(primaryCategory, arch);
-    const V = calculateVibeScore(moments, arch);
-    const S = calculateSignalScore(moments, arch);
-    const T = calculateTimeSignature(moments, arch);
-    
-    prelimScores[arch] = clamp(
-      WEIGHTS.category * C +
-      WEIGHTS.vibeTags * V +
-      WEIGHTS.signals * S +
-      WEIGHTS.time * T,
-      0, 1
-    );
-  });
+  // If we have Google Places data, use deterministic scoring
+  if (placeData) {
+    const placeScores = getArchetypeScoresFromPlace(placeData);
+    Object.entries(placeScores).forEach(([arch, score]) => {
+      archetypes[arch] = score;
+    });
+  } else {
+    // Fallback to legacy multi-channel evidence model
+    const prelimScores = {};
+    Object.values(ARCHETYPES).forEach(arch => {
+      const C = calculateCategoryPrior(primaryCategory, arch);
+      const V = calculateVibeScore(moments, arch);
+      const S = calculateSignalScore(moments, arch);
+      const T = calculateTimeSignature(moments, arch);
+      
+      prelimScores[arch] = clamp(
+        WEIGHTS.category * C +
+        WEIGHTS.vibeTags * V +
+        WEIGHTS.signals * S +
+        WEIGHTS.time * T,
+        0, 1
+      );
+    });
 
-  // Calculate consistency bonus
-  const K = calculateConsistency(prelimScores);
+    // Calculate consistency bonus
+    const K = calculateConsistency(prelimScores);
 
-  // Final scores with consistency
-  Object.values(ARCHETYPES).forEach(arch => {
-    archetypes[arch] = clamp(
-      prelimScores[arch] + WEIGHTS.consistency * K * prelimScores[arch],
-      0, 1
-    );
-  });
+    // Final scores with consistency
+    Object.values(ARCHETYPES).forEach(arch => {
+      archetypes[arch] = clamp(
+        prelimScores[arch] + WEIGHTS.consistency * K * prelimScores[arch],
+        0, 1
+      );
+    });
+  }
 
   const sorted = Object.entries(archetypes)
     .sort(([, a], [, b]) => b - a);
@@ -369,8 +381,11 @@ export function calculateUserPlacesDNA(moments = []) {
       }
     });
 
-    venueTypes.forEach(type => {
-      if (['restaurant', 'bar', 'cafe'].includes(type)) {
+    // Filter out generic types before processing
+    const relevantTypes = filterRelevantTypes(venueTypes);
+    
+    relevantTypes.forEach(type => {
+      if (['restaurant', 'bar', 'cafe', 'coffee_shop'].includes(type)) {
         if (timeOfDay === 'evening' || timeOfDay === 'night') {
           archetypes[ARCHETYPES.ROMANTIC] += 0.25 * recencyWeight;
         } else {
@@ -380,11 +395,24 @@ export function calculateUserPlacesDNA(moments = []) {
       if (['art_gallery', 'museum', 'book_store'].includes(type)) {
         archetypes[ARCHETYPES.CREATIVE] += 0.4 * recencyWeight;
       }
-      if (['park', 'hiking_area', 'beach'].includes(type)) {
+      if (['park', 'hiking_area', 'beach', 'garden', 'botanical_garden'].includes(type)) {
         archetypes[ARCHETYPES.NATURE_GROUNDED] += 0.4 * recencyWeight;
       }
-      if (['night_club', 'music_venue'].includes(type)) {
+      if (['night_club', 'music_venue', 'live_music_bar', 'karaoke'].includes(type)) {
         archetypes[ARCHETYPES.NIGHTLIFE] += 0.4 * recencyWeight;
+      }
+      if (['gym', 'fitness_center', 'yoga_studio', 'sports_complex'].includes(type)) {
+        archetypes[ARCHETYPES.ACTIVE_ENERGETIC] += 0.4 * recencyWeight;
+      }
+      if (['wine_bar', 'cocktail_bar'].includes(type)) {
+        archetypes[ARCHETYPES.ROMANTIC] += 0.35 * recencyWeight;
+        archetypes[ARCHETYPES.INTIMATE_LOCAL] += 0.25 * recencyWeight;
+      }
+      if (['library', 'book_store', 'university', 'coworking_space'].includes(type)) {
+        archetypes[ARCHETYPES.DEEP_INTELLECTUAL] += 0.35 * recencyWeight;
+      }
+      if (['concert_hall', 'performing_arts_theater', 'stadium'].includes(type)) {
+        archetypes[ARCHETYPES.LIVE_ELECTRIC] += 0.4 * recencyWeight;
       }
     });
   });
