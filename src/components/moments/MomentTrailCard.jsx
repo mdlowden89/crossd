@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { Loader2, ImageOff } from 'lucide-react';
 import { format } from 'date-fns';
 import { base44 } from '@/api/base44Client';
+import { getTopArchetypes } from '@/components/spark/placeTypeMapper';
+import { getArchetypeInfo } from '@/components/spark/placesDnaEngine';
 
 const statusEmojis = {
   pending: '⏳',
@@ -15,9 +17,10 @@ export default function MomentTrailCard({ moment, status = 'pending', onClick })
   const [imageUrl, setImageUrl] = useState(null);
   const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
+  const [placeArchetypes, setPlaceArchetypes] = useState([]);
 
   useEffect(() => {
-    const fetchPlacePhoto = async () => {
+    const fetchPlaceData = async () => {
       try {
         setImageLoading(true);
         const response = await base44.functions.invoke('getPlacePhoto', {
@@ -31,6 +34,16 @@ export default function MomentTrailCard({ moment, status = 'pending', onClick })
         } else {
           setImageError(true);
         }
+
+        // Calculate PlacesDNA from venue_types if available
+        if (moment.venue_types && moment.venue_types.length > 0) {
+          const placeData = {
+            primaryType: moment.venue_types[0],
+            types: moment.venue_types
+          };
+          const archetypes = getTopArchetypes(placeData, 2);
+          setPlaceArchetypes(archetypes);
+        }
       } catch (error) {
         setImageError(true);
       } finally {
@@ -39,12 +52,12 @@ export default function MomentTrailCard({ moment, status = 'pending', onClick })
     };
 
     if (moment.venue_name) {
-      fetchPlacePhoto();
+      fetchPlaceData();
     } else {
       setImageError(true);
       setImageLoading(false);
     }
-  }, [moment.venue_name]);
+  }, [moment.venue_name, moment.venue_types]);
 
   const handleImageError = () => {
     setImageError(true);
@@ -104,6 +117,28 @@ export default function MomentTrailCard({ moment, status = 'pending', onClick })
             <h3 className="text-white font-semibold truncate">
               {moment.venue_name || 'Unknown Location'}
             </h3>
+            {/* PlacesDNA Tags */}
+            {placeArchetypes.length > 0 && (
+              <div className="flex gap-1.5 mt-2">
+                {placeArchetypes.map(({ archetype, score }) => {
+                  const info = getArchetypeInfo(archetype);
+                  return (
+                    <div
+                      key={archetype}
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium backdrop-blur-sm"
+                      style={{
+                        backgroundColor: `${info.color}20`,
+                        border: `1px solid ${info.color}40`,
+                        color: info.color
+                      }}
+                    >
+                      <span>{info.emoji}</span>
+                      <span>{info.label}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
 
