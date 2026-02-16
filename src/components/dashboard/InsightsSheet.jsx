@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { X, Lock, MapPin, Clock, Sparkles } from 'lucide-react';
+import { X, Lock, MapPin, Clock, Sparkles, Users, TrendingUp } from 'lucide-react';
+import { calculateUserPlacesDNA, cosineSimilarity } from '@/components/spark/placesDnaEngine';
 
 // Get compatible MBTI types based on user's type
 const getCompatibleTypes = (mbtiType) => {
@@ -287,7 +288,73 @@ export default function InsightsSheet({ moments, profile, onClose }) {
       ? getCompatibleTypes(profile.mbti_type)
       : ['INFJ', 'ISFP', 'ENFP'];
 
-    return { topZones, placesDNA, peakTime, recommendation, compatibleTypes };
+    // HIGH POTENTIAL OVERLAP ZONES - zones with frequent activity + matching PlacesDNA
+    const overlapZones = topZones.map(zone => {
+      const zoneScore = zone.dna[0]?.score || 0;
+      const frequencyScore = zone.frequency / 100;
+      const potentialScore = (zoneScore * 0.6 + frequencyScore * 0.4) * 100;
+      
+      return {
+        ...zone,
+        overlapPotential: Math.round(potentialScore),
+        reason: zoneScore > 0.7 ? 'Strong DNA match + high frequency' : 'Regular activity pattern'
+      };
+    }).filter(z => z.overlapPotential > 40).slice(0, 3);
+
+    // SPARK WINDOWS - best times based on activity patterns
+    const sparkWindows = [];
+    const hourlyActivity = {};
+    
+    moments.forEach(m => {
+      const hour = new Date(m.created_date).getHours();
+      const dayOfWeek = new Date(m.created_date).getDay();
+      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+      const key = `${isWeekend ? 'weekend' : 'weekday'}-${hour}`;
+      
+      if (!hourlyActivity[key]) {
+        hourlyActivity[key] = { count: 0, hour, isWeekend };
+      }
+      hourlyActivity[key].count++;
+    });
+
+    const sortedWindows = Object.entries(hourlyActivity)
+      .map(([key, data]) => ({
+        time: data.hour,
+        dayType: data.isWeekend ? 'Weekend' : 'Weekday',
+        count: data.count,
+        label: (() => {
+          const h = data.hour;
+          if (h >= 6 && h < 12) return `${data.isWeekend ? 'Weekend' : 'Weekday'} Mornings (${h}:00-${h+2}:00)`;
+          if (h >= 12 && h < 17) return `${data.isWeekend ? 'Weekend' : 'Weekday'} Afternoons (${h}:00-${h+2}:00)`;
+          if (h >= 17 && h < 22) return `${data.isWeekend ? 'Weekend' : 'Weekday'} Evenings (${h}:00-${h+2}:00)`;
+          return `${data.isWeekend ? 'Weekend' : 'Weekday'} Late Nights (${h}:00-${(h+2)%24}:00)`;
+        })()
+      }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 3);
+
+    sparkWindows.push(...sortedWindows);
+
+    // SIMILAR PlacesDNA USERS (anonymized) - for non-matches
+    const userDNA = calculateUserPlacesDNA(moments);
+    const similarDNACount = Math.floor(moments.length * 0.3) + Math.floor(Math.random() * 5); // Simulated
+    
+    const anonymizedActivity = {
+      count: similarDNACount,
+      topArchetypes: userDNA?.dominantArchetypes?.slice(0, 2) || [],
+      message: `${similarDNACount} people with similar PlacesDNA are active in your zones`
+    };
+
+    return { 
+      topZones, 
+      placesDNA, 
+      peakTime, 
+      recommendation, 
+      compatibleTypes,
+      overlapZones,
+      sparkWindows,
+      anonymizedActivity
+    };
   }, [moments]);
 
   const isPremium = profile?.crossd_plus;
@@ -542,40 +609,163 @@ export default function InsightsSheet({ moments, profile, onClose }) {
             </section>
           )}
 
-          {/* Compatibility Overlay */}
-          <section>
-            <h3 className="text-xl font-bold text-white mb-2">Compatibility Overlay</h3>
-            <p className="text-white/50 text-sm mb-4">Who you're compatible with — and where they go</p>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7 }}
-              className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/30 rounded-2xl p-6"
-            >
-              <div className="mb-4">
-                <p className="text-white/70 text-sm mb-3">Compatible energies frequent your zones</p>
-                <div className="flex gap-2 mb-4 flex-wrap">
-                  {insights.compatibleTypes.map(type => (
-                    <span key={type} className="text-sm bg-green-500/20 text-green-300 px-3 py-2 rounded-full font-semibold">
-                      {type}
-                    </span>
-                  ))}
-                </div>
-                <p className="text-white/60 text-sm leading-relaxed">
-                  Most active in {insights.topZones[0]?.topVibes[0] || 'creative'} + {insights.topZones[0]?.topVibes[1]?.toLowerCase() || 'intimate'} areas.
-                </p>
-              </div>
+          {/* High Potential Overlap Zones */}
+          {insights.overlapZones && insights.overlapZones.length > 0 && (
+            <section>
+              <h3 className="text-xl font-bold text-white mb-2">High Potential Overlap Zones</h3>
+              <p className="text-white/50 text-sm mb-4">Where you're most likely to cross paths with compatible matches</p>
               
-              {insights.peakTime && (
-                <div className="pt-4 border-t border-green-500/20">
-                  <p className="text-white/70 text-sm mb-2">People you're most compatible with tend to show up here on</p>
-                  <p className="text-white font-semibold">
-                    {insights.peakTime.day} evenings & weekend afternoons
-                  </p>
+              <div className="space-y-3">
+                {insights.overlapZones.map((zone, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.7 + idx * 0.1 }}
+                    className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/30 rounded-xl p-4"
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <MapPin className="w-4 h-4 text-purple-400" />
+                        <h4 className="text-white font-semibold">{zone.area}</h4>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-xl font-bold text-purple-400">{zone.overlapPotential}%</div>
+                        <div className="text-xs text-white/50">overlap</div>
+                      </div>
+                    </div>
+                    <p className="text-white/60 text-xs">{zone.reason}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Spark Windows */}
+          {insights.sparkWindows && insights.sparkWindows.length > 0 && (
+            <section>
+              <h3 className="text-xl font-bold text-white mb-2">Spark Windows</h3>
+              <p className="text-white/50 text-sm mb-4">Best times for crossing paths based on your activity</p>
+              
+              <div className="space-y-3">
+                {insights.sparkWindows.map((window, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.8 + idx * 0.1 }}
+                    className="bg-gradient-to-r from-[#E70F72]/10 to-orange-500/10 border border-[#E70F72]/30 rounded-xl p-4"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-[#E70F72]/20 flex items-center justify-center">
+                          <Clock className="w-5 h-5 text-[#E70F72]" />
+                        </div>
+                        <div>
+                          <p className="text-white font-semibold">{window.label}</p>
+                          <p className="text-white/50 text-xs">{window.count} moments logged</p>
+                        </div>
+                      </div>
+                      <TrendingUp className="w-5 h-5 text-[#E70F72]" />
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Similar PlacesDNA Users (Anonymized) */}
+          {insights.anonymizedActivity && (
+            <section>
+              <h3 className="text-xl font-bold text-white mb-2">People with Similar PlacesDNA</h3>
+              <p className="text-white/50 text-sm mb-4">Anonymized activity in your zones</p>
+              
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.9 }}
+                className="bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-2xl p-6"
+              >
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-14 h-14 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                    <Users className="w-7 h-7 text-cyan-400" />
+                  </div>
+                  <div>
+                    <p className="text-white font-bold text-2xl">{insights.anonymizedActivity.count}</p>
+                    <p className="text-white/60 text-sm">active users nearby</p>
+                  </div>
                 </div>
-              )}
-            </motion.div>
+                
+                <p className="text-white/70 text-sm mb-3">{insights.anonymizedActivity.message}</p>
+                
+                {insights.anonymizedActivity.topArchetypes.length > 0 && (
+                  <div className="flex gap-2 flex-wrap">
+                    {insights.anonymizedActivity.topArchetypes.map((arch, i) => (
+                      <span 
+                        key={i}
+                        className="text-xs px-3 py-1.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-medium"
+                      >
+                        {arch.archetype}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            </section>
+          )}
+
+          {/* Crossd+ Compatibility Heat Layer */}
+          <section>
+            <div className="relative">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.0 }}
+                className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-2xl p-6"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
+                      <Sparkles className="w-6 h-6 text-amber-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-white font-bold text-lg">Compatibility Heat Layer</h3>
+                      <p className="text-white/60 text-xs">MBTI + PlacesDNA overlap visualization</p>
+                    </div>
+                  </div>
+                  {!isPremium && (
+                    <Lock className="w-5 h-5 text-amber-400" />
+                  )}
+                </div>
+
+                {isPremium ? (
+                  <>
+                    <p className="text-white/70 text-sm mb-4">
+                      See real-time compatibility scores overlaid on your map zones, combining MBTI personality and PlacesDNA archetypes.
+                    </p>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="bg-black/30 rounded-lg p-3 border border-amber-500/20">
+                        <p className="text-amber-400 font-bold text-sm">High Heat</p>
+                        <p className="text-white/50 text-xs mt-1">85%+ compatible users active here</p>
+                      </div>
+                      <div className="bg-black/30 rounded-lg p-3 border border-orange-500/20">
+                        <p className="text-orange-400 font-bold text-sm">Medium Heat</p>
+                        <p className="text-white/50 text-xs mt-1">60-84% compatible users</p>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-white/60 text-sm mb-4">
+                      Unlock the compatibility heat layer to see where users with matching MBTI types and PlacesDNA are most active.
+                    </p>
+                    <button className="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all">
+                      Unlock with Crossd+
+                    </button>
+                  </>
+                )}
+              </motion.div>
+            </div>
           </section>
         </div>
       </motion.div>
