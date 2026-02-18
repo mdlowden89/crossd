@@ -344,6 +344,22 @@ export default function ActivityMapPage() {
         <X className="w-6 h-6 text-[#E70F72]" />
       </button>
 
+      {/* Live Spark toggle button */}
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => setLiveSpark(v => !v)}
+        className={`absolute bottom-24 right-6 z-[9999] flex items-center gap-2 px-4 py-2.5 rounded-full font-semibold text-sm transition-all shadow-lg ${
+          liveSpark
+            ? 'bg-[#FF6B3D] text-white shadow-orange-500/30'
+            : 'bg-black border border-white/20 text-white/70'
+        }`}
+        style={liveSpark ? { boxShadow: '0 0 20px rgba(255,107,61,0.4)' } : {}}
+      >
+        <Flame className={`w-4 h-4 ${liveSpark ? 'text-white' : 'text-white/50'}`} />
+        Live Spark
+      </motion.button>
+
       {/* Map - fills most of screen */}
       <div className="flex-1 w-full h-full overflow-hidden" ref={setMapRef}>
         {profile && (
@@ -353,6 +369,10 @@ export default function ActivityMapPage() {
             mapRef={mapRef}
             activeLayer={activeLayer}
             onZoneClick={setSelectedZone}
+            liveSpark={liveSpark}
+            historicZones={historicZones}
+            liveZones={liveZones}
+            onSparkZoneClick={setSelectedSparkZone}
           />
         )}
         
