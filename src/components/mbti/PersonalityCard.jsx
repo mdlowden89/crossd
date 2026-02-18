@@ -149,60 +149,43 @@ export default function PersonalityCard({ profile }) {
                   </div>
                 </div>
 
-                {/* Premium Insights */}
-                {isPremium ? (
-                  <>
-                    <div className="p-6 bg-gradient-to-r from-[#E70F72]/10 to-purple-500/10 rounded-2xl border border-[#E70F72]/20 mb-8">
-                      <div className="flex items-center gap-2 mb-4">
-                        <Star className="w-5 h-5 text-[#E70F72]" />
-                        <h3 className="text-lg font-bold text-[#E70F72]">Crossd+ Insights</h3>
-                      </div>
-                      
-                      <div className="space-y-4">
-                        <div>
-                          <p className="text-white/90 font-semibold mb-2">💘 Relationship Approach</p>
-                          <p className="text-white/70 text-sm italic leading-relaxed">
-                            "{description.relationshipApproach}"
-                          </p>
-                        </div>
-                        
-                        <div>
-                          <p className="text-white/90 font-semibold mb-2">💬 Communication Style</p>
-                          <p className="text-white/70 text-sm">
-                            {description.communication}
-                          </p>
-                        </div>
-                        
-                        <div>
-                          <p className="text-white/90 font-semibold mb-2">🎯 Best Compatibility</p>
-                          <p className="text-white/70 text-sm">
-                            {description.compatibility}
-                          </p>
-                        </div>
-                        
-                        <div>
-                          <p className="text-white/90 font-semibold mb-2">⭐ Famous {description.title.split('/')[0].trim()}s</p>
-                          <p className="text-white/70 text-sm">
-                            {description.famousExamples.join(', ')}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <div className="p-6 bg-gradient-to-r from-[#E70F72]/10 to-purple-500/10 rounded-2xl border border-[#E70F72]/20 mb-8 text-center">
-                    <Lock className="w-12 h-12 text-[#E70F72] mx-auto mb-4" />
-                    <h3 className="text-lg font-bold text-white mb-2">Unlock Premium Insights</h3>
-                    <p className="text-white/65 text-sm mb-4">
-                      Get detailed relationship approach, communication style, best matches, and more!
-                    </p>
-                    <Link to={createPageUrl('CrossdPlus')}>
-                      <CrossdButton size="sm">
-                        Upgrade to Crossd+
-                      </CrossdButton>
-                    </Link>
+                {/* Insights - visible to all */}
+                <div className="p-6 bg-gradient-to-r from-[#E70F72]/10 to-purple-500/10 rounded-2xl border border-[#E70F72]/20 mb-8">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Star className="w-5 h-5 text-[#E70F72]" />
+                    <h3 className="text-lg font-bold text-[#E70F72]">Personality Insights</h3>
                   </div>
-                )}
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-white/90 font-semibold mb-2">💘 Relationship Approach</p>
+                      <p className="text-white/70 text-sm italic leading-relaxed">
+                        "{description.relationshipApproach}"
+                      </p>
+                    </div>
+                    
+                    <div>
+                      <p className="text-white/90 font-semibold mb-2">💬 Communication Style</p>
+                      <p className="text-white/70 text-sm">
+                        {description.communication}
+                      </p>
+                    </div>
+                    
+                    <div>
+                      <p className="text-white/90 font-semibold mb-2">🎯 Best Compatibility</p>
+                      <p className="text-white/70 text-sm">
+                        {description.compatibility}
+                      </p>
+                    </div>
+                    
+                    <div>
+                      <p className="text-white/90 font-semibold mb-2">⭐ Famous {description.title.split('/')[0].trim()}s</p>
+                      <p className="text-white/70 text-sm">
+                        {description.famousExamples.join(', ')}
+                      </p>
+                    </div>
+                  </div>
+                </div>
 
                 {/* Close Button */}
                 <CrossdButton onClick={() => setShowDetails(false)} variant="secondary" className="w-full">
