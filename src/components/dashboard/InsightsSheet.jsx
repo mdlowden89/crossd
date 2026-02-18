@@ -414,6 +414,10 @@ export default function InsightsSheet({ moments, profile, onClose }) {
 
         {/* Content */}
         <div className="px-6 py-6 space-y-8 pb-20">
+          {activeTab === 'trends' && (
+            <TrendsTab insights={insights} profile={profile} isPremium={isPremium} />
+          )}
+          {activeTab === 'this_week' && (<>
           {/* Your Vibe Hotspots */}
           {insights.topZones.length > 0 && (
             <section>
