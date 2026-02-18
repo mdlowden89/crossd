@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { X, Lock, MapPin, Clock, Sparkles, Users, TrendingUp } from 'lucide-react';
-import { calculateUserPlacesDNA, cosineSimilarity } from '@/components/spark/placesDnaEngine';
+import { X, Lock, MapPin, Clock, Sparkles, Users, TrendingUp, Star } from 'lucide-react';
+import { calculateUserPlacesDNA } from '@/components/spark/placesDnaEngine';
+import { getArchetypeInfo } from '@/components/spark/placesDnaEngine';
 
 // Get compatible MBTI types based on user's type
 const getCompatibleTypes = (mbtiType) => {
