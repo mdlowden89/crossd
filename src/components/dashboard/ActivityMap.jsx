@@ -293,6 +293,15 @@ export default function ActivityMap({ moments, profile, liveSpark, historicZones
           />
         )}
         
+        {/* Live Spark Layer */}
+        {liveSpark && (
+          <LiveSparkLayer
+            historicZones={historicZones || []}
+            liveZones={liveZones || []}
+            onZoneClick={onSparkZoneClick}
+          />
+        )}
+
         {/* Markers with state-based styling */}
         {momentStates.map(({ moment, state }) => (
           <React.Fragment key={moment.id}>
