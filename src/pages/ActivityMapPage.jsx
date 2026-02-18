@@ -17,7 +17,9 @@ export default function ActivityMapPage() {
   const [user, setUser] = useState(null);
   const [mapRef, setMapRef] = useState(null);
   const [activeLayer, setActiveLayer] = useState('moments');
+  const [liveSpark, setLiveSpark] = useState(false);
   const [selectedZone, setSelectedZone] = useState(null);
+  const [selectedSparkZone, setSelectedSparkZone] = useState(null);
   const [showInsights, setShowInsights] = useState(false);
   const [showMoments, setShowMoments] = useState(false);
   const [showNearby, setShowNearby] = useState(false);
