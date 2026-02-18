@@ -58,6 +58,21 @@ export default function ActivityMapPage() {
     enabled: !!user
   });
 
+  // Fetch historic + live zone data
+  const { data: historicZones = [] } = useQuery({
+    queryKey: ['zone-historic'],
+    queryFn: () => base44.entities.ZoneHistoric.list('-historic_score', 100),
+    enabled: liveSpark,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const { data: liveZones = [] } = useQuery({
+    queryKey: ['zone-live'],
+    queryFn: () => base44.entities.ZoneLive.list('-live_score', 100),
+    enabled: liveSpark,
+    refetchInterval: 60 * 1000, // refresh every minute
+  });
+
   const { data: moments = [] } = useQuery({
     queryKey: ['my-moments'],
     queryFn: async () => {
