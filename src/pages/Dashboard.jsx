@@ -595,18 +595,20 @@ export default function Dashboard() {
                   <h4 className="font-semibold mb-3 text-white">Energy Breakdown</h4>
                   <div className="space-y-4">
                     {[
-                      { icon: Activity, label: 'Activity', value: energyData.components.activity, desc: 'How many moments you\'ve logged in the last 7 days. More moments = higher score.' },
-                      { icon: Flame, label: 'Streak', value: energyData.components.streak, desc: 'Your consecutive day streak. Log at least one moment daily to keep it alive.' },
-                      { icon: ShieldCheck, label: 'Profile Quality', value: energyData.components.profileQuality, desc: 'How complete your profile is — photos, bio, prompts, MBTI, vibe tags, and verification.' },
-                      { icon: Sparkles, label: 'Resonance', value: energyData.components.resonance, desc: 'How consistent your PlacesDNA vibe is. A clear, defined vibe pattern scores higher.' },
-                      { icon: Clock, label: 'Freshness', value: energyData.components.freshness, desc: 'How recently you were active. Decays over time — logging moments keeps it at 100%.' },
-                    ].map(({ icon: Icon, label, value, desc }) => (
+                      { icon: Activity, label: 'Activity', value: energyData.components.activity, color: '#E70F72', desc: 'How many moments you\'ve logged in the last 7 days. More moments = higher score.' },
+                      { icon: Flame, label: 'Streak', value: energyData.components.streak, color: '#F97316', desc: 'Your consecutive day streak. Log at least one moment daily to keep it alive.' },
+                      { icon: ShieldCheck, label: 'Profile Quality', value: energyData.components.profileQuality, color: '#22C55E', desc: 'How complete your profile is — photos, bio, prompts, MBTI, vibe tags, and verification.' },
+                      { icon: Sparkles, label: 'Resonance', value: energyData.components.resonance, color: '#A855F7', desc: 'How consistent your PlacesDNA vibe is. A clear, defined vibe pattern scores higher.' },
+                      { icon: Clock, label: 'Freshness', value: energyData.components.freshness, color: '#3B82F6', desc: 'How recently you were active. Decays over time — logging moments keeps it at 100%.' },
+                    ].map(({ icon: Icon, label, value, color, desc }) => (
                       <div key={label}>
                         <div className="flex items-center gap-3 text-sm mb-1">
-                          <Icon className="w-4 h-4 text-[#E70F72] flex-shrink-0" />
+                          <Icon className="w-4 h-4 flex-shrink-0" style={{ color }} />
                           <span className="flex-1 text-white/90 font-medium">{label}</span>
-                          <Progress value={value} className="w-24 h-2 bg-white/10" />
-                          <span className="font-semibold w-10 text-right text-white">{value}%</span>
+                          <div className="w-24 h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div className="h-full rounded-full" style={{ width: `${value}%`, backgroundColor: color }} />
+                          </div>
+                          <span className="font-semibold w-10 text-right" style={{ color }}>{value}%</span>
                         </div>
                         <p className="text-white/40 text-xs ml-7 leading-relaxed">{desc}</p>
                       </div>
