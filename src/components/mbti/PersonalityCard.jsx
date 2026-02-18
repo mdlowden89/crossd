@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { Sparkles, Zap, Star, Circle, Lock } from 'lucide-react';
+import { Sparkles, Zap, Star, Circle } from 'lucide-react';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
 import { MBTI_FULL_DESCRIPTIONS } from './PersonalityDescriptions';
