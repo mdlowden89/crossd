@@ -733,60 +733,118 @@ export default function InsightsSheet({ moments, profile, onClose }) {
           )}
 
           {/* Crossd+ Compatibility Heat Layer */}
-          {activeTab === 'this_week' && (<section>
-            <div className="relative">
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.0 }}
-                className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-2xl p-6"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
-                      <Sparkles className="w-6 h-6 text-amber-400" />
-                    </div>
-                    <div>
-                      <h3 className="text-white font-bold text-lg">Compatibility Heat Layer</h3>
-                      <p className="text-white/60 text-xs">MBTI + PlacesDNA overlap visualization</p>
-                    </div>
+          <section>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.0 }}
+              className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-2xl p-6"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
+                    <Sparkles className="w-6 h-6 text-amber-400" />
                   </div>
-                  {!isPremium && (
-                    <Lock className="w-5 h-5 text-amber-400" />
-                  )}
+                  <div>
+                    <h3 className="text-white font-bold text-lg">Compatibility Heat Layer</h3>
+                    <p className="text-white/60 text-xs">MBTI + PlacesDNA overlap visualization</p>
+                  </div>
                 </div>
-
-                {isPremium ? (
-                  <>
-                    <p className="text-white/70 text-sm mb-4">
-                      See real-time compatibility scores overlaid on your map zones, combining MBTI personality and PlacesDNA archetypes.
-                    </p>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="bg-black/30 rounded-lg p-3 border border-amber-500/20">
-                        <p className="text-amber-400 font-bold text-sm">High Heat</p>
-                        <p className="text-white/50 text-xs mt-1">85%+ compatible users active here</p>
-                      </div>
-                      <div className="bg-black/30 rounded-lg p-3 border border-orange-500/20">
-                        <p className="text-orange-400 font-bold text-sm">Medium Heat</p>
-                        <p className="text-white/50 text-xs mt-1">60-84% compatible users</p>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <p className="text-white/60 text-sm mb-4">
-                      Unlock the compatibility heat layer to see where users with matching MBTI types and PlacesDNA are most active.
-                    </p>
-                    <button className="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all">
-                      Unlock with Crossd+
-                    </button>
-                  </>
-                )}
-              </motion.div>
-            </div>
+                {!isPremium && <Lock className="w-5 h-5 text-amber-400" />}
+              </div>
+              {isPremium ? (
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-black/30 rounded-lg p-3 border border-amber-500/20">
+                    <p className="text-amber-400 font-bold text-sm">High Heat</p>
+                    <p className="text-white/50 text-xs mt-1">85%+ compatible users active here</p>
+                  </div>
+                  <div className="bg-black/30 rounded-lg p-3 border border-orange-500/20">
+                    <p className="text-orange-400 font-bold text-sm">Medium Heat</p>
+                    <p className="text-white/50 text-xs mt-1">60–84% compatible users</p>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <p className="text-white/60 text-sm mb-4">
+                    Unlock the compatibility heat layer to see where users with matching MBTI types and PlacesDNA are most active.
+                  </p>
+                  <button className="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all">
+                    Unlock with Crossd+
+                  </button>
+                </>
+              )}
+            </motion.div>
           </section>
+          </>)}
         </div>
       </motion.div>
+    </motion.div>
+  );
+}
+
+function TrendsTab({ insights, profile, isPremium }) {
+  const compatibleTypes = profile?.mbti_type
+    ? getCompatibleTypes(profile.mbti_type)
+    : ['INFJ', 'ISFP', 'ENFP'];
+
+  const topZone = insights.topZones?.[0]?.area || 'your area';
+  const peakWindow = insights.sparkWindows?.[0]?.label || 'weekend evenings';
+  const topArch = insights.placesDNA?.[0];
+
+  if (!isPremium) {
+    return (
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+        <div className="bg-gradient-to-br from-[#E70F72]/10 to-purple-500/10 border border-[#E70F72]/30 rounded-2xl p-6 text-center">
+          <Lock className="w-10 h-10 text-[#E70F72] mx-auto mb-3" />
+          <h3 className="text-white font-bold text-xl mb-2">Trends — Crossd+</h3>
+          <p className="text-white/60 text-sm mb-5">See where people like you are peaking, which MBTI types cluster in your zones, and your best spark hours.</p>
+          <div className="space-y-3 mb-5 text-left">
+            {[
+              { icon: '🔥', text: 'People like you are peaking in: ' + topZone },
+              { icon: '🧠', text: 'Compatible MBTI types cluster in your vibe zones' },
+              { icon: '⚡', text: 'Best "spark hours" for your PlacesDNA' },
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-3 bg-white/5 rounded-xl p-3 blur-[2px] select-none">
+                <span className="text-xl">{item.icon}</span>
+                <p className="text-white/80 text-sm">{item.text}</p>
+              </div>
+            ))}
+          </div>
+          <button className="w-full py-3 bg-[#E70F72] text-white font-semibold rounded-xl hover:bg-[#ff1a8c] transition-all">
+            Upgrade to Crossd+
+          </button>
+        </div>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+      <div className="bg-gradient-to-r from-[#E70F72]/10 to-purple-500/10 border border-[#E70F72]/30 rounded-2xl p-5">
+        <p className="text-white/50 text-xs mb-1">🔥 Trending this week</p>
+        <p className="text-white font-bold text-lg">People like you are peaking in: <span className="text-[#E70F72]">{topZone}</span></p>
+      </div>
+
+      <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/30 rounded-2xl p-5">
+        <p className="text-white/50 text-xs mb-2">🧠 Compatible MBTI types in your zones</p>
+        <div className="flex gap-2 flex-wrap">
+          {compatibleTypes.map(type => (
+            <span key={type} className="text-sm bg-blue-500/20 text-blue-300 px-3 py-1.5 rounded-full font-semibold">{type}</span>
+          ))}
+        </div>
+      </div>
+
+      <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-2xl p-5">
+        <p className="text-white/50 text-xs mb-1">⚡ Best spark hours for your vibe</p>
+        <p className="text-white font-bold text-lg">{peakWindow}</p>
+        {topArch && (
+          <p className="text-white/60 text-sm mt-1">Based on your <span style={{ color: topArch.color }}>{topArch.icon} {topArch.name}</span> DNA</p>
+        )}
+      </div>
+
+      <button className="w-full py-3 bg-[#E70F72] text-white font-semibold rounded-xl hover:bg-[#ff1a8c] transition-all">
+        Log a Moment Now
+      </button>
     </motion.div>
   );
 }
