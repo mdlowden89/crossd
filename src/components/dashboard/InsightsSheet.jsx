@@ -383,21 +383,33 @@ export default function InsightsSheet({ moments, profile, onClose }) {
         style={{ boxShadow: '0 -4px 20px rgba(231, 15, 114, 0.1)' }}
       >
         {/* Handle + Header */}
-        <div className="sticky top-0 bg-black border-b border-[#E70F72]/20 pt-6 px-6 pb-6">
+        <div className="sticky top-0 bg-black border-b border-[#E70F72]/20 pt-6 px-6 pb-0 z-10">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-3xl font-bold text-white">Insights</h2>
-              <p className="text-white/50 text-sm mt-1">Patterns from where and how you show up.</p>
+              <h2 className="text-3xl font-bold text-white">City Pulse</h2>
+              <p className="text-white/50 text-sm mt-1">Weekly recap of your vibe + spark potential.</p>
             </div>
-            <button
-              onClick={onClose}
-              className="p-2 hover:bg-white/10 rounded-full transition-colors"
-            >
+            <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full transition-colors">
               <X className="w-6 h-6 text-white/50" />
             </button>
           </div>
-          {/* Spark gradient line */}
-          <div className="h-1 bg-gradient-to-r from-[#E70F72] to-transparent rounded-full" />
+          {/* Tabs */}
+          <div className="flex gap-1 mb-0">
+            {[{ id: 'this_week', label: 'This Week' }, { id: 'trends', label: 'Trends', premium: true }].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => !tab.premium || isPremium ? setActiveTab(tab.id) : setActiveTab(tab.id)}
+                className={`flex-1 py-2.5 text-sm font-semibold rounded-t-xl transition-all flex items-center justify-center gap-1.5 ${
+                  activeTab === tab.id
+                    ? 'bg-[#E70F72]/15 text-[#E70F72] border-b-2 border-[#E70F72]'
+                    : 'text-white/50 hover:text-white/70'
+                }`}
+              >
+                {tab.label}
+                {tab.premium && <Star className="w-3 h-3 text-amber-400" />}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Content */}
