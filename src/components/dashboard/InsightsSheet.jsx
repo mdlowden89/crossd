@@ -733,7 +733,7 @@ export default function InsightsSheet({ moments, profile, onClose }) {
           )}
 
           {/* Crossd+ Compatibility Heat Layer */}
-          <section>
+          {activeTab === 'this_week' && (<section>
             <div className="relative">
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
