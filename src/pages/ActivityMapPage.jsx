@@ -307,6 +307,13 @@ export default function ActivityMapPage() {
             isPremium={profile?.crossd_plus || false}
           />
         )}
+        {selectedSparkZone && (
+          <ZoneSparkSheet
+            zone={selectedSparkZone}
+            isPremium={profile?.crossd_plus || false}
+            onClose={() => setSelectedSparkZone(null)}
+          />
+        )}
       </AnimatePresence>
       
       {/* Layer Toggle - temporarily hidden */}
