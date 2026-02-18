@@ -28,6 +28,7 @@ const getCompatibleTypes = (mbtiType) => {
 };
 
 export default function InsightsSheet({ moments, profile, onClose }) {
+  const [activeTab, setActiveTab] = useState('this_week');
   // Calculate insights data
   const insights = useMemo(() => {
     if (!moments || moments.length === 0) {
