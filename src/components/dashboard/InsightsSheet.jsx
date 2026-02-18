@@ -776,7 +776,7 @@ export default function InsightsSheet({ moments, profile, onClose }) {
               )}
             </motion.div>
           </section>
-          </>)}
+          </React.Fragment>)}
         </div>
       </motion.div>
     </motion.div>
