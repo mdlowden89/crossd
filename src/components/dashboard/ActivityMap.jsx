@@ -151,7 +151,7 @@ const createMarkerIcon = (state, moment) => {
   });
 };
 
-export default function ActivityMap({ moments, profile }) {
+export default function ActivityMap({ moments, profile, liveSpark, historicZones, liveZones, onSparkZoneClick }) {
   const { center, bounds, pathCoordinates, momentStates } = useMemo(() => {
     if (!moments || moments.length === 0) {
       return { 
