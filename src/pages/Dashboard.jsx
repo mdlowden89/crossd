@@ -592,25 +592,25 @@ export default function Dashboard() {
                   </div>
                 </TooltipTrigger>
                 <TooltipContent className="p-3 w-72 bg-[#0B0B0B] border-white/10">
-                  <h4 className="font-semibold mb-3 text-white">Energy Breakdown</h4>
-                  <div className="space-y-4">
+                  <h4 className="font-semibold mb-2 text-white text-sm">Energy Breakdown</h4>
+                  <div className="space-y-2.5">
                     {[
-                      { icon: Activity, label: 'Activity', value: energyData.components.activity, color: '#E70F72', desc: 'How many moments you\'ve logged in the last 7 days. More moments = higher score.' },
-                      { icon: Flame, label: 'Streak', value: energyData.components.streak, color: '#F97316', desc: 'Your consecutive day streak. Log at least one moment daily to keep it alive.' },
-                      { icon: ShieldCheck, label: 'Profile Quality', value: energyData.components.profileQuality, color: '#22C55E', desc: 'How complete your profile is — photos, bio, prompts, MBTI, vibe tags, and verification.' },
-                      { icon: Sparkles, label: 'Resonance', value: energyData.components.resonance, color: '#A855F7', desc: 'How consistent your PlacesDNA vibe is. A clear, defined vibe pattern scores higher.' },
-                      { icon: Clock, label: 'Freshness', value: energyData.components.freshness, color: '#3B82F6', desc: 'How recently you were active. Decays over time — logging moments keeps it at 100%.' },
+                      { icon: Activity, label: 'Activity', value: energyData.components.activity, color: '#E70F72', desc: 'Moments logged in the last 7 days.' },
+                      { icon: Flame, label: 'Streak', value: energyData.components.streak, color: '#F97316', desc: 'Consecutive daily logging streak.' },
+                      { icon: ShieldCheck, label: 'Profile Quality', value: energyData.components.profileQuality, color: '#22C55E', desc: 'Photos, bio, prompts, MBTI & verification.' },
+                      { icon: Sparkles, label: 'Resonance', value: energyData.components.resonance, color: '#A855F7', desc: 'Consistency of your PlacesDNA vibe.' },
+                      { icon: Clock, label: 'Freshness', value: energyData.components.freshness, color: '#3B82F6', desc: 'How recently you were active.' },
                     ].map(({ icon: Icon, label, value, color, desc }) => (
                       <div key={label}>
-                        <div className="flex items-center gap-3 text-sm mb-1">
-                          <Icon className="w-4 h-4 flex-shrink-0" style={{ color }} />
+                        <div className="flex items-center gap-2 text-xs mb-0.5">
+                          <Icon className="w-3.5 h-3.5 flex-shrink-0" style={{ color }} />
                           <span className="flex-1 text-white/90 font-medium">{label}</span>
-                          <div className="w-24 h-2 bg-white/10 rounded-full overflow-hidden">
+                          <div className="w-20 h-1.5 bg-white/10 rounded-full overflow-hidden">
                             <div className="h-full rounded-full" style={{ width: `${value}%`, backgroundColor: color }} />
                           </div>
-                          <span className="font-semibold w-10 text-right" style={{ color }}>{value}%</span>
+                          <span className="font-semibold w-8 text-right" style={{ color }}>{value}%</span>
                         </div>
-                        <p className="text-white/40 text-xs ml-7 leading-relaxed">{desc}</p>
+                        <p className="text-white/35 text-xs ml-5 leading-snug">{desc}</p>
                       </div>
                     ))}
                     {energyData.components.boosts > 0 && (
