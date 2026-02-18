@@ -591,7 +591,7 @@ export default function Dashboard() {
                     </div>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent className="p-4 w-96 bg-[#0B0B0B] border-white/10">
+                <TooltipContent className="p-3 w-72 bg-[#0B0B0B] border-white/10">
                   <h4 className="font-semibold mb-3 text-white">Energy Breakdown</h4>
                   <div className="space-y-4">
                     {[
