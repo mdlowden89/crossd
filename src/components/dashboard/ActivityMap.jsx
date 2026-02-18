@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline, Circle } from 'react-leaflet';
-import { Map, Sparkles, Star, Flame, Clock } from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import LiveSparkLayer from '@/components/map/LiveSparkLayer';
 
 // Fix for default marker icons in react-leaflet
 delete L.Icon.Default.prototype._getIconUrl;
