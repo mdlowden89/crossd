@@ -591,46 +591,33 @@ export default function Dashboard() {
                     </div>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent className="p-4 w-80 bg-[#0B0B0B] border-white/10">
+                <TooltipContent className="p-4 w-96 bg-[#0B0B0B] border-white/10">
                   <h4 className="font-semibold mb-3 text-white">Energy Breakdown</h4>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3 text-sm">
-                      <Activity className="w-4 h-4 text-[#E70F72] flex-shrink-0" />
-                      <span className="flex-1 text-white/90">Activity</span>
-                      <Progress value={energyData.components.activity} className="w-24 h-2 bg-white/10" />
-                      <span className="font-semibold w-10 text-right text-white">{energyData.components.activity}%</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-sm">
-                      <Flame className="w-4 h-4 text-[#E70F72] flex-shrink-0" />
-                      <span className="flex-1 text-white/90">Streak</span>
-                      <Progress value={energyData.components.streak} className="w-24 h-2 bg-white/10" />
-                      <span className="font-semibold w-10 text-right text-white">{energyData.components.streak}%</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-sm">
-                      <ShieldCheck className="w-4 h-4 text-[#E70F72] flex-shrink-0" />
-                      <span className="flex-1 text-white/90">Profile Quality</span>
-                      <Progress value={energyData.components.profileQuality} className="w-24 h-2 bg-white/10" />
-                      <span className="font-semibold w-10 text-right text-white">{energyData.components.profileQuality}%</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-sm">
-                      <Sparkles className="w-4 h-4 text-[#E70F72] flex-shrink-0" />
-                      <span className="flex-1 text-white/90">Resonance</span>
-                      <Progress value={energyData.components.resonance} className="w-24 h-2 bg-white/10" />
-                      <span className="font-semibold w-10 text-right text-white">{energyData.components.resonance}%</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-sm">
-                      <Clock className="w-4 h-4 text-[#E70F72] flex-shrink-0" />
-                      <span className="flex-1 text-white/90">Freshness</span>
-                      <Progress value={energyData.components.freshness} className="w-24 h-2 bg-white/10" />
-                      <span className="font-semibold w-10 text-right text-white">{energyData.components.freshness}%</span>
-                    </div>
-                    {energyData.components.boosts > 0 &&
-                    <div className="flex items-center gap-3 text-sm">
+                  <div className="space-y-4">
+                    {[
+                      { icon: Activity, label: 'Activity', value: energyData.components.activity, desc: 'How many moments you\'ve logged in the last 7 days. More moments = higher score.' },
+                      { icon: Flame, label: 'Streak', value: energyData.components.streak, desc: 'Your consecutive day streak. Log at least one moment daily to keep it alive.' },
+                      { icon: ShieldCheck, label: 'Profile Quality', value: energyData.components.profileQuality, desc: 'How complete your profile is — photos, bio, prompts, MBTI, vibe tags, and verification.' },
+                      { icon: Sparkles, label: 'Resonance', value: energyData.components.resonance, desc: 'How consistent your PlacesDNA vibe is. A clear, defined vibe pattern scores higher.' },
+                      { icon: Clock, label: 'Freshness', value: energyData.components.freshness, desc: 'How recently you were active. Decays over time — logging moments keeps it at 100%.' },
+                    ].map(({ icon: Icon, label, value, desc }) => (
+                      <div key={label}>
+                        <div className="flex items-center gap-3 text-sm mb-1">
+                          <Icon className="w-4 h-4 text-[#E70F72] flex-shrink-0" />
+                          <span className="flex-1 text-white/90 font-medium">{label}</span>
+                          <Progress value={value} className="w-24 h-2 bg-white/10" />
+                          <span className="font-semibold w-10 text-right text-white">{value}%</span>
+                        </div>
+                        <p className="text-white/40 text-xs ml-7 leading-relaxed">{desc}</p>
+                      </div>
+                    ))}
+                    {energyData.components.boosts > 0 && (
+                      <div className="flex items-center gap-3 text-sm">
                         <TrendingUp className="w-4 h-4 text-green-400 flex-shrink-0" />
                         <span className="flex-1 text-white/90">Boosts</span>
                         <span className="font-semibold text-green-400">+{energyData.components.boosts}</span>
                       </div>
-                    }
+                    )}
                   </div>
                 </TooltipContent>
               </Tooltip>
