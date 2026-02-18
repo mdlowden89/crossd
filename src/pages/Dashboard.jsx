@@ -659,12 +659,21 @@ export default function Dashboard() {
           </div>
         </motion.div>
 
+        {/* City Pulse Card */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+          <CityPulseCard moments={moments} isNew={true} />
+        </motion.div>
+
+        {/* Spark Chance Meter */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
+          <SparkChanceMeter moments={moments} />
+        </motion.div>
+
         {/* Know Your Type */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}>
-
+          transition={{ delay: 0.4 }}>
           <PersonalityCard profile={profile} />
         </motion.div>
 
