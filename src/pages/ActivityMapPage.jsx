@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { motion } from 'framer-motion';
-import { X, Sparkles, MapPin, Share2, Compass, Zap } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, Sparkles, MapPin, Compass, Zap, Flame } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import ActivityMap from '@/components/dashboard/ActivityMap';
 import InsightsSheet from '@/components/dashboard/InsightsSheet';
 import MomentsListSheet from '@/components/dashboard/MomentsListSheet';
 import NearbySheet from '@/components/dashboard/NearbySheet';
-import MapLayerToggle from '@/components/map/MapLayerToggle';
 import ZoneCard from '@/components/map/ZoneCard';
 import MapFilters from '@/components/map/MapFilters';
-import { AnimatePresence } from 'framer-motion';
+import ZoneSparkSheet from '@/components/map/ZoneSparkSheet';
 
 export default function ActivityMapPage() {
   const [user, setUser] = useState(null);
