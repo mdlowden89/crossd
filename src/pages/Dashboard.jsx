@@ -14,6 +14,8 @@ import ActivityMap from '@/components/dashboard/ActivityMap';
 
 import PersonalityCard from '@/components/mbti/PersonalityCard';
 import ChallengesSection from '@/components/dashboard/ChallengesSection';
+import CityPulseCard from '@/components/dashboard/CityPulseCard';
+import SparkChanceMeter from '@/components/dashboard/SparkChanceMeter';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Progress } from '@/components/ui/progress';
 
