@@ -138,12 +138,20 @@ export default function FirstMoment() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <div className="w-16 h-16 mx-auto bg-[#E70F72]/20 rounded-full flex items-center justify-center mb-4">
-            <MapPin className="w-8 h-8 text-[#E70F72]" />
+          <div className="relative w-16 h-16 mx-auto mb-4">
+            <div className="w-16 h-16 bg-[#E70F72]/20 rounded-full flex items-center justify-center">
+              <MapPin className="w-8 h-8 text-[#E70F72]" />
+            </div>
+            <motion.div
+              animate={{ scale: [1, 1.6, 1], opacity: [0.4, 0, 0.4] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute inset-0 rounded-full border-2 border-[#E70F72]"
+            />
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">Log Your First Moment</h1>
+          <p className="text-[#E70F72] text-xs font-semibold tracking-widest uppercase mb-2">Let's start your story</p>
+          <h1 className="text-3xl font-bold text-white mb-2">Where are you right now?</h1>
           <p className="text-white/65">
-            Mark where you are right now. This helps us find people you might have crossed paths with.
+            Your first moment is the beginning of your trail. Every crossing starts here.
           </p>
         </motion.div>
 
