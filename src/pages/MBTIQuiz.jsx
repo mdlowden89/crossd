@@ -519,10 +519,15 @@ export default function MBTIQuiz() {
           </CrossdButton>
         </div>
 
+        <div className="mb-4">
+          <p className="text-[#E70F72] text-xs font-semibold tracking-widest uppercase mb-1">Find Your Spark Type</p>
+          <p className="text-white/45 text-xs mb-4">Most apps match photos. We match energy.</p>
+        </div>
+
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
             <span className="text-white/65 text-sm">
-              {quizMode === 'basic' ? 'Basic' : 'Advanced'} Quiz - Question {currentQuestion + 1} of {questions.length}
+              Question {currentQuestion + 1} of {questions.length}
             </span>
             <span className="text-[#E70F72] font-medium">{Math.round(totalProgress)}%</span>
           </div>
