@@ -11,56 +11,64 @@ import { CrossdButton } from '@/components/ui/crossd-button';
 const steps = [
   {
     id: 'welcome',
-    title: 'Welcome to Crossd',
-    description: 'Where missed connections become meaningful matches.',
+    title: 'Help Us Understand You',
+    description: 'This helps us avoid random matches — and find real ones.',
     icon: Sparkles,
     content: (
       <div className="space-y-6 text-center">
         <MapIllustration />
-        <p className="text-white/65">
-          Crossd helps you reconnect with people you've crossed paths with in real life.
-        </p>
-        <p className="text-white/65">
-          Log moments, discover crossings, and turn chance encounters into something more.
-        </p>
+        <div className="space-y-3">
+          <p className="text-white/80 font-medium">
+            Crossd isn't just another dating app.
+          </p>
+          <p className="text-white/55">
+            We match people based on where they actually go, who they really are, 
+            and the moments they share in real life.
+          </p>
+          <p className="text-white/55">
+            The next few steps help us understand you — so we can surface connections that actually make sense.
+          </p>
+        </div>
       </div>
     )
   },
   {
     id: 'location',
-    title: 'Enable Location',
-    description: 'Required for discovering crossings',
+    title: 'Your Trail, Your Rules',
+    description: 'Location powers crossings — your privacy stays intact.',
     icon: MapPin,
     content: (
-      <div className="space-y-4 text-center">
+      <div className="space-y-5 text-center">
         <div className="w-20 h-20 mx-auto bg-[#E70F72]/20 rounded-full flex items-center justify-center">
           <MapPin className="w-10 h-10 text-[#E70F72]" />
         </div>
-        <p className="text-white/65">
-          We use your location to detect when you've crossed paths with someone.
+        <p className="text-white/70">
+          When you and someone compatible are near the same place around the same time — that's a crossing.
         </p>
-        <p className="text-white/45 text-sm">
-          Your precise location is never shared with other users.
-        </p>
+        <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-left space-y-2">
+          <p className="text-white/90 text-sm font-medium">✅ Your exact location is never shared</p>
+          <p className="text-white/90 text-sm font-medium">✅ We only use approximate areas</p>
+          <p className="text-white/90 text-sm font-medium">✅ You can turn it off any time</p>
+        </div>
       </div>
     ),
     action: 'Enable Location'
   },
   {
     id: 'notifications',
-    title: 'Stay Updated',
-    description: 'Get notified about second chances',
+    title: 'Never Miss a Crossing',
+    description: 'We\'ll notify you when it matters — never spam.',
     icon: Bell,
     content: (
-      <div className="space-y-4 text-center">
+      <div className="space-y-5 text-center">
         <div className="w-20 h-20 mx-auto bg-[#E70F72]/20 rounded-full flex items-center justify-center">
           <Bell className="w-10 h-10 text-[#E70F72]" />
         </div>
-        <p className="text-white/65">
-          Receive alerts when you cross paths with someone special, or when you get a match.
+        <p className="text-white/70">
+          Crossings happen in real time. We'll let you know when you've been near someone — before the moment fades.
         </p>
         <p className="text-white/45 text-sm">
-          You can customize notifications anytime in settings.
+          Fully customisable in settings. We only notify for things that matter.
         </p>
       </div>
     ),
