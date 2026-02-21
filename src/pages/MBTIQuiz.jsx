@@ -497,7 +497,7 @@ export default function MBTIQuiz() {
           </CrossdCard>
 
           <p className="text-white/65 mb-8">
-            This helps us suggest compatible matches based on personality dynamics.
+            This powers your matches. We surface people whose energy complements yours — not just who looks good on paper.
           </p>
 
           <CrossdButton onClick={saveAndContinue} className="w-full" loading={loading}>
