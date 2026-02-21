@@ -11,8 +11,8 @@ const slides = [
   {
     id: 'hook',
     eyebrow: 'You just crossed paths.',
-    headline: 'You've already met\nyour next connection.',
-    body: 'That person at the coffee shop. The one at the gallery. The stranger whose eyes met yours on the train.\n\nThey were real. The moment was real.\n\nCrossd makes it mean something.',
+    headline: `You've already met\nyour next connection.`,
+    body: `That person at the coffee shop. The one at the gallery. The stranger whose eyes met yours on the train.\n\nThey were real. The moment was real.\n\nCrossd makes it mean something.`,
     cta: 'Tell me more',
     bg: 'from-[#0B0B0B] via-[#12020a] to-[#0B0B0B]',
     icon: null,
