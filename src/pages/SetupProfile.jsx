@@ -424,7 +424,9 @@ export default function SetupProfile() {
                 ))}
               </div>
               <p className="text-white/45 text-sm text-center">
-                Selected: {profile.vibe_tags.length}/5
+                {profile.vibe_tags.length === 0
+                  ? 'Pick at least 1 that feels true to you.'
+                  : `${profile.vibe_tags.length}/5 selected`}
               </p>
             </motion.div>
           )}
