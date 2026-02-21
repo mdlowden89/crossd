@@ -160,10 +160,10 @@ export default function SetupProfile() {
   };
 
   const steps = [
-    { title: 'Add Photos', subtitle: 'Show your best self' },
-    { title: 'Basic Info', subtitle: 'Tell us about you' },
-    { title: 'Prompts', subtitle: 'Share your personality' },
-    { title: 'Your Vibe', subtitle: 'Pick up to 5 tags' }
+    { title: 'Show How You\'re Seen', subtitle: 'Add photos that feel like you — not a highlight reel.' },
+    { title: 'About You', subtitle: 'This helps us avoid mismatches before they happen.' },
+    { title: 'What Do People Misunderstand About You?', subtitle: 'Answer prompts that reveal who you actually are.' },
+    { title: 'How Do You Connect?', subtitle: 'Pick the vibes that feel most like you.' }
   ];
 
   const canProceed = () => {
