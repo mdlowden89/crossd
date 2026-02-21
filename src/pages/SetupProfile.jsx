@@ -258,7 +258,7 @@ export default function SetupProfile() {
                 ))}
               </div>
               <p className="text-white/45 text-sm text-center">
-                Add at least 1 photo. First photo is your primary.
+                Add at least 1 photo. Your first photo is shown first.
               </p>
             </motion.div>
           )}
