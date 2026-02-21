@@ -180,7 +180,7 @@ export default function Welcome() {
             transition={{ delay: 0.1, duration: 0.5 }}
             className="text-[#E70F72] text-sm font-semibold tracking-widest uppercase mb-4"
           >
-            Turn missed moments into real connections
+            The dating app that works in real life
           </motion.p>
 
           <motion.h1
@@ -189,8 +189,8 @@ export default function Welcome() {
             transition={{ delay: 0.2, duration: 0.6 }}
             className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight mb-6"
           >
-            You've already met{' '}
-            <span className="text-[#E70F72]">someone special.</span>
+            Meet people you've{' '}
+            <span className="text-[#E70F72]">already crossed paths with.</span>
           </motion.h1>
 
           <motion.p
@@ -199,8 +199,8 @@ export default function Welcome() {
             transition={{ delay: 0.4, duration: 0.6 }}
             className="text-white/70 text-lg md:text-xl mb-12 max-w-2xl leading-relaxed"
           >
-            Crossd finds people you've crossed paths with in real life — 
-            the coffee shop, the gallery, the commute. Real moments. Real connections.
+            Crossd connects you with people you've been near in real life — 
+            the coffee shop, the gallery, the commute. Turn missed moments into real connections.
           </motion.p>
 
           <motion.div

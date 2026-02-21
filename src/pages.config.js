@@ -58,6 +58,7 @@ import Explore from './pages/Explore';
 import FirstMoment from './pages/FirstMoment';
 import HelpCenter from './pages/HelpCenter';
 import Home from './pages/Home';
+import IntroStory from './pages/IntroStory';
 import LogMoment from './pages/LogMoment';
 import MBTIQuiz from './pages/MBTIQuiz';
 import MomentDetail from './pages/MomentDetail';
@@ -75,7 +76,6 @@ import TermsOfService from './pages/TermsOfService';
 import Trail from './pages/Trail';
 import Verification from './pages/Verification';
 import Welcome from './pages/Welcome';
-import IntroStory from './pages/IntroStory';
 import __Layout from './Layout.jsx';
 
 
@@ -91,6 +91,7 @@ export const PAGES = {
     "FirstMoment": FirstMoment,
     "HelpCenter": HelpCenter,
     "Home": Home,
+    "IntroStory": IntroStory,
     "LogMoment": LogMoment,
     "MBTIQuiz": MBTIQuiz,
     "MomentDetail": MomentDetail,
@@ -108,7 +109,6 @@ export const PAGES = {
     "Trail": Trail,
     "Verification": Verification,
     "Welcome": Welcome,
-    "IntroStory": IntroStory,
 }
 
 export const pagesConfig = {
