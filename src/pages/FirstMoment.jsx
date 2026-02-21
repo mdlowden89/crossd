@@ -197,9 +197,9 @@ export default function FirstMoment() {
             </div>
 
             <div>
-              <label className="text-white/80 text-sm mb-2 block">Note (optional)</label>
+              <label className="text-white/80 text-sm mb-2 block">What's the vibe? (optional)</label>
               <CrossdInput
-                placeholder="What's the vibe?"
+                placeholder="e.g. great coffee, reading, people-watching..."
                 icon={Edit3}
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
