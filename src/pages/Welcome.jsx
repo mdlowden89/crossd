@@ -174,23 +174,14 @@ export default function Welcome() {
           transition={{ duration: 0.6 }}
           className="flex flex-col items-center text-center max-w-3xl"
         >
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.1, duration: 0.5 }}
-            className="text-[#E70F72] text-sm font-semibold tracking-widest uppercase mb-4"
-          >
-            The dating app that works in real life
-          </motion.p>
-
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
             className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight mb-6"
           >
-            Meet people you've{' '}
-            <span className="text-[#E70F72]">already crossed paths with.</span>
+            Crossed Paths?{' '}
+            <span className="text-[#E70F72]">Reconnect Now.</span>
           </motion.h1>
 
           <motion.p
@@ -199,8 +190,8 @@ export default function Welcome() {
             transition={{ delay: 0.4, duration: 0.6 }}
             className="text-white/70 text-lg md:text-xl mb-12 max-w-2xl leading-relaxed"
           >
-            Crossd connects you with people you've been near in real life — 
-            the coffee shop, the gallery, the commute. Turn missed moments into real connections.
+            Crossd helps you find and connect with people you've encountered in real life. 
+            Turn missed connections into meaningful conversations.
           </motion.p>
 
           <motion.div
@@ -214,7 +205,7 @@ export default function Welcome() {
               onClick={() => window.location.href = createPageUrl('Onboarding')}
               className="min-w-[200px]"
             >
-              Start My Story
+              Join Crossd Today
             </CrossdButton>
             
             <CrossdButton 
@@ -223,7 +214,7 @@ export default function Welcome() {
               onClick={() => setShowDetails(true)}
               className="min-w-[200px]"
             >
-              How It Works
+              Learn More
             </CrossdButton>
           </motion.div>
         </motion.div>

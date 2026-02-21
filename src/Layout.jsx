@@ -5,7 +5,7 @@ import TopHeader from '@/components/navigation/TopHeader';
 import BottomNav from '@/components/navigation/BottomNav';
 
 // Pages that don't show the main navigation
-const authPages = ['Welcome', 'Login', 'Signup', 'Onboarding', 'SetupProfile', 'Permissions', 'MBTIQuiz', 'FirstMoment', 'Recaps', 'IntroStory'];
+const authPages = ['Welcome', 'Login', 'Signup', 'Onboarding', 'SetupProfile', 'Permissions', 'MBTIQuiz', 'FirstMoment', 'Recaps'];
 const adminPages = ['AdminVerification', 'AdminReports'];
 const fullScreenPages = ['Chat', 'ProfileDetail', 'MomentDetail', 'Verification', 'Settings', 'Notifications', 'ActivityMapPage'];
 

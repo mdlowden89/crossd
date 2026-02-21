@@ -58,7 +58,6 @@ import Explore from './pages/Explore';
 import FirstMoment from './pages/FirstMoment';
 import HelpCenter from './pages/HelpCenter';
 import Home from './pages/Home';
-import IntroStory from './pages/IntroStory';
 import LogMoment from './pages/LogMoment';
 import MBTIQuiz from './pages/MBTIQuiz';
 import MomentDetail from './pages/MomentDetail';
@@ -91,7 +90,6 @@ export const PAGES = {
     "FirstMoment": FirstMoment,
     "HelpCenter": HelpCenter,
     "Home": Home,
-    "IntroStory": IntroStory,
     "LogMoment": LogMoment,
     "MBTIQuiz": MBTIQuiz,
     "MomentDetail": MomentDetail,
