@@ -1,12 +1,7 @@
 import React from 'react';
 import { cn } from "@/lib/utils";
 
-export function CrossdInput({ 
-  className, 
-  icon: Icon,
-  error,
-  ...props
-}) {
+export function CrossdInput({ className, icon: Icon, error, ...props }) {
   return (
     <div className="relative">
       {Icon && (
