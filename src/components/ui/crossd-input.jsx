@@ -1,13 +1,14 @@
 import React from 'react';
 import { cn } from "@/lib/utils";
 
-export function CrossdInput({ className, icon: Icon, error, ...props }) {
+export function CrossdInput({ className, icon: Icon, error, id, ...props }) {
   return (
     <div className="relative">
       {Icon && (
         <Icon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40 peer-focus:text-white/60" />
       )}
       <input
+        id={id}
         className={cn(
           "peer w-full bg-[#0B0B0B] border border-white/15 rounded-xl px-4 py-3.5 text-white placeholder:text-white/40",
           "focus:outline-none focus:border-[#E70F72] transition-colors duration-200",
