@@ -5,7 +5,7 @@ export function CrossdInput({
   className, 
   icon: Icon,
   error,
-  ...props 
+  ...props
 }) {
   return (
     <div className="relative">
