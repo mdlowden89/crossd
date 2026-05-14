@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, ChevronLeft, MapPin, Bell, Sparkles } from 'lucide-react';
@@ -69,45 +68,58 @@ const steps = [
 ];
 
 export default function Onboarding() {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const [locationEnabled, setLocationEnabled] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
 
+  const advanceOrFinish = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    } else {
+      navigate('/SetupProfile');
+    }
+  };
+
   const handleAction = async () => {
     const step = steps[currentStep];
-    
+
     if (step.id === 'location') {
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(
-          () => {
+          (pos) => {
             setLocationEnabled(true);
-            setCurrentStep(currentStep + 1);
+            // Store coords in sessionStorage so LogMoment/FirstMoment can use them immediately
+            sessionStorage.setItem('crossd_location', JSON.stringify({
+              lat: pos.coords.latitude,
+              lng: pos.coords.longitude
+            }));
+            advanceOrFinish();
           },
           () => {
-            // Location denied, continue anyway
-            setCurrentStep(currentStep + 1);
-          }
+            // Permission denied – continue anyway
+            advanceOrFinish();
+          },
+          { enableHighAccuracy: true, timeout: 10000 }
         );
       } else {
-        setCurrentStep(currentStep + 1);
+        advanceOrFinish();
       }
     } else if (step.id === 'notifications') {
-      if ('Notification' in window) {
+      if ('Notification' in window && Notification.permission === 'default') {
         const permission = await Notification.requestPermission();
         setNotificationsEnabled(permission === 'granted');
+      } else if ('Notification' in window) {
+        setNotificationsEnabled(Notification.permission === 'granted');
       }
-      setCurrentStep(currentStep + 1);
+      advanceOrFinish();
     } else {
-      setCurrentStep(currentStep + 1);
+      advanceOrFinish();
     }
   };
 
   const handleNext = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    } else {
-      window.location.href = createPageUrl('SetupProfile');
-    }
+    advanceOrFinish();
   };
 
   const handleBack = () => {
