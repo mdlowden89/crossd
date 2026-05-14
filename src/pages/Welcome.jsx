@@ -50,7 +50,7 @@ export default function Welcome() {
                 How Crossd Works
               </h1>
               <p className="text-white/65 text-lg">
-                Transform your daily encounters into meaningful connections
+                You've already met them. You just don't know it yet.
               </p>
             </motion.div>
 
@@ -66,7 +66,7 @@ export default function Welcome() {
               </div>
               <h3 className="text-xl font-bold text-white mb-2">Log Your Moments</h3>
               <p className="text-white/65">
-                Check in at places you visit. Build your trail of locations throughout your day.
+                The person at your usual coffee shop. Someone at the gym you keep seeing. That face on your commute you've never spoken to. Check in to the places you go and start building a trail — because the connection you almost made might already be waiting.
               </p>
             </motion.div>
 
@@ -79,10 +79,9 @@ export default function Welcome() {
               <div className="w-12 h-12 bg-[#E70F72]/20 rounded-xl flex items-center justify-center mb-4">
                 <Sparkles className="w-6 h-6 text-[#E70F72]" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">Discover Crossings</h3>
+              <h3 className="text-xl font-bold text-white mb-2">Your Vibe Finds Its Match</h3>
               <p className="text-white/65">
-                When you and someone else are at the same place around the same time, it's a crossing. 
-                We'll notify you of potential connections.
+                Our engine reads your patterns — the places you go, the energy you bring — and quietly surfaces people who move through the world the same way you do. No swiping required.
               </p>
             </motion.div>
 
@@ -95,10 +94,9 @@ export default function Welcome() {
               <div className="w-12 h-12 bg-[#E70F72]/20 rounded-xl flex items-center justify-center mb-4">
                 <Heart className="w-6 h-6 text-[#E70F72]" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">Match & Connect</h3>
+              <h3 className="text-xl font-bold text-white mb-2">Like. Match. Actually Talk.</h3>
               <p className="text-white/65">
-                Browse profiles, like people you find interesting. When it's mutual, you can start chatting 
-                and turn that missed connection into something real.
+                Browse people who've shared your world. When the interest is mutual, the conversation opens. No guessing, no ghosting limbo — just a real chance at something real.
               </p>
             </motion.div>
 
@@ -111,10 +109,24 @@ export default function Welcome() {
               <div className="w-12 h-12 bg-[#E70F72]/20 rounded-xl flex items-center justify-center mb-4">
                 <Shield className="w-6 h-6 text-[#E70F72]" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">Privacy First</h3>
+              <h3 className="text-xl font-bold text-white mb-2">Keep It Safe Until You're Ready</h3>
               <p className="text-white/65">
-                Your exact location is never shared. We use approximate areas and only reveal crossings 
-                when there's mutual interest. You're always in control.
+                Once you match, chat securely inside Crossd. Your number, your socials, your business — all yours until you choose to share them.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.45 }}
+              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] border border-[#E70F72]/25 rounded-2xl p-6"
+            >
+              <div className="w-12 h-12 bg-[#E70F72]/20 rounded-xl flex items-center justify-center mb-4">
+                <Shield className="w-6 h-6 text-[#E70F72]" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Your Location Stays Yours</h3>
+              <p className="text-white/65">
+                We never share where you are. Crossd works on approximate areas and only connects the dots when both sides are interested. You stay in control — always.
               </p>
             </motion.div>
 
@@ -131,7 +143,7 @@ export default function Welcome() {
                 onClick={() => window.location.href = createPageUrl('Onboarding')}
               >
                 <SparkIcon size={20} />
-                Get Started
+                Start Crossing Paths
               </CrossdButton>
             </motion.div>
           </div>
