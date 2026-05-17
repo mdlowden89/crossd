@@ -165,9 +165,8 @@ export default function HowItWorks({ onBack }) {
 
         .hiw-badge { display: inline-block; font-family: Manrope, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #e8186d; background: rgba(232,24,109,0.08); border: 1px solid rgba(232,24,109,0.35); border-radius: 100px; padding: 6px 16px; margin-bottom: 28px; }
 
-        .hiw-h1 { margin: 0 0 20px; line-height: 1.15; }
-        .hiw-h1-line1 { display: block; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: clamp(42px, 7vw, 64px); font-weight: 800; color: #fff; letter-spacing: -0.02em; margin-bottom: 6px; }
-        .hiw-h1 em { display: block; font-style: italic; font-weight: 400; color: #e8186d; font-family: "Instrument Serif", serif; font-size: clamp(42px, 7vw, 66px); line-height: 1.1; }
+        .hiw-h1 { font-family: "Instrument Serif", serif; font-size: clamp(38px, 6vw, 58px); font-weight: 400; line-height: 1.1; color: #fff; margin: 0 0 20px; }
+        .hiw-h1 em { font-style: italic; font-weight: 400; color: #e8186d; }
 
         .hiw-subtitle { font-family: Manrope, sans-serif; font-size: 16px; color: rgba(255,255,255,0.5); max-width: 440px; margin: 0 auto 80px; line-height: 1.6; }
 
@@ -212,7 +211,7 @@ export default function HowItWorks({ onBack }) {
           <div style={{ textAlign: 'center', marginBottom: 80 }}>
             <div className="hiw-badge">HOW IT WORKS</div>
             <h1 className="hiw-h1">
-              <span className="hiw-h1-line1">You've already met them.</span>
+              You've already met them.<br />
               <em>You just don't know it yet.</em>
             </h1>
             <p className="hiw-subtitle">
