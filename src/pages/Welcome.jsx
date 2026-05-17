@@ -7,7 +7,7 @@ import StarBackground from '@/components/common/StarBackground';
 import FlowingGraphic from '@/components/common/FlowingGraphic';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import SparkIcon from '@/components/common/SparkIcon';
-import { MapPin, Sparkles, Heart, Shield, ChevronRight } from 'lucide-react';
+import { MapPin, Sparkles, Heart, Shield, ChevronRight, Lock, EyeOff } from 'lucide-react';
 
 export default function Welcome() {
   const [showDetails, setShowDetails] = useState(false);
@@ -228,6 +228,27 @@ export default function Welcome() {
             >
               Learn More
             </CrossdButton>
+          </motion.div>
+
+          {/* Trust badges */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.9, duration: 0.5 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-10 text-white/45 text-sm"
+          >
+            <div className="flex items-center gap-2">
+              <Shield className="w-4 h-4 text-[#E70F72]" />
+              <span>Location stays approximate</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Lock className="w-4 h-4 text-[#E70F72]" />
+              <span>Photo-verified profiles</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <EyeOff className="w-4 h-4 text-[#E70F72]" />
+              <span>No infinite swipe</span>
+            </div>
           </motion.div>
         </motion.div>
       </div>
