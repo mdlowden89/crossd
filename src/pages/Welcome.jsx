@@ -23,10 +23,13 @@ export default function Welcome() {
 
   if (showDetails) {
     return (
-      <div className="min-h-screen bg-black relative overflow-hidden">
-        <StarBackground />
+      <div className="min-h-screen relative overflow-hidden" style={{ background: '#0D0A0F' }}>
+        {/* Pink radial glow top-right */}
+        <div className="absolute top-0 right-0 w-[600px] h-[500px] pointer-events-none" style={{
+          background: 'radial-gradient(ellipse at top right, rgba(180, 10, 60, 0.45) 0%, rgba(120, 5, 40, 0.2) 40%, transparent 70%)'
+        }} />
         
-        <div className="relative z-10 min-h-screen px-6 py-12 bg-[#0B0B0B]">
+        <div className="relative z-10 min-h-screen px-6 py-12">
           {/* Header */}
           <div className="flex items-center justify-between mb-12">
             <CrossdLogo size="default" />
