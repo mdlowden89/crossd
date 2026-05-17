@@ -165,7 +165,7 @@ export default function HowItWorks({ onBack }) {
 
         .hiw-badge { display: inline-block; font-family: Manrope, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #e8186d; background: rgba(232,24,109,0.08); border: 1px solid rgba(232,24,109,0.35); border-radius: 100px; padding: 6px 16px; margin-bottom: 28px; }
 
-        .hiw-h1 { font-family: "Instrument Serif", serif; font-size: clamp(38px, 6vw, 58px); font-weight: 400; line-height: 1.1; color: #fff; margin: 0 0 20px; }
+        .hiw-h1 { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: clamp(38px, 6vw, 58px); font-weight: 800; line-height: 1.1; color: #fff; margin: 0 0 20px; }
         .hiw-h1 em { font-style: italic; font-weight: 400; color: #e8186d; font-family: "Instrument Serif", serif; }
 
         .hiw-subtitle { font-family: Manrope, sans-serif; font-size: 16px; color: rgba(255,255,255,0.5); max-width: 440px; margin: 0 auto 80px; line-height: 1.6; }
