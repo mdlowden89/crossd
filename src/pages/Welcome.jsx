@@ -7,7 +7,7 @@ import StarBackground from '@/components/common/StarBackground';
 import FlowingGraphic from '@/components/common/FlowingGraphic';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import SparkIcon from '@/components/common/SparkIcon';
-import { MapPin, Sparkles, Heart, Shield, ChevronRight, Lock, EyeOff, MapPinOff, Clock, LogOut } from 'lucide-react';
+import { MapPin, Sparkles, Heart, Shield, ChevronRight, Lock, EyeOff } from 'lucide-react';
 
 export default function Welcome() {
   const [showDetails, setShowDetails] = useState(false);
@@ -83,78 +83,6 @@ export default function Welcome() {
                     <p className="text-white/80 text-sm leading-relaxed">
                       <span className="font-bold text-white">{item.bold}</span> {item.text}
                     </p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Trust Architecture Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 }}
-              className="pt-4"
-            >
-              <div className="text-center mb-8">
-                <p className="text-[#E70F72] text-xs font-mono font-semibold tracking-widest uppercase mb-4">Trust Architecture</p>
-                <h2 className="text-3xl font-bold text-white mb-4 leading-tight">
-                  The four guarantees behind every Moment.
-                </h2>
-                <p className="text-white/55 text-base leading-relaxed max-w-xl mx-auto">
-                  Location + dating triggers an obvious worry. We took it seriously. Here's the exact architecture — not vague promises.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {[
-                  {
-                    num: '01',
-                    icon: <MapPinOff className="w-5 h-5 text-[#E70F72]" />,
-                    title: 'Approximate areas only',
-                    desc: 'Your location is never stored as a coordinate. Every Moment resolves to a neighbourhood-level zone — minimum radius 1.5km — before anything is written to our database.',
-                    badge: 'Coords purged within 200ms of input'
-                  },
-                  {
-                    num: '02',
-                    icon: <Shield className="w-5 h-5 text-[#E70F72]" />,
-                    title: 'Photo verification gates everything',
-                    desc: "You can't send a first message without a live photo verification. Catfishing dies at the door, not in the conversation. Your verified badge is the only one in Crossd — there's nothing else to buy.",
-                    badge: 'Verified-only messaging, always'
-                  },
-                  {
-                    num: '03',
-                    icon: <Clock className="w-5 h-5 text-[#E70F72]" />,
-                    title: '48-hour reciprocity window',
-                    desc: "Mutual interest opens a conversation for exactly 48 hours. If neither side speaks, it closes — quietly, no notification. Ghosting becomes an active choice the system surfaces, not a default it enables.",
-                    badge: 'Reduces sustained anxiety by 71% in beta'
-                  },
-                  {
-                    num: '04',
-                    icon: <LogOut className="w-5 h-5 text-[#E70F72]" />,
-                    title: 'One-tap exit, no audit trail',
-                    desc: "Block, report, and full-account-pause are one tap from anywhere in the app. Pause your profile mid-conversation without warning the other person. Your safety doesn't owe anyone an explanation.",
-                    badge: 'No "last seen", no "active now" exposure'
-                  }
-                ].map((item, i) => (
-                  <div key={i} className="bg-[#141414] border border-[#E70F72]/20 rounded-2xl p-6 flex flex-col gap-4">
-                    <div className="flex items-start justify-between">
-                      <div className="w-10 h-10 bg-[#E70F72]/15 rounded-xl flex items-center justify-center">
-                        {item.icon}
-                      </div>
-                      <span className="text-[#E70F72]/20 text-4xl font-bold font-serif italic">{item.num}</span>
-                    </div>
-                    <div>
-                      <h4 className="text-white font-bold text-lg mb-2">{item.title}</h4>
-                      <p className="text-white/55 text-sm leading-relaxed">{item.desc}</p>
-                    </div>
-                    <div className="mt-auto pt-2 border-t border-white/5">
-                      <div className="flex items-center gap-2 text-xs text-white/50">
-                        <svg className="w-3.5 h-3.5 text-[#E70F72] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                        {item.badge}
-                      </div>
-                    </div>
                   </div>
                 ))}
               </div>
