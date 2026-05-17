@@ -26,7 +26,7 @@ export default function Welcome() {
       <div className="min-h-screen bg-black relative overflow-hidden">
         <StarBackground />
         
-        <div className="relative z-10 min-h-screen px-6 py-12">
+        <div className="relative z-10 min-h-screen px-6 py-12 bg-[#0B0B0B]">
           {/* Header */}
           <div className="flex items-center justify-between mb-12">
             <CrossdLogo size="default" />
@@ -59,7 +59,7 @@ export default function Welcome() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] border border-[#E70F72]/25 rounded-2xl p-8"
+              className="bg-[#141414] border border-[#E70F72]/25 rounded-2xl p-8"
             >
               <p className="text-[#E70F72] text-xs font-mono font-semibold tracking-widest uppercase mb-6">Feature 01 — Moments</p>
               <h3 className="text-4xl font-bold text-white mb-6 leading-tight">
@@ -92,7 +92,7 @@ export default function Welcome() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] border border-[#E70F72]/25 rounded-2xl p-6"
+              className="bg-[#141414] border border-[#E70F72]/25 rounded-2xl p-6"
             >
               <div className="w-12 h-12 bg-[#E70F72]/20 rounded-xl flex items-center justify-center mb-4">
                 <Sparkles className="w-6 h-6 text-[#E70F72]" />
@@ -107,7 +107,7 @@ export default function Welcome() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] border border-[#E70F72]/25 rounded-2xl p-6"
+              className="bg-[#141414] border border-[#E70F72]/25 rounded-2xl p-6"
             >
               <div className="w-12 h-12 bg-[#E70F72]/20 rounded-xl flex items-center justify-center mb-4">
                 <Heart className="w-6 h-6 text-[#E70F72]" />
@@ -122,7 +122,7 @@ export default function Welcome() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] border border-[#E70F72]/25 rounded-2xl p-6"
+              className="bg-[#141414] border border-[#E70F72]/25 rounded-2xl p-6"
             >
               <div className="w-12 h-12 bg-[#E70F72]/20 rounded-xl flex items-center justify-center mb-4">
                 <Shield className="w-6 h-6 text-[#E70F72]" />
@@ -137,7 +137,7 @@ export default function Welcome() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.45 }}
-              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] border border-[#E70F72]/25 rounded-2xl p-6"
+              className="bg-[#141414] border border-[#E70F72]/25 rounded-2xl p-6"
             >
               <div className="w-12 h-12 bg-[#E70F72]/20 rounded-xl flex items-center justify-center mb-4">
                 <Shield className="w-6 h-6 text-[#E70F72]" />
