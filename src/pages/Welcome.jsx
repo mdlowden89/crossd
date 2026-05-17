@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import CrossdLogo from '@/components/common/CrossdLogo';
 import StarBackground from '@/components/common/StarBackground';
-import FlowingGraphic from '@/components/common/FlowingGraphic';
 import { CrossdButton } from '@/components/ui/crossd-button';
-import SparkIcon from '@/components/common/SparkIcon';
-import { MapPin, Sparkles, Heart, Shield, ChevronRight } from 'lucide-react';
+import HowItWorks from '@/components/welcome/HowItWorks';
 
 export default function Welcome() {
   const [showDetails, setShowDetails] = useState(false);
@@ -22,134 +20,7 @@ export default function Welcome() {
   };
 
   if (showDetails) {
-    return (
-      <div className="min-h-screen bg-black relative overflow-hidden">
-        <StarBackground />
-        
-        <div className="relative z-10 min-h-screen px-6 py-12">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-12">
-            <CrossdLogo size="default" />
-            <CrossdButton 
-              variant="ghost" 
-              size="sm"
-              onClick={() => setShowDetails(false)}
-            >
-              Back
-            </CrossdButton>
-          </div>
-
-          {/* Content */}
-          <div className="max-w-2xl mx-auto space-y-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-center mb-12"
-            >
-              <h1 className="text-4xl font-bold text-white mb-4">
-                How Crossd Works
-              </h1>
-              <p className="text-white/65 text-lg">
-                You've already met them. You just don't know it yet.
-              </p>
-            </motion.div>
-
-            {/* Feature Cards */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] border border-[#E70F72]/25 rounded-2xl p-6"
-            >
-              <div className="w-12 h-12 bg-[#E70F72]/20 rounded-xl flex items-center justify-center mb-4">
-                <MapPin className="w-6 h-6 text-[#E70F72]" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Log Your Moments</h3>
-              <p className="text-white/65">
-                The person at your usual coffee shop. Someone at the gym you keep seeing. That face on your commute you've never spoken to. Check in to the places you go and start building a trail — because the connection you almost made might already be waiting.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] border border-[#E70F72]/25 rounded-2xl p-6"
-            >
-              <div className="w-12 h-12 bg-[#E70F72]/20 rounded-xl flex items-center justify-center mb-4">
-                <Sparkles className="w-6 h-6 text-[#E70F72]" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Your Vibe Finds Its Match</h3>
-              <p className="text-white/65">
-                Our engine reads your patterns — the places you go, the energy you bring — and quietly surfaces people who move through the world the same way you do. No swiping required.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] border border-[#E70F72]/25 rounded-2xl p-6"
-            >
-              <div className="w-12 h-12 bg-[#E70F72]/20 rounded-xl flex items-center justify-center mb-4">
-                <Heart className="w-6 h-6 text-[#E70F72]" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Like. Match. Actually Talk.</h3>
-              <p className="text-white/65">
-                Browse people who've shared your world. When the interest is mutual, the conversation opens. No guessing, no ghosting limbo — just a real chance at something real.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] border border-[#E70F72]/25 rounded-2xl p-6"
-            >
-              <div className="w-12 h-12 bg-[#E70F72]/20 rounded-xl flex items-center justify-center mb-4">
-                <Shield className="w-6 h-6 text-[#E70F72]" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Keep It Safe Until You're Ready</h3>
-              <p className="text-white/65">
-                Once you match, chat securely inside Crossd. Your number, your socials, your business — all yours until you choose to share them.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.45 }}
-              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] border border-[#E70F72]/25 rounded-2xl p-6"
-            >
-              <div className="w-12 h-12 bg-[#E70F72]/20 rounded-xl flex items-center justify-center mb-4">
-                <Shield className="w-6 h-6 text-[#E70F72]" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Your Location Stays Yours</h3>
-              <p className="text-white/65">
-                We never share where you are. Crossd works on approximate areas and only connects the dots when both sides are interested. You stay in control — always.
-              </p>
-            </motion.div>
-
-            {/* CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="pt-8"
-            >
-              <CrossdButton 
-                className="w-full" 
-                size="lg"
-                onClick={() => window.location.href = createPageUrl('Onboarding')}
-              >
-                <SparkIcon size={20} />
-                Start Crossing Paths
-              </CrossdButton>
-            </motion.div>
-          </div>
-        </div>
-      </div>
-    );
+    return <HowItWorks onBack={() => setShowDetails(false)} />;
   }
 
   return (
