@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createPageUrl } from '@/utils';
+import CrossdLogo from '@/components/common/CrossdLogo';
 
 /* ─── Inline SVG icons ─── */
 const IconPin = () => (
@@ -164,8 +165,8 @@ export default function HowItWorks({ onBack }) {
 
         .hiw-badge { display: inline-block; font-family: Manrope, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #e8186d; background: rgba(232,24,109,0.08); border: 1px solid rgba(232,24,109,0.35); border-radius: 100px; padding: 6px 16px; margin-bottom: 28px; }
 
-        .hiw-h1 { font-family: "Instrument Serif", serif; font-size: clamp(38px, 6vw, 58px); font-weight: 400; line-height: 1.1; color: #fff; margin: 0 0 20px; }
-        .hiw-h1 em { font-style: italic; color: #e8186d; }
+        .hiw-h1 { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: clamp(38px, 6vw, 58px); font-weight: 700; line-height: 1.1; color: #fff; margin: 0 0 20px; }
+        .hiw-h1 em { font-style: italic; font-weight: 700; color: #e8186d; }
 
         .hiw-subtitle { font-family: Manrope, sans-serif; font-size: 16px; color: rgba(255,255,255,0.5); max-width: 440px; margin: 0 auto 80px; line-height: 1.6; }
 
@@ -201,14 +202,7 @@ export default function HowItWorks({ onBack }) {
 
         {/* Nav */}
         <nav className="hiw-nav">
-          {/* Logo */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <path d="M14 23s-9-5.5-9-11.5a6.5 6.5 0 0 1 9-6.02A6.5 6.5 0 0 1 23 11.5C23 17.5 14 23 14 23z" fill="rgba(232,24,109,0.15)" stroke="#e8186d" strokeWidth="1.6"/>
-              <path d="M14 14.5c-1.2-1.2-2-2.4-2-3.5a2 2 0 0 1 4 0c0 1.1-.8 2.3-2 3.5z" stroke="#e8186d" strokeWidth="1.4" fill="none"/>
-            </svg>
-            <span style={{ fontFamily: 'Manrope, sans-serif', fontWeight: 700, fontSize: 18, color: '#fff', letterSpacing: '-0.01em' }}>Crossd</span>
-          </div>
+          <CrossdLogo size="sm" />
           <button className="hiw-back-btn" onClick={onBack}>← Back</button>
         </nav>
 
