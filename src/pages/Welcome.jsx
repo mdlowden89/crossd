@@ -26,7 +26,7 @@ export default function Welcome() {
       <div className="min-h-screen bg-black relative overflow-hidden">
         <StarBackground />
         
-        <div className="relative z-10 min-h-screen px-6 py-12 bg-[#0B0B0B]">
+        <div className="relative z-10 min-h-screen px-6 py-12">
           {/* Header */}
           <div className="flex items-center justify-between mb-12">
             <CrossdLogo size="default" />
@@ -59,40 +59,22 @@ export default function Welcome() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-[#141414] border border-[#E70F72]/25 rounded-2xl p-8"
+              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] border border-[#E70F72]/25 rounded-2xl p-6"
             >
-              <p className="text-[#E70F72] text-xs font-mono font-semibold tracking-widest uppercase mb-6">Feature 01 — Moments</p>
-              <h3 className="text-4xl font-bold text-white mb-6 leading-tight">
-                Log the person you <span className="text-[#E70F72] italic font-serif">almost</span> spoke to.
-              </h3>
-              <p className="text-white/65 text-base leading-relaxed mb-8">
-                A Moment is a quiet note. The face you keep noticing at the gym. The person reading at your usual café. The smile on the platform you couldn't quite read. You log it. Crossd holds it. If they ever log you back, you'll know.
-              </p>
-              <div className="space-y-4">
-                {[
-                  { bold: 'Private by default.', text: 'No one sees your Moments — not even matched users — unless they logged you too.' },
-                  { bold: 'Approximate, not exact.', text: 'Locations resolve to neighbourhood-level zones, never coordinates.' },
-                  { bold: 'Auto-expires.', text: 'Moments fade after 30 days unless renewed — your trail stays current, not collected.' },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-[#E70F72] flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <p className="text-white/80 text-sm leading-relaxed">
-                      <span className="font-bold text-white">{item.bold}</span> {item.text}
-                    </p>
-                  </div>
-                ))}
+              <div className="w-12 h-12 bg-[#E70F72]/20 rounded-xl flex items-center justify-center mb-4">
+                <MapPin className="w-6 h-6 text-[#E70F72]" />
               </div>
+              <h3 className="text-xl font-bold text-white mb-2">Log Your Moments</h3>
+              <p className="text-white/65">
+                The person at your usual coffee shop. Someone at the gym you keep seeing. That face on your commute you've never spoken to. Check in to the places you go and start building a trail — because the connection you almost made might already be waiting.
+              </p>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-[#141414] border border-[#E70F72]/25 rounded-2xl p-6"
+              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] border border-[#E70F72]/25 rounded-2xl p-6"
             >
               <div className="w-12 h-12 bg-[#E70F72]/20 rounded-xl flex items-center justify-center mb-4">
                 <Sparkles className="w-6 h-6 text-[#E70F72]" />
@@ -107,7 +89,7 @@ export default function Welcome() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="bg-[#141414] border border-[#E70F72]/25 rounded-2xl p-6"
+              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] border border-[#E70F72]/25 rounded-2xl p-6"
             >
               <div className="w-12 h-12 bg-[#E70F72]/20 rounded-xl flex items-center justify-center mb-4">
                 <Heart className="w-6 h-6 text-[#E70F72]" />
@@ -122,7 +104,7 @@ export default function Welcome() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="bg-[#141414] border border-[#E70F72]/25 rounded-2xl p-6"
+              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] border border-[#E70F72]/25 rounded-2xl p-6"
             >
               <div className="w-12 h-12 bg-[#E70F72]/20 rounded-xl flex items-center justify-center mb-4">
                 <Shield className="w-6 h-6 text-[#E70F72]" />
@@ -137,7 +119,7 @@ export default function Welcome() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.45 }}
-              className="bg-[#141414] border border-[#E70F72]/25 rounded-2xl p-6"
+              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] border border-[#E70F72]/25 rounded-2xl p-6"
             >
               <div className="w-12 h-12 bg-[#E70F72]/20 rounded-xl flex items-center justify-center mb-4">
                 <Shield className="w-6 h-6 text-[#E70F72]" />
