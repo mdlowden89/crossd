@@ -116,7 +116,7 @@ export default function LogMoment() {
       const user = await base44.auth.me();
       const timeBucket = new Date().toISOString().slice(0, 13) + ':00:00Z';
 
-      await base44.entities.Moment.create({
+      const newMoment = await base44.entities.Moment.create({
         user_id: user.id,
         venue_name: selectedPlace.name,
         venue_id: selectedPlace.placeId,
@@ -134,6 +134,12 @@ export default function LogMoment() {
             'smile': 'Smile',
             'chat': 'Chat'
           }[key]))
+      });
+
+      // Detect crossings and notify matched users
+      await base44.functions.invoke('detectCrossings', {
+        momentId: newMoment.id,
+        userId: user.id
       });
 
       navigate(createPageUrl('Moments'));
