@@ -127,6 +127,8 @@ export default function LogMoment() {
         time_bucket: timeBucket,
         privacy_level: 'approximate',
         note: otherDetails || null,
+        target_ethnicity: ethnicity || null,
+        target_hair_color: hairColor || null,
         mood_tags: Object.keys(interactionTypes)
           .filter(key => interactionTypes[key])
           .map(key => ({

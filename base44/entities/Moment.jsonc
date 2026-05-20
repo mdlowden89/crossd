@@ -1,0 +1,90 @@
+{
+  "name": "Moment",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "User who logged this moment"
+    },
+    "venue_name": {
+      "type": "string",
+      "description": "Name of venue if available"
+    },
+    "venue_id": {
+      "type": "string",
+      "description": "External venue ID if using Places API"
+    },
+    "venue_types": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Google Places types (e.g., cafe, museum, park)"
+    },
+    "lat": {
+      "type": "number",
+      "description": "Latitude"
+    },
+    "lng": {
+      "type": "number",
+      "description": "Longitude"
+    },
+    "geohash": {
+      "type": "string",
+      "description": "Geohash for proximity queries (precision 6-7)"
+    },
+    "tile_key": {
+      "type": "string",
+      "description": "Tile key for efficient lookups"
+    },
+    "time_bucket": {
+      "type": "string",
+      "description": "Hourly bucket key (YYYY-MM-DD-HH)"
+    },
+    "privacy_level": {
+      "type": "string",
+      "enum": [
+        "venue",
+        "approximate",
+        "hidden"
+      ],
+      "default": "approximate"
+    },
+    "note": {
+      "type": "string",
+      "description": "Optional personal note"
+    },
+    "mood_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Mood/vibe tags for this moment"
+    },
+    "device_timezone": {
+      "type": "string",
+      "description": "User's timezone when logging"
+    },
+    "nearby_spark_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Count of other users nearby (anonymized)"
+    },
+    "target_ethnicity": {
+      "type": "string",
+      "description": "Observed ethnicity of the person they noticed"
+    },
+    "target_hair_color": {
+      "type": "string",
+      "description": "Observed hair colour of the person they noticed"
+    }
+  },
+  "required": [
+    "user_id",
+    "lat",
+    "lng",
+    "geohash",
+    "tile_key",
+    "time_bucket"
+  ]
+}
