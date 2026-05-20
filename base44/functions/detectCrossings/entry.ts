@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
-// Map LogMoment hair colour values to Profile ethnicity enum values
+// Map LogMoment ethnicity values to Profile ethnicity enum values
 const ETHNICITY_MAP = {
   white: 'White/Caucasian',
   black: 'Black/African Descent',
@@ -11,13 +11,15 @@ const ETHNICITY_MAP = {
   other: 'Other'
 };
 
-// Scoring weights
-const SCORE_TIME = 40;      // max points for time proximity
-const SCORE_ETHNICITY = 35; // points for ethnicity match
-const SCORE_HAIR = 25;      // points for hair colour match
-
-// Minimum score to create a crossing (requires at least one descriptor match + same tile)
-const MIN_SCORE = 35;
+// Check if user A is interested in user B's gender
+function isInterestedIn(userAInterest, userBGender) {
+  if (!userAInterest || !userBGender) return true; // missing data, don't block
+  if (userAInterest === 'everyone') return true;
+  if (userAInterest === 'men' && userBGender === 'man') return true;
+  if (userAInterest === 'women' && userBGender === 'woman') return true;
+  if (userAInterest === 'men_and_women' && (userBGender === 'man' || userBGender === 'woman')) return true;
+  return false;
+}
 
 Deno.serve(async (req) => {
   try {
@@ -35,7 +37,14 @@ Deno.serve(async (req) => {
     }
     const moment = moments[0];
 
-    // Find other users' moments with the same tile_key
+    // Get the logging user's profile
+    const myProfiles = await base44.asServiceRole.entities.Profile.filter({ user_id: userId });
+    if (!myProfiles || myProfiles.length === 0) {
+      return Response.json({ error: 'Profile not found' }, { status: 404 });
+    }
+    const myProfile = myProfiles[0];
+
+    // Find other users' moments with the same tile_key within 1-hour window
     const allTileMoments = await base44.asServiceRole.entities.Moment.filter({
       tile_key: moment.tile_key
     });
@@ -43,7 +52,6 @@ Deno.serve(async (req) => {
     const momentTime = new Date(moment.time_bucket).getTime();
     const ONE_HOUR = 60 * 60 * 1000;
 
-    // Filter to 1-hour window, excluding own moments
     const nearbyMoments = allTileMoments.filter(m => {
       if (m.user_id === userId) return false;
       if (m.id === momentId) return false;
@@ -60,50 +68,45 @@ Deno.serve(async (req) => {
     for (const otherMoment of nearbyMoments) {
       const otherUserId = otherMoment.user_id;
 
-      // Fetch the other user's profile to match against descriptors
-      const otherProfile = await base44.asServiceRole.entities.Profile.filter({ user_id: otherUserId });
-      if (!otherProfile || otherProfile.length === 0) continue;
-      const profile = otherProfile[0];
+      // --- FILTER 1: Gender / sexual interest (mutual) ---
+      const otherProfiles = await base44.asServiceRole.entities.Profile.filter({ user_id: otherUserId });
+      if (!otherProfiles || otherProfiles.length === 0) continue;
+      const otherProfile = otherProfiles[0];
 
-      // --- Descriptor matching ---
-      let score = 0;
-      const hasEthnicityDescriptor = !!moment.target_ethnicity;
-      const hasHairDescriptor = !!moment.target_hair_color;
+      // I must be interested in them AND they must be interested in me
+      const iAmInterestedInThem = isInterestedIn(myProfile.interested_in, otherProfile.gender);
+      const theyAreInterestedInMe = isInterestedIn(otherProfile.interested_in, myProfile.gender);
+      if (!iAmInterestedInThem || !theyAreInterestedInMe) continue;
 
-      // Time proximity score (0–40 pts)
+      // --- FILTER 2: Ethnicity ---
+      // If the logger described ethnicity, it must match the other user's profile ethnicity
+      if (moment.target_ethnicity) {
+        const mappedEthnicity = ETHNICITY_MAP[moment.target_ethnicity];
+        if (mappedEthnicity && otherProfile.ethnicity !== mappedEthnicity) continue;
+      }
+      // Also check the reverse: if the other user described ethnicity, it must match my profile
+      if (otherMoment.target_ethnicity) {
+        const mappedEthnicity = ETHNICITY_MAP[otherMoment.target_ethnicity];
+        if (mappedEthnicity && myProfile.ethnicity !== mappedEthnicity) continue;
+      }
+
+      // --- FILTER 3: Hair colour ---
+      // Cross-reference: each user's described hair colour against the other's logged hair colour
+      // (Both users independently describe what they saw — symmetric check)
+      if (moment.target_hair_color && otherMoment.target_hair_color) {
+        // Both described — must agree
+        if (moment.target_hair_color !== otherMoment.target_hair_color) continue;
+      }
+      // If only one side described hair, we allow it through (partial info)
+
+      // --- All filters passed: calculate crossing score ---
       const timeDiffMs = Math.abs(new Date(otherMoment.time_bucket).getTime() - momentTime);
       const timeDiffHours = timeDiffMs / ONE_HOUR;
-      score += Math.round((1 - timeDiffHours) * SCORE_TIME);
+      let score = Math.round((1 - timeDiffHours) * 100);
 
-      // Ethnicity match (35 pts) — only scored if the logger provided it
-      if (hasEthnicityDescriptor) {
-        const mappedEthnicity = ETHNICITY_MAP[moment.target_ethnicity];
-        if (mappedEthnicity && profile.ethnicity === mappedEthnicity) {
-          score += SCORE_ETHNICITY;
-        } else {
-          // They described someone's ethnicity but it doesn't match — skip this user
-          continue;
-        }
-      }
-
-      // Hair colour match (25 pts) — only scored if the logger provided it
-      // Profile stores hair colour as part of vibe_tags or we use a simple string match on note
-      // For now we store it on the moment's target_hair_color and match against other moment's target_hair_color
-      // (both users would describe each other symmetrically)
-      if (hasHairDescriptor && otherMoment.target_hair_color) {
-        if (moment.target_hair_color === otherMoment.target_hair_color) {
-          score += SCORE_HAIR;
-        } else {
-          // Hair described but doesn't match — skip
-          continue;
-        }
-      } else if (hasHairDescriptor && !otherMoment.target_hair_color) {
-        // Logger described hair but other user didn't log — partial match, no penalty
-        score += Math.round(SCORE_HAIR * 0.5);
-      }
-
-      // Require minimum score to create a crossing
-      if (score < MIN_SCORE) continue;
+      // Boost score when descriptors matched
+      if (moment.target_ethnicity) score = Math.min(100, score + 10);
+      if (moment.target_hair_color && otherMoment.target_hair_color) score = Math.min(100, score + 10);
 
       // Idempotency key to prevent duplicates
       const idempotencyKey = [userId, otherUserId].sort().join('_') + '_' + moment.tile_key + '_' + moment.time_bucket.slice(0, 13);
@@ -128,7 +131,7 @@ Deno.serve(async (req) => {
         moment_a_id: momentId,
         moment_b_id: otherMoment.id,
         crossing_at: new Date().toISOString(),
-        crossing_score: Math.min(score, 100),
+        crossing_score: score,
         status: 'new',
         expires_at: expiresAt,
         location_key: moment.tile_key + '_' + moment.time_bucket.slice(0, 13),
@@ -140,29 +143,26 @@ Deno.serve(async (req) => {
       crossingsCreated++;
 
       // Notify both users
-      const currentProfile = await base44.asServiceRole.entities.Profile.filter({ user_id: userId });
-      if (currentProfile.length > 0) {
-        await Promise.all([
-          base44.asServiceRole.entities.Notification.create({
-            user_id: currentProfile[0].id,
-            type: 'new_crossing',
-            title: 'You crossed paths!',
-            body: `You were near ${profile.display_name} at ${moment.venue_name || 'a nearby location'}`,
-            data: { crossing_id: idempotencyKey, user_id: profile.id, display_name: profile.display_name },
-            read: false,
-            sent: false
-          }),
-          base44.asServiceRole.entities.Notification.create({
-            user_id: profile.id,
-            type: 'new_crossing',
-            title: 'You crossed paths!',
-            body: `You were near ${currentProfile[0].display_name} at ${moment.venue_name || 'a nearby location'}`,
-            data: { crossing_id: idempotencyKey, user_id: currentProfile[0].id, display_name: currentProfile[0].display_name },
-            read: false,
-            sent: false
-          })
-        ]);
-      }
+      await Promise.all([
+        base44.asServiceRole.entities.Notification.create({
+          user_id: myProfile.id,
+          type: 'new_crossing',
+          title: 'You crossed paths!',
+          body: `You were near ${otherProfile.display_name} at ${moment.venue_name || 'a nearby location'}`,
+          data: { crossing_id: idempotencyKey, user_id: otherProfile.id, display_name: otherProfile.display_name },
+          read: false,
+          sent: false
+        }),
+        base44.asServiceRole.entities.Notification.create({
+          user_id: otherProfile.id,
+          type: 'new_crossing',
+          title: 'You crossed paths!',
+          body: `You were near ${myProfile.display_name} at ${moment.venue_name || 'a nearby location'}`,
+          data: { crossing_id: idempotencyKey, user_id: myProfile.id, display_name: myProfile.display_name },
+          read: false,
+          sent: false
+        })
+      ]);
     }
 
     return Response.json({ success: true, crossings_created: crossingsCreated });
