@@ -1,0 +1,68 @@
+{
+  "name": "Report",
+  "type": "object",
+  "properties": {
+    "reporter_id": {
+      "type": "string",
+      "description": "User who filed the report"
+    },
+    "reported_user_id": {
+      "type": "string",
+      "description": "User being reported"
+    },
+    "match_id": {
+      "type": "string",
+      "description": "Optional match context"
+    },
+    "reason": {
+      "type": "string",
+      "enum": [
+        "inappropriate_content",
+        "harassment",
+        "spam",
+        "fake_profile",
+        "underage",
+        "other"
+      ],
+      "description": "Report reason category"
+    },
+    "details": {
+      "type": "string",
+      "description": "Additional details"
+    },
+    "evidence_urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Screenshot URLs as evidence"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "reviewed",
+        "actioned",
+        "dismissed"
+      ],
+      "default": "open"
+    },
+    "admin_notes": {
+      "type": "string"
+    },
+    "action_taken": {
+      "type": "string",
+      "enum": [
+        "none",
+        "warning",
+        "temporary_ban",
+        "permanent_ban"
+      ]
+    }
+  },
+  "required": [
+    "reporter_id",
+    "reported_user_id",
+    "reason"
+  ]
+}

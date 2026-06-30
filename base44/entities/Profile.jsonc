@@ -1,0 +1,346 @@
+{
+  "name": "Profile",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "Reference to User entity"
+    },
+    "display_name": {
+      "type": "string",
+      "description": "User's display name"
+    },
+    "birthdate": {
+      "type": "string",
+      "format": "date",
+      "description": "User's birthdate for age calculation"
+    },
+    "gender": {
+      "type": "string",
+      "enum": [
+        "man",
+        "woman",
+        "non-binary",
+        "prefer_not_to_say"
+      ],
+      "description": "User's gender identity"
+    },
+    "interested_in": {
+      "type": "string",
+      "enum": [
+        "everyone",
+        "men",
+        "women",
+        "men_and_women"
+      ],
+      "description": "Who the user is interested in meeting"
+    },
+    "height": {
+      "type": "number",
+      "description": "Height in centimeters"
+    },
+    "university": {
+      "type": "string",
+      "description": "College or university attended"
+    },
+    "ethnicity": {
+      "type": "string",
+      "enum": [
+        "Prefer Not to Say",
+        "White/Caucasian",
+        "Black/African Descent",
+        "East Asian",
+        "Hispanic/Latino",
+        "Middle Eastern",
+        "Native American",
+        "Pacific Islander",
+        "South Asian",
+        "Southeast Asian",
+        "Other"
+      ],
+      "description": "User's ethnicity"
+    },
+    "religion": {
+      "type": "string",
+      "enum": [
+        "Prefer Not to Say",
+        "Agnostic",
+        "Atheist",
+        "Buddhist",
+        "Catholic",
+        "Christian",
+        "Hindu",
+        "Jain",
+        "Jewish",
+        "Mormon",
+        "Muslim",
+        "Sikh",
+        "Spiritual",
+        "Zoroastrian",
+        "Other"
+      ],
+      "description": "User's religion"
+    },
+    "zodiac_sign": {
+      "type": "string",
+      "enum": [
+        "Aries",
+        "Taurus",
+        "Gemini",
+        "Cancer",
+        "Leo",
+        "Virgo",
+        "Libra",
+        "Scorpio",
+        "Sagittarius",
+        "Capricorn",
+        "Aquarius",
+        "Pisces"
+      ],
+      "description": "Zodiac sign"
+    },
+    "drinking": {
+      "type": "string",
+      "enum": [
+        "Never",
+        "Sometimes",
+        "Regularly",
+        "Prefer not to say"
+      ],
+      "description": "Drinking habits"
+    },
+    "smoking": {
+      "type": "string",
+      "enum": [
+        "Never",
+        "Sometimes",
+        "Regularly",
+        "Prefer not to say"
+      ],
+      "description": "Smoking habits"
+    },
+    "relationship_type": {
+      "type": "string",
+      "enum": [
+        "Monogamy",
+        "Ethical non-monogamy",
+        "Open to either",
+        "Prefer not to say"
+      ],
+      "description": "Preferred relationship type"
+    },
+    "dating_intentions": {
+      "type": "string",
+      "enum": [
+        "Long-term relationship",
+        "Short-term fun",
+        "New friends",
+        "Still figuring it out"
+      ],
+      "description": "What user is looking for"
+    },
+    "children": {
+      "type": "string",
+      "enum": [
+        "Don't have children",
+        "Have children",
+        "Prefer not to say"
+      ],
+      "description": "Children status"
+    },
+    "family_plans": {
+      "type": "string",
+      "enum": [
+        "Want children",
+        "Don't want children",
+        "Open to children",
+        "Not sure yet"
+      ],
+      "description": "Future family plans"
+    },
+    "bio": {
+      "type": "string",
+      "description": "Short bio text"
+    },
+    "job_title": {
+      "type": "string",
+      "description": "User's job title"
+    },
+    "city": {
+      "type": "string",
+      "description": "User's city"
+    },
+    "photos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "order": {
+            "type": "number"
+          },
+          "is_primary": {
+            "type": "boolean"
+          }
+        }
+      },
+      "description": "Profile photos with ordering"
+    },
+    "prompts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string"
+          },
+          "answer": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Hinge-style prompts and answers"
+    },
+    "vibe_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Personality/vibe tags"
+    },
+    "mbti_type": {
+      "type": "string",
+      "description": "MBTI personality type"
+    },
+    "mbti_quiz_results": {
+      "type": "object",
+      "description": "Detailed quiz results"
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "unverified",
+        "pending",
+        "verified",
+        "rejected"
+      ],
+      "default": "unverified"
+    },
+    "verification_selfie_url": {
+      "type": "string",
+      "description": "Selfie uploaded for verification"
+    },
+    "crossd_plus": {
+      "type": "boolean",
+      "default": false,
+      "description": "Premium subscription status"
+    },
+    "crossd_plus_plan": {
+      "type": "string",
+      "enum": [
+        "none",
+        "subscription",
+        "one_time"
+      ],
+      "default": "none"
+    },
+    "crossd_plus_expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When premium expires"
+    },
+    "glow_active_until": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When current Glow Mode boost ends"
+    },
+    "glow_cooldown_until": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When user can activate Glow Mode again"
+    },
+    "glow_stats": {
+      "type": "object",
+      "properties": {
+        "profile_views": {
+          "type": "number"
+        },
+        "likes_received": {
+          "type": "number"
+        },
+        "matches": {
+          "type": "number"
+        }
+      },
+      "description": "Stats during Glow Mode"
+    },
+    "discoverable": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether profile shows in discovery"
+    },
+    "verified_only_mode": {
+      "type": "boolean",
+      "default": false,
+      "description": "Only show verified users in feed"
+    },
+    "notification_prefs": {
+      "type": "object",
+      "properties": {
+        "new_match": {
+          "type": "boolean",
+          "default": true
+        },
+        "new_message": {
+          "type": "boolean",
+          "default": true
+        },
+        "second_chance": {
+          "type": "boolean",
+          "default": true
+        },
+        "marketing": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "onboarding_complete": {
+      "type": "boolean",
+      "default": false
+    },
+    "last_active_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "banned",
+        "deleted"
+      ],
+      "default": "active"
+    },
+    "location_lat": {
+      "type": "number",
+      "description": "Last known latitude (for discovery)"
+    },
+    "location_lng": {
+      "type": "number",
+      "description": "Last known longitude (for discovery)"
+    },
+    "location_geohash": {
+      "type": "string",
+      "description": "Geohash for proximity queries"
+    }
+  },
+  "required": [
+    "user_id",
+    "display_name",
+    "gender",
+    "interested_in"
+  ]
+}

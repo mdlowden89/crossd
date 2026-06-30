@@ -1,0 +1,59 @@
+{
+  "name": "Match",
+  "type": "object",
+  "properties": {
+    "user_1_id": {
+      "type": "string",
+      "description": "First user in match"
+    },
+    "user_2_id": {
+      "type": "string",
+      "description": "Second user in match"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "discovery",
+        "crossing"
+      ],
+      "default": "discovery"
+    },
+    "crossing_id": {
+      "type": "string",
+      "description": "Optional crossing that led to match"
+    },
+    "last_message_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "unread_count_user_1": {
+      "type": "number",
+      "default": 0
+    },
+    "unread_count_user_2": {
+      "type": "number",
+      "default": 0
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false
+    },
+    "blocked_by": {
+      "type": "string",
+      "description": "User ID who blocked"
+    },
+    "blocked_reason": {
+      "type": "string"
+    },
+    "safety_flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "user_1_id",
+    "user_2_id"
+  ]
+}

@@ -127,11 +127,11 @@ function GlassCard({ icon, label, heading, body, small }) {
         <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(232,24,109,0.08)', border: '1px solid rgba(232,24,109,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
           {icon}
         </div>
-        <span style={{ fontFamily: 'Manrope, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.14em', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase' }}>{label}</span>
+        <span style={{ fontFamily: 'Inter, -apple-system, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.14em', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase' }}>{label}</span>
       </div>
 
-      <h2 style={{ fontFamily: '"Instrument Serif", serif', fontSize: small ? 21 : 26, fontWeight: 400, color: '#fff', marginBottom: 12, lineHeight: 1.25 }}>{heading}</h2>
-      <p style={{ fontFamily: 'Manrope, sans-serif', fontSize: small ? 14 : 15, color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, margin: 0 }}>{body}</p>
+      <h2 style={{ fontFamily: 'Inter, -apple-system, sans-serif', fontSize: small ? 21 : 26, fontWeight: 700, color: '#fff', marginBottom: 12, lineHeight: 1.25 }}>{heading}</h2>
+      <p style={{ fontFamily: 'Inter, -apple-system, sans-serif', fontSize: small ? 14 : 15, color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, margin: 0 }}>{body}</p>
     </div>
   );
 }
@@ -149,8 +149,6 @@ export default function HowItWorks({ onBack }) {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap');
-
         .hiw-page { min-height: 100vh; background: #080509; position: relative; overflow-x: hidden; }
 
         .hiw-orb-tl { position: fixed; top: -80px; left: -80px; width: 360px; height: 360px; background: rgba(232,24,109,0.09); border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: 0; }
@@ -158,17 +156,17 @@ export default function HowItWorks({ onBack }) {
 
         .hiw-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: rgba(8,5,9,0.7); backdrop-filter: blur(12px); WebkitBackdropFilter: blur(12px); border-bottom: 0.5px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: space-between; padding: 0 28px; height: 60px; }
 
-        .hiw-back-btn { font-family: Manrope, sans-serif; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.6); background: none; border: none; cursor: pointer; padding: 8px 0; transition: color 0.2s; }
+        .hiw-back-btn { font-family: Inter, -apple-system, sans-serif; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.6); background: none; border: none; cursor: pointer; padding: 8px 0; transition: color 0.2s; }
         .hiw-back-btn:hover { color: #fff; }
 
         .hiw-content { position: relative; z-index: 10; max-width: 760px; margin: 0 auto; padding: 130px 28px 100px; }
 
-        .hiw-badge { display: inline-block; font-family: Manrope, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #e8186d; background: rgba(232,24,109,0.08); border: 1px solid rgba(232,24,109,0.35); border-radius: 100px; padding: 6px 16px; margin-bottom: 28px; }
+        .hiw-badge { display: inline-block; font-family: Inter, -apple-system, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #e8186d; background: rgba(232,24,109,0.08); border: 1px solid rgba(232,24,109,0.35); border-radius: 100px; padding: 6px 16px; margin-bottom: 28px; }
 
-        .hiw-h1 { font-family: "Instrument Serif", serif; font-size: clamp(38px, 6vw, 58px); font-weight: 400; line-height: 1.1; color: #fff; margin: 0 0 20px; }
+        .hiw-h1 { font-family: Inter, -apple-system, sans-serif; font-size: clamp(38px, 6vw, 58px); font-weight: 700; line-height: 1.1; color: #fff; margin: 0 0 20px; }
         .hiw-h1 em { font-style: italic; font-weight: 400; color: #e8186d; }
 
-        .hiw-subtitle { font-family: Manrope, sans-serif; font-size: 16px; color: rgba(255,255,255,0.5); max-width: 440px; margin: 0 auto 80px; line-height: 1.6; }
+        .hiw-subtitle { font-family: Inter, -apple-system, sans-serif; font-size: 16px; color: rgba(255,255,255,0.5); max-width: 440px; margin: 0 auto 80px; line-height: 1.6; }
 
         /* Thread + steps */
         .hiw-steps-wrap { position: relative; }
@@ -176,16 +174,16 @@ export default function HowItWorks({ onBack }) {
 
         .hiw-step-row { display: grid; grid-template-columns: 64px 1fr; gap: 24px; margin-bottom: 24px; align-items: start; }
 
-        .hiw-bubble { width: 64px; height: 64px; border-radius: 50%; background: rgba(232,24,109,0.08); border: 1px solid rgba(232,24,109,0.35); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: "Instrument Serif", serif; font-size: 22px; color: #e8186d; }
+        .hiw-bubble { width: 64px; height: 64px; border-radius: 50%; background: rgba(232,24,109,0.08); border: 1px solid rgba(232,24,109,0.35); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: Inter, -apple-system, sans-serif; font-size: 22px; font-weight: 700; color: #e8186d; }
 
         /* Safety cards pair */
         .hiw-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 24px; }
 
         /* CTA */
         .hiw-cta { text-align: center; padding-top: 72px; }
-        .hiw-cta-btn { font-family: Manrope, sans-serif; font-size: 16px; font-weight: 600; color: #fff; background: #e8186d; border: none; border-radius: 100px; padding: 17px 46px; cursor: pointer; box-shadow: 0 0 40px rgba(232,24,109,0.45); transition: transform 0.2s, box-shadow 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+        .hiw-cta-btn { font-family: Inter, -apple-system, sans-serif; font-size: 16px; font-weight: 600; color: #fff; background: #e8186d; border: none; border-radius: 100px; padding: 17px 46px; cursor: pointer; box-shadow: 0 0 40px rgba(232,24,109,0.45); transition: transform 0.2s, box-shadow 0.2s; display: inline-flex; align-items: center; gap: 8px; }
         .hiw-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 50px rgba(232,24,109,0.6); }
-        .hiw-cta-sub { font-family: Manrope, sans-serif; font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 14px; }
+        .hiw-cta-sub { font-family: Inter, -apple-system, sans-serif; font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 14px; }
 
         @media (max-width: 580px) {
           .hiw-thread { display: none; }

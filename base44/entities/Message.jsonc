@@ -1,0 +1,57 @@
+{
+  "name": "Message",
+  "type": "object",
+  "properties": {
+    "match_id": {
+      "type": "string",
+      "description": "Match/chat this message belongs to"
+    },
+    "sender_id": {
+      "type": "string",
+      "description": "User who sent the message"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "text",
+        "voice",
+        "system",
+        "image"
+      ],
+      "default": "text"
+    },
+    "text": {
+      "type": "string",
+      "description": "Message text content"
+    },
+    "media_url": {
+      "type": "string",
+      "description": "URL for voice/image messages"
+    },
+    "media_duration": {
+      "type": "number",
+      "description": "Duration in seconds for voice messages"
+    },
+    "read_by": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "User IDs who have read this message"
+    },
+    "system_type": {
+      "type": "string",
+      "enum": [
+        "match_created",
+        "ice_breaker",
+        "crossing_shared"
+      ],
+      "description": "Type of system message"
+    }
+  },
+  "required": [
+    "match_id",
+    "sender_id",
+    "type"
+  ]
+}

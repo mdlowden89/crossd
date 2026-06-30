@@ -1,0 +1,73 @@
+{
+  "name": "Crossing",
+  "type": "object",
+  "properties": {
+    "user_a_id": {
+      "type": "string",
+      "description": "First user in crossing"
+    },
+    "user_b_id": {
+      "type": "string",
+      "description": "Second user in crossing"
+    },
+    "moment_a_id": {
+      "type": "string",
+      "description": "User A's moment that triggered crossing"
+    },
+    "moment_b_id": {
+      "type": "string",
+      "description": "User B's moment that triggered crossing"
+    },
+    "crossing_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the crossing occurred"
+    },
+    "crossing_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Strength/quality of crossing"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "notified",
+        "dismissed",
+        "matched",
+        "expired"
+      ],
+      "default": "new"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When crossing expires"
+    },
+    "location_key": {
+      "type": "string",
+      "description": "Combined tile/venue/time identifier"
+    },
+    "location_label": {
+      "type": "string",
+      "description": "Fuzzy location label for display"
+    },
+    "occurrence_count": {
+      "type": "number",
+      "default": 1,
+      "description": "Number of times users have crossed"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "description": "Unique key to prevent duplicates"
+    }
+  },
+  "required": [
+    "user_a_id",
+    "user_b_id",
+    "crossing_at",
+    "location_key",
+    "idempotency_key"
+  ]
+}

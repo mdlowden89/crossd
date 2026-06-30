@@ -1,0 +1,25 @@
+{
+  "name": "Block",
+  "type": "object",
+  "properties": {
+    "blocker_id": {
+      "type": "string",
+      "description": "User who initiated the block"
+    },
+    "blocked_id": {
+      "type": "string",
+      "description": "User who is blocked"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "match_id": {
+      "type": "string",
+      "description": "Match that was blocked (if applicable)"
+    }
+  },
+  "required": [
+    "blocker_id",
+    "blocked_id"
+  ]
+}

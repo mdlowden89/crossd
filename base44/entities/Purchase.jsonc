@@ -1,0 +1,73 @@
+{
+  "name": "Purchase",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "User who made the purchase"
+    },
+    "provider": {
+      "type": "string",
+      "enum": [
+        "stripe",
+        "apple",
+        "google",
+        "base44"
+      ],
+      "description": "Payment provider"
+    },
+    "product_id": {
+      "type": "string",
+      "description": "Product identifier"
+    },
+    "product_type": {
+      "type": "string",
+      "enum": [
+        "crossd_plus_monthly",
+        "crossd_plus_yearly",
+        "glow_boost",
+        "fatesync_pack"
+      ],
+      "description": "Type of product"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "completed",
+        "failed",
+        "refunded",
+        "cancelled"
+      ],
+      "default": "pending"
+    },
+    "amount": {
+      "type": "number",
+      "description": "Amount in cents"
+    },
+    "currency": {
+      "type": "string",
+      "default": "usd"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "features_unlocked": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Features unlocked by this purchase"
+    },
+    "transaction_id": {
+      "type": "string",
+      "description": "External transaction ID"
+    }
+  },
+  "required": [
+    "user_id",
+    "product_type",
+    "status"
+  ]
+}

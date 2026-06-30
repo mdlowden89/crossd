@@ -1,0 +1,54 @@
+{
+  "name": "ZoneHistoric",
+  "type": "object",
+  "properties": {
+    "zone_id": {
+      "type": "string",
+      "description": "Geohash-based zone identifier (e.g. ldn_gcpvj3)"
+    },
+    "centroid_lat": {
+      "type": "number",
+      "description": "Average latitude of moments in zone"
+    },
+    "centroid_lng": {
+      "type": "number",
+      "description": "Average longitude of moments in zone"
+    },
+    "historic_score": {
+      "type": "number",
+      "description": "Normalized compatibility density 0..1"
+    },
+    "dominant_archetypes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Top 2-3 PlacesDNA archetypes for this zone"
+    },
+    "archetype_scores": {
+      "type": "object",
+      "description": "Raw archetype score map"
+    },
+    "peak_buckets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Top time buckets: morning/day/evening/night/late"
+    },
+    "moment_count": {
+      "type": "number",
+      "description": "Total moments in last 30 days"
+    },
+    "compatible_type_distribution": {
+      "type": "object",
+      "description": "MBTI type frequency map (premium only)"
+    }
+  },
+  "required": [
+    "zone_id",
+    "centroid_lat",
+    "centroid_lng",
+    "historic_score"
+  ]
+}

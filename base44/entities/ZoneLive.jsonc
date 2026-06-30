@@ -1,0 +1,42 @@
+{
+  "name": "ZoneLive",
+  "type": "object",
+  "properties": {
+    "zone_id": {
+      "type": "string",
+      "description": "Geohash-based zone identifier matching ZoneHistoric"
+    },
+    "live_score": {
+      "type": "number",
+      "description": "Normalized recent activity spike 0..1"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "calm",
+        "active",
+        "peaking"
+      ],
+      "default": "calm",
+      "description": "Simplified state label for UI"
+    },
+    "activity_band": {
+      "type": "string",
+      "enum": [
+        "low",
+        "med",
+        "high"
+      ],
+      "default": "low"
+    },
+    "recent_moment_count": {
+      "type": "number",
+      "description": "Moments logged in last 75 minutes"
+    }
+  },
+  "required": [
+    "zone_id",
+    "live_score",
+    "state"
+  ]
+}
