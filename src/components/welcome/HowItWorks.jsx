@@ -145,7 +145,7 @@ export default function HowItWorks({ onBack }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-16"
+          className="mb-16 text-center"
         >
           <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-3 text-[#E70F72]">
             How It Works
