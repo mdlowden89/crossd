@@ -152,7 +152,7 @@ export default function HowItWorks({ onBack }) {
           </div>
           <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-5">
             You've already met them.<br />
-            <span className="text-[#E70F72] italic font-semibold">You just don't know it yet.</span>
+            <span className="text-[#E70F72] font-bold">You just don't know it yet.</span>
           </h1>
           <p className="text-white/50 text-base md:text-lg leading-relaxed max-w-md mx-auto">
             Crossd finds the connection that was always there — hidden in the places you both call yours.
