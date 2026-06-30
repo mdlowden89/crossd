@@ -147,15 +147,12 @@ export default function HowItWorks({ onBack }) {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <div className="inline-block text-[#E70F72] text-[11px] font-semibold tracking-widest uppercase border border-[#E70F72]/35 rounded-full px-4 py-1.5 mb-6" style={{ background: 'rgba(231,15,114,0.08)' }}>
-            HOW IT WORKS
-          </div>
           <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-5">
-            You've already met them.<br />
-            <span className="text-[#E70F72] italic font-semibold">You just don't know it yet.</span>
+            How It Works
           </h1>
-          <p className="text-white/50 text-base md:text-lg leading-relaxed max-w-md mx-auto">
-            Crossd finds the connection that was always there — hidden in the places you both call yours.
+          <p className="text-white/60 text-lg md:text-xl leading-relaxed max-w-md mx-auto mb-2">
+            You've already met them.<br />
+            <span className="text-white/40">You just don't know it yet.</span>
           </p>
         </motion.div>
 
