@@ -551,13 +551,13 @@ export default function Dashboard() {
                   <div className="flex items-center gap-2 mb-1">
                     {!todayPath && <AlertCircle className="w-4 h-4 text-[#E70F72]" />}
                     <h2 className={`text-xl font-bold ${todayPath ? 'text-white' : 'text-[#E70F72]'}`}>
-                      {todayPath ? "Today's Path Logged ✓" : "Log Your Path Today"}
+                      {todayPath ? "Today's Path Logged ✓" : "Unlock Today's Crossings"}
                     </h2>
                   </div>
                   <p className="text-white/60 text-sm leading-snug">
                     {todayPath
                       ? `${todayPath.stops?.length || 0} stop${(todayPath.stops?.length || 0) !== 1 ? 's' : ''} logged — we're checking for crossings`
-                      : "Where did you go today? Your path could match someone else's moment."}
+                      : "Add where you went today to reveal missed moments, possible sparks, and hidden overlaps."}
                   </p>
                 </div>
               </div>
