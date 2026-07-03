@@ -138,11 +138,11 @@ export default function LogMoment() {
           }[key]))
       });
 
-      // Detect crossings and notify matched users
-      await base44.functions.invoke('detectCrossings', {
-        momentId: newMoment.id,
-        userId: user.id
-      });
+      // Detect crossings — point-based and path-based in parallel
+      await Promise.all([
+        base44.functions.invoke('detectCrossings', { momentId: newMoment.id, userId: user.id }),
+        base44.functions.invoke('checkPathCrossings', { momentId: newMoment.id, userId: user.id })
+      ]);
 
       navigate(createPageUrl('Moments'));
     } catch (error) {

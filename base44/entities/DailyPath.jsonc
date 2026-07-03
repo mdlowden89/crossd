@@ -1,0 +1,54 @@
+{
+  "name": "DailyPath",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "User who logged this path"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "The date of travel (YYYY-MM-DD)"
+    },
+    "stops": {
+      "type": "array",
+      "description": "Ordered list of stops during the day",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "place_id": {
+            "type": "string"
+          },
+          "lat": {
+            "type": "number"
+          },
+          "lng": {
+            "type": "number"
+          },
+          "arrived_at": {
+            "type": "string",
+            "description": "Approximate arrival time HH:MM"
+          },
+          "left_at": {
+            "type": "string",
+            "description": "Approximate departure time HH:MM"
+          }
+        }
+      }
+    },
+    "crossings_checked": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether path crossings have been computed"
+    }
+  },
+  "required": [
+    "user_id",
+    "date",
+    "stops"
+  ]
+}

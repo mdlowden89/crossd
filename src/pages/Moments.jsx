@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MapPin, Plus, Clock, Sparkles, Users, ChevronRight, 
-  Navigation, Edit3, Loader2
+  Navigation, Edit3, Loader2, Route
 } from 'lucide-react';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
@@ -234,10 +234,19 @@ export default function Moments() {
           <h1 className="text-2xl font-bold text-white">Moments</h1>
           <p className="text-white/65 text-sm">Track where you've been</p>
         </div>
-        <CrossdButton onClick={() => window.location.href = createPageUrl('LogMoment')}>
-           <Plus className="w-5 h-5 mr-1" />
-           Log Moment
-        </CrossdButton>
+        <div className="flex gap-2">
+          <button
+            onClick={() => navigate('/LogDailyPath')}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-full border border-white/15 text-white/70 text-sm hover:border-[#E70F72]/50 hover:text-white transition-colors"
+          >
+            <Route className="w-4 h-4" />
+            My Path
+          </button>
+          <CrossdButton onClick={() => window.location.href = createPageUrl('LogMoment')}>
+            <Plus className="w-5 h-5 mr-1" />
+            Log Moment
+          </CrossdButton>
+        </div>
       </div>
 
       {/* Crossings Alert */}
