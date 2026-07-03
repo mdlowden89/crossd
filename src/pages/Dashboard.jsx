@@ -6,7 +6,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import {
   Sparkles, CheckCircle2, Circle, Flame, Clock,
-  Star, Zap, TrendingUp, Map, Award, Gift, Activity, ShieldCheck } from
+  Star, Zap, TrendingUp, Map, Award, Gift, Activity, ShieldCheck,
+  Route, ChevronRight, AlertCircle } from
 'lucide-react';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import CrossdProgressRing from '@/components/ui/crossd-progress-ring';
@@ -33,6 +34,18 @@ export default function Dashboard() {
       if (!user) return null;
       const profiles = await base44.entities.Profile.filter({ user_id: user.id });
       return profiles[0] || null;
+    },
+    enabled: !!user
+  });
+
+  const today = new Date().toISOString().slice(0, 10);
+
+  const { data: todayPath } = useQuery({
+    queryKey: ['today-path', user?.id],
+    queryFn: async () => {
+      if (!user) return null;
+      const paths = await base44.entities.DailyPath.filter({ user_id: user.id, date: today });
+      return paths[0] || null;
     },
     enabled: !!user
   });
@@ -510,6 +523,66 @@ export default function Dashboard() {
 
               </p>
             </div>
+          </div>
+        </motion.div>
+
+        {/* Log Your Path — paramount CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          onClick={() => navigate('/LogDailyPath')}
+          className="cursor-pointer rounded-3xl border-2 overflow-hidden"
+          style={{
+            borderColor: todayPath ? 'rgba(34,197,94,0.5)' : '#E70F72',
+            background: todayPath
+              ? 'linear-gradient(135deg, #0a1a0a 0%, #0B0B0B 100%)'
+              : 'linear-gradient(135deg, #2a0215 0%, #0B0B0B 100%)',
+            boxShadow: todayPath ? 'none' : '0 0 30px rgba(231, 15, 114, 0.25)'
+          }}
+        >
+          <div className="px-8 py-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 ${todayPath ? 'bg-green-500/20' : 'bg-[#E70F72]'}`}>
+                  <Route className={`w-7 h-7 ${todayPath ? 'text-green-400' : 'text-white'}`} />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    {!todayPath && <AlertCircle className="w-4 h-4 text-[#E70F72]" />}
+                    <h2 className={`text-xl font-bold ${todayPath ? 'text-white' : 'text-[#E70F72]'}`}>
+                      {todayPath ? "Today's Path Logged ✓" : "Log Your Path Today"}
+                    </h2>
+                  </div>
+                  <p className="text-white/60 text-sm leading-snug">
+                    {todayPath
+                      ? `${todayPath.stops?.length || 0} stop${(todayPath.stops?.length || 0) !== 1 ? 's' : ''} logged — we're checking for crossings`
+                      : "Where did you go today? Your path could match someone else's moment."}
+                  </p>
+                </div>
+              </div>
+              <ChevronRight className={`w-6 h-6 flex-shrink-0 ${todayPath ? 'text-green-400' : 'text-[#E70F72]'}`} />
+            </div>
+
+            {!todayPath && (
+              <div className="mt-5 pt-5 border-t border-white/10 grid grid-cols-3 gap-3 text-center">
+                {['Coffee shop', 'Office', 'Gym'].map(place => (
+                  <div key={place} className="bg-white/5 rounded-xl py-2 px-3">
+                    <p className="text-white/50 text-xs">{place}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {todayPath && todayPath.stops?.length > 0 && (
+              <div className="mt-4 flex gap-2 flex-wrap">
+                {todayPath.stops.map((s, i) => (
+                  <span key={i} className="bg-green-500/10 border border-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full">
+                    {s.name}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         </motion.div>
 
