@@ -165,54 +165,123 @@ export default function Profile() {
 
       {/* Photos */}
       <div className="mb-6">
-        <h2 className="text-white/65 text-sm font-medium mb-3">Photos</h2>
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-white/65 text-sm font-medium">Photos</h2>
+          <span className="text-white/40 text-xs">{photos.length}/6</span>
+        </div>
+
+        {/* Tip banner */}
+        <div className="flex items-start gap-2.5 bg-[#E70F72]/10 border border-[#E70F72]/20 rounded-xl px-3 py-2.5 mb-4">
+          <span className="text-base leading-none mt-0.5">📸</span>
+          <p className="text-white/80 text-xs leading-relaxed">
+            <span className="text-[#E70F72] font-semibold">Clear face photo gets 3× more connections.</span> Use a well-lit solo shot as your first photo.
+          </p>
+        </div>
+
+        {/* Primary photo — full width, taller */}
+        <div className="mb-3">
+          <div className="relative w-full" style={{ aspectRatio: '4/5' }}>
+            {photos[0] ? (
+              <div className="relative w-full h-full rounded-2xl overflow-hidden">
+                <img src={photos[0].url} alt="Primary photo" className="w-full h-full object-cover" />
+                {editMode && (
+                  <button onClick={() => removePhoto(0)} className="absolute top-2 right-2 w-7 h-7 bg-black/60 rounded-full flex items-center justify-center">
+                    <X className="w-4 h-4 text-white" />
+                  </button>
+                )}
+                <span className="absolute bottom-3 left-3 text-xs bg-[#E70F72] text-white px-2.5 py-1 rounded-full font-semibold">
+                  ✦ Main Photo
+                </span>
+              </div>
+            ) : (editMode || photos.length === 0) ? (
+              <label className="w-full h-full rounded-2xl border-2 border-dashed border-[#E70F72]/40 bg-[#E70F72]/5 flex flex-col items-center justify-center cursor-pointer hover:border-[#E70F72]/70 hover:bg-[#E70F72]/10 transition-colors">
+                {uploadingPhoto && photos.length === 0 ? (
+                  <div className="w-8 h-8 border-2 border-[#E70F72] border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <>
+                    <div className="w-14 h-14 rounded-full bg-[#E70F72]/15 flex items-center justify-center mb-3">
+                      <Camera className="w-7 h-7 text-[#E70F72]" />
+                    </div>
+                    <p className="text-white font-medium text-sm">Add your main photo</p>
+                    <p className="text-white/45 text-xs mt-1">Face clearly visible · Well lit</p>
+                  </>
+                )}
+                <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" disabled={uploadingPhoto} />
+              </label>
+            ) : (
+              <div className="w-full h-full rounded-2xl border-2 border-dashed border-white/10" />
+            )}
+          </div>
+        </div>
+
+        {/* Secondary photos — 2 col grid */}
+        <div className="grid grid-cols-2 gap-3 mb-3">
+          {[1, 2].map((index) => {
+            const hints = ['Show your personality', 'A place you love'];
+            return (
+              <div key={index} className="aspect-[4/5] relative">
+                {photos[index] ? (
+                  <div className="relative w-full h-full rounded-xl overflow-hidden">
+                    <img src={photos[index].url} alt={`Photo ${index + 1}`} className="w-full h-full object-cover" />
+                    {editMode && (
+                      <button onClick={() => removePhoto(index)} className="absolute top-2 right-2 w-6 h-6 bg-black/60 rounded-full flex items-center justify-center">
+                        <X className="w-4 h-4 text-white" />
+                      </button>
+                    )}
+                  </div>
+                ) : (editMode || photos.length === index) ? (
+                  <label className="w-full h-full rounded-xl border-2 border-dashed border-white/20 flex flex-col items-center justify-center cursor-pointer hover:border-[#E70F72]/50 transition-colors bg-white/[0.02]">
+                    {uploadingPhoto && photos.length === index ? (
+                      <div className="w-6 h-6 border-2 border-[#E70F72] border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <>
+                        <Plus className="w-6 h-6 text-white/30 mb-1.5" />
+                        <span className="text-white/35 text-xs text-center px-2 leading-tight">{hints[index - 1]}</span>
+                      </>
+                    )}
+                    <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" disabled={uploadingPhoto} />
+                  </label>
+                ) : (
+                  <div className="w-full h-full rounded-xl border-2 border-dashed border-white/8" />
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Extra photos — 3 col grid */}
         <div className="grid grid-cols-3 gap-3">
-          {[0, 1, 2, 3, 4, 5].map((index) => (
-            <div key={index} className="aspect-[3/4] relative">
-              {photos[index] ? (
-                <div className="relative w-full h-full rounded-xl overflow-hidden">
-                  <img
-                    src={photos[index].url}
-                    alt={`Photo ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                  {editMode && (
-                    <button
-                      onClick={() => removePhoto(index)}
-                      className="absolute top-2 right-2 w-6 h-6 bg-black/60 rounded-full flex items-center justify-center"
-                    >
-                      <X className="w-4 h-4 text-white" />
-                    </button>
-                  )}
-                  {index === 0 && (
-                    <span className="absolute bottom-2 left-2 text-xs bg-[#E70F72] text-black px-2 py-0.5 rounded-full font-medium">
-                      Primary
-                    </span>
-                  )}
-                </div>
-              ) : editMode || photos.length === index ? (
-                <label className="w-full h-full rounded-xl border-2 border-dashed border-white/20 flex flex-col items-center justify-center cursor-pointer hover:border-[#E70F72]/50 transition-colors">
-                  {uploadingPhoto ? (
-                    <div className="w-6 h-6 border-2 border-[#E70F72] border-t-transparent rounded-full animate-spin" />
-                  ) : (
-                    <>
-                      <Plus className="w-6 h-6 text-white/40" />
-                      <span className="text-white/40 text-xs mt-1">Add</span>
-                    </>
-                  )}
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handlePhotoUpload}
-                    className="hidden"
-                    disabled={uploadingPhoto}
-                  />
-                </label>
-              ) : (
-                <div className="w-full h-full rounded-xl border-2 border-dashed border-white/10" />
-              )}
-            </div>
-          ))}
+          {[3, 4, 5].map((index) => {
+            const hints = ['With friends', 'Hobby or sport', 'Something fun'];
+            return (
+              <div key={index} className="aspect-[3/4] relative">
+                {photos[index] ? (
+                  <div className="relative w-full h-full rounded-xl overflow-hidden">
+                    <img src={photos[index].url} alt={`Photo ${index + 1}`} className="w-full h-full object-cover" />
+                    {editMode && (
+                      <button onClick={() => removePhoto(index)} className="absolute top-2 right-2 w-5 h-5 bg-black/60 rounded-full flex items-center justify-center">
+                        <X className="w-3 h-3 text-white" />
+                      </button>
+                    )}
+                  </div>
+                ) : (editMode || photos.length === index) ? (
+                  <label className="w-full h-full rounded-xl border-2 border-dashed border-white/15 flex flex-col items-center justify-center cursor-pointer hover:border-[#E70F72]/40 transition-colors bg-white/[0.02]">
+                    {uploadingPhoto && photos.length === index ? (
+                      <div className="w-5 h-5 border-2 border-[#E70F72] border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <>
+                        <Plus className="w-5 h-5 text-white/25 mb-1" />
+                        <span className="text-white/25 text-[10px] text-center px-1 leading-tight">{hints[index - 3]}</span>
+                      </>
+                    )}
+                    <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" disabled={uploadingPhoto} />
+                  </label>
+                ) : (
+                  <div className="w-full h-full rounded-xl border-2 border-dashed border-white/8" />
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
 
