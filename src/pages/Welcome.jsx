@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
@@ -6,9 +6,19 @@ import CrossdLogo from '@/components/common/CrossdLogo';
 import StarBackground from '@/components/common/StarBackground';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import HowItWorks from '@/components/welcome/HowItWorks';
+import LiveCrossingCounter from '@/components/welcome/LiveCrossingCounter';
 
 export default function Welcome() {
   const [showDetails, setShowDetails] = useState(false);
+  const [city, setCity] = useState('');
+
+  useEffect(() => {
+    // Best-effort: reverse geocode via a free IP-based service, no key needed
+    fetch('https://ipapi.co/json/')
+      .then(r => r.json())
+      .then(d => { if (d.city) setCity(d.city); })
+      .catch(() => {});
+  }, []);
 
   const handleLogin = async () => {
     const isAuth = await base44.auth.isAuthenticated();
@@ -76,6 +86,15 @@ export default function Welcome() {
             Crossd helps you find and connect with people you've encountered in real life. 
             Turn missed connections into meaningful conversations.
           </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="mb-8"
+          >
+            <LiveCrossingCounter city={city} />
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
