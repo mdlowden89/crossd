@@ -179,7 +179,7 @@ export default function HowItWorks({ onBack }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center"
+          className="flex flex-col items-center"
         >
           <CrossdButton
             size="lg"
