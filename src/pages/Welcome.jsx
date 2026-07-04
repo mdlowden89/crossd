@@ -1,24 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
 import CrossdLogo from '@/components/common/CrossdLogo';
 import StarBackground from '@/components/common/StarBackground';
-import HowItWorks from '@/components/welcome/HowItWorks';
 import { CrossdButton } from '@/components/ui/crossd-button';
-import LiveCrossingCounter from '@/components/welcome/LiveCrossingCounter';
+import HowItWorks from '@/components/welcome/HowItWorks';
 
 export default function Welcome() {
   const [showDetails, setShowDetails] = useState(false);
-  const [city, setCity] = useState('');
-
-  useEffect(() => {
-    // Best-effort: reverse geocode via a free IP-based service, no key needed
-    fetch('https://ipapi.co/json/')
-      .then(r => r.json())
-      .then(d => { if (d.city) setCity(d.city); })
-      .catch(() => {});
-  }, []);
 
   const handleLogin = async () => {
     const isAuth = await base44.auth.isAuthenticated();
@@ -87,20 +77,29 @@ export default function Welcome() {
             Turn missed connections into meaningful conversations.
           </motion.p>
 
-          <LiveCrossingCounter
-            city={city}
-            onCta={() => window.location.href = createPageUrl('Onboarding')}
-          />
-
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.9, duration: 0.4 }}
-            onClick={() => setShowDetails(true)}
-            className="mt-4 text-white/40 text-sm hover:text-white/60 transition-colors underline underline-offset-4"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
-            How does it work?
-          </motion.button>
+            <CrossdButton 
+              size="lg"
+              onClick={() => window.location.href = createPageUrl('Onboarding')}
+              className="min-w-[200px]"
+            >
+              Join Crossd Today
+            </CrossdButton>
+            
+            <CrossdButton 
+              variant="secondary" 
+              size="lg"
+              onClick={() => setShowDetails(true)}
+              className="min-w-[200px]"
+            >
+              Learn More
+            </CrossdButton>
+          </motion.div>
         </motion.div>
       </div>
 
