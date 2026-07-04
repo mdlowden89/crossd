@@ -1,142 +1,254 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { base44 } from '@/api/base44Client';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, ChevronLeft, MapPin, Bell, Sparkles } from 'lucide-react';
+import { ChevronRight, ChevronLeft, MapPin, Bell, Sparkles, Heart, Zap } from 'lucide-react';
 import CrossdLogo from '@/components/common/CrossdLogo';
-import MapIllustration from '@/components/common/MapIllustration';
 import { CrossdButton } from '@/components/ui/crossd-button';
 
-function LocationStepContent() {
+// ── Step visuals ──────────────────────────────────────────────────────────────
+
+function WelcomeVisual() {
+  const nodes = [
+    { x: '20%', y: '25%', delay: 0 },
+    { x: '75%', y: '18%', delay: 0.3 },
+    { x: '55%', y: '60%', delay: 0.6 },
+    { x: '15%', y: '70%', delay: 0.9 },
+    { x: '80%', y: '72%', delay: 0.5 },
+  ];
+
+  return (
+    <div className="relative w-full h-56 mx-auto">
+      {/* Glowing centre */}
+      <motion.div
+        animate={{ scale: [1, 1.08, 1], opacity: [0.5, 0.8, 0.5] }}
+        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-[#E70F72] blur-2xl opacity-50"
+      />
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-[#E70F72] flex items-center justify-center z-10">
+        <Heart className="w-7 h-7 text-white fill-white" />
+      </div>
+
+      {/* Orbit nodes */}
+      {nodes.map((n, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: n.delay + 0.4, duration: 0.4 }}
+          style={{ left: n.x, top: n.y }}
+          className="absolute -translate-x-1/2 -translate-y-1/2"
+        >
+          <motion.div
+            animate={{ y: [0, -4, 0] }}
+            transition={{ duration: 2.5 + i * 0.4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.3 }}
+            className="w-9 h-9 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm flex items-center justify-center"
+          >
+            <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[#E70F72] to-[#ff6faa] opacity-80" />
+          </motion.div>
+        </motion.div>
+      ))}
+
+      {/* Connecting lines SVG */}
+      <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
+        <line x1="50%" y1="50%" x2="20%" y2="25%" stroke="rgba(231,15,114,0.2)" strokeWidth="1" strokeDasharray="4 4" />
+        <line x1="50%" y1="50%" x2="75%" y2="18%" stroke="rgba(231,15,114,0.2)" strokeWidth="1" strokeDasharray="4 4" />
+        <line x1="50%" y1="50%" x2="55%" y2="60%" stroke="rgba(231,15,114,0.2)" strokeWidth="1" strokeDasharray="4 4" />
+        <line x1="50%" y1="50%" x2="15%" y2="70%" stroke="rgba(231,15,114,0.2)" strokeWidth="1" strokeDasharray="4 4" />
+        <line x1="50%" y1="50%" x2="80%" y2="72%" stroke="rgba(231,15,114,0.2)" strokeWidth="1" strokeDasharray="4 4" />
+      </svg>
+    </div>
+  );
+}
+
+function LocationVisual() {
   const [notifVisible, setNotifVisible] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setNotifVisible(true), 700);
+    const t = setTimeout(() => setNotifVisible(true), 600);
     return () => clearTimeout(t);
   }, []);
 
   return (
-    <div className="space-y-6 text-center w-full">
-      {/* Mock notification card */}
+    <div className="w-full space-y-5">
+      {/* Map mockup */}
+      <div className="relative w-full h-44 rounded-2xl overflow-hidden border border-white/10"
+        style={{ background: 'linear-gradient(135deg, #0d0d1a 0%, #0a0a12 100%)' }}>
+        {/* Grid lines */}
+        <svg className="absolute inset-0 w-full h-full opacity-20">
+          {[0,1,2,3,4].map(i => (
+            <line key={`h${i}`} x1="0" y1={`${i*25}%`} x2="100%" y2={`${i*25}%`} stroke="white" strokeWidth="0.5" />
+          ))}
+          {[0,1,2,3,4,5].map(i => (
+            <line key={`v${i}`} x1={`${i*20}%`} y1="0" x2={`${i*20}%`} y2="100%" stroke="white" strokeWidth="0.5" />
+          ))}
+        </svg>
+
+        {/* Glow zone */}
+        <motion.div
+          animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-[#E70F72]/30 blur-xl"
+        />
+
+        {/* Pin */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-full">
+          <div className="w-8 h-8 rounded-full bg-[#E70F72] flex items-center justify-center shadow-lg"
+            style={{ boxShadow: '0 0 20px rgba(231,15,114,0.6)' }}>
+            <MapPin className="w-4 h-4 text-white" />
+          </div>
+          <div className="w-2 h-2 bg-[#E70F72] rounded-full mx-auto -mt-0.5" />
+        </div>
+
+        {/* Second person dot */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.5, duration: 0.4 }}
+          className="absolute"
+          style={{ left: '60%', top: '40%' }}
+        >
+          <div className="w-6 h-6 rounded-full bg-white/20 border border-white/40 flex items-center justify-center">
+            <div className="w-3 h-3 rounded-full bg-white/60" />
+          </div>
+        </motion.div>
+
+        {/* Crossing arc */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.9, duration: 0.6 }}
+          className="absolute left-1/2 top-[42%] -translate-x-1/2"
+        >
+          <div className="text-[#E70F72] text-xs font-bold tracking-widest">⚡ CROSSED</div>
+        </motion.div>
+      </div>
+
+      {/* Mock notification */}
       <AnimatePresence>
         {notifVisible && (
           <motion.div
-            initial={{ opacity: 0, y: -12, scale: 0.96 }}
+            initial={{ opacity: 0, y: 10, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.4, ease: 'easeOut' }}
-            className="mx-auto max-w-xs rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-4 text-left"
-            style={{ boxShadow: '0 0 24px rgba(231,15,114,0.1)' }}
+            className="rounded-2xl border border-[#E70F72]/25 bg-[#E70F72]/8 backdrop-blur-sm p-4 text-left"
+            style={{ boxShadow: '0 0 30px rgba(231,15,114,0.12)' }}
           >
             <div className="flex items-start gap-3">
-              {/* App icon placeholder */}
-              <div className="w-10 h-10 rounded-xl bg-[#E70F72] flex items-center justify-center flex-shrink-0">
-                <MapPin className="w-5 h-5 text-white" />
+              <div className="w-10 h-10 rounded-xl bg-[#E70F72] flex items-center justify-center flex-shrink-0 shadow-lg"
+                style={{ boxShadow: '0 0 16px rgba(231,15,114,0.5)' }}>
+                <Zap className="w-5 h-5 text-white fill-white" />
               </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between mb-0.5">
-                  <span className="text-white/50 text-xs font-medium">Crossd · now</span>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-[#E70F72] text-xs font-semibold">Crossd</span>
+                  <span className="text-white/30 text-xs">· just now</span>
                 </div>
-                <p className="text-white text-sm font-semibold leading-snug">You crossed paths with someone</p>
-                <p className="text-white/60 text-xs mt-0.5 leading-relaxed">Near Waterloo Station this morning — want to say hi?</p>
+                <p className="text-white text-sm font-semibold">You crossed paths with someone ✨</p>
+                <p className="text-white/55 text-xs mt-0.5">Near Waterloo Station this morning — want to say hi?</p>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className="space-y-2">
-        <p className="text-white/65 text-sm">
-          We use your location to detect when you've crossed paths with someone.
-        </p>
-        <p className="text-white/40 text-xs">
-          Your precise location is never shared with other users.
-        </p>
-      </div>
+      <p className="text-white/40 text-xs text-center">Your precise location is never shared with other users.</p>
     </div>
   );
 }
 
-const steps = [
+function NotificationsVisual() {
+  const notifications = [
+    { icon: '⚡', text: 'You crossed paths with someone at Borough Market', time: '5m ago', color: '#E70F72' },
+    { icon: '💬', text: 'Alex sent you a message', time: '12m ago', color: '#a855f7' },
+    { icon: '❤️', text: 'Someone liked your profile', time: '1h ago', color: '#ec4899' },
+  ];
+
+  return (
+    <div className="w-full space-y-3">
+      {notifications.map((n, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: i * 0.18 + 0.2, duration: 0.4 }}
+          className="flex items-center gap-3 rounded-xl border border-white/8 bg-white/4 p-3.5"
+        >
+          <div className="w-10 h-10 rounded-full flex items-center justify-center text-lg flex-shrink-0"
+            style={{ background: `${n.color}22`, border: `1px solid ${n.color}44` }}>
+            {n.icon}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-white text-sm leading-snug line-clamp-1">{n.text}</p>
+            <p className="text-white/35 text-xs mt-0.5">{n.time}</p>
+          </div>
+          <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: n.color }} />
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+// ── Step data ─────────────────────────────────────────────────────────────────
+
+const STEPS = [
   {
     id: 'welcome',
-    title: 'Welcome to Crossd',
-    description: 'Where missed connections become meaningful matches.',
-    icon: Sparkles,
-    content: (
-      <div className="space-y-6 text-center">
-        <MapIllustration />
-        <p className="text-white/65">
-          Crossd helps you reconnect with people you've crossed paths with in real life.
-        </p>
-        <p className="text-white/65">
-          Log moments, discover crossings, and turn chance encounters into something more.
-        </p>
-      </div>
-    )
+    eyebrow: 'Welcome',
+    title: 'Missed someone?',
+    titleAccent: "Now you won't.",
+    description: 'Crossd connects you with people you\'ve already crossed paths with in real life.',
+    visual: <WelcomeVisual />,
+    gradient: 'from-[#E70F72]/20 via-transparent to-transparent',
   },
   {
     id: 'location',
-    title: 'Enable Location',
-    description: 'Required for discovering crossings',
-    icon: MapPin,
-    content: <LocationStepContent />,
-    action: 'Enable Location'
+    eyebrow: 'Step 1 of 2',
+    title: 'Know when paths',
+    titleAccent: 'cross.',
+    description: 'Enable location so Crossd can detect when you\'ve been in the same place as someone.',
+    visual: <LocationVisual />,
+    action: 'Enable Location',
+    gradient: 'from-[#E70F72]/15 via-transparent to-transparent',
   },
   {
     id: 'notifications',
-    title: 'Stay Updated',
-    description: 'Get notified about second chances',
-    icon: Bell,
-    content: (
-      <div className="space-y-4 text-center">
-        <div className="w-20 h-20 mx-auto bg-[#E70F72]/20 rounded-full flex items-center justify-center">
-          <Bell className="w-10 h-10 text-[#E70F72]" />
-        </div>
-        <p className="text-white/65">
-          Receive alerts when you cross paths with someone special, or when you get a match.
-        </p>
-        <p className="text-white/45 text-sm">
-          You can customize notifications anytime in settings.
-        </p>
-      </div>
-    ),
-    action: 'Enable Notifications'
-  }
+    eyebrow: 'Step 2 of 2',
+    title: 'Never miss a',
+    titleAccent: 'second chance.',
+    description: 'Get notified the moment you cross paths with someone or receive a match.',
+    visual: <NotificationsVisual />,
+    action: 'Enable Notifications',
+    gradient: 'from-purple-500/15 via-transparent to-transparent',
+  },
 ];
+
+// ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function Onboarding() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
-  const [locationEnabled, setLocationEnabled] = useState(false);
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
 
   const advanceOrFinish = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
+    if (currentStep < STEPS.length - 1) {
+      setCurrentStep(s => s + 1);
     } else {
       navigate('/SetupProfile');
     }
   };
 
   const handleAction = async () => {
-    const step = steps[currentStep];
-
+    const step = STEPS[currentStep];
     if (step.id === 'location') {
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(
           (pos) => {
-            setLocationEnabled(true);
-            // Store coords in sessionStorage so LogMoment/FirstMoment can use them immediately
             sessionStorage.setItem('crossd_location', JSON.stringify({
               lat: pos.coords.latitude,
-              lng: pos.coords.longitude
+              lng: pos.coords.longitude,
             }));
             advanceOrFinish();
           },
-          () => {
-            // Permission denied – continue anyway
-            advanceOrFinish();
-          },
+          () => advanceOrFinish(),
           { enableHighAccuracy: true, timeout: 10000 }
         );
       } else {
@@ -144,10 +256,7 @@ export default function Onboarding() {
       }
     } else if (step.id === 'notifications') {
       if ('Notification' in window && Notification.permission === 'default') {
-        const permission = await Notification.requestPermission();
-        setNotificationsEnabled(permission === 'granted');
-      } else if ('Notification' in window) {
-        setNotificationsEnabled(Notification.permission === 'granted');
+        await Notification.requestPermission();
       }
       advanceOrFinish();
     } else {
@@ -155,88 +264,101 @@ export default function Onboarding() {
     }
   };
 
-  const handleNext = () => {
-    advanceOrFinish();
-  };
-
-  const handleBack = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
-
-  const currentStepData = steps[currentStep] || steps[0];
-  const isLastStep = currentStep === steps.length - 1;
+  const step = STEPS[currentStep];
+  const isLast = currentStep === STEPS.length - 1;
 
   return (
-    <div className="min-h-screen bg-black px-6 py-8 flex flex-col">
-      <div className="max-w-md mx-auto w-full flex-1 flex flex-col">
-        <div className="mb-8">
+    <div className="min-h-screen bg-black flex flex-col overflow-hidden">
+      {/* Background glow */}
+      <div className={`absolute inset-0 bg-gradient-to-b ${step.gradient} pointer-events-none transition-all duration-700`} />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-[#E70F72]/8 blur-3xl pointer-events-none" />
+
+      <div className="relative flex flex-col flex-1 max-w-md mx-auto w-full px-6 py-10">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-10">
           <CrossdLogo size="sm" />
+          <button
+            onClick={() => navigate('/SetupProfile')}
+            className="text-white/30 text-sm hover:text-white/60 transition-colors"
+          >
+            Skip
+          </button>
         </div>
 
-        {/* Progress Dots */}
-        <div className="flex justify-center gap-2 mb-8">
-          {steps.map((_, index) => (
-            <div
-              key={index}
-              className={`w-2 h-2 rounded-full transition-colors ${
-                index === currentStep ? 'bg-[#E70F72]' : 
-                index < currentStep ? 'bg-[#E70F72]/50' : 'bg-white/20'
-              }`}
-            />
+        {/* Progress bar */}
+        <div className="flex gap-1.5 mb-10">
+          {STEPS.map((_, i) => (
+            <div key={i} className="flex-1 h-0.5 rounded-full bg-white/10 overflow-hidden">
+              <motion.div
+                className="h-full rounded-full bg-[#E70F72]"
+                initial={{ width: '0%' }}
+                animate={{ width: i <= currentStep ? '100%' : '0%' }}
+                transition={{ duration: 0.4, ease: 'easeOut' }}
+              />
+            </div>
           ))}
         </div>
 
+        {/* Step content */}
         <AnimatePresence mode="wait">
           <motion.div
             key={currentStep}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
             className="flex-1 flex flex-col"
           >
-            <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-white mb-2">
-                {currentStepData.title}
-              </h1>
-              <p className="text-white/65">{currentStepData.description}</p>
-            </div>
+            {/* Eyebrow */}
+            <p className="text-[#E70F72] text-xs font-semibold tracking-widest uppercase mb-3">
+              {step.eyebrow}
+            </p>
 
+            {/* Title */}
+            <h1 className="text-4xl font-bold text-white leading-tight mb-1">
+              {step.title}
+            </h1>
+            <h1 className="text-4xl font-bold leading-tight mb-4"
+              style={{ background: 'linear-gradient(135deg, #E70F72 0%, #ff6faa 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              {step.titleAccent}
+            </h1>
+
+            <p className="text-white/50 text-sm leading-relaxed mb-8">{step.description}</p>
+
+            {/* Visual */}
             <div className="flex-1 flex items-center justify-center">
-              {currentStepData.content}
+              {step.visual}
             </div>
           </motion.div>
         </AnimatePresence>
 
-        <div className="mt-8 space-y-4">
-          {currentStepData.action ? (
+        {/* Actions */}
+        <div className="mt-8 space-y-3">
+          {step.action && (
             <CrossdButton onClick={handleAction} className="w-full" size="lg">
-              {currentStepData.action}
+              {step.action}
             </CrossdButton>
-          ) : null}
+          )}
 
-          <div className="flex gap-4">
+          <div className="flex gap-3">
             {currentStep > 0 && (
-              <CrossdButton 
-                variant="ghost" 
-                onClick={handleBack}
-                className="flex-1"
+              <CrossdButton
+                variant="ghost"
+                onClick={() => setCurrentStep(s => s - 1)}
+                className="flex-none px-4"
               >
-                <ChevronLeft className="w-5 h-5 mr-1" />
-                Back
+                <ChevronLeft className="w-5 h-5" />
               </CrossdButton>
             )}
-            
-            <CrossdButton 
-              variant={currentStepData.action ? 'secondary' : 'primary'}
-              onClick={handleNext}
+
+            <CrossdButton
+              variant={step.action ? 'secondary' : 'primary'}
+              onClick={step.action ? advanceOrFinish : handleAction}
               className="flex-1"
               size="lg"
             >
-              {isLastStep ? 'Set Up Profile' : currentStepData.action ? 'Skip' : 'Continue'}
-              {!isLastStep && <ChevronRight className="w-5 h-5 ml-1" />}
+              {isLast ? 'Set Up Profile' : step.action ? 'Skip for now' : 'Continue'}
+              <ChevronRight className="w-4 h-4 ml-1" />
             </CrossdButton>
           </div>
         </div>
