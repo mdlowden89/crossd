@@ -6,6 +6,7 @@ import CrossdLogo from '@/components/common/CrossdLogo';
 import StarBackground from '@/components/common/StarBackground';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import HowItWorks from '@/components/welcome/HowItWorks';
+import LiveCrossingCounter from '@/components/welcome/LiveCrossingCounter';
 
 export default function Welcome() {
   const [showDetails, setShowDetails] = useState(false);
@@ -76,6 +77,10 @@ export default function Welcome() {
             Crossd helps you find and connect with people you've encountered in real life. 
             Turn missed connections into meaningful conversations.
           </motion.p>
+
+          <div className="mb-8">
+            <LiveCrossingCounter />
+          </div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
