@@ -4,8 +4,8 @@ import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
 import CrossdLogo from '@/components/common/CrossdLogo';
 import StarBackground from '@/components/common/StarBackground';
-import { CrossdButton } from '@/components/ui/crossd-button';
 import HowItWorks from '@/components/welcome/HowItWorks';
+import { CrossdButton } from '@/components/ui/crossd-button';
 import LiveCrossingCounter from '@/components/welcome/LiveCrossingCounter';
 
 export default function Welcome() {
@@ -87,38 +87,20 @@ export default function Welcome() {
             Turn missed connections into meaningful conversations.
           </motion.p>
 
-          <motion.div
+          <LiveCrossingCounter
+            city={city}
+            onCta={() => window.location.href = createPageUrl('Onboarding')}
+          />
+
+          <motion.button
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
-            className="mb-8"
+            transition={{ delay: 0.9, duration: 0.4 }}
+            onClick={() => setShowDetails(true)}
+            className="mt-4 text-white/40 text-sm hover:text-white/60 transition-colors underline underline-offset-4"
           >
-            <LiveCrossingCounter city={city} />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-          >
-            <CrossdButton 
-              size="lg"
-              onClick={() => window.location.href = createPageUrl('Onboarding')}
-              className="min-w-[200px]"
-            >
-              Join Crossd Today
-            </CrossdButton>
-            
-            <CrossdButton 
-              variant="secondary" 
-              size="lg"
-              onClick={() => setShowDetails(true)}
-              className="min-w-[200px]"
-            >
-              Learn More
-            </CrossdButton>
-          </motion.div>
+            How does it work?
+          </motion.button>
         </motion.div>
       </div>
 
