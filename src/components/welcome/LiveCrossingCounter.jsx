@@ -1,32 +1,37 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 
-// London abstract road paths (SVG path data, not real streets — deliberately impressionistic)
-const LONDON_PATHS = [
-  "M 20 85 Q 80 60 160 75 Q 240 90 320 70 Q 380 55 440 65",
-  "M 0 110 Q 70 95 130 105 Q 200 115 270 100 Q 340 85 420 95 Q 460 100 480 95",
-  "M 30 130 Q 100 120 180 128 Q 260 136 350 122 Q 400 115 460 120",
-  "M 10 55 Q 90 45 170 55 Q 230 62 300 50 Q 370 38 450 48",
-  "M 50 145 Q 140 138 220 145 Q 300 152 380 140 Q 430 133 470 138",
+// London crossing hotspot locations for dot overlay
+const LONDON_DOTS = [
+  { lat: 51.5074, lng: -0.1278 }, // Central London
+  { lat: 51.5155, lng: -0.0922 }, // Shoreditch
+  { lat: 51.5033, lng: -0.1195 }, // South Bank
+  { lat: 51.5200, lng: -0.1700 }, // Notting Hill
+  { lat: 51.4994, lng: -0.1273 }, // Westminster
+  { lat: 51.5136, lng: -0.0886 }, // Liverpool St
+  { lat: 51.5045, lng: -0.0865 }, // Borough
+  { lat: 51.5294, lng: -0.1224 }, // Camden
+  { lat: 51.4915, lng: -0.1759 }, // Chelsea
+  { lat: 51.5117, lng: -0.1565 }, // Paddington
 ];
 
-// Fixed dot positions (scattered across the map, not on path intersections)
-const BASE_DOTS = [
-  { x: 68,  y: 92  },
-  { x: 135, y: 112 },
-  { x: 192, y: 78  },
-  { x: 258, y: 105 },
-  { x: 305, y: 88  },
-  { x: 362, y: 118 },
-  { x: 415, y: 74  },
-  { x: 88,  y: 128 },
-  { x: 230, y: 140 },
-  { x: 440, y: 100 },
+// Dark Google Maps style JSON
+const DARK_MAP_STYLE = [
+  { elementType: 'geometry', stylers: [{ color: '#0d0010' }] },
+  { elementType: 'labels.text.stroke', stylers: [{ color: '#0d0010' }] },
+  { elementType: 'labels.text.fill', stylers: [{ color: '#4a2040' }] },
+  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#1a0020' }] },
+  { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#2a0030' }] },
+  { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#3d0050' }] },
+  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#06000d' }] },
+  { featureType: 'poi', stylers: [{ visibility: 'off' }] },
+  { featureType: 'transit', stylers: [{ visibility: 'off' }] },
+  { featureType: 'administrative', elementType: 'geometry', stylers: [{ color: '#2a0035' }] },
+  { featureType: 'administrative.country', elementType: 'labels', stylers: [{ visibility: 'off' }] },
 ];
 
 function getFlooredCount(raw) {
-  // Floor at 80 so a quiet city never shows a deflating number
   return Math.max(80, raw);
 }
 
@@ -34,23 +39,28 @@ export default function LiveCrossingCounter({ city, onCta }) {
   const prefersReducedMotion = useReducedMotion();
   const [count, setCount] = useState(null);
   const [displayCount, setDisplayCount] = useState(null);
-  const [visibleDots, setVisibleDots] = useState([0, 2, 4, 6, 8]);
+  const [apiKey, setApiKey] = useState(null);
+  const mapRef = useRef(null);
+  const mapInstanceRef = useRef(null);
   const countRef = useRef(null);
 
-  // Pull real 24-hour crossing count, floor it
+  // Fetch Google API key from backend
+  useEffect(() => {
+    base44.functions.invoke('getGoogleApiKey', {}).then(res => {
+      setApiKey(res.data?.api_key || res.data?.apiKey);
+    }).catch(() => {});
+  }, []);
+
+  // Pull crossing count
   useEffect(() => {
     async function fetchCount() {
       try {
-        const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
         const crossings = await base44.entities.Crossing.filter({ status: 'notified' });
-        // Use length as proxy; floor ensures it never looks dead
-        const real = getFlooredCount(Math.max(crossings.length, 0));
-        // Add a time-of-day multiplier to feel city-scale
+        const real = getFlooredCount(crossings.length);
         const hour = new Date().getHours();
         const multiplier = hour >= 18 && hour <= 23 ? 4.2 : hour >= 12 ? 2.8 : 1.6;
         setCount(Math.round(real * multiplier));
       } catch {
-        // Fallback: time-seeded number
         const hour = new Date().getHours();
         const base = hour >= 18 && hour <= 23 ? 310 : hour >= 12 ? 190 : 95;
         setCount(base + Math.floor(Math.random() * 40));
@@ -59,7 +69,7 @@ export default function LiveCrossingCounter({ city, onCta }) {
     fetchCount();
   }, []);
 
-  // Animate the number counting up on first load
+  // Animate count
   useEffect(() => {
     if (count === null) return;
     if (prefersReducedMotion) { setDisplayCount(count); return; }
@@ -76,24 +86,56 @@ export default function LiveCrossingCounter({ city, onCta }) {
     return () => cancelAnimationFrame(countRef.current);
   }, [count, prefersReducedMotion]);
 
-  // Rotate which dots are visible to simulate activity
+  // Load Google Maps
   useEffect(() => {
-    if (prefersReducedMotion) return;
-    const interval = setInterval(() => {
-      setVisibleDots(prev => {
-        const next = [...prev];
-        // Swap one random dot
-        const removeIdx = Math.floor(Math.random() * next.length);
-        const removed = next[removeIdx];
-        const candidates = BASE_DOTS.map((_, i) => i).filter(i => !next.includes(i));
-        if (candidates.length > 0) {
-          next[removeIdx] = candidates[Math.floor(Math.random() * candidates.length)];
-        }
-        return next;
+    if (!apiKey || !mapRef.current) return;
+    if (window.google && window.google.maps) {
+      initMap();
+      return;
+    }
+    const scriptId = 'gmaps-welcome';
+    if (!document.getElementById(scriptId)) {
+      const script = document.createElement('script');
+      script.id = scriptId;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
+      script.async = true;
+      script.onload = initMap;
+      document.head.appendChild(script);
+    } else {
+      document.getElementById(scriptId).addEventListener('load', initMap);
+    }
+  }, [apiKey, mapRef.current]);
+
+  function initMap() {
+    if (!mapRef.current || mapInstanceRef.current) return;
+    const map = new window.google.maps.Map(mapRef.current, {
+      center: { lat: 51.5074, lng: -0.1278 },
+      zoom: 12,
+      styles: DARK_MAP_STYLE,
+      disableDefaultUI: true,
+      gestureHandling: 'none',
+      zoomControl: false,
+      keyboardShortcuts: false,
+    });
+    mapInstanceRef.current = map;
+
+    // Add pink crossing dots
+    LONDON_DOTS.forEach((pos, i) => {
+      const marker = new window.google.maps.Marker({
+        position: pos,
+        map,
+        icon: {
+          path: window.google.maps.SymbolPath.CIRCLE,
+          scale: 8,
+          fillColor: '#E70F72',
+          fillOpacity: 0.85,
+          strokeColor: '#E70F72',
+          strokeOpacity: 0.3,
+          strokeWeight: 8,
+        },
       });
-    }, 2800);
-    return () => clearInterval(interval);
-  }, [prefersReducedMotion]);
+    });
+  }
 
   const cityLabel = city || 'London';
 
@@ -129,51 +171,19 @@ export default function LiveCrossingCounter({ city, onCta }) {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.3, duration: 0.6 }}
         className="w-full rounded-2xl overflow-hidden border border-white/10 relative"
-        style={{ background: '#100008' }}
+        style={{ height: 220, background: '#0d0010' }}
       >
-        <svg
-          viewBox="0 0 480 175"
-          className="w-full"
-          aria-hidden="true"
-        >
-          {/* Abstract London road lines */}
-          {LONDON_PATHS.map((d, i) => (
-            <path
-              key={i}
-              d={d}
-              fill="none"
-              stroke="#E70F72"
-              strokeWidth="1"
-              strokeOpacity="0.18"
-            />
-          ))}
+        <div ref={mapRef} className="w-full h-full" />
 
-          {/* Dots */}
-          {BASE_DOTS.map((dot, i) => {
-            const isVisible = visibleDots.includes(i);
-            return (
-              <g key={i}>
-                {isVisible && !prefersReducedMotion && (
-                  <circle cx={dot.x} cy={dot.y} r="10" fill="#E70F72" fillOpacity="0.08">
-                    <animate attributeName="r" values="6;14;6" dur="2.5s" repeatCount="indefinite" />
-                    <animate attributeName="fill-opacity" values="0.12;0;0.12" dur="2.5s" repeatCount="indefinite" />
-                  </circle>
-                )}
-                <circle
-                  cx={dot.x}
-                  cy={dot.y}
-                  r="4"
-                  fill="#E70F72"
-                  fillOpacity={isVisible ? 0.9 : 0.15}
-                  style={{ transition: prefersReducedMotion ? 'none' : 'fill-opacity 0.6s ease' }}
-                />
-              </g>
-            );
-          })}
-        </svg>
+        {/* Fallback dark placeholder while map loads */}
+        {!apiKey && (
+          <div className="absolute inset-0 flex items-center justify-center bg-[#0d0010]">
+            <span className="text-white/20 text-sm">Loading map…</span>
+          </div>
+        )}
 
         {/* Privacy label */}
-        <span className="absolute bottom-2 right-3 text-white/30 text-[10px] font-medium pointer-events-none select-none">
+        <span className="absolute bottom-2 right-3 text-white/30 text-[10px] font-medium pointer-events-none select-none z-10">
           Approximate areas only
         </span>
       </motion.div>
