@@ -7,6 +7,55 @@ import CrossdLogo from '@/components/common/CrossdLogo';
 import MapIllustration from '@/components/common/MapIllustration';
 import { CrossdButton } from '@/components/ui/crossd-button';
 
+function LocationStepContent() {
+  const [notifVisible, setNotifVisible] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setNotifVisible(true), 700);
+    return () => clearTimeout(t);
+  }, []);
+
+  return (
+    <div className="space-y-6 text-center w-full">
+      {/* Mock notification card */}
+      <AnimatePresence>
+        {notifVisible && (
+          <motion.div
+            initial={{ opacity: 0, y: -12, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            className="mx-auto max-w-xs rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-4 text-left"
+            style={{ boxShadow: '0 0 24px rgba(231,15,114,0.1)' }}
+          >
+            <div className="flex items-start gap-3">
+              {/* App icon placeholder */}
+              <div className="w-10 h-10 rounded-xl bg-[#E70F72] flex items-center justify-center flex-shrink-0">
+                <MapPin className="w-5 h-5 text-white" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between mb-0.5">
+                  <span className="text-white/50 text-xs font-medium">Crossd · now</span>
+                </div>
+                <p className="text-white text-sm font-semibold leading-snug">You crossed paths with someone</p>
+                <p className="text-white/60 text-xs mt-0.5 leading-relaxed">Near Waterloo Station this morning — want to say hi?</p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="space-y-2">
+        <p className="text-white/65 text-sm">
+          We use your location to detect when you've crossed paths with someone.
+        </p>
+        <p className="text-white/40 text-xs">
+          Your precise location is never shared with other users.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 const steps = [
   {
     id: 'welcome',
@@ -30,19 +79,7 @@ const steps = [
     title: 'Enable Location',
     description: 'Required for discovering crossings',
     icon: MapPin,
-    content: (
-      <div className="space-y-4 text-center">
-        <div className="w-20 h-20 mx-auto bg-[#E70F72]/20 rounded-full flex items-center justify-center">
-          <MapPin className="w-10 h-10 text-[#E70F72]" />
-        </div>
-        <p className="text-white/65">
-          We use your location to detect when you've crossed paths with someone.
-        </p>
-        <p className="text-white/45 text-sm">
-          Your precise location is never shared with other users.
-        </p>
-      </div>
-    ),
+    content: <LocationStepContent />,
     action: 'Enable Location'
   },
   {
