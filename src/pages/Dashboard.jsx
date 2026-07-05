@@ -235,13 +235,13 @@ export default function Dashboard() {
     if (!profile) return { percentage: 0, items: [] };
 
     const items = [
-    { text: 'Upload at least 3 photos', completed: profile.photos?.length >= 3 },
-    { text: 'Answer at least 2 prompts', completed: profile.prompts?.length >= 2 },
-    { text: 'Select 5+ vibe tags', completed: profile.vibe_tags?.length >= 5 },
-    { text: 'Write a bio', completed: !!profile.bio },
-    { text: 'Set your dating intentions', completed: !!profile.interested_in },
-    { text: 'Verify your profile', completed: profile.verification_status === 'verified' },
-    { text: 'Set your home location', completed: !!profile.city }];
+    { text: 'Upload at least 3 photos', completed: profile.photos?.length >= 3, href: '/Profile#photos-section' },
+    { text: 'Answer at least 2 prompts', completed: profile.prompts?.length >= 2, href: '/Profile#prompts-section' },
+    { text: 'Select 5+ vibe tags', completed: profile.vibe_tags?.length >= 5, href: '/Profile#vibe-section' },
+    { text: 'Write a bio', completed: !!profile.bio, href: '/Profile#bio-section' },
+    { text: 'Set your dating intentions', completed: !!profile.dating_intentions, href: '/Profile' },
+    { text: 'Verify your profile', completed: profile.verification_status === 'verified', href: '/Verification' },
+    { text: 'Set your home location', completed: !!profile.city, href: '/Profile' }];
 
 
     const completed = items.filter((i) => i.completed).length;
@@ -604,18 +604,30 @@ export default function Dashboard() {
           <div className="grid md:grid-cols-2 gap-8">
             {/* Checklist */}
             <div className="space-y-3">
-              {profileItems.map((item, idx) =>
-              <div key={idx} className="flex items-center gap-3">
-                  {item.completed ?
-                <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" /> :
-
-                <Circle className="w-5 h-5 text-white/30 flex-shrink-0" />
-                }
-                  <span className={item.completed ? 'text-white/90' : 'text-white/50'}>
-                    {item.text}
-                  </span>
-                </div>
-              )}
+              {profileItems.map((item, idx) => {
+                const inner = (
+                  <>
+                    {item.completed
+                      ? <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+                      : <Circle className="w-5 h-5 text-white/30 flex-shrink-0" />}
+                    <span className={`flex-1 ${item.completed ? 'text-white/90' : 'text-white/50'}`}>
+                      {item.text}
+                    </span>
+                    {!item.completed && <ChevronRight className="w-4 h-4 text-white/25 flex-shrink-0" />}
+                  </>
+                );
+                return item.completed ? (
+                  <div key={idx} className="flex items-center gap-3">{inner}</div>
+                ) : (
+                  <Link
+                    key={idx}
+                    to={item.href}
+                    className="flex items-center gap-3 rounded-xl px-2 py-1 -mx-2 hover:bg-white/5 active:bg-white/10 transition-colors"
+                  >
+                    {inner}
+                  </Link>
+                );
+              })}
             </div>
             
             {/* Progress Ring */}
