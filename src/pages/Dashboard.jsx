@@ -521,10 +521,10 @@ export default function Dashboard() {
               </h1>
               <p className="text-white/65 text-lg mb-4">Did you see anyone interesting today?</p>
               <button
-                onClick={() => navigate('/LogDailyPath')}
+                onClick={() => navigate('/LogMoment')}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#E70F72] text-white text-sm font-semibold hover:bg-[#E70F72]/90 active:scale-95 transition-all"
               >
-                <Route className="w-4 h-4" />
+                <Sparkles className="w-4 h-4" />
                 Log it
               </button>
             </div>
