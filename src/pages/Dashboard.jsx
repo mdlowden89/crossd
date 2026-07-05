@@ -731,20 +731,6 @@ export default function Dashboard() {
             </TooltipProvider>
           </div>
           
-          {/* Zero-state prompt */}
-          {sparksThisWeek === 0 && (
-            <div className="flex items-center gap-3 mb-6 px-4 py-3 rounded-2xl border border-white/10 bg-white/5">
-              <Sparkles className="w-4 h-4 text-[#E70F72] flex-shrink-0" />
-              <p className="text-white/70 text-sm flex-1">Log your first moment to start building Spark Energy.</p>
-              <button
-                onClick={() => navigate('/LogMoment')}
-                className="text-[#E70F72] text-sm font-semibold hover:underline flex-shrink-0"
-              >
-                Log it →
-              </button>
-            </div>
-          )}
-
           {/* Metric Cards */}
           <TooltipProvider>
             <div className="grid grid-cols-3 gap-4">
@@ -755,6 +741,9 @@ export default function Dashboard() {
                     <Flame className="w-6 h-6 text-orange-500 mx-auto mb-2" />
                     <div className="text-2xl font-bold text-white mb-1">{dayStreak}</div>
                     <div className="text-white/50 text-sm">Day Streak</div>
+                    {dayStreak === 0 && (
+                      <div className="mt-2 text-[#E70F72] text-xs font-medium">Log a moment →</div>
+                    )}
                   </div>
                 </TooltipTrigger>
                 <TooltipContent className="p-4 w-64 bg-[#0B0B0B] border-white/10">
@@ -783,6 +772,9 @@ export default function Dashboard() {
                     <Sparkles className="w-6 h-6 text-[#E70F72] mx-auto mb-2" />
                     <div className="text-2xl font-bold text-white mb-1">{sparksThisWeek}</div>
                     <div className="text-white/50 text-sm">Sparks this week</div>
+                    {sparksThisWeek === 0 && (
+                      <div className="mt-2 text-[#E70F72] text-xs font-medium">Log a moment →</div>
+                    )}
                   </div>
                 </TooltipTrigger>
                 <TooltipContent className="p-4 w-64 bg-[#0B0B0B] border-white/10">
