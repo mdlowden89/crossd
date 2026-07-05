@@ -808,51 +808,44 @@ export default function Dashboard() {
                 </TooltipContent>
               </Tooltip>
 
-              {/* Expiring Moments — only show in grid when 0 */}
-              {expiringMoments === 0 && (
-                <Tooltip delayDuration={100}>
-                  <TooltipTrigger asChild>
-                    <div className="bg-black/40 rounded-2xl p-4 text-center border border-[#E70F72]/20 cursor-pointer hover:border-blue-500/40 transition-colors">
-                      <Clock className="w-6 h-6 text-blue-500 mx-auto mb-2" />
-                      <div className="text-xs font-semibold text-blue-400 mb-1 leading-tight">All fresh!</div>
-                      <div className="text-white/40 text-xs">Log a moment</div>
+              {/* Expiring Moments */}
+              <Tooltip delayDuration={100}>
+                <TooltipTrigger asChild>
+                  <div className="bg-black/40 rounded-2xl p-4 text-center border border-[#E70F72]/20 cursor-pointer hover:border-blue-500/40 transition-colors">
+                    <Clock className="w-6 h-6 text-blue-500 mx-auto mb-2" />
+                    {expiringMoments > 0 ? (
+                      <>
+                        <div className="text-2xl font-bold text-white mb-1">{expiringMoments}</div>
+                        <div className="text-white/50 text-sm">Expiring Moments</div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="text-xs font-semibold text-blue-400 mb-1 leading-tight">All fresh!</div>
+                        <div className="text-white/40 text-xs">Log a moment</div>
+                      </>
+                    )}
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent className="p-4 w-64 bg-[#0B0B0B] border-white/10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Clock className="w-4 h-4 text-blue-500" />
+                    <span className="font-bold text-white text-sm">Expiring Moments ⏳</span>
+                  </div>
+                  <p className="text-white/70 text-xs leading-relaxed mb-2">
+                    <span className="text-blue-400 font-semibold">{expiringMoments} moment{expiringMoments !== 1 ? 's' : ''}</span> {expiringMoments !== 1 ? 'are' : 'is'} older than 7 days and no longer contributing to active crossings.
+                  </p>
+                  <p className="text-white/45 text-xs leading-relaxed">
+                    Moments power your ability to cross paths with others nearby. Only moments from the last 7 days are active — so keep logging to stay discoverable.
+                  </p>
+                  {expiringMoments > 0 && (
+                    <div className="mt-2 pt-2 border-t border-white/10">
+                      <p className="text-blue-400 text-xs font-medium">Log a new moment to refresh your trail 📍</p>
                     </div>
-                  </TooltipTrigger>
-                  <TooltipContent className="p-4 w-64 bg-[#0B0B0B] border-white/10">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Clock className="w-4 h-4 text-blue-500" />
-                      <span className="font-bold text-white text-sm">Expiring Moments ⏳</span>
-                    </div>
-                    <p className="text-white/45 text-xs leading-relaxed">
-                      Moments power your ability to cross paths with others nearby. Only moments from the last 7 days are active — so keep logging to stay discoverable.
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-              )}
+                  )}
+                </TooltipContent>
+              </Tooltip>
             </div>
           </TooltipProvider>
-
-          {/* Expiring Moments urgent banner — shown below grid when > 0 */}
-          {expiringMoments > 0 && (
-            <motion.div
-              onClick={() => navigate('/LogMoment')}
-              animate={{ boxShadow: ['0 0 0px rgba(251,146,60,0)', '0 0 20px rgba(251,146,60,0.35)', '0 0 0px rgba(251,146,60,0)'] }}
-              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-              className="mt-4 cursor-pointer flex items-center gap-4 px-5 py-4 rounded-2xl border border-orange-500/50 bg-orange-500/10 hover:bg-orange-500/15 active:scale-98 transition-colors"
-            >
-              <div className="relative flex-shrink-0">
-                <Clock className="w-6 h-6 text-orange-400" />
-                <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center text-white text-[9px] font-bold">{expiringMoments}</span>
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-orange-300 font-semibold text-sm leading-tight">
-                  {expiringMoments} moment{expiringMoments !== 1 ? 's' : ''} expiring soon
-                </p>
-                <p className="text-white/50 text-xs mt-0.5">These are no longer matching you with crossings — log a new one to refresh your trail</p>
-              </div>
-              <ChevronRight className="w-4 h-4 text-orange-400 flex-shrink-0" />
-            </motion.div>
-          )}
         </motion.div>
 
         {/* City Pulse Card */}
