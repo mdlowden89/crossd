@@ -240,6 +240,71 @@ function NotificationsVisual() {
   );
 }
 
+function CrossingHistoryVisual() {
+  const mockProfiles = [
+    { initials: 'S', age: 26, distance: '0.2mi', crossings: 3, color: '#E70F72' },
+    { initials: 'J', age: 29, distance: '0.5mi', crossings: 1, color: '#a855f7' },
+    { initials: 'M', age: 24, distance: '0.8mi', crossings: 2, color: '#ec4899' },
+  ];
+
+  return (
+    <div className="w-full space-y-4">
+      {/* Counter badge */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.85 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="mx-auto w-fit flex items-center gap-2 rounded-full px-4 py-2 border border-[#E70F72]/40 bg-[#E70F72]/10"
+        style={{ boxShadow: '0 0 30px rgba(231,15,114,0.2)' }}
+      >
+        <Zap className="w-4 h-4 text-[#E70F72] fill-[#E70F72]" />
+        <span className="text-white font-bold text-sm">3 crossings</span>
+        <span className="text-white/50 text-sm">this week</span>
+      </motion.div>
+
+      {/* Blurred profile cards */}
+      <div className="space-y-3">
+        {mockProfiles.map((p, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, x: -16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: i * 0.15 + 0.3, duration: 0.4 }}
+            className="relative flex items-center gap-3 rounded-2xl border border-white/10 bg-white/4 p-3.5 overflow-hidden"
+          >
+            {/* Avatar */}
+            <div className="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center text-white font-bold text-lg"
+              style={{ background: `linear-gradient(135deg, ${p.color}88, ${p.color}44)`, border: `1px solid ${p.color}55`, filter: 'blur(6px)' }}>
+              {p.initials}
+            </div>
+
+            {/* Info — blurred */}
+            <div className="flex-1 min-w-0" style={{ filter: 'blur(5px)', userSelect: 'none' }}>
+              <div className="h-3.5 w-24 rounded bg-white/30 mb-1.5" />
+              <div className="h-2.5 w-16 rounded bg-white/15" />
+            </div>
+
+            {/* Crossing count pill */}
+            <div className="flex-shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold"
+              style={{ background: `${p.color}22`, color: p.color, border: `1px solid ${p.color}44` }}>
+              ×{p.crossings}
+            </div>
+
+            {/* Lock overlay */}
+            <div className="absolute inset-0 flex items-center justify-end pr-14 pointer-events-none">
+              <div className="w-6 h-6 rounded-full bg-black/60 flex items-center justify-center">
+                <span className="text-white/60 text-xs">🔒</span>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      <p className="text-center text-white/40 text-xs">Complete your profile to unlock these connections</p>
+    </div>
+  );
+}
+
 // ── Step data ─────────────────────────────────────────────────────────────────
 
 const STEPS = [
@@ -271,6 +336,15 @@ const STEPS = [
     visual: <NotificationsVisual />,
     action: 'Enable Notifications',
     gradient: 'from-purple-500/15 via-transparent to-transparent',
+  },
+  {
+    id: 'teaser',
+    eyebrow: 'Already happening',
+    title: 'They\'re already',
+    titleAccent: 'out there.',
+    description: 'You\'ve crossed paths 3 times this week. Complete your profile to see who — and connect.',
+    visual: <CrossingHistoryVisual />,
+    gradient: 'from-[#E70F72]/25 via-purple-900/10 to-transparent',
   },
 ];
 
@@ -409,7 +483,7 @@ export default function Onboarding() {
               className="flex-1"
               size="lg"
             >
-              {isLast ? 'Set Up Profile' : step.action ? 'Skip for now' : 'Continue'}
+              {isLast ? 'Complete My Profile →' : step.action ? 'Skip for now' : 'Continue'}
               {!step.action && <ChevronRight className="w-4 h-4 ml-1" />}
             </CrossdButton>
           </div>
