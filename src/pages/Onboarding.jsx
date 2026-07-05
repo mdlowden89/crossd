@@ -62,65 +62,117 @@ function WelcomeVisual() {
 
 function LocationVisual() {
   const [notifVisible, setNotifVisible] = useState(false);
+  const [phase, setPhase] = useState(0); // 0=apart, 1=approaching, 2=crossed
 
   useEffect(() => {
     const t = setTimeout(() => setNotifVisible(true), 600);
-    return () => clearTimeout(t);
+    const p1 = setTimeout(() => setPhase(1), 400);
+    const p2 = setTimeout(() => setPhase(2), 1400);
+    return () => { clearTimeout(t); clearTimeout(p1); clearTimeout(p2); };
   }, []);
+
+  // Street/city landmarks
+  const landmarks = [
+    { x: '18%', y: '30%', label: 'Café', color: '#a78bfa' },
+    { x: '72%', y: '55%', label: 'Park', color: '#34d399' },
+    { x: '30%', y: '70%', label: 'Station', color: '#60a5fa' },
+    { x: '78%', y: '22%', label: 'Bar', color: '#f59e0b' },
+  ];
 
   return (
     <div className="w-full space-y-5">
       {/* Map mockup */}
-      <div className="relative w-full h-44 rounded-2xl overflow-hidden border border-white/10"
-        style={{ background: 'linear-gradient(135deg, #0d0d1a 0%, #0a0a12 100%)' }}>
-        {/* Grid lines */}
-        <svg className="absolute inset-0 w-full h-full opacity-20">
-          {[0,1,2,3,4].map(i => (
-            <line key={`h${i}`} x1="0" y1={`${i*25}%`} x2="100%" y2={`${i*25}%`} stroke="white" strokeWidth="0.5" />
-          ))}
-          {[0,1,2,3,4,5].map(i => (
-            <line key={`v${i}`} x1={`${i*20}%`} y1="0" x2={`${i*20}%`} y2="100%" stroke="white" strokeWidth="0.5" />
-          ))}
+      <div className="relative w-full h-52 rounded-2xl overflow-hidden border border-white/10"
+        style={{ background: 'radial-gradient(ellipse at 50% 50%, #0f0a1e 0%, #080810 100%)' }}>
+
+        {/* Street network SVG */}
+        <svg className="absolute inset-0 w-full h-full" style={{ opacity: 0.35 }}>
+          {/* Horizontal streets */}
+          <line x1="0" y1="35%" x2="100%" y2="35%" stroke="#4338ca" strokeWidth="6" />
+          <line x1="0" y1="65%" x2="100%" y2="65%" stroke="#4338ca" strokeWidth="3" />
+          <line x1="0" y1="20%" x2="100%" y2="20%" stroke="#312e81" strokeWidth="2" />
+          <line x1="0" y1="80%" x2="100%" y2="80%" stroke="#312e81" strokeWidth="2" />
+          {/* Vertical streets */}
+          <line x1="25%" y1="0" x2="25%" y2="100%" stroke="#4338ca" strokeWidth="6" />
+          <line x1="60%" y1="0" x2="60%" y2="100%" stroke="#4338ca" strokeWidth="3" />
+          <line x1="80%" y1="0" x2="80%" y2="100%" stroke="#312e81" strokeWidth="2" />
+          {/* Diagonal road */}
+          <line x1="0" y1="100%" x2="60%" y2="0" stroke="#3730a3" strokeWidth="2" />
+          {/* City blocks (filled rects) */}
+          <rect x="26%" y="21%" width="33%" height="13%" fill="#1e1b4b" opacity="0.6" />
+          <rect x="61%" y="36%" width="18%" height="28%" fill="#1e1b4b" opacity="0.6" />
+          <rect x="0%" y="36%" width="24%" height="28%" fill="#1e1b4b" opacity="0.5" />
+          <rect x="26%" y="66%" width="33%" height="13%" fill="#1e1b4b" opacity="0.5" />
         </svg>
 
-        {/* Glow zone */}
+        {/* Landmark dots */}
+        {landmarks.map((lm, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: i * 0.1 + 0.2 }}
+            className="absolute -translate-x-1/2 -translate-y-1/2"
+            style={{ left: lm.x, top: lm.y }}
+          >
+            <div className="flex flex-col items-center gap-0.5">
+              <div className="w-2 h-2 rounded-full" style={{ background: lm.color, boxShadow: `0 0 6px ${lm.color}` }} />
+              <span className="text-[8px] font-medium" style={{ color: lm.color }}>{lm.label}</span>
+            </div>
+          </motion.div>
+        ))}
+
+        {/* Pulse zone at crossing point */}
         <motion.div
-          animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.5, 0.3] }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-[#E70F72]/30 blur-xl"
+          animate={{ scale: [1, 2, 1], opacity: [0.4, 0, 0.4] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeOut' }}
+          className="absolute rounded-full bg-[#E70F72]"
+          style={{ left: '25%', top: '35%', width: 32, height: 32, transform: 'translate(-50%,-50%)' }}
         />
 
-        {/* Pin */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-full">
-          <div className="w-8 h-8 rounded-full bg-[#E70F72] flex items-center justify-center shadow-lg"
-            style={{ boxShadow: '0 0 20px rgba(231,15,114,0.6)' }}>
+        {/* User A — moves toward crossing */}
+        <motion.div
+          className="absolute -translate-x-1/2 -translate-y-full"
+          animate={{ left: phase >= 1 ? '25%' : '10%', top: phase >= 1 ? '35%' : '55%' }}
+          transition={{ duration: 0.9, ease: 'easeInOut' }}
+          style={{ left: '10%', top: '55%' }}
+        >
+          <div className="w-9 h-9 rounded-full bg-[#E70F72] flex items-center justify-center shadow-lg"
+            style={{ boxShadow: '0 0 20px rgba(231,15,114,0.7)' }}>
             <MapPin className="w-4 h-4 text-white" />
           </div>
-          <div className="w-2 h-2 bg-[#E70F72] rounded-full mx-auto -mt-0.5" />
-        </div>
+          <div className="w-1.5 h-1.5 bg-[#E70F72] rounded-full mx-auto -mt-0.5" />
+        </motion.div>
 
-        {/* Second person dot */}
+        {/* User B — moves toward crossing from opposite side */}
         <motion.div
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5, duration: 0.4 }}
-          className="absolute"
-          style={{ left: '60%', top: '40%' }}
+          className="absolute -translate-x-1/2 -translate-y-full"
+          animate={{ left: phase >= 1 ? '25%' : '70%', top: phase >= 1 ? '35%' : '18%' }}
+          transition={{ duration: 0.9, ease: 'easeInOut' }}
+          style={{ left: '70%', top: '18%' }}
         >
-          <div className="w-6 h-6 rounded-full bg-white/20 border border-white/40 flex items-center justify-center">
-            <div className="w-3 h-3 rounded-full bg-white/60" />
+          <div className="w-8 h-8 rounded-full bg-white/15 border-2 border-white/40 flex items-center justify-center">
+            <div className="w-4 h-4 rounded-full bg-white/70" />
           </div>
+          <div className="w-1.5 h-1.5 bg-white/40 rounded-full mx-auto -mt-0.5" />
         </motion.div>
 
-        {/* Crossing arc */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.9, duration: 0.6 }}
-          className="absolute left-1/2 top-[42%] -translate-x-1/2"
-        >
-          <div className="text-[#E70F72] text-xs font-bold tracking-widest">⚡ CROSSED</div>
-        </motion.div>
+        {/* CROSSED badge */}
+        <AnimatePresence>
+          {phase === 2 && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.7 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="absolute left-1/2 bottom-3 -translate-x-1/2"
+            >
+              <div className="flex items-center gap-1.5 bg-[#E70F72] rounded-full px-3 py-1 shadow-lg"
+                style={{ boxShadow: '0 0 20px rgba(231,15,114,0.6)' }}>
+                <Zap className="w-3 h-3 text-white fill-white" />
+                <span className="text-white text-xs font-bold tracking-wider">PATHS CROSSED</span>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Mock notification */}
@@ -358,7 +410,7 @@ export default function Onboarding() {
               size="lg"
             >
               {isLast ? 'Set Up Profile' : step.action ? 'Skip for now' : 'Continue'}
-              <ChevronRight className="w-4 h-4 ml-1" />
+              {!step.action && <ChevronRight className="w-4 h-4 ml-1" />}
             </CrossdButton>
           </div>
         </div>
