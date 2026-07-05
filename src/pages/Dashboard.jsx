@@ -732,7 +732,7 @@ export default function Dashboard() {
           </div>
           
           {/* Zero-state prompt */}
-          {energyData.score === 0 && (
+          {sparksThisWeek === 0 && (
             <div className="flex items-center gap-3 mb-6 px-4 py-3 rounded-2xl border border-white/10 bg-white/5">
               <Sparkles className="w-4 h-4 text-[#E70F72] flex-shrink-0" />
               <p className="text-white/70 text-sm flex-1">Log your first moment to start building Spark Energy.</p>
