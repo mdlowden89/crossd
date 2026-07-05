@@ -37,10 +37,19 @@ const promptOptions = [
   { q: "A life goal of mine is...", eg: "e.g. 'learn to sail before I turn 35'" },
 ];
 
-const vibeOptions = [
-  'Adventurous', 'Creative', 'Ambitious', 'Chill', 'Intellectual',
-  'Spontaneous', 'Romantic', 'Funny', 'Deep', 'Social',
-  'Introverted', 'Extroverted', 'Artsy', 'Sporty', 'Foodie'
+const vibeCategories = [
+  {
+    label: 'Personality',
+    tags: ['Adventurous', 'Chill', 'Spontaneous', 'Ambitious', 'Intellectual', 'Deep', 'Funny', 'Romantic', 'Social', 'Introverted', 'Extroverted', 'Sarcastic', 'Wholesome', 'Chaotic', 'Low-key', 'Intense']
+  },
+  {
+    label: 'Lifestyle',
+    tags: ['Foodie', 'Sporty', 'Artsy', 'Creative', 'Bookworm', 'Gamer', 'Outdoorsy', 'Gym Rat', 'Night Owl', 'Morning Person', 'Homebody', 'Traveller', 'Fashionista', 'Minimalist', 'Festival Goer']
+  },
+  {
+    label: 'Into',
+    tags: ['Dog Person', 'Cat Person', 'Plant Parent', 'Coffee Snob', 'Podcast Nerd', 'Film Buff', 'Music Head', 'Yoga Lover', 'Brunch Person', 'Wine Lover', 'Tea Person', 'Cooking', 'Running', 'Cycling', 'Photography']
+  },
 ];
 
 export default function SetupProfile() {
@@ -170,7 +179,7 @@ export default function SetupProfile() {
     // Check if profile already exists
     const existingProfiles = await base44.entities.Profile.filter({ user_id: user.id });
     
-    const { hangout_input, ...profileData } = profile;
+    const profileData = { ...profile };
 
     if (existingProfiles.length > 0) {
       await base44.entities.Profile.update(existingProfiles[0].id, profileData);
@@ -546,26 +555,31 @@ export default function SetupProfile() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
-              className="space-y-4"
+              className="space-y-5"
             >
-              <div className="flex flex-wrap gap-2">
-                {vibeOptions.map(vibe => (
-                  <button
-                    key={vibe}
-                    onClick={() => toggleVibe(vibe)}
-                    className={`px-4 py-2 rounded-full border transition-colors ${
-                      profile.vibe_tags.includes(vibe)
-                        ? 'border-[#E70F72] bg-[#E70F72]/20 text-[#E70F72]'
-                        : 'border-white/15 text-white/65 hover:border-white/30'
-                    }`}
-                  >
-                    {vibe}
-                  </button>
-                ))}
-              </div>
               <p className="text-white/45 text-sm text-center">
-                Selected: {profile.vibe_tags.length}/5
+                {profile.vibe_tags.length}/5 selected
               </p>
+              {vibeCategories.map(cat => (
+                <div key={cat.label}>
+                  <p className="text-white/40 text-xs uppercase tracking-widest mb-2">{cat.label}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {cat.tags.map(vibe => (
+                      <button
+                        key={vibe}
+                        onClick={() => toggleVibe(vibe)}
+                        className={`px-3.5 py-1.5 rounded-full border text-sm transition-colors ${
+                          profile.vibe_tags.includes(vibe)
+                            ? 'border-[#E70F72] bg-[#E70F72]/20 text-[#E70F72]'
+                            : 'border-white/15 text-white/65 hover:border-white/30'
+                        }`}
+                      >
+                        {vibe}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </motion.div>
           )}
         </AnimatePresence>
