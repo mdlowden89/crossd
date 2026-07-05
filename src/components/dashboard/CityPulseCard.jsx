@@ -85,7 +85,50 @@ export default function CityPulseCard({ moments = [], isNew = true }) {
     return { topZones, topArchetypes, peakLabel, sparkWindow, logCount: sourceMoments.length };
   }, [moments]);
 
-  if (!pulse) return null;
+  if (!pulse) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative overflow-hidden rounded-3xl p-6 border border-white/10 cursor-pointer"
+        style={{ background: 'linear-gradient(135deg, #0d0218 0%, #0B0B0B 100%)' }}
+      >
+        <div className="flex items-center gap-2 mb-3">
+          <Sparkles className="w-5 h-5 text-[#E70F72]" />
+          <span className="text-white font-bold text-lg">Your City Pulse</span>
+        </div>
+        <p className="text-white/50 text-xs mb-5">Log moments to unlock your weekly vibe recap.</p>
+        <div className="grid grid-cols-2 gap-3 opacity-40 pointer-events-none select-none blur-[1px]">
+          <div className="bg-black/40 rounded-2xl p-3 border border-white/10">
+            <div className="flex items-center gap-1.5 mb-2">
+              <MapPin className="w-3.5 h-3.5 text-[#E70F72]" />
+              <span className="text-white/50 text-xs">Top Zones</span>
+            </div>
+            <p className="text-white text-sm font-semibold">Coffee Shop</p>
+            <p className="text-white text-sm font-semibold">City Park</p>
+          </div>
+          <div className="bg-black/40 rounded-2xl p-3 border border-white/10">
+            <div className="flex items-center gap-1.5 mb-2">
+              <Clock className="w-3.5 h-3.5 text-amber-400" />
+              <span className="text-white/50 text-xs">Peak Time</span>
+            </div>
+            <p className="text-white text-sm font-semibold">Fri 18:00–21:00</p>
+          </div>
+          <div className="bg-black/40 rounded-2xl p-3 border border-white/10 col-span-2">
+            <p className="text-white/50 text-xs mb-2">Your PlacesDNA this week</p>
+            <div className="flex gap-2">
+              <span className="text-xs px-2.5 py-1 rounded-full font-semibold bg-[#C49A6C]/20 text-[#C49A6C] border border-[#C49A6C]/40">☕ Calm & Cozy</span>
+              <span className="text-xs px-2.5 py-1 rounded-full font-semibold bg-[#6A8F7A]/20 text-[#6A8F7A] border border-[#6A8F7A]/40">🌿 Nature</span>
+            </div>
+          </div>
+        </div>
+        <div className="mt-4 flex items-center justify-center gap-2 text-[#E70F72] text-sm font-semibold">
+          <Sparkles className="w-4 h-4" />
+          Log your first moment to see your real pulse
+        </div>
+      </motion.div>
+    );
+  }
 
   return (
     <Link to={createPageUrl('Recaps')}>

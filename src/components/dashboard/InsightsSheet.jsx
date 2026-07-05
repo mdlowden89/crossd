@@ -395,20 +395,32 @@ export default function InsightsSheet({ moments, profile, onClose }) {
           </div>
           {/* Tabs */}
           <div className="flex gap-1 mb-0">
-            {[{ id: 'this_week', label: 'This Week' }, { id: 'trends', label: 'Trends', premium: true }].map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => !tab.premium || isPremium ? setActiveTab(tab.id) : setActiveTab(tab.id)}
-                className={`flex-1 py-2.5 text-sm font-semibold rounded-t-xl transition-all flex items-center justify-center gap-1.5 ${
-                  activeTab === tab.id
-                    ? 'bg-[#E70F72]/15 text-[#E70F72] border-b-2 border-[#E70F72]'
-                    : 'text-white/50 hover:text-white/70'
-                }`}
-              >
-                {tab.label}
-                {tab.premium && <Star className="w-3 h-3 text-amber-400" />}
-              </button>
-            ))}
+            <button
+              onClick={() => setActiveTab('this_week')}
+              className={`flex-1 py-2.5 text-sm font-semibold rounded-t-xl transition-all ${
+                activeTab === 'this_week'
+                  ? 'bg-[#E70F72]/15 text-[#E70F72] border-b-2 border-[#E70F72]'
+                  : 'text-white/50 hover:text-white/70'
+              }`}
+            >
+              This Week
+            </button>
+            <button
+              onClick={() => setActiveTab('trends')}
+              className={`flex-1 py-2.5 text-sm font-semibold rounded-t-xl transition-all flex items-center justify-center gap-1.5 ${
+                activeTab === 'trends'
+                  ? 'bg-[#E70F72]/15 text-[#E70F72] border-b-2 border-[#E70F72]'
+                  : isPremium ? 'text-white/50 hover:text-white/70' : 'text-white/30 cursor-default'
+              }`}
+            >
+              <Lock className={`w-3 h-3 ${isPremium ? 'hidden' : 'text-amber-400'}`} />
+              Trends
+              {!isPremium && (
+                <span className="text-xs bg-amber-400/20 text-amber-400 px-1.5 py-0.5 rounded-full font-semibold leading-none">
+                  Crossd+
+                </span>
+              )}
+            </button>
           </div>
         </div>
 
