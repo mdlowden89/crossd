@@ -515,13 +515,18 @@ export default function Dashboard() {
 
           <div className="flex items-start gap-3">
             <Sparkles className="w-6 h-6 text-[#E70F72] mt-1 flex-shrink-0" />
-            <div>
+            <div className="flex-1">
               <h1 className="text-3xl font-bold text-white mb-2">
                 Welcome back, {profile.display_name}!
               </h1>
-              <p className="text-white/65 text-lg">Did you see anyone interesting today?
-
-              </p>
+              <p className="text-white/65 text-lg mb-4">Did you see anyone interesting today?</p>
+              <button
+                onClick={() => navigate('/LogDailyPath')}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#E70F72] text-white text-sm font-semibold hover:bg-[#E70F72]/90 active:scale-95 transition-all"
+              >
+                <Route className="w-4 h-4" />
+                Log it
+              </button>
             </div>
           </div>
         </motion.div>
