@@ -67,8 +67,7 @@
         "South Asian",
         "Southeast Asian",
         "Other"
-      ],
-      "description": "User's ethnicity"
+      ]
     },
     "religion": {
       "type": "string",
@@ -88,8 +87,7 @@
         "Spiritual",
         "Zoroastrian",
         "Other"
-      ],
-      "description": "User's religion"
+      ]
     },
     "zodiac_sign": {
       "type": "string",
@@ -106,8 +104,7 @@
         "Capricorn",
         "Aquarius",
         "Pisces"
-      ],
-      "description": "Zodiac sign"
+      ]
     },
     "drinking": {
       "type": "string",
@@ -116,8 +113,7 @@
         "Sometimes",
         "Regularly",
         "Prefer not to say"
-      ],
-      "description": "Drinking habits"
+      ]
     },
     "smoking": {
       "type": "string",
@@ -126,8 +122,7 @@
         "Sometimes",
         "Regularly",
         "Prefer not to say"
-      ],
-      "description": "Smoking habits"
+      ]
     },
     "relationship_type": {
       "type": "string",
@@ -136,8 +131,7 @@
         "Ethical non-monogamy",
         "Open to either",
         "Prefer not to say"
-      ],
-      "description": "Preferred relationship type"
+      ]
     },
     "dating_intentions": {
       "type": "string",
@@ -146,8 +140,7 @@
         "Short-term fun",
         "New friends",
         "Still figuring it out"
-      ],
-      "description": "What user is looking for"
+      ]
     },
     "children": {
       "type": "string",
@@ -155,8 +148,7 @@
         "Don't have children",
         "Have children",
         "Prefer not to say"
-      ],
-      "description": "Children status"
+      ]
     },
     "family_plans": {
       "type": "string",
@@ -165,8 +157,7 @@
         "Don't want children",
         "Open to children",
         "Not sure yet"
-      ],
-      "description": "Future family plans"
+      ]
     },
     "bio": {
       "type": "string",
@@ -183,9 +174,20 @@
     "hangout_areas": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "place_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
       },
-      "description": "Neighbourhoods/areas where the user usually spends time \u2014 used to improve crossing relevance"
+      "description": "Google Places-backed areas where the user usually spends time \u2014 place_id enables consistent cross-user matching"
     },
     "photos": {
       "type": "array",
@@ -246,13 +248,11 @@
       "default": "unverified"
     },
     "verification_selfie_url": {
-      "type": "string",
-      "description": "Selfie uploaded for verification"
+      "type": "string"
     },
     "crossd_plus": {
       "type": "boolean",
-      "default": false,
-      "description": "Premium subscription status"
+      "default": false
     },
     "crossd_plus_plan": {
       "type": "string",
@@ -265,18 +265,15 @@
     },
     "crossd_plus_expires_at": {
       "type": "string",
-      "format": "date-time",
-      "description": "When premium expires"
+      "format": "date-time"
     },
     "glow_active_until": {
       "type": "string",
-      "format": "date-time",
-      "description": "When current Glow Mode boost ends"
+      "format": "date-time"
     },
     "glow_cooldown_until": {
       "type": "string",
-      "format": "date-time",
-      "description": "When user can activate Glow Mode again"
+      "format": "date-time"
     },
     "glow_stats": {
       "type": "object",
@@ -290,18 +287,15 @@
         "matches": {
           "type": "number"
         }
-      },
-      "description": "Stats during Glow Mode"
+      }
     },
     "discoverable": {
       "type": "boolean",
-      "default": true,
-      "description": "Whether profile shows in discovery"
+      "default": true
     },
     "verified_only_mode": {
       "type": "boolean",
-      "default": false,
-      "description": "Only show verified users in feed"
+      "default": false
     },
     "notification_prefs": {
       "type": "object",
@@ -342,16 +336,13 @@
       "default": "active"
     },
     "location_lat": {
-      "type": "number",
-      "description": "Last known latitude (for discovery)"
+      "type": "number"
     },
     "location_lng": {
-      "type": "number",
-      "description": "Last known longitude (for discovery)"
+      "type": "number"
     },
     "location_geohash": {
-      "type": "string",
-      "description": "Geohash for proximity queries"
+      "type": "string"
     }
   },
   "required": [
