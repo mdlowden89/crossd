@@ -739,8 +739,17 @@ export default function Dashboard() {
                 <TooltipTrigger asChild>
                   <div className="bg-black/40 rounded-2xl p-4 text-center border border-[#E70F72]/20 cursor-pointer hover:border-orange-500/40 transition-colors">
                     <Flame className="w-6 h-6 text-orange-500 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-white mb-1">{dayStreak}</div>
-                    <div className="text-white/50 text-sm">Day Streak</div>
+                    {dayStreak > 0 ? (
+                      <>
+                        <div className="text-2xl font-bold text-white mb-1">{dayStreak}</div>
+                        <div className="text-white/50 text-sm">Day Streak</div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="text-xs font-semibold text-orange-400 mb-1 leading-tight">Start your streak</div>
+                        <div className="text-white/40 text-xs">Log a moment</div>
+                      </>
+                    )}
                   </div>
                 </TooltipTrigger>
                 <TooltipContent className="p-4 w-64 bg-[#0B0B0B] border-white/10">
@@ -767,8 +776,17 @@ export default function Dashboard() {
                 <TooltipTrigger asChild>
                   <div className="bg-black/40 rounded-2xl p-4 text-center border border-[#E70F72]/20 cursor-pointer hover:border-[#E70F72]/50 transition-colors">
                     <Sparkles className="w-6 h-6 text-[#E70F72] mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-white mb-1">{sparksThisWeek}</div>
-                    <div className="text-white/50 text-sm">Sparks this week</div>
+                    {sparksThisWeek > 0 ? (
+                      <>
+                        <div className="text-2xl font-bold text-white mb-1">{sparksThisWeek}</div>
+                        <div className="text-white/50 text-sm">Sparks this week</div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="text-xs font-semibold text-[#E70F72] mb-1 leading-tight">No sparks yet</div>
+                        <div className="text-white/40 text-xs">Log a moment</div>
+                      </>
+                    )}
                   </div>
                 </TooltipTrigger>
                 <TooltipContent className="p-4 w-64 bg-[#0B0B0B] border-white/10">
@@ -795,8 +813,17 @@ export default function Dashboard() {
                 <TooltipTrigger asChild>
                   <div className="bg-black/40 rounded-2xl p-4 text-center border border-[#E70F72]/20 cursor-pointer hover:border-blue-500/40 transition-colors">
                     <Clock className="w-6 h-6 text-blue-500 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-white mb-1">{expiringMoments}</div>
-                    <div className="text-white/50 text-sm">Expiring Moments</div>
+                    {expiringMoments > 0 ? (
+                      <>
+                        <div className="text-2xl font-bold text-white mb-1">{expiringMoments}</div>
+                        <div className="text-white/50 text-sm">Expiring Moments</div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="text-xs font-semibold text-blue-400 mb-1 leading-tight">All fresh!</div>
+                        <div className="text-white/40 text-xs">Log a moment</div>
+                      </>
+                    )}
                   </div>
                 </TooltipTrigger>
                 <TooltipContent className="p-4 w-64 bg-[#0B0B0B] border-white/10">
