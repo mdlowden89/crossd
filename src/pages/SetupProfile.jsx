@@ -219,47 +219,68 @@ export default function SetupProfile() {
               exit={{ opacity: 0, x: -20 }}
               className="space-y-4"
             >
-              <div className="grid grid-cols-3 gap-3">
-                {[0, 1, 2, 3, 4, 5].map((index) => (
-                  <div key={index} className="aspect-[3/4] relative">
-                    {profile.photos[index] ? (
-                      <div className="relative w-full h-full rounded-xl overflow-hidden">
-                        <img
-                          src={profile.photos[index].url}
-                          alt={`Photo ${index + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                        <button
-                          onClick={() => removePhoto(index)}
-                          className="absolute top-2 right-2 w-6 h-6 bg-black/60 rounded-full flex items-center justify-center"
-                        >
-                          <X className="w-4 h-4 text-white" />
-                        </button>
-                        {index === 0 && (
-                          <span className="absolute bottom-2 left-2 text-xs bg-[#E70F72] text-black px-2 py-0.5 rounded-full font-medium">
-                            Primary
-                          </span>
-                        )}
-                      </div>
-                    ) : (
-                      <label className="w-full h-full rounded-xl border-2 border-dashed border-white/20 flex flex-col items-center justify-center cursor-pointer hover:border-[#E70F72]/50 transition-colors">
-                        <Plus className="w-6 h-6 text-white/40" />
-                        <span className="text-white/40 text-xs mt-1">Add</span>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handlePhotoUpload}
-                          className="hidden"
-                          disabled={loading}
-                        />
-                      </label>
-                    )}
-                  </div>
-                ))}
+              {/* Tip banner */}
+              <div className="flex items-start gap-2.5 rounded-xl bg-[#E70F72]/10 border border-[#E70F72]/25 px-3.5 py-3">
+                <span className="text-lg leading-none mt-0.5">📸</span>
+                <div>
+                  <p className="text-white text-sm font-semibold">Clear face photo = 3× more connections</p>
+                  <p className="text-white/50 text-xs mt-0.5">Good lighting, facing camera, no sunglasses.</p>
+                </div>
               </div>
-              <p className="text-white/45 text-sm text-center">
-                Add at least 1 photo. First photo is your primary.
-              </p>
+
+              {/* Primary (large) slot + 5 secondary slots */}
+              <div className="flex gap-3">
+                {/* Primary — tall left column */}
+                <div className="flex-shrink-0 w-[52%]" style={{ aspectRatio: '3/4' }}>
+                  {profile.photos[0] ? (
+                    <div className="relative w-full h-full rounded-2xl overflow-hidden border-2 border-[#E70F72]"
+                      style={{ boxShadow: '0 0 16px rgba(231,15,114,0.35)' }}>
+                      <img src={profile.photos[0].url} alt="Primary" className="w-full h-full object-cover" />
+                      <button onClick={() => removePhoto(0)}
+                        className="absolute top-2 right-2 w-7 h-7 bg-black/70 rounded-full flex items-center justify-center">
+                        <X className="w-4 h-4 text-white" />
+                      </button>
+                      <div className="absolute bottom-0 left-0 right-0 px-3 py-2 bg-gradient-to-t from-black/80 to-transparent">
+                        <span className="text-xs text-white font-semibold">⭐ Main photo</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <label className="w-full h-full rounded-2xl border-2 border-dashed border-[#E70F72]/40 flex flex-col items-center justify-center cursor-pointer hover:border-[#E70F72] transition-colors bg-[#E70F72]/5"
+                      style={{ boxShadow: '0 0 20px rgba(231,15,114,0.08)' }}>
+                      <div className="w-12 h-12 rounded-full bg-[#E70F72]/15 flex items-center justify-center mb-2">
+                        <Camera className="w-6 h-6 text-[#E70F72]" />
+                      </div>
+                      <span className="text-[#E70F72] text-sm font-semibold">Main Photo</span>
+                      <span className="text-white/35 text-xs mt-1 text-center px-4">Your best face-forward shot</span>
+                      <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" disabled={loading} />
+                    </label>
+                  )}
+                </div>
+
+                {/* Secondary slots — 2 columns × 3 rows */}
+                <div className="flex-1 grid grid-cols-2 gap-2">
+                  {[1, 2, 3, 4, 5].map((index) => (
+                    <div key={index} className={`relative ${index === 5 ? 'col-span-2 aspect-[2/1]' : 'aspect-square'}`}>
+                      {profile.photos[index] ? (
+                        <div className="relative w-full h-full rounded-xl overflow-hidden border border-white/15">
+                          <img src={profile.photos[index].url} alt={`Photo ${index + 1}`} className="w-full h-full object-cover" />
+                          <button onClick={() => removePhoto(index)}
+                            className="absolute top-1.5 right-1.5 w-5 h-5 bg-black/70 rounded-full flex items-center justify-center">
+                            <X className="w-3 h-3 text-white" />
+                          </button>
+                        </div>
+                      ) : (
+                        <label className="w-full h-full rounded-xl border-2 border-dashed border-white/15 flex flex-col items-center justify-center cursor-pointer hover:border-white/35 transition-colors">
+                          <Plus className="w-5 h-5 text-white/30" />
+                          <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" disabled={loading} />
+                        </label>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <p className="text-white/35 text-xs text-center">Add at least 1 photo to continue · Up to 6 total</p>
             </motion.div>
           )}
 
