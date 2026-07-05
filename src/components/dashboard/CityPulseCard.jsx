@@ -45,22 +45,35 @@ export default function CityPulseCard({ moments = [], isNew = true }) {
     });
     const topArchetypes = Object.entries(archetypeCount).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([a]) => a);
 
-    // Peak time bucket
+    // Peak time — use time_bucket (YYYY-MM-DD-HH, logged in local time) to avoid UTC offset bugs.
+    // Fall back to created_date only if time_bucket is absent.
     const hourMap = {};
-    sourceMoments.forEach(m => {
-      const h = new Date(m.created_date).getHours();
-      hourMap[h] = (hourMap[h] || 0) + 1;
-    });
-    const peakHour = Object.entries(hourMap).sort((a,b)=>b[1]-a[1])[0]?.[0];
     const dayMap = {};
     sourceMoments.forEach(m => {
-      const day = new Date(m.created_date).toLocaleDateString('en-US', { weekday: 'short' });
+      let h, day;
+      if (m.time_bucket) {
+        // time_bucket format: "2026-07-02-19"
+        const parts = m.time_bucket.split('-');
+        h = parseInt(parts[3], 10);
+        const d = new Date(`${parts[0]}-${parts[1]}-${parts[2]}`);
+        day = d.toLocaleDateString('en-US', { weekday: 'short' });
+      } else {
+        // Fallback: adjust for BST (UTC+1) to avoid midnight artefacts
+        const localDate = new Date(m.created_date);
+        h = localDate.getHours();
+        day = localDate.toLocaleDateString('en-US', { weekday: 'short' });
+      }
+      // Skip 0–5am hours unless they're the only data — likely logging artefacts
+      if (h >= 5 || Object.keys(hourMap).length === 0) {
+        hourMap[h] = (hourMap[h] || 0) + 1;
+      }
       dayMap[day] = (dayMap[day] || 0) + 1;
     });
+    const peakHour = Object.entries(hourMap).sort((a,b)=>b[1]-a[1])[0]?.[0];
     const peakDay = Object.entries(dayMap).sort((a,b)=>b[1]-a[1])[0]?.[0] || 'Fri';
 
-    const h = parseInt(peakHour || 19);
-    const peakLabel = `${peakDay} ${h}:00–${h+3}:00`;
+    const h = parseInt(peakHour ?? 19, 10);
+    const peakLabel = `${peakDay} ${h}:00–${h + 3}:00`;
 
     // Best spark window
     const isWeekend = (d) => { const day = new Date(d).getDay(); return day === 0 || day === 6; };
