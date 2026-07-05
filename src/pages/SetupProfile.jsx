@@ -60,7 +60,9 @@ export default function SetupProfile() {
     city: '',
     photos: [],
     prompts: [],
-    vibe_tags: []
+    vibe_tags: [],
+    age_min: 18,
+    age_max: 40
   });
 
   useEffect(() => {
@@ -311,6 +313,45 @@ export default function SetupProfile() {
                   value={profile.birthdate}
                   onChange={(e) => setProfile({ ...profile, birthdate: e.target.value })}
                 />
+                {profile.birthdate && (() => {
+                  const age = Math.floor((new Date() - new Date(profile.birthdate)) / (365.25 * 24 * 60 * 60 * 1000));
+                  return age > 0 && age < 120 ? (
+                    <p className="text-white/45 text-xs mt-1.5 ml-1">
+                      Your profile will show: <span className="text-white/70 font-medium">Age {age}</span>
+                    </p>
+                  ) : null;
+                })()}
+              </div>
+
+              <div>
+                <label className="text-white/80 text-sm mb-2 block">Age preference</label>
+                <div className="flex items-center gap-3">
+                  <div className="flex-1">
+                    <label className="text-white/40 text-xs mb-1 block">Min</label>
+                    <select
+                      value={profile.age_min || 18}
+                      onChange={(e) => setProfile({ ...profile, age_min: parseInt(e.target.value) })}
+                      className="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-[#E70F72]/50"
+                    >
+                      {Array.from({ length: 47 }, (_, i) => i + 18).map(n => (
+                        <option key={n} value={n} className="bg-black">{n}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <span className="text-white/30 mt-4">–</span>
+                  <div className="flex-1">
+                    <label className="text-white/40 text-xs mb-1 block">Max</label>
+                    <select
+                      value={profile.age_max || 40}
+                      onChange={(e) => setProfile({ ...profile, age_max: parseInt(e.target.value) })}
+                      className="w-full bg-white/5 border border-white/15 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-[#E70F72]/50"
+                    >
+                      {Array.from({ length: 47 }, (_, i) => i + 18).map(n => (
+                        <option key={n} value={n} className="bg-black">{n}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
               </div>
 
               <div>
