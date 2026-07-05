@@ -255,23 +255,19 @@ export default function Dashboard() {
     const now = new Date();
     const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
-    // Mock data (would come from backend in production)
+    // Only use real data — no mock values for user-facing metrics
     const mockData = {
-      likesSentD1: 34,
-      sessionsD1: 4,
-      resonanceValue: 0.78,
+      resonanceValue: 0,
       isGlowActive: false,
       reportsW7: 0,
       blocksW7: 0,
       spamScore: 0
     };
 
-    // Component A: Activity (30%)
+    // Component A: Activity (30%) — based solely on real moments logged
     const momentsW7 = moments.filter((m) => new Date(m.created_date) > weekAgo).length;
     const cappedMoments = Math.min(momentsW7, 5);
-    const cappedLikes = Math.min(mockData.likesSentD1, 50);
-    const cappedSessions = Math.min(mockData.sessionsD1, 10);
-    const activityScore = (cappedMoments / 5 + cappedLikes / 50 + cappedSessions / 10) / 3 * 100;
+    const activityScore = (cappedMoments / 5) * 100;
 
     // Component B: Streak (15%)
     const streakDays = calculateStreak();
