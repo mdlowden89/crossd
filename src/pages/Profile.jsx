@@ -164,7 +164,7 @@ export default function Profile() {
       )}
 
       {/* Photos */}
-      <div className="mb-6">
+      <div id="photos-section" className="mb-6">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-white/65 text-sm font-medium">Photos</h2>
           <span className="text-white/40 text-xs">{photos.length}/6</span>
@@ -437,7 +437,7 @@ export default function Profile() {
       </div>
 
       {/* Bio */}
-      <div className="mb-6">
+      <div id="bio-section" className="mb-6">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-white/65 text-sm font-medium">Bio</h2>
           {editMode && myProfile.vibe_tags && myProfile.vibe_tags.length > 0 && (
@@ -466,7 +466,7 @@ export default function Profile() {
       </div>
 
       {/* Vibe Tags */}
-      <div className="mb-6">
+      <div id="vibe-section" className="mb-6">
         <h2 className="text-white/65 text-sm font-medium mb-3">Vibe Tags</h2>
         <VibeTagSelector 
           selectedTags={editedProfile?.vibe_tags || []}
@@ -477,7 +477,7 @@ export default function Profile() {
       </div>
 
       {/* Prompts */}
-      <div className="mb-6">
+      <div id="prompts-section" className="mb-6">
         <h2 className="text-white/65 text-sm font-medium mb-3">Prompts</h2>
         <AnimatePresence>
           {editMode && showPromptModal && (!editedProfile?.prompts || editedProfile?.prompts?.length < 3) && (
@@ -926,32 +926,58 @@ export default function Profile() {
             </div>
           </div>
           
-          {/* Suggestions */}
+          {/* Tappable suggestions */}
           {completionPercentage < 100 && (
             <div className="space-y-2">
-              {(!myProfile.vibe_tags || myProfile.vibe_tags.length < 3) && (
-                <div className="flex items-center gap-2 text-white/80 text-sm">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#E70F72]" />
-                  <span>Add {3 - (myProfile.vibe_tags?.length || 0)} more vibe tags</span>
-                </div>
-              )}
               {(!myProfile.photos || myProfile.photos.length < 3) && (
-                <div className="flex items-center gap-2 text-white/80 text-sm">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#E70F72]" />
-                  <span>Upload {3 - (myProfile.photos?.length || 0)} more {(3 - (myProfile.photos?.length || 0)) === 1 ? 'photo' : 'photos'}</span>
-                </div>
+                <button
+                  onClick={() => { if (!editMode) setEditMode(true); document.getElementById('photos-section')?.scrollIntoView({ behavior: 'smooth' }); }}
+                  className="w-full flex items-center gap-3 py-2 px-3 rounded-xl bg-white/5 hover:bg-white/10 active:bg-white/15 transition-colors text-left"
+                >
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#E70F72] flex-shrink-0" />
+                  <span className="flex-1 text-white/80 text-sm">Upload {3 - (myProfile.photos?.length || 0)} more {(3 - (myProfile.photos?.length || 0)) === 1 ? 'photo' : 'photos'}</span>
+                  <ChevronRight className="w-4 h-4 text-white/30 flex-shrink-0" />
+                </button>
               )}
               {(!myProfile.prompts || myProfile.prompts.length < 2) && (
-                <div className="flex items-center gap-2 text-white/80 text-sm">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#E70F72]" />
-                  <span>Complete {2 - (myProfile.prompts?.length || 0)} more {(2 - (myProfile.prompts?.length || 0)) === 1 ? 'prompt' : 'prompts'}</span>
-                </div>
+                <button
+                  onClick={() => { if (!editMode) setEditMode(true); setShowPromptModal(true); document.getElementById('prompts-section')?.scrollIntoView({ behavior: 'smooth' }); }}
+                  className="w-full flex items-center gap-3 py-2 px-3 rounded-xl bg-white/5 hover:bg-white/10 active:bg-white/15 transition-colors text-left"
+                >
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#E70F72] flex-shrink-0" />
+                  <span className="flex-1 text-white/80 text-sm">Complete {2 - (myProfile.prompts?.length || 0)} more {(2 - (myProfile.prompts?.length || 0)) === 1 ? 'prompt' : 'prompts'}</span>
+                  <ChevronRight className="w-4 h-4 text-white/30 flex-shrink-0" />
+                </button>
+              )}
+              {(!myProfile.vibe_tags || myProfile.vibe_tags.length < 3) && (
+                <button
+                  onClick={() => { if (!editMode) setEditMode(true); document.getElementById('vibe-section')?.scrollIntoView({ behavior: 'smooth' }); }}
+                  className="w-full flex items-center gap-3 py-2 px-3 rounded-xl bg-white/5 hover:bg-white/10 active:bg-white/15 transition-colors text-left"
+                >
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#E70F72] flex-shrink-0" />
+                  <span className="flex-1 text-white/80 text-sm">Add {3 - (myProfile.vibe_tags?.length || 0)} more vibe tags</span>
+                  <ChevronRight className="w-4 h-4 text-white/30 flex-shrink-0" />
+                </button>
+              )}
+              {!myProfile.bio && (
+                <button
+                  onClick={() => { if (!editMode) setEditMode(true); document.getElementById('bio-section')?.scrollIntoView({ behavior: 'smooth' }); }}
+                  className="w-full flex items-center gap-3 py-2 px-3 rounded-xl bg-white/5 hover:bg-white/10 active:bg-white/15 transition-colors text-left"
+                >
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#E70F72] flex-shrink-0" />
+                  <span className="flex-1 text-white/80 text-sm">Write a bio</span>
+                  <ChevronRight className="w-4 h-4 text-white/30 flex-shrink-0" />
+                </button>
               )}
               {myProfile.verification_status !== 'verified' && (
-                <div className="flex items-center gap-2 text-white/80 text-sm">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#E70F72]" />
-                  <span>Get verified</span>
-                </div>
+                <button
+                  onClick={() => window.location.href = createPageUrl('Verification')}
+                  className="w-full flex items-center gap-3 py-2 px-3 rounded-xl bg-white/5 hover:bg-white/10 active:bg-white/15 transition-colors text-left"
+                >
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#E70F72] flex-shrink-0" />
+                  <span className="flex-1 text-white/80 text-sm">Get verified</span>
+                  <ChevronRight className="w-4 h-4 text-white/30 flex-shrink-0" />
+                </button>
               )}
             </div>
           )}
