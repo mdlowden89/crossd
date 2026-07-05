@@ -25,16 +25,16 @@ const interestOptions = [
 ];
 
 const promptOptions = [
-  "The way to win me over is...",
-  "My ideal Sunday looks like...",
-  "I'm looking for someone who...",
-  "Two truths and a lie...",
-  "My most controversial opinion is...",
-  "I geek out about...",
-  "The best trip I've been on...",
-  "I'm weirdly attracted to...",
-  "My simple pleasures are...",
-  "A life goal of mine is..."
+  { q: "The way to win me over is...", eg: "e.g. 'honestly just coffee and a good conversation'" },
+  { q: "My ideal Sunday looks like...", eg: "e.g. 'farmers market in the morning, film in the evening'" },
+  { q: "I'm looking for someone who...", eg: "e.g. 'makes me laugh and actually texts back'" },
+  { q: "Two truths and a lie...", eg: "e.g. 'I've been to 30 countries, I hate cheese, I own a boat'" },
+  { q: "My most controversial opinion is...", eg: "e.g. 'Die Hard is not a Christmas film, I'm done arguing'" },
+  { q: "I geek out about...", eg: "e.g. 'obscure 70s cinema and sourdough hydration ratios'" },
+  { q: "The best trip I've been on...", eg: "e.g. 'solo week in Kyoto — completely changed how I see the world'" },
+  { q: "I'm weirdly attracted to...", eg: "e.g. 'people who are really passionate about something, anything'" },
+  { q: "My simple pleasures are...", eg: "e.g. 'cold side of the pillow, finding a great playlist'" },
+  { q: "A life goal of mine is...", eg: "e.g. 'learn to sail before I turn 35'" },
 ];
 
 const vibeOptions = [
@@ -99,7 +99,7 @@ export default function SetupProfile() {
   };
 
   const addPrompt = (question) => {
-    if (profile.prompts.length < 3 && !profile.prompts.find(p => p.question === question)) {
+    if (profile.prompts.length < 2 && !profile.prompts.find(p => p.question === question)) {
       setProfile(prev => ({
         ...prev,
         prompts: [...prev.prompts, { question, answer: '' }]
@@ -162,7 +162,7 @@ export default function SetupProfile() {
   const steps = [
     { title: 'Add Photos', subtitle: 'Show your best self' },
     { title: 'Basic Info', subtitle: 'Tell us about you' },
-    { title: 'Prompts', subtitle: 'Share your personality' },
+    { title: 'Prompts', subtitle: 'Pick up to 2 to share your personality' },
     { title: 'Your Vibe', subtitle: 'Pick up to 5 tags' }
   ];
 
@@ -170,7 +170,7 @@ export default function SetupProfile() {
     switch(step) {
       case 0: return profile.photos.length >= 1;
       case 1: return profile.display_name && profile.birthdate && profile.gender && profile.interested_in;
-      case 2: return profile.prompts.length >= 1 && profile.prompts.every(p => p.answer);
+      case 2: return profile.prompts.length >= 1 && profile.prompts.every(p => p.answer.trim());
       case 3: return profile.vibe_tags.length >= 1;
       default: return false;
     }
@@ -382,36 +382,40 @@ export default function SetupProfile() {
               exit={{ opacity: 0, x: -20 }}
               className="space-y-4"
             >
-              {profile.prompts.map((prompt, index) => (
-                <CrossdCard key={index} className="relative">
-                  <button
-                    onClick={() => removePrompt(index)}
-                    className="absolute top-3 right-3 p-1 text-white/40 hover:text-white"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                  <p className="text-[#E70F72] text-sm font-medium mb-2">{prompt.question}</p>
-                  <textarea
-                    value={prompt.answer}
-                    onChange={(e) => updatePromptAnswer(index, e.target.value)}
-                    placeholder="Your answer..."
-                    className="w-full bg-transparent text-white resize-none focus:outline-none"
-                    rows={3}
-                  />
-                </CrossdCard>
-              ))}
+              {profile.prompts.map((prompt, index) => {
+                const meta = promptOptions.find(p => p.q === prompt.question);
+                return (
+                  <CrossdCard key={index} className="relative">
+                    <button
+                      onClick={() => removePrompt(index)}
+                      className="absolute top-3 right-3 p-1 text-white/40 hover:text-white"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                    <p className="text-[#E70F72] text-sm font-medium mb-2">{prompt.question}</p>
+                    <textarea
+                      value={prompt.answer}
+                      onChange={(e) => updatePromptAnswer(index, e.target.value)}
+                      placeholder={meta?.eg ?? 'Your answer...'}
+                      className="w-full bg-transparent text-white resize-none focus:outline-none placeholder:text-white/30 placeholder:italic"
+                      rows={3}
+                    />
+                  </CrossdCard>
+                );
+              })}
 
-              {profile.prompts.length < 3 && (
+              {profile.prompts.length < 2 && (
                 <div className="space-y-2">
-                  <p className="text-white/65 text-sm">Choose a prompt:</p>
+                  <p className="text-white/65 text-sm">Choose a prompt ({profile.prompts.length}/2):</p>
                   <div className="max-h-48 overflow-y-auto space-y-2">
-                    {promptOptions.filter(p => !profile.prompts.find(pp => pp.question === p)).map(prompt => (
+                    {promptOptions.filter(p => !profile.prompts.find(pp => pp.question === p.q)).map(prompt => (
                       <button
-                        key={prompt}
-                        onClick={() => addPrompt(prompt)}
-                        className="w-full text-left p-3 rounded-xl border border-white/15 text-white/65 hover:border-[#E70F72]/50 hover:text-white transition-colors"
+                        key={prompt.q}
+                        onClick={() => addPrompt(prompt.q)}
+                        className="w-full text-left p-3 rounded-xl border border-white/15 hover:border-[#E70F72]/50 hover:text-white transition-colors group"
                       >
-                        {prompt}
+                        <p className="text-white/80 text-sm group-hover:text-white">{prompt.q}</p>
+                        <p className="text-white/35 text-xs mt-0.5 italic">{prompt.eg}</p>
                       </button>
                     ))}
                   </div>
