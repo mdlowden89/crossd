@@ -731,111 +731,94 @@ export default function Dashboard() {
             </TooltipProvider>
           </div>
           
-          {/* Metric Cards — only show when user has data, else show activation prompt */}
-          {sparksThisWeek === 0 && dayStreak === 0 ? (
-            <div
-              onClick={() => navigate('/LogMoment')}
-              className="cursor-pointer flex items-center gap-4 px-5 py-4 rounded-2xl border border-dashed border-[#E70F72]/40 bg-[#E70F72]/5 hover:bg-[#E70F72]/10 transition-colors"
-            >
-              <div className="w-10 h-10 rounded-xl bg-[#E70F72]/15 flex items-center justify-center flex-shrink-0">
-                <Sparkles className="w-5 h-5 text-[#E70F72]" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-white font-semibold text-sm">Log your first moment to power up</p>
-                <p className="text-white/45 text-xs mt-0.5">Your streak, sparks, and energy score will appear here once you start.</p>
-              </div>
-              <ChevronRight className="w-4 h-4 text-[#E70F72] flex-shrink-0" />
+          {/* Metric Cards */}
+          <TooltipProvider>
+            <div className="grid grid-cols-3 gap-4">
+              {/* Day Streak */}
+              <Tooltip delayDuration={100}>
+                <TooltipTrigger asChild>
+                  <div className="bg-black/40 rounded-2xl p-4 text-center border border-[#E70F72]/20 cursor-pointer hover:border-orange-500/40 transition-colors">
+                    <Flame className="w-6 h-6 text-orange-500 mx-auto mb-2" />
+                    <div className="text-2xl font-bold text-white mb-1">{dayStreak}</div>
+                    <div className="text-white/50 text-sm">Day Streak</div>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent className="p-4 w-64 bg-[#0B0B0B] border-white/10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Flame className="w-4 h-4 text-orange-500" />
+                    <span className="font-bold text-white text-sm">Day Streak 🔥</span>
+                  </div>
+                  <p className="text-white/70 text-xs leading-relaxed mb-2">
+                    You've logged moments on <span className="text-orange-400 font-semibold">{dayStreak} consecutive day{dayStreak !== 1 ? 's' : ''}</span>. Keep it going!
+                  </p>
+                  <p className="text-white/45 text-xs leading-relaxed">
+                    A 7-day streak maxes out your Streak score and boosts your overall Spark Energy. Log at least one moment per day to maintain it.
+                  </p>
+                  {dayStreak < 7 && (
+                    <div className="mt-2 pt-2 border-t border-white/10">
+                      <p className="text-orange-400 text-xs font-medium">{7 - dayStreak} more day{7 - dayStreak !== 1 ? 's' : ''} to reach max streak ⚡</p>
+                    </div>
+                  )}
+                </TooltipContent>
+              </Tooltip>
+
+              {/* Sparks This Week */}
+              <Tooltip delayDuration={100}>
+                <TooltipTrigger asChild>
+                  <div className="bg-black/40 rounded-2xl p-4 text-center border border-[#E70F72]/20 cursor-pointer hover:border-[#E70F72]/50 transition-colors">
+                    <Sparkles className="w-6 h-6 text-[#E70F72] mx-auto mb-2" />
+                    <div className="text-2xl font-bold text-white mb-1">{sparksThisWeek}</div>
+                    <div className="text-white/50 text-sm">Sparks this week</div>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent className="p-4 w-64 bg-[#0B0B0B] border-white/10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Sparkles className="w-4 h-4 text-[#E70F72]" />
+                    <span className="font-bold text-white text-sm">Sparks This Week ✨</span>
+                  </div>
+                  <p className="text-white/70 text-xs leading-relaxed mb-2">
+                    You've logged <span className="text-[#E70F72] font-semibold">{sparksThisWeek} moment{sparksThisWeek !== 1 ? 's' : ''}</span> in the last 7 days.
+                  </p>
+                  <p className="text-white/45 text-xs leading-relaxed">
+                    Each moment you log builds your Activity score and adds to your PlacesDNA — making your matches more accurate. Aim for 5+ moments a week for peak visibility.
+                  </p>
+                  {sparksThisWeek < 5 && (
+                    <div className="mt-2 pt-2 border-t border-white/10">
+                      <p className="text-[#E70F72] text-xs font-medium">Log {5 - sparksThisWeek} more to reach peak activity 🎯</p>
+                    </div>
+                  )}
+                </TooltipContent>
+              </Tooltip>
+
+              {/* Expiring Moments */}
+              <Tooltip delayDuration={100}>
+                <TooltipTrigger asChild>
+                  <div className="bg-black/40 rounded-2xl p-4 text-center border border-[#E70F72]/20 cursor-pointer hover:border-blue-500/40 transition-colors">
+                    <Clock className="w-6 h-6 text-blue-500 mx-auto mb-2" />
+                    <div className="text-2xl font-bold text-white mb-1">{expiringMoments}</div>
+                    <div className="text-white/50 text-sm">Expiring Moments</div>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent className="p-4 w-64 bg-[#0B0B0B] border-white/10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Clock className="w-4 h-4 text-blue-500" />
+                    <span className="font-bold text-white text-sm">Expiring Moments ⏳</span>
+                  </div>
+                  <p className="text-white/70 text-xs leading-relaxed mb-2">
+                    <span className="text-blue-400 font-semibold">{expiringMoments} moment{expiringMoments !== 1 ? 's' : ''}</span> {expiringMoments !== 1 ? 'are' : 'is'} older than 7 days and no longer contributing to active crossings.
+                  </p>
+                  <p className="text-white/45 text-xs leading-relaxed">
+                    Moments power your ability to cross paths with others nearby. Only moments from the last 7 days are active — so keep logging to stay discoverable.
+                  </p>
+                  {expiringMoments > 0 && (
+                    <div className="mt-2 pt-2 border-t border-white/10">
+                      <p className="text-blue-400 text-xs font-medium">Log a new moment to refresh your trail 📍</p>
+                    </div>
+                  )}
+                </TooltipContent>
+              </Tooltip>
             </div>
-          ) : (
-            <TooltipProvider>
-              <div className="grid grid-cols-3 gap-4">
-                {/* Day Streak */}
-                <Tooltip delayDuration={100}>
-                  <TooltipTrigger asChild>
-                    {dayStreak === 0 ? (
-                      <div onClick={() => navigate('/LogMoment')} className="bg-black/40 rounded-2xl p-4 text-center border border-dashed border-orange-500/30 cursor-pointer hover:border-orange-500/50 transition-colors">
-                        <Flame className="w-6 h-6 text-orange-500/40 mx-auto mb-2" />
-                        <div className="text-xs text-orange-400 font-medium leading-tight">Start your streak today →</div>
-                      </div>
-                    ) : (
-                      <div className="bg-black/40 rounded-2xl p-4 text-center border border-[#E70F72]/20 cursor-pointer hover:border-orange-500/40 transition-colors">
-                        <Flame className="w-6 h-6 text-orange-500 mx-auto mb-2" />
-                        <div className="text-2xl font-bold text-white mb-1">{dayStreak}</div>
-                        <div className="text-white/50 text-sm">Day Streak</div>
-                      </div>
-                    )}
-                  </TooltipTrigger>
-                  <TooltipContent className="p-4 w-64 bg-[#0B0B0B] border-white/10">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Flame className="w-4 h-4 text-orange-500" />
-                      <span className="font-bold text-white text-sm">Day Streak 🔥</span>
-                    </div>
-                    {dayStreak === 0 ? (
-                      <p className="text-white/70 text-xs leading-relaxed">Log a moment today to start your streak. A 7-day streak maxes out your Streak score and boosts your Spark Energy.</p>
-                    ) : (
-                      <>
-                        <p className="text-white/70 text-xs leading-relaxed mb-2">
-                          You've logged moments on <span className="text-orange-400 font-semibold">{dayStreak} consecutive day{dayStreak !== 1 ? 's' : ''}</span>. Keep it going!
-                        </p>
-                        {dayStreak < 7 && (
-                          <div className="mt-2 pt-2 border-t border-white/10">
-                            <p className="text-orange-400 text-xs font-medium">{7 - dayStreak} more day{7 - dayStreak !== 1 ? 's' : ''} to reach max streak ⚡</p>
-                          </div>
-                        )}
-                      </>
-                    )}
-                  </TooltipContent>
-                </Tooltip>
-
-                {/* Sparks This Week */}
-                <Tooltip delayDuration={100}>
-                  <TooltipTrigger asChild>
-                    <div className="bg-black/40 rounded-2xl p-4 text-center border border-[#E70F72]/20 cursor-pointer hover:border-[#E70F72]/50 transition-colors">
-                      <Sparkles className="w-6 h-6 text-[#E70F72] mx-auto mb-2" />
-                      <div className="text-2xl font-bold text-white mb-1">{sparksThisWeek}</div>
-                      <div className="text-white/50 text-sm">Sparks this week</div>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent className="p-4 w-64 bg-[#0B0B0B] border-white/10">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Sparkles className="w-4 h-4 text-[#E70F72]" />
-                      <span className="font-bold text-white text-sm">Sparks This Week ✨</span>
-                    </div>
-                    <p className="text-white/70 text-xs leading-relaxed mb-2">
-                      You've logged <span className="text-[#E70F72] font-semibold">{sparksThisWeek} moment{sparksThisWeek !== 1 ? 's' : ''}</span> in the last 7 days.
-                    </p>
-                    <p className="text-white/45 text-xs leading-relaxed">Aim for 5+ moments a week for peak visibility.</p>
-                    {sparksThisWeek < 5 && (
-                      <div className="mt-2 pt-2 border-t border-white/10">
-                        <p className="text-[#E70F72] text-xs font-medium">Log {5 - sparksThisWeek} more to reach peak activity 🎯</p>
-                      </div>
-                    )}
-                  </TooltipContent>
-                </Tooltip>
-
-                {/* Expiring Moments */}
-                <Tooltip delayDuration={100}>
-                  <TooltipTrigger asChild>
-                    <div className="bg-black/40 rounded-2xl p-4 text-center border border-[#E70F72]/20 cursor-pointer hover:border-blue-500/40 transition-colors">
-                      <Clock className="w-6 h-6 text-blue-500 mx-auto mb-2" />
-                      <div className="text-2xl font-bold text-white mb-1">{expiringMoments}</div>
-                      <div className="text-white/50 text-sm">Expiring Moments</div>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent className="p-4 w-64 bg-[#0B0B0B] border-white/10">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Clock className="w-4 h-4 text-blue-500" />
-                      <span className="font-bold text-white text-sm">Expiring Moments ⏳</span>
-                    </div>
-                    <p className="text-white/70 text-xs leading-relaxed mb-2">
-                      <span className="text-blue-400 font-semibold">{expiringMoments} moment{expiringMoments !== 1 ? 's' : ''}</span> {expiringMoments !== 1 ? 'are' : 'is'} older than 7 days and no longer contributing to active crossings.
-                    </p>
-                    <p className="text-white/45 text-xs leading-relaxed">Only moments from the last 7 days are active — keep logging to stay discoverable.</p>
-                  </TooltipContent>
-                </Tooltip>
-              </div>
-            </TooltipProvider>
-          )}
+          </TooltipProvider>
         </motion.div>
 
         {/* City Pulse Card */}
