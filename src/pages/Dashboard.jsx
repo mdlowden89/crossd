@@ -679,16 +679,28 @@ export default function Dashboard() {
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
                   <div className="cursor-help">
-                    <div className="h-3 bg-white/10 rounded-full overflow-hidden">
+                    <div className="flex items-center justify-between text-xs mb-2">
+                      <span className="text-white/60">
+                        <span className="text-[#E70F72] font-bold">{energyData.score}%</span> toward this week's Spark goal
+                      </span>
+                      <span className="text-white/40">Goal: 80%</span>
+                    </div>
+                    <div className="relative h-3 bg-white/10 rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${energyData.score}%` }}
                         transition={{ duration: 1, ease: "easeOut" }}
                         className="h-full bg-[#E70F72] rounded-full" />
-
+                      {/* 80% milestone marker */}
+                      <div className="absolute top-0 bottom-0 w-0.5 bg-white/40" style={{ left: '80%' }} />
                     </div>
-                    <div className="text-center text-[#E70F72] font-bold mt-2">
-                      {energyData.score}%
+                    <div className="flex items-center justify-between mt-1.5">
+                      <span className="text-white/35 text-xs">
+                        {energyData.score >= 80
+                          ? '🎯 Spark goal reached — you\'re fully visible this week!'
+                          : `Log ${5 - Math.min(sparksThisWeek, 5)} more moment${5 - Math.min(sparksThisWeek, 5) !== 1 ? 's' : ''} to boost your score`}
+                      </span>
+                      <span className="text-white/30 text-xs">↑ 80% = peak visibility</span>
                     </div>
                   </div>
                 </TooltipTrigger>
