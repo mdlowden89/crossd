@@ -28,6 +28,17 @@ export default function Profile() {
     loadProfile();
   }, []);
 
+  useEffect(() => {
+    if (!myProfile) return;
+    const hash = window.location.hash;
+    if (hash) {
+      setTimeout(() => {
+        const el = document.querySelector(hash);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 300);
+    }
+  }, [myProfile]);
+
   const loadProfile = async () => {
     const user = await base44.auth.me();
     const profiles = await base44.entities.Profile.filter({ user_id: user.id });
