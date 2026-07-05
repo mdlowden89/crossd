@@ -62,7 +62,9 @@ export default function SetupProfile() {
     prompts: [],
     vibe_tags: [],
     age_min: 18,
-    age_max: 40
+    age_max: 40,
+    hangout_areas: [],
+    hangout_input: ''
   });
 
   useEffect(() => {
@@ -123,6 +125,17 @@ export default function SetupProfile() {
     }));
   };
 
+  const addHangoutArea = (area) => {
+    const trimmed = area.trim();
+    if (trimmed && !profile.hangout_areas.includes(trimmed) && profile.hangout_areas.length < 5) {
+      setProfile(prev => ({ ...prev, hangout_areas: [...prev.hangout_areas, trimmed], hangout_input: '' }));
+    }
+  };
+
+  const removeHangoutArea = (area) => {
+    setProfile(prev => ({ ...prev, hangout_areas: prev.hangout_areas.filter(a => a !== area) }));
+  };
+
   const toggleVibe = (vibe) => {
     setProfile(prev => ({
       ...prev,
@@ -141,13 +154,13 @@ export default function SetupProfile() {
     // Check if profile already exists
     const existingProfiles = await base44.entities.Profile.filter({ user_id: user.id });
     
+    const { hangout_input, ...profileData } = profile;
+
     if (existingProfiles.length > 0) {
-      // Update existing profile
-      await base44.entities.Profile.update(existingProfiles[0].id, profile);
+      await base44.entities.Profile.update(existingProfiles[0].id, profileData);
     } else {
-      // Create new profile
       await base44.entities.Profile.create({
-        ...profile,
+        ...profileData,
         user_id: user.id,
         onboarding_complete: true,
         last_active_at: new Date().toISOString(),
@@ -410,6 +423,46 @@ export default function SetupProfile() {
                   value={profile.city}
                   onChange={(e) => setProfile({ ...profile, city: e.target.value })}
                 />
+              </div>
+
+              <div>
+                <label className="text-white/80 text-sm mb-1 block">Where do you usually hang out?</label>
+                <p className="text-white/40 text-xs mb-2">Helps us find crossings that feel intentional, not random. Up to 5 areas.</p>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={profile.hangout_input}
+                    onChange={(e) => setProfile(prev => ({ ...prev, hangout_input: e.target.value }))}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ',') {
+                        e.preventDefault();
+                        addHangoutArea(profile.hangout_input);
+                      }
+                    }}
+                    placeholder="e.g. Shoreditch, King's Cross..."
+                    className="flex-1 bg-white/5 border border-white/15 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-[#E70F72]/50 placeholder:text-white/30"
+                  />
+                  <button
+                    onClick={() => addHangoutArea(profile.hangout_input)}
+                    disabled={!profile.hangout_input?.trim()}
+                    className="px-3 py-2.5 rounded-xl bg-[#E70F72]/15 text-[#E70F72] border border-[#E70F72]/30 disabled:opacity-30 hover:bg-[#E70F72]/25 transition-colors"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
+                </div>
+                {profile.hangout_areas.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-2.5">
+                    {profile.hangout_areas.map(area => (
+                      <span key={area} className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E70F72]/10 border border-[#E70F72]/25 text-[#E70F72] text-sm">
+                        <MapPin className="w-3 h-3" />
+                        {area}
+                        <button onClick={() => removeHangoutArea(area)} className="ml-0.5 text-[#E70F72]/60 hover:text-[#E70F72]">
+                          <X className="w-3 h-3" />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             </motion.div>
           )}

@@ -35,6 +35,16 @@
       ],
       "description": "Who the user is interested in meeting"
     },
+    "age_min": {
+      "type": "number",
+      "description": "Minimum age preference for matches",
+      "default": 18
+    },
+    "age_max": {
+      "type": "number",
+      "description": "Maximum age preference for matches",
+      "default": 40
+    },
     "height": {
       "type": "number",
       "description": "Height in centimeters"
@@ -169,6 +179,13 @@
     "city": {
       "type": "string",
       "description": "User's city"
+    },
+    "hangout_areas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Neighbourhoods/areas where the user usually spends time \u2014 used to improve crossing relevance"
     },
     "photos": {
       "type": "array",
