@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, ChevronRight, MapPin, Clock } from 'lucide-react';
+import { Sparkles, MapPin, Clock } from 'lucide-react';
 import { getArchetypeInfo } from '@/components/spark/placesDnaEngine';
+import CityPulseSetup from '@/components/dashboard/CityPulseSetup';
 
 const CATEGORY_TO_ARCHETYPE = {
   cafe: 'calm_cozy', coffee_shop: 'calm_cozy', art_gallery: 'creative',
@@ -18,7 +19,8 @@ function deriveArchetype(venueTypes = []) {
   return 'social_buzzing';
 }
 
-export default function CityPulseCard({ moments = [], isNew = true }) {
+export default function CityPulseCard({ moments = [], profile = null, isNew = true }) {
+  const [setupDone, setSetupDone] = useState(false);
   const isSampleData = moments.some(m => m._isSample);
   const realMoments = moments.filter(m => !m._isSample);
 
@@ -86,50 +88,11 @@ export default function CityPulseCard({ moments = [], isNew = true }) {
     return { topZones, topArchetypes, peakLabel, sparkWindow, logCount: sourceMoments.length };
   }, [moments]);
 
-  if (!pulse || isSampleData) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden rounded-3xl p-6 border border-white/10"
-        style={{ background: 'linear-gradient(135deg, #0d0218 0%, #0B0B0B 100%)' }}
-      >
-        <div className="flex items-center justify-between mb-1">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-[#E70F72]" />
-            <span className="text-white font-bold text-lg">Your City Pulse</span>
-          </div>
-          <span className="text-xs bg-white/10 text-white/50 px-2 py-0.5 rounded-full font-medium border border-white/10">Example</span>
-        </div>
-        <p className="text-white/40 text-xs mb-5">Here's what your weekly vibe recap will look like once you start logging moments.</p>
-
-        <div className="grid grid-cols-2 gap-3">
-          <div className="bg-black/40 rounded-2xl p-3 border border-white/10">
-            <div className="flex items-center gap-1.5 mb-2">
-              <MapPin className="w-3.5 h-3.5 text-[#E70F72]" />
-              <span className="text-white/50 text-xs">Top Zones</span>
-            </div>
-            <p className="text-white/60 text-xs leading-relaxed">The areas you spend the most time in, based on your logged moments.</p>
-          </div>
-          <div className="bg-black/40 rounded-2xl p-3 border border-white/10">
-            <div className="flex items-center gap-1.5 mb-2">
-              <Clock className="w-3.5 h-3.5 text-amber-400" />
-              <span className="text-white/50 text-xs">Peak Time</span>
-            </div>
-            <p className="text-white/60 text-xs leading-relaxed">When you're most active out and about during the week.</p>
-          </div>
-          <div className="bg-black/40 rounded-2xl p-3 border border-white/10 col-span-2">
-            <p className="text-white/50 text-xs mb-2">Your PlacesDNA</p>
-            <p className="text-white/60 text-xs leading-relaxed">Your unique vibe signature — the types of places and atmospheres that define your routine.</p>
-          </div>
-        </div>
-
-        <div className="mt-4 pt-4 border-t border-white/10 flex items-center justify-center gap-2 text-[#E70F72] text-sm font-semibold">
-          <Sparkles className="w-4 h-4" />
-          Log your first moment to unlock this
-        </div>
-      </motion.div>
-    );
+  if ((!pulse || isSampleData) && !setupDone) {
+    if (profile) {
+      return <CityPulseSetup profile={profile} onSaved={() => setSetupDone(true)} />;
+    }
+    return null;
   }
 
   return (

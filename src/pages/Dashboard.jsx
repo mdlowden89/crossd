@@ -846,7 +846,7 @@ export default function Dashboard() {
 
         {/* City Pulse Card */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-          <CityPulseCard moments={moments} isNew={true} />
+          <CityPulseCard moments={moments} profile={profile} isNew={true} />
         </motion.div>
 
         {/* Spark Chance Meter */}
