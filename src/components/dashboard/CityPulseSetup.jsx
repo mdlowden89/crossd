@@ -19,16 +19,16 @@ const PEAK_TIMES = [
 ];
 
 const ARCHETYPES = [
-  { id: 'calm_cozy', emoji: '☕', label: 'Calm & Cosy', sub: 'Cafés, bookshops' },
-  { id: 'social_buzzing', emoji: '🍻', label: 'Social Buzz', sub: 'Bars, pubs' },
-  { id: 'active_energetic', emoji: '🏃', label: 'Active', sub: 'Gym, parks, sport' },
-  { id: 'creative', emoji: '🎨', label: 'Creative', sub: 'Galleries, studios' },
-  { id: 'romantic', emoji: '🕯️', label: 'Romantic', sub: 'Restaurants, wine bars' },
-  { id: 'nightlife', emoji: '🎶', label: 'Nightlife', sub: 'Clubs, late venues' },
-  { id: 'nature_grounded', emoji: '🌿', label: 'Nature', sub: 'Parks, outdoors' },
-  { id: 'deep_intellectual', emoji: '📚', label: 'Intellectual', sub: 'Libraries, talks' },
-  { id: 'live_electric', emoji: '⚡', label: 'Live Events', sub: 'Gigs, concerts' },
-  { id: 'intimate_local', emoji: '🏡', label: 'Local Gems', sub: 'Neighbourhood spots' },
+  { id: 'calm_cozy', emoji: '☕', label: 'Calm & Cosy', sub: 'Cafés, bookshops', desc: 'You unwind in quiet, unhurried spots — your crossings happen over flat whites, not first rounds.' },
+  { id: 'social_buzzing', emoji: '🍻', label: 'Social Buzz', sub: 'Bars, pubs', desc: 'Your scene is loud tables and easy conversation — you show up where the energy is.' },
+  { id: 'active_energetic', emoji: '🏃', label: 'Active', sub: 'Gym, parks, sport', desc: 'You move through the city — parks, pitches, and morning runs are your natural habitat.' },
+  { id: 'creative', emoji: '🎨', label: 'Creative', sub: 'Galleries, studios', desc: 'Art spaces, makers\' markets, and concept stores are where you naturally gravitate.' },
+  { id: 'romantic', emoji: '🕯️', label: 'Romantic', sub: 'Restaurants, wine bars', desc: 'You lean into atmosphere — candlelit dinners and slow evenings over good wine.' },
+  { id: 'nightlife', emoji: '🎶', label: 'Nightlife', sub: 'Clubs, late venues', desc: 'Your best moments start after midnight — you\'re drawn to the late crowd and the bass.' },
+  { id: 'nature_grounded', emoji: '🌿', label: 'Nature', sub: 'Parks, outdoors', desc: 'You recharge outside — green spaces, canal paths, and weekend escapes from the concrete.' },
+  { id: 'deep_intellectual', emoji: '📚', label: 'Intellectual', sub: 'Libraries, talks', desc: 'Talks, debates, and bookshops — you go where ideas are being exchanged.' },
+  { id: 'live_electric', emoji: '⚡', label: 'Live Events', sub: 'Gigs, concerts', desc: 'Venues and stages pull you in — you\'re at your best in a crowd all feeling the same thing.' },
+  { id: 'intimate_local', emoji: '🏡', label: 'Local Gems', sub: 'Neighbourhood spots', desc: 'You\'ve found the hidden spots — the corner deli, the tiny wine bar no one else knows yet.' },
 ];
 
 export default function CityPulseSetup({ profile, onSaved }) {
@@ -224,11 +224,12 @@ export default function CityPulseSetup({ profile, onSaved }) {
 
         {step === 2 && (
           <motion.div key="dna" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 mb-1">
               <Sparkles className="w-4 h-4 text-purple-400" />
-              <span className="text-white font-semibold text-sm">What's your vibe?</span>
+              <span className="text-white font-semibold text-sm">What's your PlacesDNA?</span>
             </div>
-            <p className="text-white/40 text-xs mb-3">Pick up to 3 that fit your scene.</p>
+            <p className="text-white/40 text-xs mb-1">These archetypes describe <em>how</em> you move through the city — we use them to surface people who cross paths with you in the same kinds of places.</p>
+            <p className="text-white/30 text-xs mb-3">Pick up to 3 that fit your scene.</p>
             <div className="grid grid-cols-2 gap-2">
               {ARCHETYPES.map(a => {
                 const sel = dna.includes(a.id);
@@ -236,13 +237,18 @@ export default function CityPulseSetup({ profile, onSaved }) {
                   <button
                     key={a.id}
                     onClick={() => toggleItem(dna, setDna, a.id, 3)}
-                    className={`flex items-center gap-2 px-3 py-2.5 rounded-2xl border text-left transition-all ${sel ? 'bg-purple-500/20 border-purple-400/60 text-white' : 'bg-white/5 border-white/10 text-white/60 hover:border-white/25'}`}
+                    className={`flex flex-col gap-1 px-3 py-2.5 rounded-2xl border text-left transition-all ${sel ? 'bg-purple-500/20 border-purple-400/60 text-white' : 'bg-white/5 border-white/10 text-white/60 hover:border-white/25'}`}
                   >
-                    <span className="text-base">{a.emoji}</span>
-                    <div>
-                      <div className="text-xs font-semibold leading-none">{a.label}</div>
-                      <div className="text-[10px] text-white/35 mt-0.5">{a.sub}</div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-base">{a.emoji}</span>
+                      <div>
+                        <div className="text-xs font-semibold leading-none">{a.label}</div>
+                        <div className="text-[10px] text-white/35 mt-0.5">{a.sub}</div>
+                      </div>
                     </div>
+                    {sel && (
+                      <p className="text-[10px] text-purple-300/70 leading-relaxed mt-0.5">{a.desc}</p>
+                    )}
                   </button>
                 );
               })}
