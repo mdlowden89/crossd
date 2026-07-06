@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, ChevronRight, MapPin, Clock } from 'lucide-react';
-import { createPageUrl } from '@/utils';
-import { Link } from 'react-router-dom';
 import { getArchetypeInfo } from '@/components/spark/placesDnaEngine';
 
 const CATEGORY_TO_ARCHETYPE = {
@@ -139,74 +137,68 @@ export default function CityPulseCard({ moments = [], isNew = true }) {
   }
 
   return (
-    <Link to={createPageUrl('Recaps')}>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        whileTap={{ scale: 0.98 }}
-        className="relative overflow-hidden rounded-3xl p-6 border border-[#E70F72]/30 cursor-pointer"
-        style={{ background: 'linear-gradient(135deg, #0d0218 0%, #0B0B0B 100%)', boxShadow: '0 0 30px rgba(231,15,114,0.12)' }}
-      >
-        {/* Shimmer bg */}
-        <div className="absolute inset-0 opacity-10 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 70% 30%, #E70F72 0%, transparent 60%)' }} />
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="relative overflow-hidden rounded-3xl p-6 border border-[#E70F72]/30"
+      style={{ background: 'linear-gradient(135deg, #0d0218 0%, #0B0B0B 100%)', boxShadow: '0 0 30px rgba(231,15,114,0.12)' }}
+    >
+      {/* Shimmer bg */}
+      <div className="absolute inset-0 opacity-10 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at 70% 30%, #E70F72 0%, transparent 60%)' }} />
 
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-[#E70F72]" />
-            <span className="text-white font-bold text-lg">Your City Pulse</span>
-            {isNew && (
-              <span className="text-xs bg-[#E70F72] text-white px-2 py-0.5 rounded-full font-semibold">NEW</span>
-            )}
+      <div className="flex items-start justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <Sparkles className="w-5 h-5 text-[#E70F72]" />
+          <span className="text-white font-bold text-lg">Your City Pulse</span>
+          {isNew && (
+            <span className="text-xs bg-[#E70F72] text-white px-2 py-0.5 rounded-full font-semibold">NEW</span>
+          )}
+        </div>
+      </div>
+
+      <p className="text-white/50 text-xs mb-5">Weekly recap of where your vibe shows up.</p>
+
+      <div className="grid grid-cols-2 gap-3">
+        {/* Top Zones */}
+        <div className="bg-black/40 rounded-2xl p-3 border border-white/10">
+          <div className="flex items-center gap-1.5 mb-2">
+            <MapPin className="w-3.5 h-3.5 text-[#E70F72]" />
+            <span className="text-white/50 text-xs">Top Zones</span>
           </div>
-          <ChevronRight className="w-5 h-5 text-white/40" />
+          {pulse.topZones.map((z, i) => (
+            <p key={i} className="text-white text-sm font-semibold truncate">{z}</p>
+          ))}
         </div>
 
-        <p className="text-white/50 text-xs mb-5">Weekly recap of where your vibe shows up.</p>
-
-        <div className="grid grid-cols-2 gap-3">
-          {/* Top Zones */}
-          <div className="bg-black/40 rounded-2xl p-3 border border-white/10">
-            <div className="flex items-center gap-1.5 mb-2">
-              <MapPin className="w-3.5 h-3.5 text-[#E70F72]" />
-              <span className="text-white/50 text-xs">Top Zones</span>
-            </div>
-            {pulse.topZones.map((z, i) => (
-              <p key={i} className="text-white text-sm font-semibold truncate">{z}</p>
-            ))}
+        {/* Peak Time */}
+        <div className="bg-black/40 rounded-2xl p-3 border border-white/10">
+          <div className="flex items-center gap-1.5 mb-2">
+            <Clock className="w-3.5 h-3.5 text-amber-400" />
+            <span className="text-white/50 text-xs">Peak Time</span>
           </div>
-
-          {/* Peak Time */}
-          <div className="bg-black/40 rounded-2xl p-3 border border-white/10">
-            <div className="flex items-center gap-1.5 mb-2">
-              <Clock className="w-3.5 h-3.5 text-amber-400" />
-              <span className="text-white/50 text-xs">Peak Time</span>
-            </div>
-            <p className="text-white text-sm font-semibold">{pulse.peakLabel}</p>
-          </div>
-
-          {/* PlacesDNA */}
-          <div className="bg-black/40 rounded-2xl p-3 border border-white/10 col-span-2">
-            <p className="text-white/50 text-xs mb-2">Your PlacesDNA this week</p>
-            <div className="flex gap-2 flex-wrap">
-              {pulse.topArchetypes.map((arch, i) => {
-                const info = getArchetypeInfo(arch);
-                return (
-                  <span key={i} className="text-xs px-2.5 py-1 rounded-full font-semibold"
-                    style={{ backgroundColor: `${info.color}20`, color: info.color, border: `1px solid ${info.color}40` }}>
-                    {info.emoji} {info.label}
-                  </span>
-                );
-              })}
-              <span className="text-xs px-2.5 py-1 rounded-full bg-white/5 text-white/50 border border-white/10">
-                ⚡ Best: {pulse.sparkWindow}
-              </span>
-            </div>
-          </div>
+          <p className="text-white text-sm font-semibold">{pulse.peakLabel}</p>
         </div>
 
-        <p className="text-white/30 text-xs mt-4 text-center">View this week →</p>
-      </motion.div>
-    </Link>
+        {/* PlacesDNA */}
+        <div className="bg-black/40 rounded-2xl p-3 border border-white/10 col-span-2">
+          <p className="text-white/50 text-xs mb-2">Your PlacesDNA this week</p>
+          <div className="flex gap-2 flex-wrap">
+            {pulse.topArchetypes.map((arch, i) => {
+              const info = getArchetypeInfo(arch);
+              return (
+                <span key={i} className="text-xs px-2.5 py-1 rounded-full font-semibold"
+                  style={{ backgroundColor: `${info.color}20`, color: info.color, border: `1px solid ${info.color}40` }}>
+                  {info.emoji} {info.label}
+                </span>
+              );
+            })}
+            <span className="text-xs px-2.5 py-1 rounded-full bg-white/5 text-white/50 border border-white/10">
+              ⚡ Best: {pulse.sparkWindow}
+            </span>
+          </div>
+        </div>
+      </div>
+    </motion.div>
   );
 }
