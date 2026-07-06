@@ -90,31 +90,35 @@ export default function CityPulseCard({ moments = [], isNew = true }) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden rounded-3xl p-6 border border-white/10 cursor-pointer"
+        className="relative overflow-hidden rounded-3xl p-6 border border-white/10"
         style={{ background: 'linear-gradient(135deg, #0d0218 0%, #0B0B0B 100%)' }}
       >
-        <div className="flex items-center gap-2 mb-3">
-          <Sparkles className="w-5 h-5 text-[#E70F72]" />
-          <span className="text-white font-bold text-lg">Your City Pulse</span>
+        <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-[#E70F72]" />
+            <span className="text-white font-bold text-lg">Your City Pulse</span>
+          </div>
+          <span className="text-xs bg-white/10 text-white/50 px-2 py-0.5 rounded-full font-medium border border-white/10">Example</span>
         </div>
-        <p className="text-white/50 text-xs mb-5">Log moments to unlock your weekly vibe recap.</p>
-        <div className="grid grid-cols-2 gap-3 opacity-40 pointer-events-none select-none blur-[1px]">
-          <div className="bg-black/40 rounded-2xl p-3 border border-white/10">
+        <p className="text-white/40 text-xs mb-5">Here's what your weekly vibe recap will look like once you start logging moments.</p>
+
+        <div className="grid grid-cols-2 gap-3 select-none">
+          <div className="bg-black/40 rounded-2xl p-3 border border-white/10 opacity-50 blur-[1.5px]">
             <div className="flex items-center gap-1.5 mb-2">
               <MapPin className="w-3.5 h-3.5 text-[#E70F72]" />
               <span className="text-white/50 text-xs">Top Zones</span>
             </div>
-            <p className="text-white text-sm font-semibold">Coffee Shop</p>
-            <p className="text-white text-sm font-semibold">City Park</p>
+            <p className="text-white text-sm font-semibold">Shoreditch</p>
+            <p className="text-white text-sm font-semibold">Victoria Park</p>
           </div>
-          <div className="bg-black/40 rounded-2xl p-3 border border-white/10">
+          <div className="bg-black/40 rounded-2xl p-3 border border-white/10 opacity-50 blur-[1.5px]">
             <div className="flex items-center gap-1.5 mb-2">
               <Clock className="w-3.5 h-3.5 text-amber-400" />
               <span className="text-white/50 text-xs">Peak Time</span>
             </div>
             <p className="text-white text-sm font-semibold">Fri 18:00–21:00</p>
           </div>
-          <div className="bg-black/40 rounded-2xl p-3 border border-white/10 col-span-2">
+          <div className="bg-black/40 rounded-2xl p-3 border border-white/10 col-span-2 opacity-50 blur-[1.5px]">
             <p className="text-white/50 text-xs mb-2">Your PlacesDNA this week</p>
             <div className="flex gap-2">
               <span className="text-xs px-2.5 py-1 rounded-full font-semibold bg-[#C49A6C]/20 text-[#C49A6C] border border-[#C49A6C]/40">☕ Calm & Cozy</span>
@@ -122,9 +126,10 @@ export default function CityPulseCard({ moments = [], isNew = true }) {
             </div>
           </div>
         </div>
-        <div className="mt-4 flex items-center justify-center gap-2 text-[#E70F72] text-sm font-semibold">
+
+        <div className="mt-4 pt-4 border-t border-white/10 flex items-center justify-center gap-2 text-[#E70F72] text-sm font-semibold">
           <Sparkles className="w-4 h-4" />
-          Log your first moment to see your real pulse
+          Log your first moment to unlock this
         </div>
       </motion.div>
     );
