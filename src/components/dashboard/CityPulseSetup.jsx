@@ -266,9 +266,7 @@ export default function CityPulseSetup({ profile, onSaved }) {
                         <div className="text-[10px] text-white/35 mt-0.5">{a.sub}</div>
                       </div>
                     </div>
-                    {sel && (
-                      <p className="text-[10px] text-purple-300/70 leading-relaxed mt-0.5">{a.desc}</p>
-                    )}
+                    <p className={`text-[10px] leading-relaxed mt-0.5 ${sel ? 'text-purple-300/80' : 'text-white/30'}`}>{a.desc}</p>
                   </button>
                 );
               })}
