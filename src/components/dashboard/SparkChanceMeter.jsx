@@ -95,10 +95,10 @@ export default function SparkChanceMeter({ moments = [] }) {
       {/* Components grid */}
       <div className="grid grid-cols-2 gap-2">
         {[
-          { label: 'Consistency', value: data.components.consistency, hint: 'Log streak' },
-          { label: 'Variety', value: data.components.variety, hint: 'Place types' },
-          { label: 'Peak Clarity', value: data.components.peakClarity, hint: 'Time pattern' },
-          { label: 'DNA Confidence', value: data.components.dnaConfidence, hint: 'Total logs' },
+          { label: 'Consistency', value: data.components.consistency, hint: 'How regularly you log moments. A longer streak signals a reliable city pattern, which makes crossings more meaningful.' },
+          { label: 'Variety', value: data.components.variety, hint: 'The range of place types you visit. More variety builds a richer PlacesDNA, helping us match you across different scene types.' },
+          { label: 'Peak Clarity', value: data.components.peakClarity, hint: 'How concentrated your activity is around a specific time of day. A clear peak window makes time-based crossings much more accurate.' },
+          { label: 'DNA Confidence', value: data.components.dnaConfidence, hint: 'Based on your total number of logs. More moments give the engine enough data to build a confident location personality for you.' },
         ].map(({ label, value, hint }) => (
           <div key={label} className="bg-black/40 rounded-xl p-3 border border-white/10">
             <div className="flex justify-between items-center mb-1.5">
@@ -114,7 +114,7 @@ export default function SparkChanceMeter({ moments = [] }) {
                 style={{ background: barColor }}
               />
             </div>
-            <p className="text-white/30 text-xs mt-1">{hint}</p>
+            <p className="text-white/30 text-[10px] mt-1.5 leading-relaxed">{hint}</p>
           </div>
         ))}
       </div>
