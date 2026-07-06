@@ -56,10 +56,10 @@ export default function Dashboard() {
       if (!profile) return [];
       const realMoments = await base44.entities.Moment.filter({ user_id: profile.id }, '-created_date', 100);
       
-      // If no real moments, return sample data
+      // If no real moments, return sample data (tagged so UI can show example states)
       if (realMoments.length === 0) {
         const baseDate = new Date(2026, 1, 9);
-        return [
+        return [{ _isSample: true }, ...
           {
             id: 'sample-1',
             user_id: profile.id,

@@ -21,13 +21,16 @@ function deriveArchetype(venueTypes = []) {
 }
 
 export default function CityPulseCard({ moments = [], isNew = true }) {
+  const isSampleData = moments.some(m => m._isSample);
+  const realMoments = moments.filter(m => !m._isSample);
+
   const pulse = useMemo(() => {
-    if (!moments.length) return null;
+    if (!realMoments.length) return null;
 
     const now = new Date();
     const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
-    const weekMoments = moments.filter(m => new Date(m.created_date) > weekAgo);
-    const sourceMoments = weekMoments.length > 0 ? weekMoments : moments.slice(0, 5);
+    const weekMoments = realMoments.filter(m => new Date(m.created_date) > weekAgo);
+    const sourceMoments = weekMoments.length > 0 ? weekMoments : realMoments.slice(0, 5);
 
     // Top 2 zones by venue name
     const zoneMap = {};
@@ -85,7 +88,7 @@ export default function CityPulseCard({ moments = [], isNew = true }) {
     return { topZones, topArchetypes, peakLabel, sparkWindow, logCount: sourceMoments.length };
   }, [moments]);
 
-  if (!pulse) {
+  if (!pulse || isSampleData) {
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
