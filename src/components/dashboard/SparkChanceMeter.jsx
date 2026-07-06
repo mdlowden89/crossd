@@ -23,17 +23,17 @@ const CATEGORY_TO_ARCHETYPE = {
 };
 
 const METRICS = [
-  { key: 'consistency',   label: 'Consistency',    color: '#E70F72', hint: 'How regularly you log moments. A longer streak signals a reliable city pattern, which makes crossings more meaningful.' },
-  { key: 'variety',       label: 'Variety',        color: '#A855F7', hint: 'The range of place types you visit. More variety builds a richer PlacesDNA, helping us match you across different scene types.' },
-  { key: 'peakClarity',   label: 'Peak Clarity',   color: '#F59E0B', hint: 'How concentrated your activity is around a specific time of day. A clear peak window makes time-based crossings much more accurate.' },
-  { key: 'dnaConfidence', label: 'DNA Confidence', color: '#22D3EE', hint: 'Based on your total number of logs. More moments give the engine enough data to build a confident location personality for you.' },
+  { key: 'consistency',   label: 'Consistency',    color: '#E70F72', threshold: '7-day streak = 100%', hint: 'How regularly you log moments. A longer streak signals a reliable city pattern, which makes crossings more meaningful.' },
+  { key: 'variety',       label: 'Variety',        color: '#A855F7', threshold: '6 place types = 100%', hint: 'The range of place types you visit (cafés, parks, bars, gyms…). More variety builds a richer PlacesDNA, helping us match you across different scene types.' },
+  { key: 'peakClarity',   label: 'Peak Clarity',   color: '#F59E0B', threshold: 'Log at consistent times', hint: 'How concentrated your activity is around a specific time of day. Logging at the same time most days creates a clear peak window, making time-based crossings much more accurate.' },
+  { key: 'dnaConfidence', label: 'DNA Confidence', color: '#22D3EE', threshold: '20 moments = 100%', hint: 'Based on your total number of logs. More moments give the engine enough data to build a confident location personality for you.' },
 ];
 
 function MetricGrid({ components }) {
   const [hovered, setHovered] = useState(null);
   return (
     <div className="grid grid-cols-2 gap-2">
-      {METRICS.map(({ key, label, color, hint }) => {
+      {METRICS.map(({ key, label, color, hint, threshold }) => {
         const value = components[key];
         const isHovered = hovered === key;
         return (
@@ -77,9 +77,10 @@ function MetricGrid({ components }) {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="text-white/30 text-[10px] mt-1.5 leading-relaxed"
+                  className="text-[10px] mt-1.5 leading-relaxed"
+                  style={{ color: color + '70' }}
                 >
-                  {label === 'Consistency' ? 'Log streak' : label === 'Variety' ? 'Place types' : label === 'Peak Clarity' ? 'Time pattern' : 'Total logs'}
+                  {threshold}
                 </motion.p>
               )}
             </AnimatePresence>
