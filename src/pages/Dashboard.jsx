@@ -59,8 +59,8 @@ export default function Dashboard() {
       // If no real moments, return sample data (tagged so UI can show example states)
       if (realMoments.length === 0) {
         const baseDate = new Date(2026, 1, 9);
-        return [{ _isSample: true }, ...
-          {
+        return [{
+            _isSample: true,
             id: 'sample-1',
             user_id: profile.id,
             venue_name: 'Covent Garden',
@@ -76,6 +76,7 @@ export default function Dashboard() {
             nearby_spark_count: 0
           },
           {
+            _isSample: true,
             id: 'sample-2',
             user_id: profile.id,
             venue_name: 'The Shard',
@@ -91,6 +92,7 @@ export default function Dashboard() {
             nearby_spark_count: 1
           },
           {
+            _isSample: true,
             id: 'sample-3',
             user_id: profile.id,
             venue_name: 'Tower of London',
@@ -106,6 +108,7 @@ export default function Dashboard() {
             nearby_spark_count: 2
           },
           {
+            _isSample: true,
             id: 'sample-4',
             user_id: profile.id,
             venue_name: 'British Museum',
@@ -121,6 +124,7 @@ export default function Dashboard() {
             nearby_spark_count: 1
           },
           {
+            _isSample: true,
             id: 'sample-5',
             user_id: profile.id,
             venue_name: 'Tate Modern',
@@ -136,6 +140,7 @@ export default function Dashboard() {
             nearby_spark_count: 0
           },
           {
+            _isSample: true,
             id: 'sample-6',
             user_id: profile.id,
             venue_name: 'Monmouth Coffee',
@@ -151,6 +156,7 @@ export default function Dashboard() {
             nearby_spark_count: 2
           },
           {
+            _isSample: true,
             id: 'sample-7',
             user_id: profile.id,
             venue_name: 'Hyde Park',
@@ -166,6 +172,7 @@ export default function Dashboard() {
             nearby_spark_count: 1
           },
           {
+            _isSample: true,
             id: 'sample-8',
             user_id: profile.id,
             venue_name: 'The Ivy',
@@ -181,6 +188,7 @@ export default function Dashboard() {
             nearby_spark_count: 2
           },
           {
+            _isSample: true,
             id: 'sample-9',
             user_id: profile.id,
             venue_name: 'Fabric',
@@ -196,6 +204,7 @@ export default function Dashboard() {
             nearby_spark_count: 5
           },
           {
+            _isSample: true,
             id: 'sample-10',
             user_id: profile.id,
             venue_name: 'Third Space Gym',
