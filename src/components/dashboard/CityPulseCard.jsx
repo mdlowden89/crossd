@@ -1,8 +1,48 @@
-import React, { useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
-import { Sparkles, MapPin, Clock } from 'lucide-react';
+import React, { useMemo, useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Sparkles, MapPin, Clock, Info } from 'lucide-react';
 import { getArchetypeInfo } from '@/components/spark/placesDnaEngine';
 import CityPulseSetup from '@/components/dashboard/CityPulseSetup';
+
+function InfoPopover({ text }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [open]);
+
+  return (
+    <span ref={ref} className="relative inline-flex items-center">
+      <button onClick={() => setOpen(v => !v)} className="text-white/25 hover:text-white/60 transition-colors">
+        <Info className="w-3 h-3" />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92, y: -4 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.92, y: -4 }}
+            transition={{ duration: 0.15 }}
+            className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-52 bg-[#1a1a2e] border border-white/15 rounded-2xl p-3 shadow-xl z-50 pointer-events-none"
+          >
+            <p className="text-white/80 text-[11px] leading-relaxed">{text}</p>
+            <div className="absolute top-full left-1/2 -translate-x-1/2 w-2 h-2 bg-[#1a1a2e] border-r border-b border-white/15 rotate-45 -mt-1" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </span>
+  );
+}
+
+const INFO = {
+  zones: "Your most-visited areas this week. We use these to find people who regularly cross paths with you in the same parts of the city — not just once, but as a pattern.",
+  peak: "The day and time you're most active out. When two people's peak windows overlap in the same zone, your crossing score gets a big boost.",
+  dna: "PlacesDNA is your location personality — the kinds of places you naturally gravitate to. We match it against others' DNA to surface people who move through the city the same way you do.",
+};
 
 const CATEGORY_TO_ARCHETYPE = {
   cafe: 'calm_cozy', coffee_shop: 'calm_cozy', art_gallery: 'creative',
@@ -124,6 +164,7 @@ export default function CityPulseCard({ moments = [], profile = null, isNew = tr
           <div className="flex items-center gap-1.5 mb-2">
             <MapPin className="w-3.5 h-3.5 text-[#E70F72]" />
             <span className="text-white/50 text-xs">Top Zones</span>
+            <InfoPopover text={INFO.zones} />
           </div>
           {pulse.topZones.map((z, i) => (
             <p key={i} className="text-white text-sm font-semibold truncate">{z}</p>
@@ -135,13 +176,17 @@ export default function CityPulseCard({ moments = [], profile = null, isNew = tr
           <div className="flex items-center gap-1.5 mb-2">
             <Clock className="w-3.5 h-3.5 text-amber-400" />
             <span className="text-white/50 text-xs">Peak Time</span>
+            <InfoPopover text={INFO.peak} />
           </div>
           <p className="text-white text-sm font-semibold">{pulse.peakLabel}</p>
         </div>
 
         {/* PlacesDNA */}
         <div className="bg-black/40 rounded-2xl p-3 border border-white/10 col-span-2">
-          <p className="text-white/50 text-xs mb-2">Your PlacesDNA this week</p>
+          <div className="flex items-center gap-1.5 mb-2">
+            <span className="text-white/50 text-xs">Your PlacesDNA this week</span>
+            <InfoPopover text={INFO.dna} />
+          </div>
           <div className="flex gap-2 flex-wrap">
             {pulse.topArchetypes.map((arch, i) => {
               const info = getArchetypeInfo(arch);
