@@ -851,7 +851,7 @@ export default function Dashboard() {
 
         {/* Spark Chance Meter */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
-          <SparkChanceMeter moments={moments} />
+          <SparkChanceMeter moments={moments.filter(m => !m._isSample)} />
         </motion.div>
 
         {/* Know Your Type */}
