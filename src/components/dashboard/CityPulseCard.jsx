@@ -103,28 +103,24 @@ export default function CityPulseCard({ moments = [], isNew = true }) {
         </div>
         <p className="text-white/40 text-xs mb-5">Here's what your weekly vibe recap will look like once you start logging moments.</p>
 
-        <div className="grid grid-cols-2 gap-3 select-none">
-          <div className="bg-black/40 rounded-2xl p-3 border border-white/10 opacity-50 blur-[1.5px]">
+        <div className="grid grid-cols-2 gap-3">
+          <div className="bg-black/40 rounded-2xl p-3 border border-white/10">
             <div className="flex items-center gap-1.5 mb-2">
               <MapPin className="w-3.5 h-3.5 text-[#E70F72]" />
               <span className="text-white/50 text-xs">Top Zones</span>
             </div>
-            <p className="text-white text-sm font-semibold">Shoreditch</p>
-            <p className="text-white text-sm font-semibold">Victoria Park</p>
+            <p className="text-white/60 text-xs leading-relaxed">The areas you spend the most time in, based on your logged moments.</p>
           </div>
-          <div className="bg-black/40 rounded-2xl p-3 border border-white/10 opacity-50 blur-[1.5px]">
+          <div className="bg-black/40 rounded-2xl p-3 border border-white/10">
             <div className="flex items-center gap-1.5 mb-2">
               <Clock className="w-3.5 h-3.5 text-amber-400" />
               <span className="text-white/50 text-xs">Peak Time</span>
             </div>
-            <p className="text-white text-sm font-semibold">Fri 18:00–21:00</p>
+            <p className="text-white/60 text-xs leading-relaxed">When you're most active out and about during the week.</p>
           </div>
-          <div className="bg-black/40 rounded-2xl p-3 border border-white/10 col-span-2 opacity-50 blur-[1.5px]">
-            <p className="text-white/50 text-xs mb-2">Your PlacesDNA this week</p>
-            <div className="flex gap-2">
-              <span className="text-xs px-2.5 py-1 rounded-full font-semibold bg-[#C49A6C]/20 text-[#C49A6C] border border-[#C49A6C]/40">☕ Calm & Cozy</span>
-              <span className="text-xs px-2.5 py-1 rounded-full font-semibold bg-[#6A8F7A]/20 text-[#6A8F7A] border border-[#6A8F7A]/40">🌿 Nature</span>
-            </div>
+          <div className="bg-black/40 rounded-2xl p-3 border border-white/10 col-span-2">
+            <p className="text-white/50 text-xs mb-2">Your PlacesDNA</p>
+            <p className="text-white/60 text-xs leading-relaxed">Your unique vibe signature — the types of places and atmospheres that define your routine.</p>
           </div>
         </div>
 
