@@ -61,12 +61,26 @@ export default function CityPulseSetup({ profile, onSaved }) {
     return () => clearTimeout(searchTimer.current);
   }, [searchQuery]);
 
-  const addZone = (name, place_id = '') => {
+  const addZone = async (name, place_id = '') => {
     if (zones.length >= 3) return;
     if (zones.find(z => z.name === name)) return;
-    setZones(prev => [...prev, { name, place_id }]);
+    // Immediately add with basic info so UI responds instantly
+    setZones(prev => [...prev, { name, place_id, lat: null, lng: null, venue_types: [], address: '' }]);
     setSearchQuery('');
     setSuggestions([]);
+    // Enrich with coordinates + venue_types in the background
+    if (place_id) {
+      try {
+        const res = await base44.functions.invoke('getPlaceDetails', { placeId: place_id });
+        const d = res.data;
+        if (d?.lat) {
+          setZones(prev => prev.map(z => z.place_id === place_id
+            ? { ...z, lat: d.lat, lng: d.lng, venue_types: d.types || [], address: d.address || '' }
+            : z
+          ));
+        }
+      } catch { /* non-critical, silently skip */ }
+    }
   };
 
   const removeZone = (name) => setZones(prev => prev.filter(z => z.name !== name));
@@ -80,7 +94,7 @@ export default function CityPulseSetup({ profile, onSaved }) {
   const handleSave = async () => {
     setSaving(true);
     await base44.entities.Profile.update(profile.id, {
-      hangout_areas: zones.map(z => ({ name: z.name, place_id: z.place_id || '', description: '' })),
+      hangout_areas: zones.map(z => ({ name: z.name, place_id: z.place_id || '', description: '', lat: z.lat || null, lng: z.lng || null, venue_types: z.venue_types || [], address: z.address || '' })),
       vibe_tags: [...(profile.vibe_tags || []), ...dna.filter(d => !(profile.vibe_tags || []).includes(d))],
       // Store peak times as extra vibe tags prefixed with "peak_"
       ...(() => {
@@ -134,7 +148,13 @@ export default function CityPulseSetup({ profile, onSaved }) {
               <div className="flex flex-wrap gap-2 mb-3">
                 {zones.map(z => (
                   <span key={z.name} className="flex items-center gap-1 text-xs px-3 py-1.5 rounded-full bg-[#E70F72] text-white font-medium">
-                    <MapPin className="w-3 h-3" />{z.name}
+                    <MapPin className="w-3 h-3" />
+                    {z.name}
+                    {z.lat ? (
+                      <span className="w-1.5 h-1.5 rounded-full bg-white/70 ml-0.5" title="Location confirmed" />
+                    ) : z.place_id ? (
+                      <span className="w-2.5 h-2.5 border border-white/50 border-t-transparent rounded-full animate-spin ml-0.5" />
+                    ) : null}
                     <button onClick={() => removeZone(z.name)} className="ml-0.5 hover:opacity-70"><X className="w-3 h-3" /></button>
                   </span>
                 ))}

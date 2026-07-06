@@ -184,10 +184,25 @@
           },
           "description": {
             "type": "string"
+          },
+          "lat": {
+            "type": "number"
+          },
+          "lng": {
+            "type": "number"
+          },
+          "venue_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "address": {
+            "type": "string"
           }
         }
       },
-      "description": "Google Places-backed areas where the user usually spends time \u2014 place_id enables consistent cross-user matching"
+      "description": "Google Places-backed areas where the user usually spends time \u2014 place_id, lat/lng, and venue_types enable PlacesDNA scoring and cross-user matching"
     },
     "photos": {
       "type": "array",
