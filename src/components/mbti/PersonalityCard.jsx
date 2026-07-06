@@ -18,10 +18,10 @@ export default function PersonalityCard({ profile }) {
       <CrossdCard className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] border-[#E70F72]/30">
         <div className="flex items-center gap-2 mb-4">
           <Zap className="w-5 h-5 text-[#E70F72]" />
-          <h2 className="text-2xl font-bold text-white">Know Your Type?</h2>
+          <h2 className="text-2xl font-bold text-white">Your Connection Style</h2>
         </div>
         <p className="text-white/65 mb-6">
-          Discover your MBTI personality type and find more compatible matches.
+          Answer a few questions and we'll build your Crossd personality profile to surface more meaningful connections.
         </p>
         <Link to={createPageUrl('MBTIQuiz')}>
           <CrossdButton className="w-full" size="lg">
@@ -42,7 +42,7 @@ export default function PersonalityCard({ profile }) {
       <CrossdCard className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] border-[#E70F72]/30">
         <div className="flex items-center gap-2 mb-2">
           <Sparkles className="w-5 h-5 text-[#E70F72]" />
-          <h2 className="text-xl font-bold text-white">Your Type:</h2>
+          <h2 className="text-xl font-bold text-white">Your Connection Style</h2>
         </div>
         
         <div className="mb-6">
@@ -50,7 +50,7 @@ export default function PersonalityCard({ profile }) {
             <span className="text-5xl">{description.emoji}</span>
             <div>
               <div>{description.title.split('/')[0].trim()}</div>
-              <div className="text-[#E70F72] text-4xl">{mbtiType}</div>
+              <div className="text-white/30 text-sm font-normal mt-0.5">Personality code: {mbtiType}</div>
             </div>
           </div>
           <p className="text-white/65">
@@ -68,7 +68,7 @@ export default function PersonalityCard({ profile }) {
           </CrossdButton>
           <Link to={createPageUrl('MBTIQuiz')}>
             <CrossdButton variant="outline" className="w-full">
-              Retake Quiz
+              Retake Style Quiz
             </CrossdButton>
           </Link>
         </div>
@@ -89,7 +89,7 @@ export default function PersonalityCard({ profile }) {
                 <div className="text-center mb-8">
                   <div className="text-7xl mb-4">{description.emoji}</div>
                   <h2 className="text-3xl font-bold text-white mb-2">{description.title}</h2>
-                  <div className="text-5xl font-bold text-[#E70F72] mb-4">{mbtiType}</div>
+                  <div className="text-sm text-white/35 mb-4">Personality code: {mbtiType}</div>
                   <div className="flex flex-wrap justify-center gap-2">
                     {description.keyTraits.map((trait, idx) => (
                       <span 
@@ -153,7 +153,7 @@ export default function PersonalityCard({ profile }) {
                 <div className="p-6 bg-gradient-to-r from-[#E70F72]/10 to-purple-500/10 rounded-2xl border border-[#E70F72]/20 mb-8">
                   <div className="flex items-center gap-2 mb-4">
                     <Star className="w-5 h-5 text-[#E70F72]" />
-                    <h3 className="text-lg font-bold text-[#E70F72]">Personality Insights</h3>
+                    <h3 className="text-lg font-bold text-[#E70F72]">Connection Insights</h3>
                   </div>
                   
                   <div className="space-y-4">
