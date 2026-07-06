@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { motion } from 'framer-motion';
+import React, { useMemo, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, TrendingUp } from 'lucide-react';
 
 function calcStreak(moments) {
@@ -21,6 +21,74 @@ const CATEGORY_TO_ARCHETYPE = {
   park:'nature_grounded', beach:'nature_grounded', night_club:'nightlife', bar:'social_buzzing',
   restaurant:'romantic', gym:'active_energetic', music_venue:'live_electric', library:'deep_intellectual',
 };
+
+const METRICS = [
+  { key: 'consistency',   label: 'Consistency',    color: '#E70F72', hint: 'How regularly you log moments. A longer streak signals a reliable city pattern, which makes crossings more meaningful.' },
+  { key: 'variety',       label: 'Variety',        color: '#A855F7', hint: 'The range of place types you visit. More variety builds a richer PlacesDNA, helping us match you across different scene types.' },
+  { key: 'peakClarity',   label: 'Peak Clarity',   color: '#F59E0B', hint: 'How concentrated your activity is around a specific time of day. A clear peak window makes time-based crossings much more accurate.' },
+  { key: 'dnaConfidence', label: 'DNA Confidence', color: '#22D3EE', hint: 'Based on your total number of logs. More moments give the engine enough data to build a confident location personality for you.' },
+];
+
+function MetricGrid({ components }) {
+  const [hovered, setHovered] = useState(null);
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      {METRICS.map(({ key, label, color, hint }) => {
+        const value = components[key];
+        const isHovered = hovered === key;
+        return (
+          <motion.div
+            key={key}
+            onHoverStart={() => setHovered(key)}
+            onHoverEnd={() => setHovered(null)}
+            animate={{ borderColor: isHovered ? color + '60' : 'rgba(255,255,255,0.10)' }}
+            className="rounded-xl p-3 border cursor-default transition-colors"
+            style={{ background: isHovered ? color + '12' : 'rgba(0,0,0,0.4)' }}
+          >
+            <div className="flex justify-between items-center mb-1.5">
+              <span className="text-xs font-semibold transition-colors" style={{ color: isHovered ? color : 'rgba(255,255,255,0.6)' }}>{label}</span>
+              <span className="text-xs font-bold transition-colors" style={{ color: isHovered ? color : 'white' }}>{value}%</span>
+            </div>
+            <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${value}%` }}
+                transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }}
+                className="h-full rounded-full"
+                style={{ background: color }}
+              />
+            </div>
+            <AnimatePresence>
+              {isHovered ? (
+                <motion.p
+                  key="expanded"
+                  initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                  animate={{ opacity: 1, height: 'auto', marginTop: 6 }}
+                  exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-[11px] leading-relaxed overflow-hidden"
+                  style={{ color: color + 'cc' }}
+                >
+                  {hint}
+                </motion.p>
+              ) : (
+                <motion.p
+                  key="collapsed"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="text-white/30 text-[10px] mt-1.5 leading-relaxed"
+                >
+                  {label === 'Consistency' ? 'Log streak' : label === 'Variety' ? 'Place types' : label === 'Peak Clarity' ? 'Time pattern' : 'Total logs'}
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function SparkChanceMeter({ moments = [] }) {
   const data = useMemo(() => {
@@ -93,31 +161,7 @@ export default function SparkChanceMeter({ moments = [] }) {
       </div>
 
       {/* Components grid */}
-      <div className="grid grid-cols-2 gap-2">
-        {[
-          { label: 'Consistency', value: data.components.consistency, hint: 'How regularly you log moments. A longer streak signals a reliable city pattern, which makes crossings more meaningful.' },
-          { label: 'Variety', value: data.components.variety, hint: 'The range of place types you visit. More variety builds a richer PlacesDNA, helping us match you across different scene types.' },
-          { label: 'Peak Clarity', value: data.components.peakClarity, hint: 'How concentrated your activity is around a specific time of day. A clear peak window makes time-based crossings much more accurate.' },
-          { label: 'DNA Confidence', value: data.components.dnaConfidence, hint: 'Based on your total number of logs. More moments give the engine enough data to build a confident location personality for you.' },
-        ].map(({ label, value, hint }) => (
-          <div key={label} className="bg-black/40 rounded-xl p-3 border border-white/10">
-            <div className="flex justify-between items-center mb-1.5">
-              <span className="text-white/60 text-xs">{label}</span>
-              <span className="text-white text-xs font-bold">{value}%</span>
-            </div>
-            <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${value}%` }}
-                transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }}
-                className="h-full rounded-full"
-                style={{ background: barColor }}
-              />
-            </div>
-            <p className="text-white/30 text-[10px] mt-1.5 leading-relaxed">{hint}</p>
-          </div>
-        ))}
-      </div>
+      <MetricGrid barColor={barColor} components={data.components} />
 
       <p className="text-white/35 text-xs text-center mt-4 italic">
         People with 60%+ Spark Chance match faster. Keep logging.
