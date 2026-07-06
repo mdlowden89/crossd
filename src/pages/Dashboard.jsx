@@ -524,14 +524,39 @@ export default function Dashboard() {
               <h1 className="text-3xl font-bold text-white mb-2">
                 Welcome back, {profile.display_name}!
               </h1>
-              <p className="text-white/65 text-lg mb-4">Did you see anyone interesting today?</p>
-              <button
-                onClick={() => navigate('/LogMoment')}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#E70F72] text-white text-sm font-semibold hover:bg-[#E70F72]/90 active:scale-95 transition-all"
-              >
-                <Sparkles className="w-4 h-4" />
-                Log it
-              </button>
+              <p className="text-white/65 text-lg mb-4">Boost your Spark Energy today</p>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => navigate('/LogMoment')}
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#E70F72] text-white text-xs font-semibold hover:bg-[#E70F72]/90 active:scale-95 transition-all"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Log moment
+                </button>
+                <button
+                  onClick={() => navigate('/LogDailyPath')}
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-white text-xs font-semibold hover:bg-white/20 active:scale-95 transition-all border border-white/20"
+                >
+                  <Route className="w-3.5 h-3.5" />
+                  Log path
+                </button>
+                <button
+                  onClick={() => navigate('/Profile')}
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-white text-xs font-semibold hover:bg-white/20 active:scale-95 transition-all border border-white/20"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  Complete profile
+                </button>
+                {!profile.mbti_type && (
+                  <button
+                    onClick={() => navigate('/MBTIQuiz')}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-white text-xs font-semibold hover:bg-white/20 active:scale-95 transition-all border border-white/20"
+                  >
+                    <Star className="w-3.5 h-3.5" />
+                    Take MBTI quiz
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </motion.div>
