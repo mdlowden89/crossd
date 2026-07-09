@@ -18,6 +18,7 @@ import ChallengesSection from '@/components/dashboard/ChallengesSection';
 import CityPulseCard from '@/components/dashboard/CityPulseCard';
 import SparkChanceMeter from '@/components/dashboard/SparkChanceMeter';
 import SparkZoneRecommendations from '@/components/dashboard/SparkZoneRecommendations';
+import TopPicksCard from '@/components/dashboard/TopPicksCard';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Progress } from '@/components/ui/progress';
 
@@ -858,6 +859,11 @@ export default function Dashboard() {
         {/* Spark Zone Recommendations */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.38 }}>
           <SparkZoneRecommendations profile={profile} moments={moments} />
+        </motion.div>
+
+        {/* Top 10 Picks */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.41 }}>
+          <TopPicksCard profile={profile} moments={moments} />
         </motion.div>
 
         {/* Know Your Type */}
