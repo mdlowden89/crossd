@@ -17,6 +17,7 @@ import PersonalityCard from '@/components/mbti/PersonalityCard';
 import ChallengesSection from '@/components/dashboard/ChallengesSection';
 import CityPulseCard from '@/components/dashboard/CityPulseCard';
 import SparkChanceMeter from '@/components/dashboard/SparkChanceMeter';
+import SparkZoneRecommendations from '@/components/dashboard/SparkZoneRecommendations';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Progress } from '@/components/ui/progress';
 
@@ -852,6 +853,11 @@ export default function Dashboard() {
         {/* Spark Chance Meter */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
           <SparkChanceMeter moments={moments.filter(m => !m._isSample)} />
+        </motion.div>
+
+        {/* Spark Zone Recommendations */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.38 }}>
+          <SparkZoneRecommendations profile={profile} moments={moments} />
         </motion.div>
 
         {/* Know Your Type */}
