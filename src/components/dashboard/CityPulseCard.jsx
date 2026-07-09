@@ -132,7 +132,7 @@ export default function CityPulseCard({ moments = [], profile = null, isNew = tr
 
   if ((!pulse || isSampleData) && !setupDone) {
     if (profile) {
-      return <CityPulseSetup profile={profile} onSaved={() => navigate('/LogMoment')} />;
+      return <CityPulseSetup profile={profile} onSaved={() => setSetupDone(true)} />;
     }
     return null;
   }
