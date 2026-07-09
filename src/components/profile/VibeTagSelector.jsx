@@ -16,6 +16,11 @@ const VIBE_TAG_CATEGORIES = {
       { name: 'Energetic', emoji: '⚙️' },
       { name: 'Romantic', emoji: '❤️' },
       { name: 'Witty', emoji: '😄' },
+      { name: 'Creative', emoji: '🎨' },
+      { name: 'Adventurous', emoji: '🧗' },
+      { name: 'Ambitious', emoji: '🚀' },
+      { name: 'Intellectual', emoji: '📚' },
+      { name: 'Sporty', emoji: '⚽' },
     ],
     subcategories: {
       cognitive: {
