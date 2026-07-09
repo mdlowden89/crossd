@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, MapPin, Clock, Info } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { getArchetypeInfo } from '@/components/spark/placesDnaEngine';
 import CityPulseSetup from '@/components/dashboard/CityPulseSetup';
 
@@ -61,6 +62,7 @@ function deriveArchetype(venueTypes = []) {
 
 export default function CityPulseCard({ moments = [], profile = null, isNew = true }) {
   const [setupDone, setSetupDone] = useState(false);
+  const navigate = useNavigate();
   const isSampleData = moments.some(m => m._isSample);
   const realMoments = moments.filter(m => !m._isSample);
 
@@ -130,7 +132,7 @@ export default function CityPulseCard({ moments = [], profile = null, isNew = tr
 
   if ((!pulse || isSampleData) && !setupDone) {
     if (profile) {
-      return <CityPulseSetup profile={profile} onSaved={() => setSetupDone(true)} />;
+      return <CityPulseSetup profile={profile} onSaved={() => navigate('/LogMoment')} />;
     }
     return null;
   }
