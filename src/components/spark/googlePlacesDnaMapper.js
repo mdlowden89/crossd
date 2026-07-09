@@ -688,6 +688,11 @@ export function generateSparkZoneRecommendations(profile, moments = []) {
     getCrossdDNAFromVenueTypes(m.venue_types || []).forEach(d => userDNA.add(d));
   });
 
+  // Also pull DNA from hangout_areas set during City Pulse setup
+  (profile?.hangout_areas || []).forEach(area => {
+    getCrossdDNAFromVenueTypes(area.venue_types || []).forEach(d => userDNA.add(d));
+  });
+
   // Also fold in vibe_tags as DNA hints
   const vibeTags = profile?.vibe_tags || [];
   vibeTags.forEach(tag => {

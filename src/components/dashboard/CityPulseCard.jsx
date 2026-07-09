@@ -66,6 +66,10 @@ export default function CityPulseCard({ moments = [], profile = null, isNew = tr
   const isSampleData = moments.some(m => m._isSample);
   const realMoments = moments.filter(m => !m._isSample);
 
+  // Profile is considered "setup" if they have hangout_areas OR PlacesDNA vibe_tags
+  const profileSetupDone = (profile?.hangout_areas?.length > 0) ||
+    (profile?.vibe_tags || []).some(t => !t.startsWith('peak_'));
+
   const pulse = useMemo(() => {
     if (!realMoments.length) return null;
 
@@ -130,12 +134,43 @@ export default function CityPulseCard({ moments = [], profile = null, isNew = tr
     return { topZones, topArchetypes, peakLabel, sparkWindow, logCount: sourceMoments.length };
   }, [moments]);
 
-  if ((!pulse || isSampleData) && !setupDone) {
+  // Derive pulse from profile setup data when no real moments exist yet
+  const profilePulse = useMemo(() => {
+    if (!profile || (!setupDone && !profileSetupDone)) return null;
+    const hangoutAreas = profile.hangout_areas || [];
+    const vibeTags = profile.vibe_tags || [];
+    const dnaIds = vibeTags.filter(t => !t.startsWith('peak_'));
+    const peakIds = vibeTags.filter(t => t.startsWith('peak_')).map(t =>
+      t.replace('peak_', '').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+    );
+
+    const ARCHETYPE_MAP = {
+      calm_cozy: 'calm_cozy', social_buzzing: 'social_buzzing',
+      active_energetic: 'active_energetic', creative: 'creative',
+      romantic: 'romantic', nightlife: 'nightlife',
+      nature_grounded: 'nature_grounded', deep_intellectual: 'deep_intellectual',
+      live_electric: 'live_electric', intimate_local: 'intimate_local',
+    };
+
+    const topZones = hangoutAreas.slice(0, 2).map(a => a.name);
+    const topArchetypes = dnaIds.slice(0, 2).filter(d => ARCHETYPE_MAP[d]);
+    const peakLabel = peakIds.length > 0 ? peakIds.slice(0, 2).join(' & ') : 'Evening';
+    const sparkWindow = peakIds.find(p => p.toLowerCase().includes('weekend') || p.toLowerCase().includes('evening')) || peakLabel;
+
+    if (!topZones.length && !topArchetypes.length) return null;
+    return { topZones, topArchetypes, peakLabel, sparkWindow, logCount: 0, fromSetup: true };
+  }, [profile, setupDone, profileSetupDone]);
+
+  const activePulse = pulse || profilePulse;
+
+  if (!activePulse && !setupDone && !profileSetupDone) {
     if (profile) {
       return <CityPulseSetup profile={profile} onSaved={() => setSetupDone(true)} />;
     }
     return null;
   }
+
+  if (!activePulse) return null;
 
   return (
     <motion.div
@@ -158,20 +193,24 @@ export default function CityPulseCard({ moments = [], profile = null, isNew = tr
         </div>
       </div>
 
-      <p className="text-white/50 text-xs mb-5">Weekly recap of where your vibe shows up.</p>
+      <p className="text-white/50 text-xs mb-5">
+        {activePulse.fromSetup ? 'Based on your setup — log moments to refine your pulse.' : 'Weekly recap of where your vibe shows up.'}
+      </p>
 
       <div className="grid grid-cols-2 gap-3">
         {/* Top Zones */}
-        <div className="bg-black/40 rounded-2xl p-3 border border-white/10">
-          <div className="flex items-center gap-1.5 mb-2">
-            <MapPin className="w-3.5 h-3.5 text-[#E70F72]" />
-            <span className="text-white/50 text-xs">Top Zones</span>
-            <InfoPopover text={INFO.zones} />
+        {activePulse.topZones.length > 0 && (
+          <div className="bg-black/40 rounded-2xl p-3 border border-white/10">
+            <div className="flex items-center gap-1.5 mb-2">
+              <MapPin className="w-3.5 h-3.5 text-[#E70F72]" />
+              <span className="text-white/50 text-xs">Your Zones</span>
+              <InfoPopover text={INFO.zones} />
+            </div>
+            {activePulse.topZones.map((z, i) => (
+              <p key={i} className="text-white text-sm font-semibold truncate">{z}</p>
+            ))}
           </div>
-          {pulse.topZones.map((z, i) => (
-            <p key={i} className="text-white text-sm font-semibold truncate">{z}</p>
-          ))}
-        </div>
+        )}
 
         {/* Peak Time */}
         <div className="bg-black/40 rounded-2xl p-3 border border-white/10">
@@ -180,30 +219,32 @@ export default function CityPulseCard({ moments = [], profile = null, isNew = tr
             <span className="text-white/50 text-xs">Peak Time</span>
             <InfoPopover text={INFO.peak} />
           </div>
-          <p className="text-white text-sm font-semibold">{pulse.peakLabel}</p>
+          <p className="text-white text-sm font-semibold">{activePulse.peakLabel}</p>
         </div>
 
         {/* PlacesDNA */}
-        <div className="bg-black/40 rounded-2xl p-3 border border-white/10 col-span-2">
-          <div className="flex items-center gap-1.5 mb-2">
-            <span className="text-white/50 text-xs">Your PlacesDNA this week</span>
-            <InfoPopover text={INFO.dna} />
+        {activePulse.topArchetypes.length > 0 && (
+          <div className={`bg-black/40 rounded-2xl p-3 border border-white/10 ${activePulse.topZones.length > 0 ? 'col-span-2' : 'col-span-2'}`}>
+            <div className="flex items-center gap-1.5 mb-2">
+              <span className="text-white/50 text-xs">Your PlacesDNA</span>
+              <InfoPopover text={INFO.dna} />
+            </div>
+            <div className="flex gap-2 flex-wrap">
+              {activePulse.topArchetypes.map((arch, i) => {
+                const info = getArchetypeInfo(arch);
+                return (
+                  <span key={i} className="text-xs px-2.5 py-1 rounded-full font-semibold"
+                    style={{ backgroundColor: `${info.color}20`, color: info.color, border: `1px solid ${info.color}40` }}>
+                    {info.emoji} {info.label}
+                  </span>
+                );
+              })}
+              <span className="text-xs px-2.5 py-1 rounded-full bg-white/5 text-white/50 border border-white/10">
+                ⚡ Best: {activePulse.sparkWindow}
+              </span>
+            </div>
           </div>
-          <div className="flex gap-2 flex-wrap">
-            {pulse.topArchetypes.map((arch, i) => {
-              const info = getArchetypeInfo(arch);
-              return (
-                <span key={i} className="text-xs px-2.5 py-1 rounded-full font-semibold"
-                  style={{ backgroundColor: `${info.color}20`, color: info.color, border: `1px solid ${info.color}40` }}>
-                  {info.emoji} {info.label}
-                </span>
-              );
-            })}
-            <span className="text-xs px-2.5 py-1 rounded-full bg-white/5 text-white/50 border border-white/10">
-              ⚡ Best: {pulse.sparkWindow}
-            </span>
-          </div>
-        </div>
+        )}
       </div>
     </motion.div>
   );
