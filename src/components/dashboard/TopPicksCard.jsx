@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, Lock, ChevronRight, Sparkles, Info, MapPin } from 'lucide-react';
+import { Trophy, Lock, ChevronRight, Sparkles, MapPin, Navigation } from 'lucide-react';
 import { generateSparkZoneRecommendations } from '@/components/spark/googlePlacesDnaMapper';
 import { Link } from 'react-router-dom';
 
@@ -126,6 +126,18 @@ function PickRow({ venue, rank, isLocked }) {
                   ) : null;
                 })}
               </div>
+
+              {/* Directions button */}
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venue.label)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-1.5 w-full py-2 rounded-lg bg-[#E70F72]/10 border border-[#E70F72]/25 text-[#E70F72] text-xs font-semibold hover:bg-[#E70F72]/20 transition-colors"
+                onClick={e => e.stopPropagation()}
+              >
+                <Navigation className="w-3.5 h-3.5" />
+                Get Directions
+              </a>
 
               {/* Score breakdown */}
               <div className="grid grid-cols-3 gap-2 pt-0.5">
