@@ -36,13 +36,13 @@ export default function NearbyPlacesList({ venue, profile, moments = [] }) {
     setLoading(true);
     try {
       const loc = searchLocations[0];
-      const res = await base44.functions.invoke('searchPlaces', {
+      const res = await base44.functions.invoke('findNearbyPlaces', {
         query: venue.label,
         lat: loc.lat,
         lng: loc.lng,
         radius: 5000,
       });
-      const results = res.data?.results || res.data?.places || [];
+      const results = res.data?.places || [];
       setPlaces(results.slice(0, 5));
       setOpen(true);
     } catch {
