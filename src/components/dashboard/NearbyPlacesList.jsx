@@ -1,13 +1,65 @@
 import React, { useState, useMemo } from 'react';
 import { base44 } from '@/api/base44Client';
-import { MapPin, Navigation, Loader2, ChevronDown, ChevronUp } from 'lucide-react';
+import { MapPin, Navigation, Loader2, ChevronUp, Star, X } from 'lucide-react';
+
+function PlacePhotoModal({ place, onClose }) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/80 backdrop-blur-sm p-4"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-sm rounded-2xl overflow-hidden bg-[#0B0B0B] border border-white/10 shadow-2xl"
+        onClick={e => e.stopPropagation()}
+      >
+        {place.photo_url ? (
+          <img
+            src={place.photo_url}
+            alt={place.name}
+            className="w-full h-52 object-cover"
+          />
+        ) : (
+          <div className="w-full h-52 bg-white/5 flex items-center justify-center">
+            <MapPin className="w-8 h-8 text-white/20" />
+          </div>
+        )}
+        <div className="p-4">
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex-1 min-w-0">
+              <h3 className="text-white font-semibold text-sm">{place.name}</h3>
+              {place.address && <p className="text-white/50 text-xs mt-0.5 leading-relaxed">{place.address}</p>}
+            </div>
+            <button onClick={onClose} className="text-white/40 hover:text-white/70 flex-shrink-0">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+          {place.rating && (
+            <div className="flex items-center gap-1 mt-2">
+              <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+              <span className="text-yellow-400 text-xs font-semibold">{place.rating}</span>
+            </div>
+          )}
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + ' ' + place.address)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-[#E70F72] text-white text-sm font-semibold hover:bg-[#E70F72]/80 transition-colors"
+          >
+            <Navigation className="w-4 h-4" />
+            Get Directions
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function NearbyPlacesList({ venue, profile, moments = [] }) {
   const [places, setPlaces] = useState(null);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [selectedPlace, setSelectedPlace] = useState(null);
 
-  // Derive search locations: hangout areas first, then unique moment locations
   const searchLocations = React.useMemo(() => {
     const locs = [];
     if (profile?.hangout_areas?.length) {
@@ -25,7 +77,7 @@ export default function NearbyPlacesList({ venue, profile, moments = [] }) {
         }
       });
     }
-    return locs.slice(0, 2); // search top 2 areas max
+    return locs.slice(0, 2);
   }, [profile, moments]);
 
   async function fetchPlaces() {
@@ -42,8 +94,7 @@ export default function NearbyPlacesList({ venue, profile, moments = [] }) {
         lng: loc.lng,
         radius: 5000,
       });
-      const results = res.data?.places || [];
-      setPlaces(results.slice(0, 5));
+      setPlaces(res.data?.places || []);
       setOpen(true);
     } catch {
       setPlaces([]);
@@ -56,7 +107,7 @@ export default function NearbyPlacesList({ venue, profile, moments = [] }) {
   if (!searchLocations.length) return null;
 
   return (
-    <div>
+    <>
       <button
         onClick={fetchPlaces}
         className="flex items-center justify-center gap-1.5 w-full py-2 rounded-lg bg-[#E70F72]/10 border border-[#E70F72]/25 text-[#E70F72] text-xs font-semibold hover:bg-[#E70F72]/20 transition-colors"
@@ -75,31 +126,38 @@ export default function NearbyPlacesList({ venue, profile, moments = [] }) {
           {places.length === 0 && (
             <p className="text-white/35 text-xs text-center py-2">No places found nearby.</p>
           )}
-          {places.map((p, i) => {
-            const name = p.name || p.displayName?.text;
-            const address = p.formatted_address || p.vicinity || p.shortFormattedAddress || '';
-            const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + ' ' + address)}`;
-            return (
-              <div key={i} className="flex items-center justify-between gap-2 px-2.5 py-2 rounded-lg bg-white/4 border border-white/8">
-                <div className="flex-1 min-w-0">
-                  <p className="text-white/85 text-xs font-medium truncate">{name}</p>
-                  {address && <p className="text-white/35 text-[10px] truncate">{address}</p>}
+          {places.map((p, i) => (
+            <button
+              key={i}
+              onClick={() => setSelectedPlace(p)}
+              className="w-full flex items-center gap-3 px-2.5 py-2 rounded-lg bg-white/4 border border-white/8 hover:border-[#E70F72]/30 hover:bg-white/7 transition-all text-left"
+            >
+              {p.photo_url ? (
+                <img src={p.photo_url} alt={p.name} className="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
+              ) : (
+                <div className="w-10 h-10 rounded-lg bg-white/8 flex items-center justify-center flex-shrink-0">
+                  <MapPin className="w-4 h-4 text-white/30" />
                 </div>
-                <a
-                  href={mapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-shrink-0 flex items-center gap-1 text-[10px] font-semibold text-[#E70F72] hover:text-[#E70F72]/70 transition-colors"
-                  onClick={e => e.stopPropagation()}
-                >
-                  <Navigation className="w-3 h-3" />
-                  Go
-                </a>
+              )}
+              <div className="flex-1 min-w-0">
+                <p className="text-white/85 text-xs font-medium truncate">{p.name}</p>
+                {p.address && <p className="text-white/35 text-[10px] truncate">{p.address}</p>}
+                {p.rating && (
+                  <div className="flex items-center gap-0.5 mt-0.5">
+                    <Star className="w-2.5 h-2.5 text-yellow-400 fill-yellow-400" />
+                    <span className="text-yellow-400 text-[10px]">{p.rating}</span>
+                  </div>
+                )}
               </div>
-            );
-          })}
+              <Navigation className="w-3.5 h-3.5 text-[#E70F72] flex-shrink-0" />
+            </button>
+          ))}
         </div>
       )}
-    </div>
+
+      {selectedPlace && (
+        <PlacePhotoModal place={selectedPlace} onClose={() => setSelectedPlace(null)} />
+      )}
+    </>
   );
 }

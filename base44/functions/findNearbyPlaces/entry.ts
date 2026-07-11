@@ -23,13 +23,26 @@ Deno.serve(async (req) => {
     const response = await fetch(url.toString());
     const data = await response.json();
 
-    const places = (data.results || []).slice(0, 5).map((p: any) => ({
-      name: p.name,
-      address: p.formatted_address || p.vicinity || '',
-      rating: p.rating,
-      lat: p.geometry?.location?.lat,
-      lng: p.geometry?.location?.lng,
-      place_id: p.place_id,
+    const places = await Promise.all((data.results || []).slice(0, 5).map(async (p: any) => {
+      let photo_url = null;
+      if (p.photos?.[0]?.photo_reference) {
+        const photoApiUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photo_reference=${p.photos[0].photo_reference}&key=${apiKey}`;
+        try {
+          const photoRes = await fetch(photoApiUrl, { redirect: 'follow' });
+          photo_url = photoRes.url || photoApiUrl;
+        } catch {
+          photo_url = photoApiUrl;
+        }
+      }
+      return {
+        name: p.name,
+        address: p.formatted_address || p.vicinity || '',
+        rating: p.rating,
+        lat: p.geometry?.location?.lat,
+        lng: p.geometry?.location?.lng,
+        place_id: p.place_id,
+        photo_url,
+      };
     }));
 
     return Response.json({ places });
