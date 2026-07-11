@@ -1,8 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, Lock, ChevronRight, Sparkles, MapPin, Navigation } from 'lucide-react';
+import { Trophy, Lock, ChevronRight, Sparkles, MapPin } from 'lucide-react';
 import { generateSparkZoneRecommendations } from '@/components/spark/googlePlacesDnaMapper';
 import { Link } from 'react-router-dom';
+import NearbyPlacesList from '@/components/dashboard/NearbyPlacesList';
 
 const TIME_LABELS = {
   morning: { label: 'Morning', icon: '🌅', sub: '7–10am' },
@@ -44,7 +45,7 @@ function DNAChip({ dna }) {
   );
 }
 
-function PickRow({ venue, rank, isLocked }) {
+function PickRow({ venue, rank, isLocked, profile, moments }) {
   const [open, setOpen] = useState(false);
   const rankColor = RANK_COLORS[rank - 1] || '#E70F72';
   const barColor = rank <= 3 ? rankColor : '#E70F72';
@@ -127,17 +128,8 @@ function PickRow({ venue, rank, isLocked }) {
                 })}
               </div>
 
-              {/* Directions button */}
-              <a
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venue.label)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-1.5 w-full py-2 rounded-lg bg-[#E70F72]/10 border border-[#E70F72]/25 text-[#E70F72] text-xs font-semibold hover:bg-[#E70F72]/20 transition-colors"
-                onClick={e => e.stopPropagation()}
-              >
-                <Navigation className="w-3.5 h-3.5" />
-                Get Directions
-              </a>
+              {/* Nearby places */}
+              <NearbyPlacesList venue={venue} profile={profile} moments={moments} />
 
               {/* Score breakdown */}
               <div className="grid grid-cols-3 gap-2 pt-0.5">
@@ -232,6 +224,8 @@ export default function TopPicksCard({ profile, moments = [] }) {
             venue={venue}
             rank={i + 1}
             isLocked={i + 1 >= lockedFrom && !isPremium}
+            profile={profile}
+            moments={moments}
           />
         ))}
       </div>
