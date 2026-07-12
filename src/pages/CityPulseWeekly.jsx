@@ -77,11 +77,23 @@ export default function CityPulseWeekly() {
     },
   });
 
-  const { data: allMoments = [] } = useQuery({
+  const { data: realMoments = [] } = useQuery({
     queryKey: ['cpw-moments', profile?.id],
     queryFn: () => base44.entities.Moment.filter({ user_id: profile.id }),
     enabled: !!profile,
   });
+
+  // Mock data so the page renders with something to look at
+  const MOCK_MOMENTS = [
+    { created_date: new Date(Date.now() - 1*24*60*60*1000).toISOString(), venue_name: 'Prufrock Coffee', venue_types: ['cafe'], time_bucket: `${new Date(Date.now()-1*24*60*60*1000).toISOString().slice(0,10).replace(/-/g,'-')}-09`, lat: 51.51, lng: -0.10, geohash: 'gcpvj' },
+    { created_date: new Date(Date.now() - 1*24*60*60*1000).toISOString(), venue_name: 'Nightjar', venue_types: ['bar'], time_bucket: `${new Date(Date.now()-1*24*60*60*1000).toISOString().slice(0,10).replace(/-/g,'-')}-21`, lat: 51.52, lng: -0.09, geohash: 'gcpvk' },
+    { created_date: new Date(Date.now() - 2*24*60*60*1000).toISOString(), venue_name: 'London Fields', venue_types: ['park'], time_bucket: `${new Date(Date.now()-2*24*60*60*1000).toISOString().slice(0,10).replace(/-/g,'-')}-14`, lat: 51.54, lng: -0.06, geohash: 'gcpvn' },
+    { created_date: new Date(Date.now() - 2*24*60*60*1000).toISOString(), venue_name: 'Tate Modern', venue_types: ['museum'], time_bucket: `${new Date(Date.now()-2*24*60*60*1000).toISOString().slice(0,10).replace(/-/g,'-')}-16`, lat: 51.50, lng: -0.09, geohash: 'gcpuu' },
+    { created_date: new Date(Date.now() - 3*24*60*60*1000).toISOString(), venue_name: 'Padella', venue_types: ['restaurant'], time_bucket: `${new Date(Date.now()-3*24*60*60*1000).toISOString().slice(0,10).replace(/-/g,'-')}-19`, lat: 51.50, lng: -0.08, geohash: 'gcpuu' },
+    { created_date: new Date(Date.now() - 4*24*60*60*1000).toISOString(), venue_name: 'BLOK Shoreditch', venue_types: ['gym'], time_bucket: `${new Date(Date.now()-4*24*60*60*1000).toISOString().slice(0,10).replace(/-/g,'-')}-08`, lat: 51.52, lng: -0.07, geohash: 'gcpvj' },
+  ];
+
+  const allMoments = realMoments.length > 0 ? realMoments : MOCK_MOMENTS;
 
   const thisWeekMoments = useWindowMoments(allMoments, activeTab);
   const prevWeekMoments = useMemo(() => {
