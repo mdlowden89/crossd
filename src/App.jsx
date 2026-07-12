@@ -6,6 +6,7 @@ import { pagesConfig } from './pages.config'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import LogDailyPath from './pages/LogDailyPath';
+import CityPulseWeekly from './pages/CityPulseWeekly';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
@@ -60,6 +61,7 @@ const AuthenticatedApp = () => {
         />
       ))}
       <Route path="/LogDailyPath" element={<LayoutWrapper currentPageName="LogDailyPath"><LogDailyPath /></LayoutWrapper>} />
+      <Route path="/city-pulse" element={<LayoutWrapper currentPageName="CityPulseWeekly"><CityPulseWeekly /></LayoutWrapper>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

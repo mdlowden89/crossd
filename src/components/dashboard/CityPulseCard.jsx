@@ -193,9 +193,17 @@ export default function CityPulseCard({ moments = [], profile = null, isNew = tr
         </div>
       </div>
 
-      <p className="text-white/50 text-xs mb-5">
-        {activePulse.fromSetup ? 'Based on your setup — log moments to refine your pulse.' : 'Weekly recap of where your vibe shows up.'}
-      </p>
+      <div className="flex items-center justify-between mb-5">
+        <p className="text-white/50 text-xs">
+          {activePulse.fromSetup ? 'Based on your setup — log moments to refine your pulse.' : 'Weekly recap of where your vibe shows up.'}
+        </p>
+        <button
+          onClick={() => navigate('/city-pulse')}
+          className="flex-shrink-0 ml-3 text-[10px] font-semibold text-[#E70F72] border border-[#E70F72]/30 px-2.5 py-1 rounded-full hover:bg-[#E70F72]/10 transition-colors whitespace-nowrap"
+        >
+          View this week →
+        </button>
+      </div>
 
       <div className="grid grid-cols-2 gap-3">
         {/* Top Zones */}
