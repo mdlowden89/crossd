@@ -1,18 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
-import { ChevronLeft, MapPin, Clock, Sparkles, TrendingUp, Zap, Lightbulb } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { ChevronLeft, MapPin, Sparkles, Clock, Zap, Lightbulb } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
 import { getArchetypeInfo } from '@/components/spark/placesDnaEngine';
 
 const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const HOUR_BUCKETS = [
-  { label: 'Morning', range: [6, 11] },
-  { label: 'Afternoon', range: [12, 16] },
-  { label: 'Evening', range: [17, 21] },
-  { label: 'Night', range: [22, 5] },
-];
+const HOUR_MARKERS = [0, 6, 12, 18, 23];
 
 const CATEGORY_TO_ARCHETYPE = {
   cafe: 'calm_cozy', coffee_shop: 'calm_cozy', art_gallery: 'creative',
@@ -30,35 +25,51 @@ function deriveArchetype(venueTypes = []) {
 }
 
 function getMomentHour(m) {
-  if (m.time_bucket) {
-    const parts = m.time_bucket.split('-');
-    return parseInt(parts[3], 10);
-  }
+  if (m.time_bucket) return parseInt(m.time_bucket.split('-')[3], 10);
   return new Date(m.created_date).getHours();
 }
 
 function getMomentDay(m) {
   if (m.time_bucket) {
-    const parts = m.time_bucket.split('-');
-    return new Date(`${parts[0]}-${parts[1]}-${parts[2]}`).getDay();
+    const p = m.time_bucket.split('-');
+    return new Date(`${p[0]}-${p[1]}-${p[2]}`).getDay();
   }
   return new Date(m.created_date).getDay();
 }
 
-function getHourBucket(h) {
-  for (const b of HOUR_BUCKETS) {
-    const [start, end] = b.range;
-    if (start <= end) { if (h >= start && h <= end) return b.label; }
-    else { if (h >= start || h <= end) return b.label; }
-  }
-  return 'Evening';
+function getPeakHourLabel(h) {
+  if (h >= 6 && h < 12) return 'mornings';
+  if (h >= 12 && h < 17) return 'afternoons';
+  if (h >= 17 && h < 21) return 'evenings';
+  return 'nights';
+}
+
+const TABS = ['This week', 'Last week', 'Last month', 'Compare'];
+
+function useWindowMoments(allMoments, tab) {
+  return useMemo(() => {
+    const now = new Date();
+    const week = 7 * 24 * 60 * 60 * 1000;
+    if (tab === 'Last week') {
+      const start = new Date(now - 2 * week);
+      const end = new Date(now - week);
+      return allMoments.filter(m => { const d = new Date(m.created_date); return d > start && d <= end; });
+    }
+    if (tab === 'Last month') {
+      const start = new Date(now - 30 * 24 * 60 * 60 * 1000);
+      return allMoments.filter(m => new Date(m.created_date) > start);
+    }
+    // This week (default + Compare)
+    return allMoments.filter(m => new Date(m.created_date) > new Date(now - week));
+  }, [allMoments, tab]);
 }
 
 export default function CityPulseWeekly() {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('This week');
 
   const { data: profile } = useQuery({
-    queryKey: ['city-pulse-profile'],
+    queryKey: ['cpw-profile'],
     queryFn: async () => {
       const user = await base44.auth.me();
       const profiles = await base44.entities.Profile.filter({ user_id: user.id });
@@ -67,262 +78,315 @@ export default function CityPulseWeekly() {
   });
 
   const { data: allMoments = [] } = useQuery({
-    queryKey: ['city-pulse-moments', profile?.id],
+    queryKey: ['cpw-moments', profile?.id],
     queryFn: () => base44.entities.Moment.filter({ user_id: profile.id }),
     enabled: !!profile,
   });
 
-  const stats = useMemo(() => {
+  const thisWeekMoments = useWindowMoments(allMoments, activeTab);
+  const prevWeekMoments = useMemo(() => {
     const now = new Date();
-    const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
-    const twoWeeksAgo = new Date(now - 14 * 24 * 60 * 60 * 1000);
+    const week = 7 * 24 * 60 * 60 * 1000;
+    const start = new Date(now - 2 * week);
+    const end = new Date(now - week);
+    return allMoments.filter(m => { const d = new Date(m.created_date); return d > start && d <= end; });
+  }, [allMoments]);
 
-    const thisWeek = allMoments.filter(m => new Date(m.created_date) > weekAgo);
-    const lastWeek = allMoments.filter(m => {
-      const d = new Date(m.created_date);
-      return d > twoWeeksAgo && d <= weekAgo;
-    });
+  const stats = useMemo(() => {
+    const moments = thisWeekMoments;
 
     // Top zones
     const zoneMap = {};
-    thisWeek.forEach(m => {
+    moments.forEach(m => {
       const key = m.venue_name || m.geohash?.substring(0, 4) || 'Unknown';
       zoneMap[key] = (zoneMap[key] || 0) + 1;
     });
-    const topZones = Object.entries(zoneMap).sort((a, b) => b[1] - a[1]).slice(0, 3);
+    const topZones = Object.entries(zoneMap).sort((a, b) => b[1] - a[1]);
+    const uniqueVenues = topZones.length;
 
     // PlacesDNA mix
     const dnaMap = {};
-    thisWeek.forEach(m => {
+    moments.forEach(m => {
       const arch = deriveArchetype(m.venue_types || []);
       dnaMap[arch] = (dnaMap[arch] || 0) + 1;
     });
     const totalDna = Object.values(dnaMap).reduce((s, v) => s + v, 0) || 1;
     const dnaMix = Object.entries(dnaMap)
       .sort((a, b) => b[1] - a[1])
-      .slice(0, 4)
       .map(([arch, count]) => ({ arch, pct: Math.round((count / totalDna) * 100) }));
 
-    // Day rhythm
+    // Day rhythm (0-6, Sun-Sat)
     const dayCount = Array(7).fill(0);
-    thisWeek.forEach(m => { dayCount[getMomentDay(m)]++; });
+    moments.forEach(m => { dayCount[getMomentDay(m)]++; });
+    const peakDayIdx = dayCount.indexOf(Math.max(...dayCount));
     const maxDay = Math.max(...dayCount, 1);
 
-    // Hour bucket rhythm
-    const bucketCount = { Morning: 0, Afternoon: 0, Evening: 0, Night: 0 };
-    thisWeek.forEach(m => { bucketCount[getHourBucket(getMomentHour(m))]++; });
-    const maxBucket = Math.max(...Object.values(bucketCount), 1);
+    // Hour rhythm (0-23)
+    const hourCount = Array(24).fill(0);
+    moments.forEach(m => { hourCount[getMomentHour(m)]++; });
+    const peakHour = hourCount.indexOf(Math.max(...hourCount));
+    const maxHour = Math.max(...hourCount, 1);
 
-    // Best spark window
-    const peakBucket = Object.entries(bucketCount).sort((a, b) => b[1] - a[1])[0]?.[0] || 'Evening';
-    const peakDay = DAY_LABELS[dayCount.indexOf(Math.max(...dayCount))] || 'Fri';
-    const sparkWindow = `${peakDay} ${peakBucket}`;
+    const peakDay = DAY_LABELS[peakDayIdx] || 'Fri';
+    const peakTimeLabel = getPeakHourLabel(peakHour);
+    const sparkWindow = `${peakDay} ${peakTimeLabel}`;
+    const peakStat = moments.length > 0 ? `${peakDay} ${peakHour}:00` : '—';
 
-    // Delta vs last week
-    const delta = thisWeek.length - lastWeek.length;
+    const delta = moments.length - prevWeekMoments.length;
 
     // Nudges
     const nudges = [];
-    if (thisWeek.length === 0) {
-      nudges.push('Log your first moment this week to start building your pulse.');
+    if (moments.length === 0) {
+      nudges.push("Log your first moment this week to start building your pulse.");
     } else {
-      if (delta < 0) nudges.push(`You logged ${Math.abs(delta)} fewer moments than last week — try to get out more!`);
-      if (peakBucket === 'Night') nudges.push('Your spark peaks at night — prime time for live music and cocktail bars.');
-      if (dnaMix[0]?.arch === 'calm_cozy') nudges.push('You lean calm & cosy — try a wine bar or gallery for a new kind of connection.');
-      if (dayCount[0] > 0 || dayCount[6] > 0) nudges.push('You\'re active on weekends — your crossing chances spike on Sat/Sun evenings.');
-      if (nudges.length === 0) nudges.push(`You're on a roll — ${thisWeek.length} moments this week keeps your pulse strong.`);
+      if (delta > 0) nudges.push(`You're on a roll — ${delta} more moments than the previous period.`);
+      if (topZones[0]) nudges.push(`${topZones[0][0]} was your anchor — great for reliable crossings.`);
+      if (dnaMix[0]) {
+        const info = getArchetypeInfo(dnaMix[0].arch);
+        nudges.push(`Your vibe leaned ${info.label.toLowerCase()} — try one contrasting spot to widen your Spark map.`);
+      }
+      nudges.push(`Your energy peaked on ${peakTimeLabel}. Log a moment then to boost Spark Energy.`);
     }
 
-    return { thisWeek, lastWeek, topZones, dnaMix, dayCount, bucketCount, maxDay, maxBucket, sparkWindow, delta, nudges };
-  }, [allMoments]);
+    return { moments, uniqueVenues, topZones, dnaMix, dayCount, hourCount, maxDay, maxHour, sparkWindow, peakStat, peakTimeLabel, delta, nudges };
+  }, [thisWeekMoments, prevWeekMoments]);
 
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-black/90 backdrop-blur-md border-b border-white/8 px-4 py-4 flex items-center gap-3">
-        <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-full bg-white/8 flex items-center justify-center">
-          <ChevronLeft className="w-5 h-5 text-white" />
-        </button>
-        <div>
-          <h1 className="text-white font-bold text-base">This Week's City Pulse</h1>
-          <p className="text-white/40 text-xs">Your 7-day movement snapshot</p>
+      <div className="px-4 pt-5 pb-4">
+        <div className="flex items-center gap-3 mb-1">
+          <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-full bg-white/8 flex items-center justify-center flex-shrink-0">
+            <ChevronLeft className="w-5 h-5 text-white" />
+          </button>
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-[#E70F72]" />
+            <h1 className="text-white font-bold text-2xl">City Pulse — This week</h1>
+          </div>
         </div>
+        <p className="text-white/45 text-sm ml-12">A recap of where you've been and what it says about your vibe.</p>
       </div>
 
-      <div className="px-4 py-5 space-y-5 pb-20">
-
-        {/* Moments delta */}
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
-          className="rounded-2xl border border-[#E70F72]/25 p-5"
-          style={{ background: 'linear-gradient(135deg, #0d0218 0%, #0B0B0B 100%)' }}
-        >
-          <div className="flex items-center gap-2 mb-3">
-            <MapPin className="w-4 h-4 text-[#E70F72]" />
-            <span className="text-white font-semibold text-sm">Moments logged</span>
-          </div>
-          <div className="flex items-end gap-3">
-            <span className="text-4xl font-black text-white">{stats.thisWeek.length}</span>
-            <span className={`text-sm font-semibold mb-1 ${stats.delta >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-              {stats.delta >= 0 ? `+${stats.delta}` : stats.delta} vs last week
-            </span>
-          </div>
-          {stats.lastWeek.length > 0 && (
-            <p className="text-white/35 text-xs mt-1">{stats.lastWeek.length} moments last week</p>
-          )}
-        </motion.div>
-
-        {/* Top zones */}
-        {stats.topZones.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-            className="rounded-2xl border border-white/10 bg-white/4 p-5"
+      {/* Tab bar */}
+      <div className="mx-4 mb-5 flex items-center bg-white/6 rounded-full p-1">
+        {TABS.map(tab => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`flex-1 py-2 rounded-full text-xs font-semibold transition-all ${
+              activeTab === tab
+                ? 'bg-[#E70F72] text-white shadow'
+                : 'text-white/50 hover:text-white/75'
+            }`}
           >
-            <div className="flex items-center gap-2 mb-3">
-              <TrendingUp className="w-4 h-4 text-amber-400" />
-              <span className="text-white font-semibold text-sm">Top Zones</span>
+            {tab}
+          </button>
+        ))}
+      </div>
+
+      <div className="px-4 space-y-4 pb-24">
+
+        {/* Summary stats row */}
+        <div className="rounded-2xl border border-[#E70F72]/30 p-4"
+          style={{ background: 'linear-gradient(135deg, #1a0012 0%, #0d0008 100%)' }}>
+          <div className="grid grid-cols-3 gap-3">
+            {/* Moments */}
+            <div className="bg-white/5 rounded-xl p-3">
+              <p className="text-white/40 text-[10px] uppercase tracking-widest mb-2">Moments</p>
+              <p className="text-white text-3xl font-black leading-none mb-2">{stats.moments.length}</p>
+              {stats.delta !== 0 && (
+                <p className={`text-[11px] font-semibold flex items-center gap-1 ${stats.delta > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  {stats.delta > 0 ? '↗' : '↘'} vs previous period
+                </p>
+              )}
             </div>
-            <div className="space-y-2">
+            {/* Zones */}
+            <div className="bg-white/5 rounded-xl p-3">
+              <p className="text-white/40 text-[10px] uppercase tracking-widest mb-2">Zones</p>
+              <p className="text-white text-3xl font-black leading-none mb-2">{stats.uniqueVenues}</p>
+              <p className="text-white/40 text-[11px]">unique venues</p>
+            </div>
+            {/* Peak */}
+            <div className="bg-white/5 rounded-xl p-3">
+              <p className="text-white/40 text-[10px] uppercase tracking-widest mb-2">Peak</p>
+              <p className="text-white text-lg font-black leading-tight mb-1">{stats.peakStat}</p>
+              <p className="text-white/40 text-[11px]">{stats.peakTimeLabel}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Your Zones */}
+        {stats.topZones.length > 0 && (
+          <div className="rounded-2xl border border-[#E70F72]/25 p-5"
+            style={{ background: '#0d0008' }}>
+            <div className="flex items-center gap-2 mb-1">
+              <MapPin className="w-5 h-5 text-[#E70F72]" />
+              <h2 className="text-white font-bold text-lg">Your Zones</h2>
+            </div>
+            <p className="text-white/40 text-sm mb-5">Where your this week actually happened.</p>
+            <div className="space-y-4">
               {stats.topZones.map(([name, count], i) => (
-                <div key={i} className="flex items-center gap-3">
-                  <span className="text-white/40 text-xs w-4">{i + 1}</span>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between mb-0.5">
-                      <span className="text-white text-xs font-medium truncate">{name}</span>
-                      <span className="text-white/40 text-[10px]">{count}×</span>
-                    </div>
-                    <div className="h-1 bg-white/8 rounded-full overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${(count / stats.topZones[0][1]) * 100}%` }}
-                        transition={{ duration: 0.6, delay: 0.2 + i * 0.05 }}
-                        className="h-full rounded-full bg-[#E70F72]"
-                      />
-                    </div>
+                <div key={i}>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-white font-medium text-sm">{name}</span>
+                    <span className="text-white/40 text-sm">{count} {count === 1 ? 'moment' : 'moments'}</span>
+                  </div>
+                  <div className="h-1.5 bg-white/8 rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${(count / stats.topZones[0][1]) * 100}%` }}
+                      transition={{ duration: 0.6, delay: i * 0.06 }}
+                      className="h-full rounded-full"
+                      style={{ background: 'linear-gradient(90deg, #E70F72, #FFB800)' }}
+                    />
                   </div>
                 </div>
               ))}
             </div>
-          </motion.div>
+          </div>
         )}
 
-        {/* PlacesDNA mix */}
+        {/* PlacesDNA Mix */}
         {stats.dnaMix.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-            className="rounded-2xl border border-white/10 bg-white/4 p-5"
-          >
-            <div className="flex items-center gap-2 mb-3">
-              <Sparkles className="w-4 h-4 text-purple-400" />
-              <span className="text-white font-semibold text-sm">PlacesDNA Mix</span>
+          <div className="rounded-2xl border border-[#E70F72]/25 p-5"
+            style={{ background: '#0d0008' }}>
+            <div className="flex items-center gap-2 mb-1">
+              <Sparkles className="w-5 h-5 text-[#E70F72]" />
+              <h2 className="text-white font-bold text-lg">PlacesDNA Mix</h2>
             </div>
-            <div className="space-y-2.5">
+            <p className="text-white/40 text-sm mb-5">The archetypes that showed up in your moments this week.</p>
+            <div className="space-y-4">
               {stats.dnaMix.map(({ arch, pct }, i) => {
                 const info = getArchetypeInfo(arch);
                 return (
-                  <div key={i} className="flex items-center gap-3">
-                    <span className="text-base w-6 flex-shrink-0">{info.emoji}</span>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-white/80 text-xs">{info.label}</span>
-                        <span className="text-xs font-bold" style={{ color: info.color }}>{pct}%</span>
-                      </div>
-                      <div className="h-1.5 bg-white/8 rounded-full overflow-hidden">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={{ width: `${pct}%` }}
-                          transition={{ duration: 0.6, delay: 0.25 + i * 0.05 }}
-                          className="h-full rounded-full"
-                          style={{ backgroundColor: info.color }}
-                        />
-                      </div>
+                  <div key={i}>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="font-semibold text-sm flex items-center gap-2" style={{ color: info.color }}>
+                        <span>{info.emoji}</span> {info.label}
+                      </span>
+                      <span className="text-white/60 text-sm font-semibold">{pct}%</span>
+                    </div>
+                    <div className="h-1.5 bg-white/8 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${pct}%` }}
+                        transition={{ duration: 0.6, delay: i * 0.06 }}
+                        className="h-full rounded-full"
+                        style={{ backgroundColor: info.color }}
+                      />
                     </div>
                   </div>
                 );
               })}
             </div>
-          </motion.div>
+          </div>
         )}
 
-        {/* Day rhythm */}
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-          className="rounded-2xl border border-white/10 bg-white/4 p-5"
-        >
-          <div className="flex items-center gap-2 mb-4">
-            <Clock className="w-4 h-4 text-blue-400" />
-            <span className="text-white font-semibold text-sm">Day Rhythm</span>
+        {/* Your Rhythm */}
+        <div className="rounded-2xl border border-[#E70F72]/25 p-5"
+          style={{ background: '#0d0008' }}>
+          <div className="flex items-center gap-2 mb-1">
+            <Clock className="w-5 h-5 text-yellow-400" />
+            <h2 className="text-white font-bold text-lg">Your Rhythm</h2>
           </div>
-          <div className="flex items-end gap-1.5 h-16">
+          <p className="text-white/40 text-sm mb-6">When you tended to be out and about.</p>
+
+          {/* BY DAY bar chart */}
+          <p className="text-white/30 text-[10px] uppercase tracking-widest mb-3">By Day</p>
+          <div className="flex items-end gap-0 h-20 mb-1">
             {DAY_LABELS.map((day, i) => {
               const count = stats.dayCount[i];
-              const pct = stats.maxDay > 0 ? (count / stats.maxDay) : 0;
+              const pct = count / stats.maxDay;
+              const isPeak = count === stats.maxDay && count > 0;
               return (
-                <div key={day} className="flex-1 flex flex-col items-center gap-1">
+                <div key={day} className="flex-1 flex flex-col items-center justify-end">
                   <motion.div
                     initial={{ height: 0 }}
-                    animate={{ height: `${Math.max(pct * 100, 4)}%` }}
-                    transition={{ duration: 0.5, delay: 0.3 + i * 0.04 }}
-                    className="w-full rounded-t-sm"
-                    style={{ backgroundColor: count > 0 ? '#E70F72' : '#ffffff10', minHeight: 4 }}
+                    animate={{ height: `${Math.max(pct * 64, count > 0 ? 6 : 0)}px` }}
+                    transition={{ duration: 0.5, delay: i * 0.05 }}
+                    className="w-full mx-0.5 rounded-t"
+                    style={{
+                      background: isPeak ? '#E70F72' : count > 0 ? '#E70F7260' : '#ffffff0a',
+                      minHeight: count > 0 ? 6 : 0,
+                    }}
                   />
-                  <span className="text-white/30 text-[9px]">{day}</span>
                 </div>
               );
             })}
           </div>
-        </motion.div>
-
-        {/* Hour buckets */}
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
-          className="rounded-2xl border border-white/10 bg-white/4 p-5"
-        >
-          <div className="flex items-center gap-2 mb-4">
-            <Clock className="w-4 h-4 text-amber-400" />
-            <span className="text-white font-semibold text-sm">Time of Day</span>
-          </div>
-          <div className="grid grid-cols-4 gap-2">
-            {HOUR_BUCKETS.map(({ label }) => {
-              const count = stats.bucketCount[label] || 0;
-              const pct = stats.maxBucket > 0 ? count / stats.maxBucket : 0;
-              const isTop = count === stats.maxBucket && count > 0;
+          <div className="flex mb-6">
+            {DAY_LABELS.map((day, i) => {
+              const isPeak = stats.dayCount[i] === stats.maxDay && stats.dayCount[i] > 0;
               return (
-                <div key={label} className={`rounded-xl p-2.5 text-center border ${isTop ? 'border-[#E70F72]/40 bg-[#E70F72]/10' : 'border-white/8 bg-white/3'}`}>
-                  <div className="text-xs text-white/50 mb-1">{label}</div>
-                  <div className={`text-lg font-black ${isTop ? 'text-[#E70F72]' : 'text-white/30'}`}>{count}</div>
-                  {isTop && <div className="text-[9px] text-[#E70F72] font-semibold mt-0.5">Peak</div>}
+                <div key={day} className="flex-1 text-center">
+                  <span className={`text-[10px] font-medium ${isPeak ? 'text-[#E70F72]' : 'text-white/30'}`}>{day}</span>
                 </div>
               );
             })}
           </div>
-        </motion.div>
 
-        {/* Best spark window */}
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-          className="rounded-2xl border border-[#E70F72]/30 p-5"
-          style={{ background: 'linear-gradient(135deg, #1a0010 0%, #0B0B0B 100%)' }}
-        >
-          <div className="flex items-center gap-2 mb-2">
-            <Zap className="w-4 h-4 text-[#E70F72]" />
-            <span className="text-white font-semibold text-sm">Best Spark Window</span>
+          {/* BY HOUR bar chart */}
+          <p className="text-white/30 text-[10px] uppercase tracking-widest mb-3">By Hour</p>
+          <div className="flex items-end gap-px h-20 mb-1">
+            {stats.hourCount.map((count, h) => {
+              const pct = count / stats.maxHour;
+              const isPeak = count === stats.maxHour && count > 0;
+              return (
+                <motion.div
+                  key={h}
+                  initial={{ height: 0 }}
+                  animate={{ height: `${Math.max(pct * 64, count > 0 ? 4 : 0)}px` }}
+                  transition={{ duration: 0.4, delay: h * 0.015 }}
+                  className="flex-1 rounded-t"
+                  style={{
+                    background: isPeak ? '#FFB800' : count > 0 ? '#FFB80060' : '#ffffff08',
+                    minHeight: count > 0 ? 4 : 0,
+                  }}
+                />
+              );
+            })}
           </div>
-          <p className="text-2xl font-black text-[#E70F72]">{stats.sparkWindow}</p>
-          <p className="text-white/40 text-xs mt-1">This is when your crossing chances are highest based on your movement patterns.</p>
-        </motion.div>
+          <div className="flex justify-between mb-5">
+            {HOUR_MARKERS.map(h => (
+              <span key={h} className="text-white/25 text-[10px]">{h}</span>
+            ))}
+          </div>
 
-        {/* Nudges */}
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
-          className="rounded-2xl border border-white/10 bg-white/4 p-5"
-        >
-          <div className="flex items-center gap-2 mb-3">
-            <Lightbulb className="w-4 h-4 text-yellow-400" />
-            <span className="text-white font-semibold text-sm">Personalised Nudges</span>
+          {/* Best spark window pill */}
+          <div className="inline-flex items-center gap-2 bg-white/8 border border-white/12 rounded-full px-4 py-2">
+            <Zap className="w-4 h-4 text-yellow-400" />
+            <span className="text-white text-sm">Best spark window: <span className="font-bold">{stats.sparkWindow}</span></span>
           </div>
-          <div className="space-y-2.5">
+        </div>
+
+        {/* Insights & nudges */}
+        <div className="rounded-2xl border border-[#E70F72]/25 p-5"
+          style={{ background: '#0d0008' }}>
+          <div className="flex items-center gap-2 mb-4">
+            <Lightbulb className="w-5 h-5 text-yellow-400" />
+            <h2 className="text-white font-bold text-lg">Insights & nudges</h2>
+          </div>
+          <div className="space-y-3">
             {stats.nudges.map((nudge, i) => (
-              <div key={i} className="flex gap-2.5">
-                <span className="text-yellow-400 text-xs mt-0.5 flex-shrink-0">→</span>
-                <p className="text-white/65 text-xs leading-relaxed">{nudge}</p>
+              <div key={i} className="flex items-start gap-3 bg-white/5 border border-white/8 rounded-xl px-4 py-3">
+                <Sparkles className="w-4 h-4 text-[#E70F72] flex-shrink-0 mt-0.5" />
+                <p className="text-white/80 text-sm leading-relaxed">{nudge}</p>
               </div>
             ))}
           </div>
-        </motion.div>
+        </div>
+
+        {/* Bottom CTAs */}
+        <div className="flex items-center gap-4 pt-1">
+          <Link to="/LogMoment"
+            className="px-6 py-3 rounded-full bg-[#E70F72] text-white font-bold text-sm hover:bg-[#E70F72]/80 transition-colors">
+            Log a moment
+          </Link>
+          <Link to="/ActivityMapPage"
+            className="text-white/60 font-semibold text-sm hover:text-white transition-colors">
+            Open Activity Map
+          </Link>
+        </div>
 
       </div>
     </div>
