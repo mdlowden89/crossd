@@ -65,7 +65,7 @@ const safetyCards = [
   },
 ];
 
-function StepCard({ step, index, isLast }) {
+function StepCard({ step, index }) {
   const [hovered, setHovered] = useState(false);
   return (
     <motion.div
@@ -73,22 +73,10 @@ function StepCard({ step, index, isLast }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="flex gap-5 items-start"
     >
-      {/* Number + vertical line */}
-      <div className="flex flex-col items-center flex-shrink-0">
-        <div className="w-12 h-12 rounded-full border border-[#E70F72]/50 flex items-center justify-center text-[#E70F72] font-bold text-lg"
-          style={{ background: 'rgba(231,15,114,0.08)' }}>
-          {step.num}
-        </div>
-        {!isLast && (
-          <div className="w-px flex-1 mt-2" style={{ background: 'rgba(231,15,114,0.25)', minHeight: '32px' }} />
-        )}
-      </div>
-
       {/* Card */}
       <div
-        className="flex-1 border rounded-2xl p-7 mb-5 cursor-default"
+        className="border rounded-2xl p-7 cursor-default"
         style={{
           background: '#111',
           borderColor: hovered ? 'rgba(231,15,114,0.7)' : 'rgba(255,255,255,0.07)',
@@ -119,6 +107,7 @@ function StepCard({ step, index, isLast }) {
     </motion.div>
   );
 }
+
 
 function SafetyCard({ card, index }) {
   const [hovered, setHovered] = useState(false);
@@ -188,11 +177,28 @@ export default function HowItWorks({ onBack }) {
           </p>
         </motion.div>
 
-        {/* Steps with number + vertical line */}
-        <div className="flex flex-col mb-10">
-          {steps.map((step, i) => (
-            <StepCard key={i} step={step} index={i} isLast={i === steps.length - 1} />
-          ))}
+        {/* Steps with continuous vertical line */}
+        <div className="flex gap-5 mb-10">
+          {/* Left column: number bubbles + continuous line */}
+          <div className="flex flex-col items-center flex-shrink-0" style={{ width: '48px' }}>
+            {steps.map((step, i) => (
+              <React.Fragment key={i}>
+                <div className="w-12 h-12 rounded-full border border-[#E70F72]/50 flex items-center justify-center text-[#E70F72] font-bold text-lg flex-shrink-0"
+                  style={{ background: 'rgba(231,15,114,0.08)' }}>
+                  {step.num}
+                </div>
+                {i < steps.length - 1 && (
+                  <div className="flex-1 w-px" style={{ background: 'rgba(231,15,114,0.35)', minHeight: '20px' }} />
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+          {/* Right column: cards */}
+          <div className="flex flex-col flex-1 gap-4">
+            {steps.map((step, i) => (
+              <StepCard key={i} step={step} index={i} />
+            ))}
+          </div>
         </div>
 
         {/* Safety cards */}
