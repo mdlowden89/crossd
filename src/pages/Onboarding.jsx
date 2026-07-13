@@ -204,8 +204,8 @@ function LocationVisual() {
                   <span className="text-[#E70F72] text-xs font-semibold">Crossd</span>
                   <span className="text-white/30 text-xs">· just now</span>
                 </div>
-                <p className="text-white text-sm font-semibold">Someone logged the same moment 👀</p>
-                <p className="text-white/55 text-xs mt-0.5">Near Borough Market this morning — your second chance just arrived.</p>
+                <p className="text-white text-sm font-semibold">You crossed paths with someone ✨</p>
+                <p className="text-white/55 text-xs mt-0.5">Borough Market this morning — want to make that introduction?</p>
               </div>
             </div>
           </motion.div>
@@ -331,7 +331,7 @@ const STEPS = [
     eyebrow: 'Step 1 of 2',
     title: 'Saw someone but',
     titleAccent: "didn't say hi?",
-    description: 'Log the moment. Crossd gives you a second chance at that introduction — when they log the same place.',
+    description: "Log the moment. If Crossd detects they were there too, it'll notify you both — giving you a second chance at that introduction.",
     visual: <LocationVisual />,
     action: 'Enable Location',
     gradient: 'from-[#E70F72]/15 via-transparent to-transparent',
