@@ -540,7 +540,7 @@ export default function Dashboard() {
           ) : (
             <button
               onClick={() => navigate('/LogDailyPath')}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#E70F72] text-white text-sm font-semibold hover:bg-[#E70F72]/90 active:scale-95 transition-all mb-5"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#E70F72] text-black text-sm font-semibold hover:bg-[#E70F72]/90 active:scale-95 transition-all mb-5"
             >
               <MapPin className="w-4 h-4" />
               Log today's path
