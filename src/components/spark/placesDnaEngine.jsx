@@ -498,16 +498,16 @@ export function cosineSimilarity(archA, archB) {
  */
 export function getArchetypeInfo(archetype) {
   const info = {
-    [ARCHETYPES.ROMANTIC]: { label: 'Romantic', emoji: '💕', color: '#E74C78' },
-    [ARCHETYPES.CALM_COZY]: { label: 'Calm & Cozy', emoji: '🕯️', color: '#C49A6C' },
-    [ARCHETYPES.CREATIVE]: { label: 'Creative', emoji: '🎨', color: '#9B5DE5' },
-    [ARCHETYPES.SOCIAL_BUZZING]: { label: 'Social & Buzzing', emoji: '🎉', color: '#FFB800' },
-    [ARCHETYPES.NATURE_GROUNDED]: { label: 'Nature Grounded', emoji: '🌿', color: '#2DD881' },
-    [ARCHETYPES.LIVE_ELECTRIC]: { label: 'Live & Electric', emoji: '⚡', color: '#F6C90E' },
-    [ARCHETYPES.DEEP_INTELLECTUAL]: { label: 'Deep & Intellectual', emoji: '💭', color: '#4169E1' },
-    [ARCHETYPES.ACTIVE_ENERGETIC]: { label: 'Active & Energetic', emoji: '🏃', color: '#FF4081' },
-    [ARCHETYPES.NIGHTLIFE]: { label: 'Nightlife', emoji: '🌃', color: '#8A63F6' },
-    [ARCHETYPES.INTIMATE_LOCAL]: { label: 'Intimate & Local', emoji: '🤫', color: '#8B7355' }
+    [ARCHETYPES.ROMANTIC]: { label: 'Romantic', emoji: '💕', color: '#E74C78', description: 'You gravitate to intimate dinners, candlelit wine bars, and spaces that feel made for two. Your presence in these spots signals warmth and intentionality — the kind of energy that pulls in deep connections.' },
+    [ARCHETYPES.CALM_COZY]: { label: 'Calm & Cozy', emoji: '🕯️', color: '#C49A6C', description: 'Coffee shops, quiet corners, and unhurried mornings are your comfort zone. You value depth over noise — and the people you cross paths with here tend to feel the same.' },
+    [ARCHETYPES.CREATIVE]: { label: 'Creative', emoji: '🎨', color: '#9B5DE5', description: 'Galleries, studios, and cultural venues shape your map. You\'re drawn to spaces that spark ideas and conversation — a strong signal for meeting people who think outside the box.' },
+    [ARCHETYPES.SOCIAL_BUZZING]: { label: 'Social & Buzzing', emoji: '🎉', color: '#FFB800', description: 'Markets, busy bars, and high-energy venues are your playground. Your presence in buzzing spots means you\'re seen — and that puts you in range of a lot of potential sparks.' },
+    [ARCHETYPES.NATURE_GROUNDED]: { label: 'Nature Grounded', emoji: '🌿', color: '#2DD881', description: 'Parks, trails, and open-air spaces ground your week. You seek out breathing room in the city — and the people you meet here often share that same need for balance and mindfulness.' },
+    [ARCHETYPES.LIVE_ELECTRIC]: { label: 'Live & Electric', emoji: '⚡', color: '#F6C90E', description: 'Gigs, performances, and charged nights out define this archetype. You show up for experiences — and shared adrenaline is one of the fastest sparks of all.' },
+    [ARCHETYPES.DEEP_INTELLECTUAL]: { label: 'Deep & Intellectual', emoji: '💭', color: '#4169E1', description: 'Libraries, bookshops, talks, and coworking spaces shape your rhythm. You\'re wired for ideas and meaningful exchange — the sparks you encounter here tend to run deeper than most.' },
+    [ARCHETYPES.ACTIVE_ENERGETIC]: { label: 'Active & Energetic', emoji: '🏃', color: '#FF4081', description: 'Gyms, fitness classes, and sports venues are your stomping ground. Shared physical effort builds fast rapport — and regulars in these spaces become familiar faces quickly.' },
+    [ARCHETYPES.NIGHTLIFE]: { label: 'Nightlife', emoji: '🌃', color: '#8A63F6', description: 'Late nights, clubs, and after-dark energy are your native habitat. The city unlocks after midnight for you — and so do some of its most spontaneous, electric encounters.' },
+    [ARCHETYPES.INTIMATE_LOCAL]: { label: 'Intimate & Local', emoji: '🤫', color: '#8B7355', description: 'Your favourite pub, the neighbourhood café, the corner spot nobody else knows — you\'re a regular. Regularity builds familiarity, and familiarity is where real connections start.' }
   };
   return info[archetype] || { label: archetype, emoji: '✨', color: '#E70F72' };
 }

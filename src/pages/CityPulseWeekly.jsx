@@ -69,6 +69,7 @@ export default function CityPulseWeekly() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('This week');
   const [expandedZone, setExpandedZone] = useState(null);
+  const [expandedDna, setExpandedDna] = useState(null);
 
   const { data: profile } = useQuery({
     queryKey: ['cpw-profile'],
@@ -321,23 +322,45 @@ export default function CityPulseWeekly() {
             <div className="space-y-4">
               {stats.dnaMix.map(({ arch, pct }, i) => {
                 const info = getArchetypeInfo(arch);
+                const isOpen = expandedDna === arch;
                 return (
                   <div key={i}>
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span className="font-semibold text-sm flex items-center gap-2" style={{ color: info.color }}>
-                        <span>{info.emoji}</span> {info.label}
-                      </span>
-                      <span className="text-white/60 text-sm font-semibold">{pct}%</span>
-                    </div>
-                    <div className="h-1.5 bg-white/8 rounded-full overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${pct}%` }}
-                        transition={{ duration: 0.6, delay: i * 0.06 }}
-                        className="h-full rounded-full"
-                        style={{ backgroundColor: info.color }}
-                      />
-                    </div>
+                    <button className="w-full text-left" onClick={() => setExpandedDna(isOpen ? null : arch)}>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="font-semibold text-sm flex items-center gap-2" style={{ color: info.color }}>
+                          <span>{info.emoji}</span> {info.label}
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-white/60 text-sm font-semibold">{pct}%</span>
+                          <span className="text-white/30 text-xs">{isOpen ? '▲' : '▼'}</span>
+                        </div>
+                      </div>
+                      <div className="h-1.5 bg-white/8 rounded-full overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: `${pct}%` }}
+                          transition={{ duration: 0.6, delay: i * 0.06 }}
+                          className="h-full rounded-full"
+                          style={{ backgroundColor: info.color }}
+                        />
+                      </div>
+                    </button>
+                    <AnimatePresence>
+                      {isOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="overflow-hidden"
+                        >
+                          <p className="mt-3 text-white/60 text-sm leading-relaxed px-1 border-l-2 pl-3"
+                            style={{ borderColor: info.color }}>
+                            {info.description}
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 );
               })}
