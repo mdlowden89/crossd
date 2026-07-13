@@ -165,6 +165,9 @@ export default function CityPulseWeekly() {
 
   return (
     <div className="min-h-screen bg-black text-white">
+      {/* Scroll to top on mount */}
+      {React.useEffect(() => { window.scrollTo(0, 0); }, [])}
+
       {/* Header */}
       <div className="px-4 pt-5 pb-4">
         <div className="flex items-center gap-3 mb-1">
