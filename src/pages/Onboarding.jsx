@@ -267,8 +267,8 @@ function CrossingHistoryVisual() {
         style={{ boxShadow: '0 0 30px rgba(231,15,114,0.2)' }}
       >
         <Zap className="w-4 h-4 text-[#E70F72] fill-[#E70F72]" />
-        <span className="text-white font-bold text-sm">3 crossings</span>
-        <span className="text-white/50 text-sm">this week</span>
+        <span className="text-white font-bold text-sm">3 second chances</span>
+        <span className="text-white/50 text-sm">waiting for you</span>
       </motion.div>
 
       {/* Blurred profile cards */}
@@ -309,7 +309,7 @@ function CrossingHistoryVisual() {
         ))}
       </div>
 
-      <p className="text-center text-white/40 text-xs">Complete your profile to unlock these connections</p>
+      <p className="text-center text-white/40 text-xs">Complete your profile to reach them before the moment fades</p>
     </div>
   );
 }
@@ -348,10 +348,10 @@ const STEPS = [
   },
   {
     id: 'teaser',
-    eyebrow: 'Already happening',
-    title: 'They\'re already',
-    titleAccent: 'out there.',
-    description: 'You\'ve crossed paths 3 times this week. Complete your profile to see who — and connect.',
+    eyebrow: 'Your second chances await',
+    title: 'Those moments',
+    titleAccent: 'are waiting.',
+    description: 'People who noticed you — and were noticed — are already on Crossd. Complete your profile to reach them before the moment fades.',
     visual: <CrossingHistoryVisual />,
     gradient: 'from-[#E70F72]/25 via-purple-900/10 to-transparent',
   },
