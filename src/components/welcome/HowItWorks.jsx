@@ -1,9 +1,10 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { createPageUrl } from '@/utils';
 import CrossdLogo from '@/components/common/CrossdLogo';
 import StarBackground from '@/components/common/StarBackground';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import { motion } from 'framer-motion';
+import { base44 } from '@/api/base44Client';
 
 const steps = [
   {
@@ -44,7 +45,7 @@ const steps = [
 const safetyCards = [
   {
     label: 'PRIVACY',
-    heading: 'Safe Until You\'re Ready',
+    heading: "Safe Until You're Ready",
     body: 'Once you match, chat securely inside Crossd. Your number, your socials, your business — all yours until you choose to share them.',
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E70F72" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -64,7 +65,8 @@ const safetyCards = [
   },
 ];
 
-function StepCard({ step, index }) {
+function StepCard({ step, index, isLast }) {
+  const [hovered, setHovered] = useState(false);
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -73,17 +75,27 @@ function StepCard({ step, index }) {
       transition={{ duration: 0.5, delay: index * 0.1 }}
       className="flex gap-5 items-start"
     >
-      {/* Number bubble */}
-      <div className="flex-shrink-0 w-14 h-14 rounded-full border border-[#E70F72]/40 bg-[#E70F72]/08 flex items-center justify-center text-[#E70F72] font-bold text-xl"
-        style={{ background: 'rgba(231,15,114,0.08)' }}>
-        {step.num}
+      {/* Number + vertical line */}
+      <div className="flex flex-col items-center flex-shrink-0">
+        <div className="w-12 h-12 rounded-full border border-[#E70F72]/50 flex items-center justify-center text-[#E70F72] font-bold text-lg"
+          style={{ background: 'rgba(231,15,114,0.08)' }}>
+          {step.num}
+        </div>
+        {!isLast && (
+          <div className="w-px flex-1 mt-2" style={{ background: 'rgba(231,15,114,0.25)', minHeight: '32px' }} />
+        )}
       </div>
 
       {/* Card */}
-      <div className="flex-1 bg-[#0B0B0B] border border-white/[0.06] rounded-2xl p-7 hover:border-[#E70F72]/40 transition-all duration-300"
-        style={{ boxShadow: 'none' }}
-        onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 32px rgba(231,15,114,0.12)'}
-        onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
+      <div
+        className="flex-1 border rounded-2xl p-7 mb-5 transition-all duration-300 cursor-default"
+        style={{
+          background: '#111',
+          borderColor: hovered ? 'rgba(231,15,114,0.6)' : 'rgba(255,255,255,0.07)',
+          boxShadow: hovered ? '0 0 40px rgba(231,15,114,0.18)' : 'none',
+        }}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
       >
         <div className="flex items-center gap-2 mb-3">
           <div className="w-8 h-8 rounded-lg flex items-center justify-center border border-[#E70F72]/30" style={{ background: 'rgba(231,15,114,0.08)' }}>
@@ -99,16 +111,21 @@ function StepCard({ step, index }) {
 }
 
 function SafetyCard({ card, index }) {
+  const [hovered, setHovered] = useState(false);
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="bg-[#0B0B0B] border border-white/[0.06] rounded-2xl p-6 hover:border-[#E70F72]/40 transition-all duration-300"
-      style={{ boxShadow: 'none' }}
-      onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 32px rgba(231,15,114,0.12)'}
-      onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
+      className="border rounded-2xl p-6 transition-all duration-300 cursor-default"
+      style={{
+        background: '#111',
+        borderColor: hovered ? 'rgba(231,15,114,0.6)' : 'rgba(255,255,255,0.07)',
+        boxShadow: hovered ? '0 0 40px rgba(231,15,114,0.18)' : 'none',
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       <div className="flex items-center gap-2 mb-3">
         <div className="w-8 h-8 rounded-lg flex items-center justify-center border border-[#E70F72]/30" style={{ background: 'rgba(231,15,114,0.08)' }}>
@@ -134,35 +151,37 @@ export default function HowItWorks({ onBack }) {
       {/* Nav */}
       <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 h-16 border-b border-white/[0.08]" style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(12px)' }}>
         <CrossdLogo size="sm" />
-        <CrossdButton variant="ghost" size="sm" onClick={onBack}>← Back</CrossdButton>
+        <button onClick={onBack} className="flex items-center gap-1 text-white/60 hover:text-white text-sm font-medium transition-colors">
+          ← Back
+        </button>
       </div>
 
       {/* Content */}
       <div className="relative z-10 max-w-2xl mx-auto px-6 pt-32 pb-24">
 
-        {/* Header */}
+        {/* Header — left aligned */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-16"
+          className="mb-14"
         >
-          <div className="inline-block text-[#E70F72] text-[11px] font-semibold tracking-widest uppercase border border-[#E70F72]/35 rounded-full px-4 py-1.5 mb-6 block w-fit" style={{ background: 'rgba(231,15,114,0.08)' }}>
+          <div className="inline-block text-[#E70F72] text-[11px] font-semibold tracking-widest uppercase border border-[#E70F72]/35 rounded-full px-4 py-1.5 mb-6" style={{ background: 'rgba(231,15,114,0.08)' }}>
             HOW IT WORKS
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-5">
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-5">
             You've already met them.<br />
-            <span className="text-[#E70F72] font-bold">You just don't know it yet.</span>
+            <span className="text-[#E70F72]">You just don't know it yet.</span>
           </h1>
-          <p className="text-white/50 text-base md:text-lg leading-relaxed max-w-md">
+          <p className="text-white/50 text-base leading-relaxed max-w-md">
             Crossd finds the connection that was always there — hidden in the places you both call yours.
           </p>
         </motion.div>
 
-        {/* Steps */}
-        <div className="flex flex-col gap-5 mb-10">
+        {/* Steps with number + vertical line */}
+        <div className="flex flex-col mb-10">
           {steps.map((step, i) => (
-            <StepCard key={i} step={step} index={i} />
+            <StepCard key={i} step={step} index={i} isLast={i === steps.length - 1} />
           ))}
         </div>
 
@@ -173,22 +192,29 @@ export default function HowItWorks({ onBack }) {
           ))}
         </div>
 
-        {/* CTA */}
+        {/* CTA — centred */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col items-center"
+          className="flex flex-col items-center text-center"
         >
+          <h2 className="text-white font-bold text-3xl mb-2">Begin crossing paths</h2>
+          <p className="text-white/45 text-sm mb-8">Join Crossd today and discover the connections waiting in the places you already love.</p>
           <CrossdButton
             size="lg"
             onClick={() => window.location.href = createPageUrl('Onboarding')}
             className="min-w-[220px]"
           >
-            Start Crossing Paths →
+            Get Started →
           </CrossdButton>
-          <p className="text-white/40 text-sm mt-4">Free to join · No credit card needed</p>
+          <button
+            onClick={() => base44.auth.redirectToLogin()}
+            className="mt-4 text-white/50 text-sm hover:text-white transition-colors"
+          >
+            Already a user? Log in
+          </button>
         </motion.div>
       </div>
     </div>
