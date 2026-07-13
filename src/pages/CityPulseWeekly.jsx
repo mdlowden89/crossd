@@ -131,16 +131,37 @@ export default function CityPulseWeekly() {
       });
     const uniqueVenues = topZones.length;
 
-    // PlacesDNA mix
+    // PlacesDNA mix (with rich metadata for expanded panel)
     const dnaMap = {};
     moments.forEach(m => {
       const arch = deriveArchetype(m.venue_types || []);
-      dnaMap[arch] = (dnaMap[arch] || 0) + 1;
+      if (!dnaMap[arch]) dnaMap[arch] = { count: 0, moments: [] };
+      dnaMap[arch].count++;
+      dnaMap[arch].moments.push(m);
     });
-    const totalDna = Object.values(dnaMap).reduce((s, v) => s + v, 0) || 1;
+    const totalDna = Object.values(dnaMap).reduce((s, v) => s + v.count, 0) || 1;
     const dnaMix = Object.entries(dnaMap)
-      .sort((a, b) => b[1] - a[1])
-      .map(([arch, count]) => ({ arch, pct: Math.round((count / totalDna) * 100) }));
+      .sort((a, b) => b[1].count - a[1].count)
+      .map(([arch, data]) => {
+        const pct = Math.round((data.count / totalDna) * 100);
+        // top spots for this archetype (by venue name, deduplicated)
+        const spotMap = {};
+        data.moments.forEach(m => {
+          const n = m.venue_name || 'Unknown';
+          spotMap[n] = (spotMap[n] || 0) + 1;
+        });
+        const topSpots = Object.entries(spotMap).sort((a, b) => b[1] - a[1]).slice(0, 3);
+        // peak time
+        const hourTally = Array(24).fill(0);
+        data.moments.forEach(m => { hourTally[getMomentHour(m)]++; });
+        const peakH = hourTally.indexOf(Math.max(...hourTally));
+        const peakTime = getPeakHourLabel(peakH);
+        // last logged
+        const latest = data.moments.sort((a, b) => new Date(b.created_date) - new Date(a.created_date))[0];
+        const latestVenue = latest.venue_name || 'Unknown';
+        const latestDate = new Date(latest.created_date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+        return { arch, pct, count: data.count, topSpots, peakTime, latestVenue, latestDate };
+      });
 
     // Day rhythm (0-6, Sun-Sat)
     const dayCount = Array(7).fill(0);
@@ -320,7 +341,8 @@ export default function CityPulseWeekly() {
             </div>
             <p className="text-white/40 text-sm mb-5">The archetypes that showed up in your moments this week.</p>
             <div className="space-y-4">
-              {stats.dnaMix.map(({ arch, pct }, i) => {
+              {stats.dnaMix.map((dnaEntry, i) => {
+                const { arch, pct } = dnaEntry;
                 const info = getArchetypeInfo(arch);
                 const isOpen = expandedDna === arch;
                 return (
@@ -354,10 +376,48 @@ export default function CityPulseWeekly() {
                           transition={{ duration: 0.2 }}
                           className="overflow-hidden"
                         >
-                          <p className="mt-3 text-white/60 text-sm leading-relaxed px-1 border-l-2 pl-3"
-                            style={{ borderColor: info.color }}>
-                            {info.description}
-                          </p>
+                          <div className="mt-3 space-y-3">
+                            {/* Description */}
+                            <div className="rounded-xl px-4 py-3" style={{ backgroundColor: `${info.color}15` }}>
+                              <p className="text-sm leading-relaxed font-medium" style={{ color: info.color }}>
+                                {info.description}
+                              </p>
+                            </div>
+                            {/* Stats row */}
+                            <div className="grid grid-cols-3 gap-2">
+                              <div className="bg-white/5 rounded-xl p-3 text-center">
+                                <p className="text-white/40 text-[10px] uppercase tracking-widest mb-1">Places</p>
+                                <p className="text-white font-bold text-lg">{dnaEntry.count}</p>
+                              </div>
+                              <div className="bg-white/5 rounded-xl p-3 text-center">
+                                <p className="text-white/40 text-[10px] uppercase tracking-widest mb-1">Share</p>
+                                <p className="text-white font-bold text-lg">{pct}%</p>
+                              </div>
+                              <div className="bg-white/5 rounded-xl p-3 text-center">
+                                <p className="text-white/40 text-[10px] uppercase tracking-widest mb-1">Peak</p>
+                                <p className="text-white font-bold text-sm capitalize">{dnaEntry.peakTime}</p>
+                              </div>
+                            </div>
+                            {/* Top spots */}
+                            {dnaEntry.topSpots.length > 0 && (
+                              <div>
+                                <p className="text-white/30 text-[10px] uppercase tracking-widest mb-2">Top Spots</p>
+                                <div className="space-y-1">
+                                  {dnaEntry.topSpots.map(([spot, logs], si) => (
+                                    <div key={si} className="flex items-center justify-between bg-white/5 rounded-xl px-3 py-2">
+                                      <div className="flex items-center gap-2">
+                                        <MapPin className="w-3.5 h-3.5 flex-shrink-0" style={{ color: info.color }} />
+                                        <span className="text-white text-sm">{spot}</span>
+                                      </div>
+                                      <span className="text-white/40 text-xs">{logs} {logs === 1 ? 'log' : 'logs'}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                            {/* Last logged */}
+                            <p className="text-white/30 text-xs">Last logged {dnaEntry.latestDate} at {dnaEntry.latestVenue}</p>
+                          </div>
                         </motion.div>
                       )}
                     </AnimatePresence>
