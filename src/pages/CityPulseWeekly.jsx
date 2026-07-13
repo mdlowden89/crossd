@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
@@ -67,6 +68,7 @@ function useWindowMoments(allMoments, tab) {
 export default function CityPulseWeekly() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('This week');
+  const [expandedZone, setExpandedZone] = useState(null);
 
   const { data: profile } = useQuery({
     queryKey: ['cpw-profile'],
@@ -107,13 +109,25 @@ export default function CityPulseWeekly() {
   const stats = useMemo(() => {
     const moments = thisWeekMoments;
 
-    // Top zones
+    // Top zones (with moment metadata for detail panel)
     const zoneMap = {};
     moments.forEach(m => {
       const key = m.venue_name || m.geohash?.substring(0, 4) || 'Unknown';
-      zoneMap[key] = (zoneMap[key] || 0) + 1;
+      if (!zoneMap[key]) zoneMap[key] = { count: 0, moments: [] };
+      zoneMap[key].count++;
+      zoneMap[key].moments.push(m);
     });
-    const topZones = Object.entries(zoneMap).sort((a, b) => b[1] - a[1]);
+    const topZones = Object.entries(zoneMap)
+      .sort((a, b) => b[1].count - a[1].count)
+      .map(([name, data]) => {
+        const arch = deriveArchetype(data.moments[0]?.venue_types || []);
+        const archInfo = getArchetypeInfo(arch);
+        const latestMoment = data.moments.sort((a, b) => new Date(b.created_date) - new Date(a.created_date))[0];
+        const hour = getMomentHour(latestMoment);
+        const timeLabel = getPeakHourLabel(hour);
+        const dateStr = new Date(latestMoment.created_date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+        return { name, count: data.count, archInfo, arch, timeLabel, dateStr, hour };
+      });
     const uniqueVenues = topZones.length;
 
     // PlacesDNA mix
@@ -152,7 +166,7 @@ export default function CityPulseWeekly() {
       nudges.push("Log your first moment this week to start building your pulse.");
     } else {
       if (delta > 0) nudges.push(`You're on a roll — ${delta} more moments than the previous period.`);
-      if (topZones[0]) nudges.push(`${topZones[0][0]} was your anchor — great for reliable crossings.`);
+      if (topZones[0]) nudges.push(`${topZones[0].name} was your anchor — great for reliable crossings.`);
       if (dnaMix[0]) {
         const info = getArchetypeInfo(dnaMix[0].arch);
         nudges.push(`Your vibe leaned ${info.label.toLowerCase()} — try one contrasting spot to widen your Spark map.`);
@@ -240,21 +254,55 @@ export default function CityPulseWeekly() {
             </div>
             <p className="text-white/40 text-sm mb-5">Where your this week actually happened.</p>
             <div className="space-y-4">
-              {stats.topZones.map(([name, count], i) => (
+              {stats.topZones.map((zone, i) => (
                 <div key={i}>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-white font-medium text-sm">{name}</span>
-                    <span className="text-white/40 text-sm">{count} {count === 1 ? 'moment' : 'moments'}</span>
-                  </div>
-                  <div className="h-1.5 bg-white/8 rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${(count / stats.topZones[0][1]) * 100}%` }}
-                      transition={{ duration: 0.6, delay: i * 0.06 }}
-                      className="h-full rounded-full"
-                      style={{ background: 'linear-gradient(90deg, #E70F72, #FFB800)' }}
-                    />
-                  </div>
+                  <button
+                    className="w-full text-left"
+                    onClick={() => setExpandedZone(expandedZone === zone.name ? null : zone.name)}
+                  >
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-white font-medium text-sm">{zone.name}</span>
+                      <span className="text-white/40 text-sm">{zone.count} {zone.count === 1 ? 'moment' : 'moments'}</span>
+                    </div>
+                    <div className="h-1.5 bg-white/8 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${(zone.count / stats.topZones[0].count) * 100}%` }}
+                        transition={{ duration: 0.6, delay: i * 0.06 }}
+                        className="h-full rounded-full"
+                        style={{ background: 'linear-gradient(90deg, #E70F72, #FFB800)' }}
+                      />
+                    </div>
+                  </button>
+                  <AnimatePresence>
+                    {expandedZone === zone.name && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="mt-3 bg-white/5 border border-white/8 rounded-xl px-4 py-3 flex flex-wrap gap-3">
+                          <div className="flex items-center gap-2">
+                            <span className="text-[#E70F72]">📅</span>
+                            <span className="text-white/60 text-xs">Last logged <span className="text-white font-semibold">{zone.dateStr}</span></span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span>🕐</span>
+                            <span className="text-white/60 text-xs">Typically <span className="text-white font-semibold">{zone.timeLabel}</span> ({zone.hour}:00)</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span>{zone.archInfo.emoji}</span>
+                            <span className="text-xs font-semibold px-2 py-0.5 rounded-full"
+                              style={{ color: zone.archInfo.color, backgroundColor: `${zone.archInfo.color}20`, border: `1px solid ${zone.archInfo.color}40` }}>
+                              {zone.archInfo.label}
+                            </span>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               ))}
             </div>
