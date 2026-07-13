@@ -7,7 +7,7 @@ import { createPageUrl } from '@/utils';
 import {
   Sparkles, CheckCircle2, Circle, Flame, Clock,
   Star, Zap, TrendingUp, Map, Award, Gift, Activity, ShieldCheck,
-  Route, ChevronRight, AlertCircle } from
+  Route, ChevronRight, AlertCircle, MapPin } from
 'lucide-react';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import CrossdProgressRing from '@/components/ui/crossd-progress-ring';
@@ -513,88 +513,73 @@ export default function Dashboard() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative overflow-hidden rounded-3xl p-8"
+          className="relative overflow-hidden rounded-3xl p-6"
           style={{
-            background: 'linear-gradient(135deg, #0B0B0B 0%, #1a0510 100%)',
-            boxShadow: '0 0 40px rgba(231, 15, 114, 0.15)'
+            background: 'linear-gradient(135deg, #1a0510 0%, #0d000a 100%)',
+            border: '1px solid rgba(231,15,114,0.3)'
           }}>
 
-          <div className="flex items-start gap-3">
-            <Sparkles className="w-6 h-6 text-[#E70F72] mt-1 flex-shrink-0" />
-            <div className="flex-1">
-              <h1 className="text-3xl font-bold text-white mb-2">
-                Welcome back, {profile.display_name}!
-              </h1>
-              <p className="text-white/65 text-lg mb-4">Did you see anyone interesting today?</p>
-              <button
-                onClick={() => navigate('/LogMoment')}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#E70F72] text-white text-sm font-semibold hover:bg-[#E70F72]/90 active:scale-95 transition-all"
-              >
-                <Sparkles className="w-4 h-4" />
-                Log it
-              </button>
+          <div className="flex items-start gap-4 mb-5">
+            <div className="w-12 h-12 rounded-full bg-[#E70F72]/20 flex items-center justify-center flex-shrink-0">
+              <Sparkles className="w-6 h-6 text-[#E70F72]" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-white">Welcome back, {profile.display_name}!</h1>
+              <p className="text-white/50 text-sm mt-0.5">Did you see anyone interesting today?</p>
             </div>
           </div>
-        </motion.div>
 
-        {/* Log Your Path — paramount CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.05 }}
-          onClick={() => navigate('/LogDailyPath')}
-          className="cursor-pointer rounded-3xl border-2 overflow-hidden"
-          style={{
-            borderColor: todayPath ? 'rgba(34,197,94,0.5)' : '#E70F72',
-            background: todayPath
-              ? 'linear-gradient(135deg, #0a1a0a 0%, #0B0B0B 100%)'
-              : 'linear-gradient(135deg, #2a0215 0%, #0B0B0B 100%)',
-            boxShadow: todayPath ? 'none' : '0 0 30px rgba(231, 15, 114, 0.25)'
-          }}
-        >
-          <div className="px-8 py-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 ${todayPath ? 'bg-green-500/20' : 'bg-[#E70F72]'}`}>
-                  <Route className={`w-7 h-7 ${todayPath ? 'text-green-400' : 'text-white'}`} />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    {!todayPath && <AlertCircle className="w-4 h-4 text-[#E70F72]" />}
-                    <h2 className={`text-xl font-bold ${todayPath ? 'text-white' : 'text-[#E70F72]'}`}>
-                      {todayPath ? "Today's Path Logged ✓" : "Unlock Today's Crossings"}
-                    </h2>
-                  </div>
-                  <p className="text-white/60 text-sm leading-snug">
-                    {todayPath
-                      ? `${todayPath.stops?.length || 0} stop${(todayPath.stops?.length || 0) !== 1 ? 's' : ''} logged — we're checking for crossings`
-                      : "Add where you went today to reveal missed moments, possible sparks, and hidden overlaps."}
-                  </p>
-                </div>
+          {todayPath ? (
+            <button
+              onClick={() => navigate('/LogDailyPath')}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-green-500/20 border border-green-500/30 text-green-400 text-sm font-semibold hover:bg-green-500/30 active:scale-95 transition-all mb-5"
+            >
+              <CheckCircle2 className="w-4 h-4" />
+              Today's path logged — {todayPath.stops?.length || 0} stop{(todayPath.stops?.length || 0) !== 1 ? 's' : ''}
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate('/LogDailyPath')}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#E70F72] text-white text-sm font-semibold hover:bg-[#E70F72]/90 active:scale-95 transition-all mb-5"
+            >
+              <MapPin className="w-4 h-4" />
+              Log today's path
+            </button>
+          )}
+
+          {/* How it works */}
+          {!todayPath && (
+            <div className="bg-white/5 border border-white/8 rounded-2xl px-4 py-4">
+              <div className="flex items-center gap-2 mb-3">
+                <Route className="w-4 h-4 text-white/60" />
+                <span className="text-white font-semibold text-sm">How it works</span>
               </div>
-              <ChevronRight className={`w-6 h-6 flex-shrink-0 ${todayPath ? 'text-green-400' : 'text-[#E70F72]'}`} />
-            </div>
-
-            {!todayPath && (
-              <div className="mt-5 pt-5 border-t border-white/10 grid grid-cols-3 gap-3 text-center">
-                {['Coffee shop', 'Office', 'Gym'].map(place => (
-                  <div key={place} className="bg-white/5 rounded-xl py-2 px-3">
-                    <p className="text-white/50 text-xs">{place}</p>
+              <div className="space-y-2.5">
+                {[
+                  'Tap the button and add the places you visited today.',
+                  'Set rough times and how long you stayed — your route is private.',
+                  "If someone near your path logged a place, we'll ping you to confirm the crossing."
+                ].map((text, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <div className="w-5 h-5 rounded-full bg-[#E70F72]/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-[#E70F72] text-[10px] font-bold">{i + 1}</span>
+                    </div>
+                    <p className="text-white/60 text-sm leading-snug">{text}</p>
                   </div>
                 ))}
               </div>
-            )}
+            </div>
+          )}
 
-            {todayPath && todayPath.stops?.length > 0 && (
-              <div className="mt-4 flex gap-2 flex-wrap">
-                {todayPath.stops.map((s, i) => (
-                  <span key={i} className="bg-green-500/10 border border-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full">
-                    {s.name}
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
+          {todayPath && todayPath.stops?.length > 0 && (
+            <div className="flex gap-2 flex-wrap">
+              {todayPath.stops.map((s, i) => (
+                <span key={i} className="bg-green-500/10 border border-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full">
+                  {s.name}
+                </span>
+              ))}
+            </div>
+          )}
         </motion.div>
 
         {/* Profile Strength */}
