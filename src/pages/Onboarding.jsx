@@ -219,9 +219,9 @@ function LocationVisual() {
 
 function NotificationsVisual() {
   const notifications = [
-    { icon: '⚡', text: 'You crossed paths with someone at Borough Market', time: '5m ago', color: '#E70F72' },
-    { icon: '💬', text: 'Alex sent you a message', time: '12m ago', color: '#a855f7' },
-    { icon: '❤️', text: 'Someone liked your profile', time: '1h ago', color: '#ec4899' },
+    { icon: '✨', text: 'Second chance — someone from Borough Market wants to connect', time: '5m ago', color: '#E70F72' },
+    { icon: '💬', text: 'Jamie replied to your introduction', time: '18m ago', color: '#a855f7' },
+    { icon: '🤝', text: 'Your introduction to someone from the coffee shop was accepted', time: '2h ago', color: '#ec4899' },
   ];
 
   return (
@@ -339,9 +339,9 @@ const STEPS = [
   {
     id: 'notifications',
     eyebrow: 'Step 2 of 2',
-    title: 'Never miss a',
-    titleAccent: 'second chance.',
-    description: 'Get notified the moment you cross paths with someone or receive a match.',
+    title: 'Get the introduction',
+    titleAccent: 'you almost had.',
+    description: "When someone you noticed logs the same place, Crossd connects the dots and lets you both know — so the moment you almost had can still happen.",
     visual: <NotificationsVisual />,
     action: 'Enable Notifications',
     gradient: 'from-purple-500/15 via-transparent to-transparent',
