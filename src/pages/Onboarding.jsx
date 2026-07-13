@@ -177,7 +177,7 @@ function LocationVisual() {
               <div className="flex items-center gap-1.5 bg-[#E70F72] rounded-full px-3 py-1 shadow-lg"
                 style={{ boxShadow: '0 0 20px rgba(231,15,114,0.6)' }}>
                 <Zap className="w-3 h-3 text-white fill-white" />
-                <span className="text-white text-xs font-bold tracking-wider">PATHS CROSSED</span>
+                <span className="text-white text-xs font-bold tracking-wider">MOMENT LOGGED</span>
               </div>
             </motion.div>
           )}
@@ -204,15 +204,15 @@ function LocationVisual() {
                   <span className="text-[#E70F72] text-xs font-semibold">Crossd</span>
                   <span className="text-white/30 text-xs">· just now</span>
                 </div>
-                <p className="text-white text-sm font-semibold">You crossed paths with someone ✨</p>
-                <p className="text-white/55 text-xs mt-0.5">Near Waterloo Station this morning — want to say hi?</p>
+                <p className="text-white text-sm font-semibold">Someone logged the same moment 👀</p>
+                <p className="text-white/55 text-xs mt-0.5">Near Borough Market this morning — your second chance just arrived.</p>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <p className="text-white/40 text-xs text-center">Your precise location is never shared with other users.</p>
+      <p className="text-white/40 text-xs text-center">Only the place — never your exact location — is shared.</p>
     </div>
   );
 }
@@ -329,9 +329,9 @@ const STEPS = [
   {
     id: 'location',
     eyebrow: 'Step 1 of 2',
-    title: 'Know when paths',
-    titleAccent: 'cross.',
-    description: 'Enable location so Crossd can detect when you\'ve been in the same place as someone.',
+    title: 'Saw someone but',
+    titleAccent: "didn't say hi?",
+    description: 'Log the moment. Crossd gives you a second chance at that introduction — when they log the same place.',
     visual: <LocationVisual />,
     action: 'Enable Location',
     gradient: 'from-[#E70F72]/15 via-transparent to-transparent',
