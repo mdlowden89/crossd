@@ -411,6 +411,12 @@ export default function Onboarding() {
       <div className="relative flex flex-col flex-1 max-w-md mx-auto w-full px-6 py-10">
         {/* Header */}
         <div className="flex items-center justify-between mb-10">
+          <button
+            onClick={() => navigate('/')}
+            className="text-white/30 hover:text-white/60 transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
           <CrossdLogo size="sm" />
           <button
             onClick={() => navigate('/SetupProfile')}
