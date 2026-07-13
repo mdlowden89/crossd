@@ -88,15 +88,25 @@ function StepCard({ step, index, isLast }) {
 
       {/* Card */}
       <div
-        className="flex-1 border rounded-2xl p-7 mb-5 transition-all duration-300 cursor-default"
+        className="flex-1 border rounded-2xl p-7 mb-5 cursor-default"
         style={{
           background: '#111',
-          borderColor: hovered ? 'rgba(231,15,114,0.6)' : 'rgba(255,255,255,0.07)',
-          boxShadow: hovered ? '0 0 40px rgba(231,15,114,0.18)' : 'none',
+          borderColor: hovered ? 'rgba(231,15,114,0.7)' : 'rgba(255,255,255,0.07)',
+          boxShadow: hovered
+            ? '0 0 20px rgba(231,15,114,0.35), 0 0 60px rgba(231,15,114,0.18), 0 0 100px rgba(231,15,114,0.08)'
+            : 'none',
+          transition: 'box-shadow 0.15s ease, border-color 0.15s ease',
+          animation: hovered ? 'pinkPulse 1.5s ease-in-out infinite' : 'none',
         }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
+        <style>{`
+          @keyframes pinkPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(231,15,114,0.35), 0 0 60px rgba(231,15,114,0.18), 0 0 100px rgba(231,15,114,0.08); }
+            50% { box-shadow: 0 0 30px rgba(231,15,114,0.55), 0 0 80px rgba(231,15,114,0.28), 0 0 120px rgba(231,15,114,0.12); }
+          }
+        `}</style>
         <div className="flex items-center gap-2 mb-3">
           <div className="w-8 h-8 rounded-lg flex items-center justify-center border border-[#E70F72]/30" style={{ background: 'rgba(231,15,114,0.08)' }}>
             {step.icon}
