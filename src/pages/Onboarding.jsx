@@ -320,9 +320,9 @@ const STEPS = [
   {
     id: 'welcome',
     eyebrow: 'Welcome',
-    title: 'Missed someone?',
-    titleAccent: "Now you won't.",
-    description: 'Crossd connects you with people you\'ve already crossed paths with in real life.',
+    title: 'That moment you',
+    titleAccent: "let slip away.",
+    description: "You noticed someone. There was something there. But the moment passed. Crossd gives you the second chance you wished you'd taken.",
     visual: <WelcomeVisualBoxed />,
     gradient: 'from-[#E70F72]/20 via-transparent to-transparent',
   },
