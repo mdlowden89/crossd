@@ -60,6 +60,15 @@ function WelcomeVisual() {
   );
 }
 
+function WelcomeVisualBoxed() {
+  return (
+    <div className="w-full rounded-2xl overflow-hidden border border-[#E70F72]/20"
+      style={{ background: 'radial-gradient(ellipse at 50% 60%, #220010 0%, #0a0008 100%)' }}>
+      <WelcomeVisual />
+    </div>
+  );
+}
+
 function LocationVisual() {
   const [notifVisible, setNotifVisible] = useState(false);
   const [phase, setPhase] = useState(0); // 0=apart, 1=approaching, 2=crossed
@@ -314,7 +323,7 @@ const STEPS = [
     title: 'Missed someone?',
     titleAccent: "Now you won't.",
     description: 'Crossd connects you with people you\'ve already crossed paths with in real life.',
-    visual: <WelcomeVisual />,
+    visual: <WelcomeVisualBoxed />,
     gradient: 'from-[#E70F72]/20 via-transparent to-transparent',
   },
   {
