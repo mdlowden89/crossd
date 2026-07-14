@@ -783,11 +783,16 @@ function scorePlaceAgainstUserDNA(place, userDNA) {
 }
 
 // ─── Timing scoring ───────────────────────────────────────────────────────────
-// Returns a graduated 0–1 score.  Full match = 0.9, adjacent bucket = 0.6,
-// no match = 0.15.  When userPeaks is empty we avoid the stuck-at-100% trap by
-// using a neutral 0.4 baseline.
+// Returns a graduated 0–1 score.  Full match = 0.9, adjacent bucket = 0.55,
+// no match = 0.15.  When userPeaks is empty, score by how many bestTimes slots
+// the place covers (more variety = higher baseline) so venues differ meaningfully.
 function scorePlaceAgainstTiming(place, userPeaks) {
-  if (!userPeaks.size) return 0.4;
+  if (!userPeaks.size) {
+    // No real user data — score by venue breadth: more time slots = more accessible
+    const slotCount = place.bestTimes.length;
+    const maxSlots = 4; // most venues have 2–3, a few have 4
+    return 0.3 + (slotCount / maxSlots) * 0.35; // range: 0.30 – 0.65
+  }
 
   // Map user peaks to the bestTimes vocabulary
   const expandedPeaks = new Set();
@@ -897,11 +902,7 @@ export function generateCrossdSparkPicks(profile, moments = [], targetType = nul
       if (hour >= 22 || hour < 2)  userPeaks.add('night');
     }
   });
-  // 3. If no timing signal at all, fall back to generic evening+weekend (sensible defaults)
-  if (!userPeaks.size) {
-    userPeaks.add('evening');
-    userPeaks.add('weekend');
-  }
+  // 3. If no timing data, leave userPeaks empty — the scorer handles this gracefully
 
   // Determine effective target type for place pool
   const effectiveTargetType = targetType || getPrimaryCompatibleType(myType, myDims) || myType;
