@@ -46,7 +46,9 @@ export default function AdminVenueAnalytics() {
     base44.auth.me().then(u => {
       setUser(u);
       setAuthChecked(true);
-      if (u?.role !== 'admin') window.location.href = '/';
+      if (!u || u?.role !== 'admin') window.location.href = '/';
+    }).catch(() => {
+      window.location.href = '/';
     });
   }, []);
 
@@ -196,7 +198,8 @@ export default function AdminVenueAnalytics() {
     return Object.values(map).sort((a, b) => b.matches - a.matches);
   }, [venueStats]);
 
-  if (!authChecked || isLoading) {
+  // Hard block — render nothing until auth is confirmed
+  if (!authChecked) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <Loader2 className="w-8 h-8 text-[#E70F72] animate-spin" />
@@ -204,7 +207,15 @@ export default function AdminVenueAnalytics() {
     );
   }
 
-  if (user?.role !== 'admin') return null;
+  if (!user || user.role !== 'admin') return null;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-[#E70F72] animate-spin" />
+      </div>
+    );
+  }
 
   const top = sorted[0];
   const totalMatches = matches.length;
