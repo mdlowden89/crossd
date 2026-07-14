@@ -3,9 +3,10 @@ import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { 
   ChevronLeft, AlertTriangle, CheckCircle, Eye, Clock,
-  User, Flag, Ban, Loader2, ChevronRight
+  User, Flag, Ban, Loader2, ChevronRight, BarChart3
 } from 'lucide-react';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
@@ -121,10 +122,17 @@ export default function AdminReports() {
         >
           <ChevronLeft className="w-6 h-6 text-white" />
         </button>
-        <div>
+        <div className="flex-1">
           <h1 className="text-xl font-bold text-white">Reports Queue</h1>
           <p className="text-white/65 text-sm">{reports.length} open reports</p>
         </div>
+        <Link
+          to="/admin-venue-analytics"
+          className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:text-white hover:border-white/25 transition-colors"
+        >
+          <BarChart3 className="w-3.5 h-3.5" />
+          Venue Analytics
+        </Link>
       </div>
 
       {reports.length === 0 ? (
