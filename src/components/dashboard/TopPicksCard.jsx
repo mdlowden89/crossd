@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, Lock, ChevronRight, Sparkles, MapPin } from 'lucide-react';
-import { generateSparkZoneRecommendations } from '@/components/spark/googlePlacesDnaMapper';
+import { generateCrossdSparkPicks } from '@/components/spark/crossdPlacePool';
+import { parseQuizDimensions, getPrimaryCompatibleType, getMatchArchetype, TYPE_DESCRIPTIONS } from '@/components/spark/crossdCompatibilityEngine';
 import { Link } from 'react-router-dom';
 import NearbyPlacesList from '@/components/dashboard/NearbyPlacesList';
 
@@ -157,20 +158,25 @@ function PickRow({ venue, rank, isLocked, profile, moments }) {
 
 export default function TopPicksCard({ profile, moments = [] }) {
   const isPremium = profile?.crossd_plus;
+  const mbti = profile?.mbti_type;
 
-  const picks = useMemo(() => {
-    return generateSparkZoneRecommendations(profile, moments.filter(m => !m._isSample));
-  }, [profile, moments]);
+  const { picks, compatibleType, archetype } = useMemo(() => {
+    if (!mbti) return { picks: [], compatibleType: null, archetype: null };
+    const myDims = parseQuizDimensions(mbti, profile?.mbti_quiz_results || {});
+    const targetType = getPrimaryCompatibleType(mbti, myDims);
+    const generatedPicks = generateCrossdSparkPicks(
+      profile,
+      moments.filter(m => !m._isSample),
+      targetType,
+      targetType ? parseQuizDimensions(targetType, {}) : null
+    );
+    const arch = targetType ? getMatchArchetype(mbti, targetType) : null;
+    return { picks: generatedPicks, compatibleType: targetType, archetype: arch };
+  }, [profile, moments, mbti]);
 
   if (!picks.length) return null;
 
-  const mbti = profile?.mbti_type;
-  const compatibleType = mbti ? {
-    INTJ: 'ENFP', INTP: 'ENTJ', ENTJ: 'INTP', ENTP: 'INFJ',
-    INFJ: 'ENFP', INFP: 'ENFJ', ENFJ: 'INFP', ENFP: 'INFJ',
-    ISTJ: 'ESFP', ISFJ: 'ESFP', ESTJ: 'ISTP', ESFJ: 'ISFP',
-    ISTP: 'ESTJ', ISFP: 'ESFJ', ESTP: 'ISFJ', ESFP: 'ISTJ',
-  }[mbti] : null;
+  const targetTypeInfo = compatibleType ? TYPE_DESCRIPTIONS[compatibleType] : null;
 
   const visible = isPremium ? picks : picks.slice(0, 7);
   const lockedFrom = isPremium ? 999 : 6;
@@ -190,10 +196,17 @@ export default function TopPicksCard({ profile, moments = [] }) {
           )}
         </div>
         <p className="text-white/45 text-xs leading-relaxed">
-          {mbti && compatibleType
-            ? `As an ${mbti}, you're most compatible with ${compatibleType} types — ranked by personality fit, PlacesDNA overlap & your typical timing.`
+          {mbti && compatibleType && targetTypeInfo
+            ? `Your ${mbti} × ${compatibleType} Spark Picks — 10 venue types selected around your personality fit, PlacesDNA and preferred travel areas.`
             : 'Venues ranked by where your compatible crowd is most likely to be, based on your PlacesDNA and habits.'}
         </p>
+        {archetype && (
+          <div className="mt-2 inline-flex items-center gap-1.5 text-[10px] text-white/35 bg-white/5 border border-white/8 rounded-full px-2.5 py-1">
+            <span>{archetype.label}</span>
+            <span className="text-white/20">·</span>
+            <span className="italic">{archetype.crossdLine}</span>
+          </div>
+        )}
 
         {!isPremium && (
           <div className="mt-3 flex items-center justify-between gap-2 bg-[#E70F72]/8 border border-[#E70F72]/20 rounded-xl px-3 py-2">
