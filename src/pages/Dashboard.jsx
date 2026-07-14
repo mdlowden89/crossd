@@ -549,7 +549,7 @@ export default function Dashboard() {
 
           {/* How it works */}
           {!todayPath && (
-            <div className="bg-white/5 border border-white/8 rounded-2xl px-4 py-4">
+            <div className="bg-white/5 border border-[#E70F72]/40 rounded-2xl px-4 py-4">
               <div className="flex items-center gap-2 mb-3">
                 <Route className="w-4 h-4 text-white/60" />
                 <span className="text-white font-semibold text-sm">How it works</span>
