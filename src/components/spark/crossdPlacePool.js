@@ -765,25 +765,64 @@ function scorePlaceAgainstDimensions(place, dims) {
 }
 
 // ─── PlacesDNA overlap scoring ────────────────────────────────────────────────
+// Returns a genuine 0–1 score based on overlap between place DNA tags and the
+// user's accumulated DNA set. When the user has no DNA data we fall back to a
+// neutral-ish score derived from how "common" the tags are (not always 0.5).
 function scorePlaceAgainstUserDNA(place, userDNA) {
-  if (!userDNA.size) return 0.5;
+  if (!userDNA.size) {
+    // No data — score by how broadly appealing the DNA tags are
+    // Common tags get a slight boost so that popular categories aren't penalised
+    const popularTags = new Set(['Social Buzz','Creative','Foodie','Outdoors','Live Events']);
+    const popularCount = place.dna.filter(d => popularTags.has(d)).length;
+    return 0.35 + (popularCount / Math.max(1, place.dna.length)) * 0.25;
+  }
   const matches = place.dna.filter(d => userDNA.has(d)).length;
-  return Math.min(1, matches / Math.max(1, place.dna.length));
+  // Partial credit — at least one matching tag scores 0.5, full match scores 1.0
+  if (matches === 0) return 0.1;
+  return 0.1 + (matches / Math.max(1, place.dna.length)) * 0.9;
 }
 
 // ─── Timing scoring ───────────────────────────────────────────────────────────
+// Returns a graduated 0–1 score.  Full match = 0.9, adjacent bucket = 0.6,
+// no match = 0.15.  When userPeaks is empty we avoid the stuck-at-100% trap by
+// using a neutral 0.4 baseline.
 function scorePlaceAgainstTiming(place, userPeaks) {
-  if (!userPeaks.size) return 0.5;
-  const match = place.bestTimes.some(t => {
-    if (userPeaks.has('evening') && (t === 'evening' || t === 'night')) return true;
-    if (userPeaks.has('night') && (t === 'night' || t === 'late')) return true;
-    if (userPeaks.has('morning') && t === 'morning') return true;
-    if (userPeaks.has('weekends') && t === 'weekend') return true;
-    if (userPeaks.has('lunch') && t === 'day') return true;
-    if (userPeaks.has('afternoon') && t === 'day') return true;
-    return false;
-  });
-  return match ? 1.0 : 0.25;
+  if (!userPeaks.size) return 0.4;
+
+  // Map user peaks to the bestTimes vocabulary
+  const expandedPeaks = new Set();
+  if (userPeaks.has('morning'))   { expandedPeaks.add('morning'); }
+  if (userPeaks.has('lunch'))     { expandedPeaks.add('day'); }
+  if (userPeaks.has('afternoon')) { expandedPeaks.add('day'); }
+  if (userPeaks.has('evening'))   { expandedPeaks.add('evening'); expandedPeaks.add('night'); }
+  if (userPeaks.has('night'))     { expandedPeaks.add('night'); expandedPeaks.add('late'); }
+  if (userPeaks.has('weekends'))  { expandedPeaks.add('weekend'); }
+  if (userPeaks.has('weekend'))   { expandedPeaks.add('weekend'); }
+
+  // Adjacent pairs for partial credit
+  const adjacentMap = {
+    morning:  ['day'],
+    day:      ['morning','evening'],
+    evening:  ['day','night','weekend'],
+    night:    ['evening','late'],
+    late:     ['night'],
+    weekend:  ['evening','day'],
+  };
+
+  let bestMatch = 0;
+  for (const t of place.bestTimes) {
+    if (expandedPeaks.has(t)) {
+      bestMatch = Math.max(bestMatch, 0.9);
+    } else {
+      // Check adjacency
+      const adjacent = adjacentMap[t] || [];
+      if (adjacent.some(a => expandedPeaks.has(a))) {
+        bestMatch = Math.max(bestMatch, 0.55);
+      }
+    }
+  }
+
+  return bestMatch || 0.15;
 }
 
 // ─── Diversity rules ──────────────────────────────────────────────────────────
@@ -828,8 +867,12 @@ export function generateCrossdSparkPicks(profile, moments = [], targetType = nul
 
   // Derive user's PlacesDNA from moments + hangout areas + vibe tags
   const userDNA = new Set();
-  moments.forEach(m => getCrossdDNAFromVenueTypes(m.venue_types || []).forEach(d => userDNA.add(d)));
-  (profile?.hangout_areas || []).forEach(area => getCrossdDNAFromVenueTypes(area.venue_types || []).forEach(d => userDNA.add(d)));
+  const realMoments = moments.filter(m => m.venue_types && m.venue_types.length > 0);
+  realMoments.forEach(m => getCrossdDNAFromVenueTypes(m.venue_types).forEach(d => userDNA.add(d)));
+  (profile?.hangout_areas || []).forEach(area => {
+    const types = area.venue_types || [];
+    if (types.length > 0) getCrossdDNAFromVenueTypes(types).forEach(d => userDNA.add(d));
+  });
   const vibeTags = profile?.vibe_tags || [];
   const vibeToDNA = {
     calm_cozy: ['Calm & Cosy'], social_buzzing: ['Social Buzz'], active_energetic: ['Active','Wellness'],
@@ -839,8 +882,26 @@ export function generateCrossdSparkPicks(profile, moments = [], targetType = nul
   };
   vibeTags.forEach(tag => { if (vibeToDNA[tag]) vibeToDNA[tag].forEach(d => userDNA.add(d)); });
 
-  const peakTags = vibeTags.filter(t => t.startsWith('peak_')).map(t => t.replace('peak_', '').toLowerCase());
-  const userPeaks = new Set(peakTags);
+  // Build userPeaks from multiple sources (not just missing peak_ vibe tags)
+  const userPeaks = new Set();
+  // 1. vibe tags with peak_ prefix (legacy)
+  vibeTags.filter(t => t.startsWith('peak_')).forEach(t => userPeaks.add(t.replace('peak_', '').toLowerCase()));
+  // 2. Derive peaks from moment time_bucket fields (format: YYYY-MM-DD-HH)
+  moments.forEach(m => {
+    if (m.time_bucket) {
+      const hour = parseInt(m.time_bucket.split('-')[3] || '12', 10);
+      if (hour >= 6  && hour < 11) userPeaks.add('morning');
+      if (hour >= 11 && hour < 14) userPeaks.add('lunch');
+      if (hour >= 14 && hour < 18) userPeaks.add('afternoon');
+      if (hour >= 18 && hour < 22) userPeaks.add('evening');
+      if (hour >= 22 || hour < 2)  userPeaks.add('night');
+    }
+  });
+  // 3. If no timing signal at all, fall back to generic evening+weekend (sensible defaults)
+  if (!userPeaks.size) {
+    userPeaks.add('evening');
+    userPeaks.add('weekend');
+  }
 
   // Determine effective target type for place pool
   const effectiveTargetType = targetType || getPrimaryCompatibleType(myType, myDims) || myType;
