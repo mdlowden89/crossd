@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Sparkles, Zap, Star, Circle, ChevronRight, Target, Heart, MessageCircle, Users, Shield, AlertTriangle, CheckCircle, XCircle, Briefcase } from 'lucide-react';
 import { CrossdButton } from '@/components/ui/crossd-button';
@@ -69,6 +69,7 @@ function CompatGroup({ groupKey, group, data }) {
 
 export default function PersonalityCard({ profile }) {
   const [showDetails, setShowDetails] = useState(false);
+  const navigate = useNavigate();
   const mbtiType = profile?.mbti_type;
 
   if (!mbtiType) {
@@ -152,10 +153,10 @@ export default function PersonalityCard({ profile }) {
         {/* Buttons */}
         <div className="px-5 pb-5 space-y-3">
           <button
-            onClick={() => setShowDetails(!showDetails)}
+            onClick={() => navigate('/personality-profile')}
             className="w-full bg-[#E70F72] hover:bg-[#c90d63] text-white font-bold py-4 rounded-2xl transition-all active:scale-98 text-sm tracking-wide"
           >
-            {showDetails ? 'Hide Full Profile' : 'View Full Profile'}
+            View Full Profile
           </button>
           <Link to={createPageUrl('MBTIQuiz')}>
             <button className="w-full text-white/40 text-xs tracking-widest uppercase py-2 hover:text-white/60 transition-colors">
@@ -191,7 +192,7 @@ export default function PersonalityCard({ profile }) {
         )}
       </div>
 
-      {/* Full expanded profile */}
+      {/* Full expanded profile — now a separate page, keeping AnimatePresence for potential future use */}
       <AnimatePresence>
         {showDetails && (
           <motion.div
