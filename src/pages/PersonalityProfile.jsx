@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { ArrowLeft, Sparkles, Zap, Star, Target, Heart, MessageCircle, Users, Briefcase, AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
+import { ArrowLeft, Sparkles, Zap, Star, Target, Heart, MessageCircle, Users, AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
 import { MBTI_FULL_DESCRIPTIONS } from '@/components/mbti/PersonalityDescriptions';
 
 const COMPAT_COLORS = {
@@ -219,19 +219,7 @@ export default function PersonalityProfile() {
               </div>
             </div>
           </div>
-          {description.idealRoles && (
-            <div>
-              <div className="flex items-center gap-2 mb-3">
-                <Briefcase className="w-4 h-4 text-[#E70F72]" />
-                <h3 className="text-white font-bold">Ideal Roles</h3>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {description.idealRoles.map((role, i) => (
-                  <span key={i} className="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-white/70 text-sm">{role}</span>
-                ))}
-              </div>
-            </div>
-          )}
+
         </div>
 
         {description.coreCharacteristics && (
