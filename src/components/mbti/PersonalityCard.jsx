@@ -131,8 +131,7 @@ export default function PersonalityCard({ profile }) {
             <div className="w-6 h-px bg-[#E70F72]" />
           </div>
 
-          <p className="text-white/40 text-xs tracking-widest uppercase mb-1">{description.mbtiGroup}</p>
-          <p className="text-white/25 text-xs tracking-widest uppercase">{description.groupLabel}</p>
+          <p className="text-white/40 text-xs tracking-widest uppercase">{description.groupLabel}</p>
         </div>
 
         {/* Trait tags */}
