@@ -102,7 +102,7 @@ export default function PersonalityProfile() {
     <div className="min-h-screen bg-black text-white">
       {/* Sticky back header */}
       <div className="sticky top-0 z-10 bg-black/80 backdrop-blur-md border-b border-white/5 px-4 py-4 flex items-center gap-3">
-        <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-full bg-white/8 flex items-center justify-center">
+        <button onClick={() => navigate('/')} className="w-9 h-9 rounded-full bg-white/8 flex items-center justify-center">
           <ArrowLeft className="w-5 h-5 text-white" />
         </button>
         <div>
@@ -414,7 +414,7 @@ export default function PersonalityProfile() {
         </div>
 
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => navigate('/')}
           className="w-full bg-white/5 hover:bg-white/10 text-white/60 hover:text-white font-semibold py-4 rounded-2xl transition-all text-sm"
         >
           ← Back to Dashboard
