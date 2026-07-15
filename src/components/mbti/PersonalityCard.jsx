@@ -1,17 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { Sparkles, Zap, Star, Circle, ChevronRight, Target, Heart, MessageCircle, Users, Shield, AlertTriangle, CheckCircle, XCircle, Briefcase } from 'lucide-react';
+import { Sparkles, Zap, Star, Target, Heart, MessageCircle, Users, AlertTriangle, CheckCircle, XCircle, Briefcase } from 'lucide-react';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
 import { MBTI_FULL_DESCRIPTIONS } from './PersonalityDescriptions';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
+
+const TILT_MAX = 14;
+
+function useTiltCard() {
+  const cardRef = useRef(null);
+  const rawX = useMotionValue(0);
+  const rawY = useMotionValue(0);
+  const cfg = { stiffness: 260, damping: 28 };
+  const rotateX = useSpring(useTransform(rawY, [-1, 1], [TILT_MAX, -TILT_MAX]), cfg);
+  const rotateY = useSpring(useTransform(rawX, [-1, 1], [-TILT_MAX, TILT_MAX]), cfg);
+  const haloX   = useSpring(useTransform(rawX, [-1, 1], [-12, 12]), cfg);
+  const haloY   = useSpring(useTransform(rawY, [-1, 1], [-12, 12]), cfg);
+  const sheenX  = useSpring(useTransform(rawX, [-1, 1], [-40, 120]), cfg);
+  const sheenY  = useSpring(useTransform(rawY, [-1, 1], [-40, 120]), cfg);
+
+  const getXY = (clientX, clientY) => {
+    const r = cardRef.current?.getBoundingClientRect();
+    if (!r) return [0, 0];
+    return [(clientX - r.left) / r.width * 2 - 1, (clientY - r.top) / r.height * 2 - 1];
+  };
+
+  const onMouseMove  = useCallback((e) => { const [x,y] = getXY(e.clientX,e.clientY); rawX.set(x); rawY.set(y); }, []);
+  const onMouseLeave = useCallback(() => { rawX.set(0); rawY.set(0); }, []);
+  const onTouchMove  = useCallback((e) => { const t=e.touches[0]; const [x,y]=getXY(t.clientX,t.clientY); rawX.set(x); rawY.set(y); }, []);
+  const onTouchEnd   = useCallback(() => { rawX.set(0); rawY.set(0); }, []);
+
+  return { cardRef, rotateX, rotateY, haloX, haloY, sheenX, sheenY, onMouseMove, onMouseLeave, onTouchMove, onTouchEnd };
+}
 
 const COMPAT_COLORS = {
-  soulSparks: { bg: 'bg-[#E70F72]/15', text: 'text-[#E70F72]', border: 'border-[#E70F72]/30', label: '✦ Soul Sparks', desc: 'Naturally unlock your hidden warmth and depth.' },
-  powerMatches: { bg: 'bg-purple-500/15', text: 'text-purple-400', border: 'border-purple-400/30', label: '⚡ Power Matches', desc: 'Respect, chemistry, and long-term growth.' },
-  wildSparks: { bg: 'bg-yellow-500/15', text: 'text-yellow-400', border: 'border-yellow-400/30', label: '⚡ Wild Sparks', desc: 'Pull you into present-moment chemistry.' },
-  frictionMatches: { bg: 'bg-orange-500/15', text: 'text-orange-400', border: 'border-orange-400/30', label: '△ Friction Matches', desc: 'Workable, but need maturity around pace and emotion.' },
+  soulSparks:     { bg: 'bg-[#E70F72]/15', text: 'text-[#E70F72]',   border: 'border-[#E70F72]/30',   label: '✦ Soul Sparks',      desc: 'Naturally unlock your hidden warmth and depth.' },
+  powerMatches:   { bg: 'bg-purple-500/15', text: 'text-purple-400', border: 'border-purple-400/30', label: '⚡ Power Matches',    desc: 'Respect, chemistry, and long-term growth.' },
+  wildSparks:     { bg: 'bg-yellow-500/15', text: 'text-yellow-400', border: 'border-yellow-400/30', label: '⚡ Wild Sparks',      desc: 'Pull you into present-moment chemistry.' },
+  frictionMatches:{ bg: 'bg-orange-500/15', text: 'text-orange-400', border: 'border-orange-400/30', label: '△ Friction Matches', desc: 'Workable, but need maturity around pace and emotion.' },
 };
 
 function InfoGrid({ items }) {
@@ -27,9 +55,9 @@ function InfoGrid({ items }) {
   );
 }
 
-function SectionCard({ icon, title, children, glowColor }) {
+function SectionCard({ icon, title, children }) {
   return (
-    <div className={`rounded-3xl border p-6 ${glowColor || 'border-white/10 bg-[#0d0d0d]'}`}>
+    <div className="rounded-3xl border border-white/10 bg-[#0d0d0d] p-6">
       <div className="flex items-center gap-2 mb-5">
         <span className="text-[#E70F72]">{icon}</span>
         <h3 className="text-lg font-bold text-white">{title}</h3>
@@ -39,14 +67,12 @@ function SectionCard({ icon, title, children, glowColor }) {
   );
 }
 
-function CompatGroup({ groupKey, group, data }) {
+function CompatGroup({ groupKey, data }) {
   const colors = COMPAT_COLORS[groupKey];
   return (
     <div className="mb-6">
-      <div className="flex items-center gap-2 mb-1">
-        <span className={`font-bold text-sm ${colors.text}`}>{colors.label}</span>
-      </div>
-      <p className="text-white/45 text-xs mb-3">{colors.desc}</p>
+      <span className={`font-bold text-sm ${colors.text}`}>{colors.label}</span>
+      <p className="text-white/45 text-xs mb-3 mt-0.5">{colors.desc}</p>
       <div className="grid grid-cols-2 gap-3">
         {data.map((item, i) => (
           <div key={i} className={`${colors.bg} border ${colors.border} rounded-2xl p-3 flex items-start gap-3`}>
@@ -70,6 +96,7 @@ function CompatGroup({ groupKey, group, data }) {
 export default function PersonalityCard({ profile }) {
   const [showDetails, setShowDetails] = useState(false);
   const mbtiType = profile?.mbti_type;
+  const tilt = useTiltCard();
 
   if (!mbtiType) {
     return (
@@ -96,75 +123,93 @@ export default function PersonalityCard({ profile }) {
 
   return (
     <>
-      {/* Summary Card — matches the "IDENTITY MODULE" header design */}
-      <div className="rounded-3xl overflow-hidden border border-[#E70F72]/25 bg-[#0B0B0B]">
-        {/* Header bar */}
-        <div className="px-5 pt-5 pb-4 flex items-start justify-between">
-          <div>
-            <p className="text-[#E70F72] text-xs font-bold tracking-widest uppercase">Identity Module</p>
-            <div className="flex items-center gap-1.5 mt-1">
-              <Sparkles className="w-3 h-3 text-white/40" />
-              <span className="text-white/40 text-xs tracking-wide">Verified Result</span>
+      {/* ── Collectible card with 3-D tilt ── */}
+      <div style={{ perspective: '900px' }}>
+        <motion.div
+          ref={tilt.cardRef}
+          onMouseMove={tilt.onMouseMove}
+          onMouseLeave={tilt.onMouseLeave}
+          onTouchMove={tilt.onTouchMove}
+          onTouchEnd={tilt.onTouchEnd}
+          style={{ rotateX: tilt.rotateX, rotateY: tilt.rotateY, transformStyle: 'preserve-3d' }}
+          className="rounded-3xl overflow-hidden border border-[#E70F72]/25 bg-[#0B0B0B] relative select-none"
+        >
+          {/* Pink halo — parallaxes at mid-depth */}
+          <motion.div style={{ x: tilt.haloX, y: tilt.haloY }} className="pointer-events-none absolute inset-0 rounded-3xl">
+            <div className="absolute inset-0 rounded-3xl" style={{ background: 'radial-gradient(ellipse 70% 55% at 50% 30%, rgba(231,15,114,0.18) 0%, transparent 70%)' }} />
+          </motion.div>
+
+          {/* Specular sheen — sweeps on tilt */}
+          <motion.div style={{ x: tilt.sheenX, y: tilt.sheenY }} className="pointer-events-none absolute inset-0 rounded-3xl overflow-hidden">
+            <div style={{ position: 'absolute', top: '-60%', left: '-60%', width: '80%', height: '160%', background: 'linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.06) 50%, transparent 70%)', transform: 'rotate(-20deg)' }} />
+          </motion.div>
+
+          {/* Watermark */}
+          <div className="pointer-events-none absolute inset-0 flex items-end justify-end pr-5 pb-4 overflow-hidden rounded-3xl">
+            <span className="text-[7rem] font-black text-white/[0.03] leading-none">{mbtiType}</span>
+          </div>
+
+          {/* Header bar */}
+          <div className="px-5 pt-5 pb-4 flex items-start justify-between">
+            <div>
+              <p className="text-[#E70F72] text-xs font-bold tracking-widest uppercase">Identity Module</p>
+              <div className="flex items-center gap-1.5 mt-1">
+                <Sparkles className="w-3 h-3 text-white/40" />
+                <span className="text-white/40 text-xs tracking-wide">Verified Result</span>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-white/25 text-xs tracking-widest uppercase">Type-ID · {mbtiType}</p>
             </div>
           </div>
-          <div className="text-right">
-            <p className="text-white/25 text-xs tracking-widest uppercase">Type-ID · {mbtiType}</p>
-          </div>
-        </div>
 
-        {/* Hero section — icon + title + code */}
-        <div
-          className="mx-4 mb-4 rounded-2xl py-8 px-6 flex flex-col items-center text-center"
-          style={{ background: 'radial-gradient(ellipse at 50% 30%, rgba(231,15,114,0.15) 0%, #000 70%)' }}
-        >
-          {/* Emoji in circle */}
-          <div className="w-20 h-20 rounded-full bg-[#E70F72]/15 border border-[#E70F72]/30 flex items-center justify-center mb-4">
-            <span className="text-4xl">{description.emoji}</span>
-          </div>
-
-          <h2 className="text-2xl font-bold text-white mb-3">{description.title}</h2>
-
-          {/* MBTI code box */}
-          <div className="bg-black/60 rounded-xl px-6 py-2 mb-4 flex items-center gap-3">
-            <div className="w-6 h-px bg-[#E70F72]" />
-            <span className="text-[#E70F72] text-3xl font-black tracking-widest">{mbtiType}</span>
-            <div className="w-6 h-px bg-[#E70F72]" />
-          </div>
-
-          <p className="text-white/40 text-xs tracking-widest uppercase mb-1">{description.mbtiGroup}</p>
-          <p className="text-white/25 text-xs tracking-widest uppercase">{description.groupLabel}</p>
-        </div>
-
-        {/* Trait tags */}
-        <div className="px-5 pb-4 flex flex-wrap gap-2 justify-center">
-          {description.keyTraits.map((trait, i) => (
-            <span
-              key={i}
-              className={`px-3 py-1 rounded-full text-xs font-semibold tracking-wide border ${
-                i === 0
-                  ? 'bg-[#E70F72]/20 text-[#E70F72] border-[#E70F72]/40'
-                  : 'bg-white/5 text-white/60 border-white/15'
-              }`}
-            >
-              {trait.toUpperCase()}
-            </span>
-          ))}
-        </div>
-
-        {/* Buttons */}
-        <div className="px-5 pb-5 space-y-3">
-          <button
-            onClick={() => setShowDetails(!showDetails)}
-            className="w-full bg-[#E70F72] hover:bg-[#c90d63] text-white font-bold py-4 rounded-2xl transition-all active:scale-98 text-sm tracking-wide"
+          {/* Hero section */}
+          <div
+            className="mx-4 mb-4 rounded-2xl py-8 px-6 flex flex-col items-center text-center"
+            style={{ background: 'radial-gradient(ellipse at 50% 30%, rgba(231,15,114,0.15) 0%, #000 70%)' }}
           >
-            {showDetails ? 'Hide Full Profile' : 'View Full Profile'}
-          </button>
-          <Link to={createPageUrl('MBTIQuiz')}>
-            <button className="w-full text-white/40 text-xs tracking-widest uppercase py-2 hover:text-white/60 transition-colors">
-              Retake Quiz
+            <div className="w-20 h-20 rounded-full bg-[#E70F72]/15 border border-[#E70F72]/30 flex items-center justify-center mb-4">
+              <span className="text-4xl">{description.emoji}</span>
+            </div>
+            <h2 className="text-2xl font-bold text-white mb-3">{description.title}</h2>
+            <div className="bg-black/60 rounded-xl px-6 py-2 mb-4 flex items-center gap-3">
+              <div className="w-6 h-px bg-[#E70F72]" />
+              <span className="text-[#E70F72] text-3xl font-black tracking-widest">{mbtiType}</span>
+              <div className="w-6 h-px bg-[#E70F72]" />
+            </div>
+            <p className="text-white/40 text-xs tracking-widest uppercase mb-1">{description.mbtiGroup}</p>
+            <p className="text-white/25 text-xs tracking-widest uppercase">{description.groupLabel}</p>
+          </div>
+
+          {/* Trait tags */}
+          <div className="px-5 pb-4 flex flex-wrap gap-2 justify-center">
+            {description.keyTraits.map((trait, i) => (
+              <span
+                key={i}
+                className={`px-3 py-1 rounded-full text-xs font-semibold tracking-wide border ${
+                  i === 0 ? 'bg-[#E70F72]/20 text-[#E70F72] border-[#E70F72]/40' : 'bg-white/5 text-white/60 border-white/15'
+                }`}
+              >
+                {trait.toUpperCase()}
+              </span>
+            ))}
+          </div>
+
+          {/* Buttons */}
+          <div className="px-5 pb-5 space-y-3">
+            <button
+              onClick={() => setShowDetails(!showDetails)}
+              className="w-full bg-[#E70F72] hover:bg-[#c90d63] text-white font-bold py-4 rounded-2xl transition-all text-sm tracking-wide"
+            >
+              {showDetails ? 'Hide Full Profile' : 'View Full Profile'}
             </button>
-          </Link>
-        </div>
+            <Link to={createPageUrl('MBTIQuiz')}>
+              <button className="w-full text-white/40 text-xs tracking-widest uppercase py-2 hover:text-white/60 transition-colors">
+                Retake Quiz
+              </button>
+            </Link>
+          </div>
+        </motion.div>
       </div>
 
       {/* Meta info card */}
@@ -250,8 +295,6 @@ export default function PersonalityCard({ profile }) {
                   </div>
                 </div>
               </div>
-
-              {/* Ideal Roles */}
               {description.idealRoles && (
                 <div className="mt-6">
                   <div className="flex items-center gap-2 mb-3">
@@ -269,21 +312,18 @@ export default function PersonalityCard({ profile }) {
               )}
             </div>
 
-            {/* Core Characteristics */}
             {description.coreCharacteristics && (
               <SectionCard icon={<Target className="w-5 h-5" />} title="Core Characteristics">
                 <InfoGrid items={description.coreCharacteristics} />
               </SectionCard>
             )}
 
-            {/* Cognitive Function Stack */}
             {description.cognitiveFunctions && (
               <SectionCard icon={<Sparkles className="w-5 h-5" />} title="Cognitive Function Stack">
                 <InfoGrid items={description.cognitiveFunctions} />
               </SectionCard>
             )}
 
-            {/* Dating Strengths */}
             {description.datingStrengths && (
               <div className="rounded-3xl border border-green-500/20 bg-[#0d0d0d] p-6">
                 <div className="flex items-center gap-2 mb-5">
@@ -294,7 +334,6 @@ export default function PersonalityCard({ profile }) {
               </div>
             )}
 
-            {/* Dating Challenges */}
             {description.datingChallenges && (
               <div className="rounded-3xl border border-orange-500/20 bg-[#0d0d0d] p-6">
                 <div className="flex items-center gap-2 mb-5">
@@ -305,7 +344,6 @@ export default function PersonalityCard({ profile }) {
               </div>
             )}
 
-            {/* Friendship */}
             {description.friendship && (
               <SectionCard icon={<Users className="w-5 h-5" />} title="Friendship">
                 <p className="text-white/60 text-sm mb-5 leading-relaxed">{description.friendship.description}</p>
@@ -316,7 +354,6 @@ export default function PersonalityCard({ profile }) {
               </SectionCard>
             )}
 
-            {/* Romance */}
             {description.romance && (
               <div className="rounded-3xl border border-[#E70F72]/20 bg-[#0d0d0d] p-6">
                 <div className="flex items-center gap-2 mb-4">
@@ -338,7 +375,6 @@ export default function PersonalityCard({ profile }) {
               </div>
             )}
 
-            {/* Communication Style */}
             {description.communicationStyle && (
               <div className="rounded-3xl border border-[#E70F72]/20 bg-[#0d0d0d] p-6">
                 <div className="flex items-center gap-2 mb-5">
@@ -375,14 +411,12 @@ export default function PersonalityCard({ profile }) {
               </div>
             )}
 
-            {/* Love Language */}
             {description.loveLanguage && (
               <SectionCard icon={<Heart className="w-5 h-5" />} title="Love Language">
                 <InfoGrid items={description.loveLanguage} />
               </SectionCard>
             )}
 
-            {/* Compatibility Constellation */}
             {description.compatibilityConstellation && (
               <div className="rounded-3xl border border-[#E70F72]/20 bg-[#0d0d0d] p-6">
                 <div className="flex items-center gap-2 mb-2">
@@ -396,7 +430,6 @@ export default function PersonalityCard({ profile }) {
               </div>
             )}
 
-            {/* Persona Card */}
             {description.personaCard && (
               <div className="rounded-3xl border border-[#E70F72]/25 bg-gradient-to-br from-[#E70F72]/10 to-transparent p-6">
                 <div className="flex items-center gap-2 mb-5">
@@ -460,7 +493,6 @@ export default function PersonalityCard({ profile }) {
               </div>
             </div>
 
-            {/* Close */}
             <button
               onClick={() => setShowDetails(false)}
               className="w-full bg-white/5 hover:bg-white/10 text-white/60 hover:text-white font-semibold py-4 rounded-2xl transition-all text-sm"
