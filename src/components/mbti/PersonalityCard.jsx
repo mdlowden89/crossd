@@ -131,23 +131,22 @@ export default function PersonalityCard({ profile }) {
             <div className="w-6 h-px bg-[#E70F72]" />
           </div>
 
-          <p className="text-white/40 text-xs tracking-widest uppercase">{description.groupLabel}</p>
-        </div>
+          <p className="text-white/40 text-xs tracking-widest uppercase mb-4">{description.groupLabel}</p>
 
-        {/* Trait tags */}
-        <div className="px-5 pb-4 flex flex-wrap gap-2 justify-center">
-          {description.keyTraits.map((trait, i) => (
-            <span
-              key={i}
-              className={`px-3 py-1 rounded-full text-xs font-semibold tracking-wide border ${
-                i === 0
-                  ? 'bg-[#E70F72]/20 text-[#E70F72] border-[#E70F72]/40'
-                  : 'bg-white/5 text-white/60 border-white/15'
-              }`}
-            >
-              {trait.toUpperCase()}
-            </span>
-          ))}
+          <div className="flex flex-wrap gap-2 justify-center">
+            {description.keyTraits.map((trait, i) => (
+              <span
+                key={i}
+                className={`px-3 py-1 rounded-full text-xs font-semibold tracking-wide border ${
+                  i === 0
+                    ? 'bg-[#E70F72]/20 text-[#E70F72] border-[#E70F72]/40'
+                    : 'bg-white/5 text-white/60 border-white/15'
+                }`}
+              >
+                {trait.toUpperCase()}
+              </span>
+            ))}
+          </div>
         </div>
 
         {/* Buttons */}
