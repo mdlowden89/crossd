@@ -169,24 +169,24 @@ export default function PersonalityCard({ profile }) {
       <div className="rounded-3xl border border-white/8 bg-[#0d0d0d] p-6 grid grid-cols-2 gap-x-6 gap-y-4">
         <div>
           <p className="text-white/30 text-xs tracking-widest uppercase mb-1">Spark Archetype</p>
-          <p className="text-white font-semibold text-sm">{description.sparkArchetype}</p>
+          <p className="text-white font-semibold text-sm capitalize">{description.sparkArchetype}</p>
         </div>
         <div>
           <p className="text-white/30 text-xs tracking-widest uppercase mb-1">Also Known As</p>
-          <p className="text-white font-semibold text-sm">{description.alsoKnownAs}</p>
+          <p className="text-white font-semibold text-sm capitalize">{description.alsoKnownAs}</p>
         </div>
         <div>
           <p className="text-white/30 text-xs tracking-widest uppercase mb-1">Core Energy</p>
-          <p className="text-white font-semibold text-sm">{description.coreEnergy}</p>
+          <p className="text-white font-semibold text-sm capitalize">{description.coreEnergy}</p>
         </div>
         <div>
           <p className="text-white/30 text-xs tracking-widest uppercase mb-1">Romantic Style</p>
-          <p className="text-white font-semibold text-sm">{description.romanticStyle}</p>
+          <p className="text-white font-semibold text-sm capitalize">{description.romanticStyle}</p>
         </div>
         {description.whatTheyNeed && (
           <div className="col-span-2">
             <p className="text-white/30 text-xs tracking-widest uppercase mb-1">What They Need</p>
-            <p className="text-white font-semibold text-sm">{description.whatTheyNeed}</p>
+            <p className="text-white font-semibold text-sm capitalize">{description.whatTheyNeed}</p>
           </div>
         )}
       </div>
