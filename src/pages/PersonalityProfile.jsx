@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { ArrowLeft, Sparkles, Zap, Star, Target, Heart, MessageCircle, Users, AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
 import { MBTI_FULL_DESCRIPTIONS } from '@/components/mbti/PersonalityDescriptions';
+import PersonalityStrengthBar from '@/components/mbti/PersonalityStrengthBar';
 
 const COMPAT_COLORS = {
   soulSparks: { bg: 'bg-[#E70F72]/15', text: 'text-[#E70F72]', border: 'border-[#E70F72]/30', label: '✦ Soul Sparks', desc: 'Naturally unlock your hidden warmth and depth.' },
@@ -65,6 +66,7 @@ function CompatGroup({ groupKey, data }) {
 export default function PersonalityProfile() {
   const navigate = useNavigate();
   const [mbtiType, setMbtiType] = useState(null);
+  const [quizResults, setQuizResults] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -72,7 +74,10 @@ export default function PersonalityProfile() {
       try {
         const user = await base44.auth.me();
         const profiles = await base44.entities.Profile.filter({ user_id: user.id });
-        if (profiles.length) setMbtiType(profiles[0].mbti_type);
+        if (profiles.length) {
+          setMbtiType(profiles[0].mbti_type);
+          setQuizResults(profiles[0].mbti_quiz_results || null);
+        }
       } catch (e) {}
       setLoading(false);
     }
@@ -221,6 +226,8 @@ export default function PersonalityProfile() {
           </div>
 
         </div>
+
+        <PersonalityStrengthBar mbtiType={mbtiType} quizResults={quizResults} />
 
         {description.coreCharacteristics && (
           <SectionCard icon={<Target className="w-5 h-5" />} title="Core Characteristics">
