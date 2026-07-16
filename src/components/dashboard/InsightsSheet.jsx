@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
-import { X, Lock, MapPin, Clock, Sparkles, Users, TrendingUp, Star } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, Lock, MapPin, Clock, Sparkles, Users, TrendingUp, Star, ChevronDown, ChevronUp, Calendar, Zap } from 'lucide-react';
 import { calculateUserPlacesDNA } from '@/components/spark/placesDnaEngine';
 import { getArchetypeInfo } from '@/components/spark/placesDnaEngine';
 
@@ -29,6 +29,7 @@ const getCompatibleTypes = (mbtiType) => {
 
 export default function InsightsSheet({ moments, profile, onClose }) {
   const [activeTab, setActiveTab] = useState('this_week');
+  const [expandedZone, setExpandedZone] = useState(null);
   // Calculate insights data
   const insights = useMemo(() => {
     if (!moments || moments.length === 0) {
@@ -437,75 +438,145 @@ export default function InsightsSheet({ moments, profile, onClose }) {
               <h3 className="text-xl font-bold text-white mb-2">Your Vibe Hotspots</h3>
               <p className="text-white/50 text-sm mb-4">Where you're drawn to most often</p>
               <div className="space-y-3">
-                {insights.topZones.map((zone, idx) => (
+                {insights.topZones.map((zone, idx) => {
+                  const isExpanded = expandedZone === idx;
+                  // Derive extra insight from zone moments
+                  const zoneMoments = zone.moments || [];
+                  const hours = zoneMoments.map(m => new Date(m.created_date).getHours());
+                  const avgHour = hours.length ? Math.round(hours.reduce((a, b) => a + b, 0) / hours.length) : null;
+                  const timeLabel = avgHour !== null
+                    ? avgHour < 12 ? 'Morning' : avgHour < 17 ? 'Afternoon' : avgHour < 21 ? 'Evening' : 'Night'
+                    : null;
+                  const allVibes = [...new Set(zoneMoments.flatMap(m => m.mood_tags || []))];
+                  const allVenueTypes = [...new Set(zoneMoments.flatMap(m => m.venue_types || []))];
+                  const lastVisit = zoneMoments.length
+                    ? new Date(Math.max(...zoneMoments.map(m => new Date(m.created_date)))).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+                    : null;
+
+                  return (
                   <motion.div
                     key={idx}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: idx * 0.1 }}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="bg-gradient-to-r from-[#0B0B0B] to-[#050505] border rounded-2xl p-5 hover:shadow-lg transition-all cursor-pointer"
+                    className="bg-gradient-to-r from-[#0B0B0B] to-[#050505] border rounded-2xl overflow-hidden transition-all cursor-pointer"
                     style={{ 
-                      borderColor: `${zone.dna[0]?.color}40`,
-                      boxShadow: `0 0 20px ${zone.dna[0]?.color}15`
+                      borderColor: isExpanded ? `${zone.dna[0]?.color}70` : `${zone.dna[0]?.color}40`,
+                      boxShadow: isExpanded ? `0 0 28px ${zone.dna[0]?.color}25` : `0 0 20px ${zone.dna[0]?.color}15`
                     }}
+                    onClick={() => setExpandedZone(isExpanded ? null : idx)}
                   >
-                    <div className="flex items-start gap-4 mb-3">
-                      {/* DNA Icon Badge */}
-                      <div 
-                        className="w-14 h-14 rounded-full flex items-center justify-center text-2xl flex-shrink-0"
-                        style={{ 
-                          backgroundColor: `${zone.dna[0]?.color}20`,
-                          border: `2px solid ${zone.dna[0]?.color}60`
-                        }}
-                      >
-                        {zone.dna[0]?.icon}
-                      </div>
-                      
-                      <div className="flex-1">
-                        <h4 className="text-white font-semibold text-lg mb-2">{zone.area}</h4>
+                    <div className="p-5">
+                      <div className="flex items-start gap-4 mb-3">
+                        <div 
+                          className="w-14 h-14 rounded-full flex items-center justify-center text-2xl flex-shrink-0"
+                          style={{ backgroundColor: `${zone.dna[0]?.color}20`, border: `2px solid ${zone.dna[0]?.color}60` }}
+                        >
+                          {zone.dna[0]?.icon}
+                        </div>
                         
-                        {/* DNA Type Pills */}
-                        <div className="flex gap-2 flex-wrap mb-2">
-                          {zone.dna.map((dna, i) => (
-                            <span 
-                              key={i} 
-                              className="text-xs px-3 py-1 rounded-full font-medium"
-                              style={{ 
-                                backgroundColor: `${dna.color}25`,
-                                color: dna.color,
-                                border: `1px solid ${dna.color}40`
-                              }}
-                            >
-                              {dna.icon} {dna.name}
-                            </span>
-                          ))}
+                        <div className="flex-1">
+                          <h4 className="text-white font-semibold text-lg mb-2">{zone.area}</h4>
+                          <div className="flex gap-2 flex-wrap mb-2">
+                            {zone.dna.map((dna, i) => (
+                              <span key={i} className="text-xs px-3 py-1 rounded-full font-medium"
+                                style={{ backgroundColor: `${dna.color}25`, color: dna.color, border: `1px solid ${dna.color}40` }}>
+                                {dna.icon} {dna.name}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        <div className="text-right ml-2 flex flex-col items-end gap-1">
+                          <div className="text-2xl font-bold" style={{ color: zone.dna[0]?.color }}>{zone.frequency}%</div>
+                          <div className="text-white/50 text-xs">{zone.count} visits</div>
+                          {isExpanded
+                            ? <ChevronUp className="w-4 h-4 text-white/30 mt-1" />
+                            : <ChevronDown className="w-4 h-4 text-white/30 mt-1" />
+                          }
                         </div>
                       </div>
                       
-                      <div className="text-right ml-2">
-                        <div className="text-2xl font-bold" style={{ color: zone.dna[0]?.color }}>
-                          {zone.frequency}%
-                        </div>
-                        <div className="text-white/50 text-xs mt-1">{zone.count} visits</div>
+                      <div className="relative h-2 bg-white/10 rounded-full overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: `${zone.frequency}%` }}
+                          transition={{ delay: 0.2 + idx * 0.1, duration: 0.8, ease: "easeOut" }}
+                          className="absolute inset-y-0 left-0 rounded-full"
+                          style={{ background: `linear-gradient(90deg, ${zone.dna[0]?.color}, ${zone.dna[1]?.color || zone.dna[0]?.color})` }}
+                        />
                       </div>
                     </div>
-                    
-                    {/* DNA-colored progress bar */}
-                    <div className="relative h-2 bg-white/10 rounded-full overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${zone.frequency}%` }}
-                        transition={{ delay: 0.2 + idx * 0.1, duration: 0.8, ease: "easeOut" }}
-                        className="absolute inset-y-0 left-0 rounded-full"
-                        style={{ 
-                          background: `linear-gradient(90deg, ${zone.dna[0]?.color}, ${zone.dna[1]?.color || zone.dna[0]?.color})`
-                        }}
-                      />
-                    </div>
+
+                    {/* Expanded insight panel */}
+                    <AnimatePresence>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="px-5 pb-5 pt-1 border-t space-y-4" style={{ borderColor: `${zone.dna[0]?.color}25` }}>
+                            {/* Stats row */}
+                            <div className="grid grid-cols-3 gap-3 pt-3">
+                              <div className="bg-white/5 rounded-xl p-3 text-center">
+                                <p className="text-white font-bold text-lg">{zone.count}</p>
+                                <p className="text-white/45 text-[10px] mt-0.5">Total Visits</p>
+                              </div>
+                              {timeLabel && (
+                                <div className="bg-white/5 rounded-xl p-3 text-center">
+                                  <p className="text-white font-bold text-lg">{timeLabel}</p>
+                                  <p className="text-white/45 text-[10px] mt-0.5">Peak Time</p>
+                                </div>
+                              )}
+                              {lastVisit && (
+                                <div className="bg-white/5 rounded-xl p-3 text-center">
+                                  <p className="text-white font-bold text-sm leading-tight">{lastVisit}</p>
+                                  <p className="text-white/45 text-[10px] mt-0.5">Last Visit</p>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Vibe tags */}
+                            {allVibes.length > 0 && (
+                              <div>
+                                <p className="text-white/35 text-[10px] font-bold tracking-widest uppercase mb-2">Your Vibes Here</p>
+                                <div className="flex gap-2 flex-wrap">
+                                  {allVibes.map((v, i) => (
+                                    <span key={i} className="text-xs px-2.5 py-1 rounded-full bg-[#E70F72]/15 text-[#E70F72] border border-[#E70F72]/30 font-medium">{v}</span>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Venue types */}
+                            {allVenueTypes.length > 0 && (
+                              <div>
+                                <p className="text-white/35 text-[10px] font-bold tracking-widest uppercase mb-2">Venue Types</p>
+                                <div className="flex gap-2 flex-wrap">
+                                  {allVenueTypes.slice(0, 5).map((v, i) => (
+                                    <span key={i} className="text-xs px-2.5 py-1 rounded-full bg-white/8 text-white/60 border border-white/10 font-medium capitalize">{v.replace(/_/g, ' ')}</span>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* DNA description */}
+                            {zone.dna[0]?.desc && (
+                              <div className="flex items-start gap-2 p-3 rounded-xl" style={{ background: `${zone.dna[0].color}12`, border: `1px solid ${zone.dna[0].color}25` }}>
+                                <Zap className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" style={{ color: zone.dna[0].color }} />
+                                <p className="text-white/70 text-xs leading-relaxed">{zone.dna[0].desc}</p>
+                              </div>
+                            )}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </motion.div>
-                ))}
+                  );
+                })}
               </div>
               <p className="text-white/40 text-xs mt-4 italic flex items-center gap-1">
                 <Sparkles className="w-3 h-3" />
