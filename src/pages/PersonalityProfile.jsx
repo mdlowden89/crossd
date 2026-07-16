@@ -34,18 +34,19 @@ const TRAIT_ACCENTS = [
 
 function CoreCharacteristicsGrid({ items }) {
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div className="space-y-2">
       {items.map((item, i) => {
         const accent = TRAIT_ACCENTS[i % TRAIT_ACCENTS.length];
         return (
-          <div key={i} className={`rounded-2xl border ${accent.border} ${accent.bg} p-4 flex flex-col gap-2`}>
-            <div className="flex items-center gap-2">
-              <span className={`w-5 h-5 rounded-full ${accent.num} flex items-center justify-center flex-shrink-0`}>
-                <span className="text-white text-[10px] font-black">{i + 1}</span>
-              </span>
-              <p className={`font-bold text-sm ${accent.text}`}>{item.title}</p>
+          <div key={i} className={`rounded-2xl border ${accent.border} ${accent.bg} p-4 flex items-start gap-4`}>
+            <div className={`w-10 h-10 rounded-xl ${accent.num} flex items-center justify-center flex-shrink-0`}
+                 style={{ opacity: 0.85 }}>
+              <span className="text-white text-base font-black">{i + 1}</span>
             </div>
-            <p className="text-white/60 text-xs leading-relaxed">{item.description}</p>
+            <div className="flex-1 min-w-0">
+              <p className={`font-bold text-sm mb-0.5 ${accent.text}`}>{item.title}</p>
+              <p className="text-white/60 text-xs leading-relaxed">{item.description}</p>
+            </div>
           </div>
         );
       })}
@@ -60,25 +61,31 @@ const COGNITIVE_META = [
   { rank: 'Inf', label: 'Inferior', color: 'text-white/35', border: 'border-white/15', bg: 'bg-white/5', bar: 'bg-white/25', barW: 'w-1/4' },
 ];
 
+const COGNITIVE_WIDTHS = [100, 75, 50, 25];
+
 function CognitiveFunctionStack({ items }) {
   return (
     <div className="space-y-3">
       {items.map((item, i) => {
         const meta = COGNITIVE_META[i] || COGNITIVE_META[3];
-        // Strip the "Dominant — " prefix since we render it ourselves
         const descTitle = item.title.replace(/^(Dominant|Auxiliary|Tertiary|Inferior)\s*[—-]\s*/i, '');
+        const isDom = i === 0;
         return (
-          <div key={i} className={`rounded-2xl border ${meta.border} ${meta.bg} p-4`}>
-            <div className="flex items-center gap-3 mb-2">
-              <span className={`text-[10px] font-black tracking-widest uppercase px-2 py-0.5 rounded-full border ${meta.border} ${meta.color}`}>
-                {meta.rank}
-              </span>
-              <p className={`font-bold text-sm ${meta.color} flex-1`}>{descTitle}</p>
-              <div className="w-16 h-1 bg-white/8 rounded-full overflow-hidden flex-shrink-0">
-                <div className={`h-full rounded-full ${meta.bar} ${meta.barW}`} />
+          <div key={i} className={`rounded-2xl border ${meta.border} ${isDom ? 'bg-gradient-to-r from-[#E70F72]/12 to-transparent' : meta.bg} p-4`}>
+            <div className="flex items-start gap-3">
+              <div className="flex flex-col items-center gap-1 flex-shrink-0 pt-0.5">
+                <span className={`text-[9px] font-black tracking-widest uppercase px-2 py-1 rounded-lg border ${meta.border} ${meta.color} whitespace-nowrap`}>
+                  {meta.label}
+                </span>
+                <div className="w-full h-1 bg-white/8 rounded-full overflow-hidden mt-1" style={{ minWidth: 56 }}>
+                  <div className={`h-full rounded-full ${meta.bar}`} style={{ width: `${COGNITIVE_WIDTHS[i]}%` }} />
+                </div>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className={`font-bold text-sm mb-1 ${isDom ? 'text-white' : meta.color}`}>{descTitle}</p>
+                <p className="text-white/55 text-xs leading-relaxed">{item.description}</p>
               </div>
             </div>
-            <p className="text-white/55 text-xs leading-relaxed pl-10">{item.description}</p>
           </div>
         );
       })}
@@ -303,46 +310,64 @@ export default function PersonalityProfile() {
         )}
 
         {(description.datingStrengths || description.datingChallenges) && (
-          <div className="rounded-3xl border border-white/10 bg-[#0d0d0d] p-6">
-            <div className="flex items-center gap-2 mb-5">
-              <Heart className="w-5 h-5 text-[#E70F72]" />
-              <h3 className="text-lg font-bold text-white">Dating Profile</h3>
+          <div className="rounded-3xl overflow-hidden border border-white/10 bg-[#0d0d0d]">
+            {/* Header */}
+            <div className="px-6 pt-6 pb-4 flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-[#E70F72]/15 border border-[#E70F72]/30 flex items-center justify-center flex-shrink-0">
+                <Heart className="w-4 h-4 text-[#E70F72]" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-white leading-tight">Dating Profile</h3>
+                <p className="text-white/35 text-[11px]">Superpowers & blind spots</p>
+              </div>
             </div>
+
             {description.datingStrengths && (
-              <>
-                <p className="text-green-400 text-xs font-bold tracking-widest uppercase mb-3">✦ Strengths</p>
-                <div className="space-y-2 mb-6">
+              <div className="px-6 pb-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="h-px flex-1 bg-green-500/20" />
+                  <span className="text-green-400 text-[10px] font-black tracking-widest uppercase px-2">Superpowers</span>
+                  <div className="h-px flex-1 bg-green-500/20" />
+                </div>
+                <div className="space-y-2">
                   {description.datingStrengths.map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 bg-green-500/8 border border-green-500/20 rounded-2xl p-3.5">
-                      <div className="w-7 h-7 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <CheckCircle className="w-3.5 h-3.5 text-green-400" />
-                      </div>
-                      <div>
-                        <p className="text-white font-semibold text-sm">{item.title}</p>
-                        <p className="text-white/50 text-xs leading-relaxed mt-0.5">{item.description}</p>
+                    <div key={i} className="relative rounded-2xl overflow-hidden border border-green-500/20 bg-green-500/5 p-4">
+                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-green-500/60 rounded-l-2xl" />
+                      <div className="pl-3">
+                        <div className="flex items-center gap-2 mb-1">
+                          <CheckCircle className="w-3.5 h-3.5 text-green-400 flex-shrink-0" />
+                          <p className="text-white font-bold text-sm">{item.title}</p>
+                        </div>
+                        <p className="text-white/50 text-xs leading-relaxed">{item.description}</p>
                       </div>
                     </div>
                   ))}
                 </div>
-              </>
+              </div>
             )}
+
             {description.datingChallenges && (
-              <>
-                <p className="text-orange-400 text-xs font-bold tracking-widest uppercase mb-3">△ Challenges</p>
+              <div className="px-6 pb-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="h-px flex-1 bg-orange-500/20" />
+                  <span className="text-orange-400 text-[10px] font-black tracking-widest uppercase px-2">Blind Spots</span>
+                  <div className="h-px flex-1 bg-orange-500/20" />
+                </div>
                 <div className="space-y-2">
                   {description.datingChallenges.map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 bg-orange-500/8 border border-orange-500/20 rounded-2xl p-3.5">
-                      <div className="w-7 h-7 rounded-full bg-orange-500/20 border border-orange-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <AlertTriangle className="w-3.5 h-3.5 text-orange-400" />
-                      </div>
-                      <div>
-                        <p className="text-white font-semibold text-sm">{item.title}</p>
-                        <p className="text-white/50 text-xs leading-relaxed mt-0.5">{item.description}</p>
+                    <div key={i} className="relative rounded-2xl overflow-hidden border border-orange-500/20 bg-orange-500/5 p-4">
+                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-orange-500/60 rounded-l-2xl" />
+                      <div className="pl-3">
+                        <div className="flex items-center gap-2 mb-1">
+                          <AlertTriangle className="w-3.5 h-3.5 text-orange-400 flex-shrink-0" />
+                          <p className="text-white font-bold text-sm">{item.title}</p>
+                        </div>
+                        <p className="text-white/50 text-xs leading-relaxed">{item.description}</p>
                       </div>
                     </div>
                   ))}
                 </div>
-              </>
+              </div>
             )}
           </div>
         )}
