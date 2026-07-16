@@ -167,27 +167,45 @@ export default function PersonalityCard({ profile }) {
       </div>
 
       {/* Meta info card */}
-      <div className="rounded-3xl border border-white/8 bg-[#0d0d0d] p-6 grid grid-cols-2 gap-x-6 gap-y-4">
-        <div>
-          <p className="text-white/30 text-xs tracking-widest uppercase mb-1">Spark Archetype</p>
-          <p className="text-white font-semibold text-sm capitalize">{description.sparkArchetype}</p>
+      <div className="rounded-3xl border border-white/8 bg-[#0d0d0d] overflow-hidden">
+        {/* Top row: Spark Archetype full-width hero tile */}
+        <div className="px-5 pt-5 pb-4 border-b border-white/6"
+             style={{ background: 'linear-gradient(135deg, rgba(231,15,114,0.12) 0%, transparent 60%)' }}>
+          <p className="text-[#E70F72] text-[10px] font-black tracking-widest uppercase mb-1">✦ Spark Archetype</p>
+          <p className="text-white font-bold text-lg leading-tight">{description.sparkArchetype}</p>
+          {description.alsoKnownAs && (
+            <p className="text-white/40 text-xs mt-1">{description.alsoKnownAs}</p>
+          )}
         </div>
-        <div>
-          <p className="text-white/30 text-xs tracking-widest uppercase mb-1">Also Known As</p>
-          <p className="text-white font-semibold text-sm capitalize">{description.alsoKnownAs}</p>
+
+        {/* Middle row: 2 tiles side-by-side */}
+        <div className="grid grid-cols-2 divide-x divide-white/6 border-b border-white/6">
+          <div className="px-5 py-4">
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <Zap className="w-3 h-3 text-amber-400" />
+              <p className="text-white/35 text-[10px] font-bold tracking-widest uppercase">Core Energy</p>
+            </div>
+            <p className="text-white font-semibold text-sm leading-snug">{description.coreEnergy}</p>
+          </div>
+          <div className="px-5 py-4">
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <Heart className="w-3 h-3 text-[#E70F72]" />
+              <p className="text-white/35 text-[10px] font-bold tracking-widest uppercase">Romantic Style</p>
+            </div>
+            <p className="text-white font-semibold text-sm leading-snug">{description.romanticStyle}</p>
+          </div>
         </div>
-        <div>
-          <p className="text-white/30 text-xs tracking-widest uppercase mb-1">Core Energy</p>
-          <p className="text-white font-semibold text-sm capitalize">{description.coreEnergy}</p>
-        </div>
-        <div>
-          <p className="text-white/30 text-xs tracking-widest uppercase mb-1">Romantic Style</p>
-          <p className="text-white font-semibold text-sm capitalize">{description.romanticStyle}</p>
-        </div>
+
+        {/* Bottom row: What They Need full-width */}
         {description.whatTheyNeed && (
-          <div className="col-span-2">
-            <p className="text-white/30 text-xs tracking-widest uppercase mb-1">What They Need</p>
-            <p className="text-white font-semibold text-sm capitalize">{description.whatTheyNeed}</p>
+          <div className="px-5 py-4 flex items-start gap-3">
+            <div className="w-7 h-7 rounded-lg bg-purple-500/15 border border-purple-500/25 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Star className="w-3.5 h-3.5 text-purple-400" />
+            </div>
+            <div>
+              <p className="text-white/35 text-[10px] font-bold tracking-widest uppercase mb-0.5">What They Need</p>
+              <p className="text-white font-semibold text-sm leading-snug">{description.whatTheyNeed}</p>
+            </div>
           </div>
         )}
       </div>
