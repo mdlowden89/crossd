@@ -398,15 +398,15 @@ export default function ActivityMapPage() {
 
       {/* Bottom Action Buttons */}
       <div className="bg-black border-t border-[#E70F72]/20 px-4 md:px-6 py-3 md:py-4 flex gap-3 md:gap-4">
-        {/* Button 1 - Moments */}
+        {/* Button 1 - City Pulse */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => setShowMoments(true)}
+          onClick={() => setShowInsights(true)}
           className="flex-1 h-16 rounded-2xl bg-gradient-to-b from-[#E70F72]/20 to-[#E70F72]/10 border border-[#E70F72]/30 flex flex-col items-center justify-center gap-1 hover:border-[#E70F72]/50 transition-colors"
         >
           <Sparkles className="w-5 h-5 text-[#E70F72]" />
-          <span className="text-[#E70F72] text-[10px] font-bold tracking-wide">My Moments</span>
+          <span className="text-[#E70F72] text-[10px] font-bold tracking-wide">Pulse</span>
         </motion.button>
 
         {/* Button 2 - Nearby */}
@@ -420,15 +420,15 @@ export default function ActivityMapPage() {
           <span className="text-[#E70F72] text-[10px] font-bold tracking-wide">Nearby</span>
         </motion.button>
 
-        {/* Button 3 - Insights */}
+        {/* Button 3 - Moments */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => setShowInsights(true)}
+          onClick={() => setShowMoments(true)}
           className="flex-1 h-16 rounded-2xl bg-gradient-to-b from-[#E70F72]/20 to-[#E70F72]/10 border border-[#E70F72]/30 flex flex-col items-center justify-center gap-1 hover:border-[#E70F72]/50 transition-colors"
         >
           <Zap className="w-5 h-5 text-[#E70F72]" />
-          <span className="text-[#E70F72] text-[10px] font-bold tracking-wide">Insights</span>
+          <span className="text-[#E70F72] text-[10px] font-bold tracking-wide">Moments</span>
         </motion.button>
       </div>
     </div>
