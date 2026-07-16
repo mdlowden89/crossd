@@ -106,7 +106,7 @@ const getMarkerState = (moment, allMoments, profile) => {
 
 // Create custom marker icon based on state
 const createMarkerIcon = (state, moment) => {
-  const { color, fillColor, glowIntensity, isExpired, hasMatch, isReSight, reSightCount, isToday } = state;
+  const { color, isExpired, hasMatch, isReSight, reSightCount } = state;
   
   const glowAnimation = !isExpired && state.isExpiringSoon
     ? 'animation: pulse 2s ease-in-out infinite;'
@@ -118,6 +118,28 @@ const createMarkerIcon = (state, moment) => {
   
   const reSightBadge = isReSight
     ? `<div style="position: absolute; top: -6px; right: -6px; background: ${COLORS.PURPLE}; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: bold; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">${reSightCount}</div>`
+    : '';
+
+  const venueName = moment.venue_name || '';
+  const shortName = venueName.length > 20 ? venueName.substring(0, 18) + '…' : venueName;
+  const nameLabel = shortName
+    ? `<div style="
+        position: absolute;
+        top: 28px;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        background: rgba(0,0,0,0.82);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 6px;
+        border: 1px solid ${color}60;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+        pointer-events: none;
+        letter-spacing: 0.02em;
+      ">${shortName}</div>`
     : '';
   
   return L.divIcon({
@@ -143,6 +165,7 @@ const createMarkerIcon = (state, moment) => {
         "></div>
         ${matchBadge}
         ${reSightBadge}
+        ${nameLabel}
       </div>
     `,
     iconSize: [24, 24],
