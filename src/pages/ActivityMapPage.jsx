@@ -403,9 +403,10 @@ export default function ActivityMapPage() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setShowMoments(true)}
-          className="flex-1 h-14 md:h-16 rounded-2xl bg-gradient-to-b from-[#E70F72]/20 to-[#E70F72]/10 border border-[#E70F72]/30 flex items-center justify-center hover:border-[#E70F72]/50 transition-colors"
+          className="flex-1 h-16 rounded-2xl bg-gradient-to-b from-[#E70F72]/20 to-[#E70F72]/10 border border-[#E70F72]/30 flex flex-col items-center justify-center gap-1 hover:border-[#E70F72]/50 transition-colors"
         >
-          <Sparkles className="w-6 h-6 md:w-7 md:h-7 text-[#E70F72]" />
+          <Sparkles className="w-5 h-5 text-[#E70F72]" />
+          <span className="text-[#E70F72] text-[10px] font-bold tracking-wide">My Moments</span>
         </motion.button>
 
         {/* Button 2 - Nearby */}
@@ -413,9 +414,10 @@ export default function ActivityMapPage() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setShowNearby(true)}
-          className="flex-1 h-14 md:h-16 rounded-2xl bg-gradient-to-b from-[#E70F72]/20 to-[#E70F72]/10 border border-[#E70F72]/30 flex items-center justify-center hover:border-[#E70F72]/50 transition-colors"
+          className="flex-1 h-16 rounded-2xl bg-gradient-to-b from-[#E70F72]/20 to-[#E70F72]/10 border border-[#E70F72]/30 flex flex-col items-center justify-center gap-1 hover:border-[#E70F72]/50 transition-colors"
         >
-          <MapPin className="w-6 h-6 md:w-7 md:h-7 text-[#E70F72]" />
+          <MapPin className="w-5 h-5 text-[#E70F72]" />
+          <span className="text-[#E70F72] text-[10px] font-bold tracking-wide">Nearby</span>
         </motion.button>
 
         {/* Button 3 - Insights */}
@@ -423,9 +425,10 @@ export default function ActivityMapPage() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setShowInsights(true)}
-          className="flex-1 h-14 md:h-16 rounded-2xl bg-gradient-to-b from-[#E70F72]/20 to-[#E70F72]/10 border border-[#E70F72]/30 flex items-center justify-center hover:border-[#E70F72]/50 transition-colors"
+          className="flex-1 h-16 rounded-2xl bg-gradient-to-b from-[#E70F72]/20 to-[#E70F72]/10 border border-[#E70F72]/30 flex flex-col items-center justify-center gap-1 hover:border-[#E70F72]/50 transition-colors"
         >
-          <Zap className="w-6 h-6 md:w-7 md:h-7 text-[#E70F72]" />
+          <Zap className="w-5 h-5 text-[#E70F72]" />
+          <span className="text-[#E70F72] text-[10px] font-bold tracking-wide">Insights</span>
         </motion.button>
       </div>
     </div>
