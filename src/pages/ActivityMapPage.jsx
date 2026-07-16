@@ -292,7 +292,7 @@ export default function ActivityMapPage() {
     <div className="fixed inset-0 bg-black z-[999] flex flex-col safe-area-top safe-area-bottom">
       <AnimatePresence>
         {showInsights && (
-          <InsightsSheet moments={moments} profile={profile} onClose={() => setShowInsights(false)} />
+          <InsightsSheet moments={moments} profile={profile} onClose={() => setShowInsights(false)} userId={profile?.id} />
         )}
         {showMoments && (
           <MomentsListSheet moments={moments} onClose={() => setShowMoments(false)} />

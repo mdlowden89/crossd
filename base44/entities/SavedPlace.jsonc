@@ -1,0 +1,61 @@
+{
+  "name": "SavedPlace",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "User who saved this place"
+    },
+    "name": {
+      "type": "string",
+      "description": "Place name"
+    },
+    "address": {
+      "type": "string",
+      "description": "Place address or area"
+    },
+    "place_id": {
+      "type": "string",
+      "description": "Google Place ID if available"
+    },
+    "lat": {
+      "type": "number"
+    },
+    "lng": {
+      "type": "number"
+    },
+    "venue_types": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Venue type tags"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "want_to_visit",
+        "been_here",
+        "favourite"
+      ],
+      "default": "want_to_visit",
+      "description": "User's relationship with this place"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Personal notes about the place"
+    },
+    "vibe_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Vibe/mood tags for this place"
+    }
+  },
+  "required": [
+    "user_id",
+    "name",
+    "status"
+  ]
+}

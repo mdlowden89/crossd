@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Lock, MapPin, Clock, Sparkles, Users, TrendingUp, Star, ChevronDown, ChevronUp, Calendar, Zap } from 'lucide-react';
+import PlanMomentModal from '@/components/dashboard/PlanMomentModal';
 import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 
 const VENUE_EMOJIS = {
@@ -42,10 +43,11 @@ const getCompatibleTypes = (mbtiType) => {
   return compatibility[mbtiType] || ['INFJ', 'ISFP', 'ENFP'];
 };
 
-export default function InsightsSheet({ moments, profile, onClose }) {
+export default function InsightsSheet({ moments, profile, onClose, userId }) {
   const [activeTab, setActiveTab] = useState('this_week');
   const [expandedZone, setExpandedZone] = useState(null);
   const [activeTimeView, setActiveTimeView] = useState('chart');
+  const [showPlanModal, setShowPlanModal] = useState(false);
   // Calculate insights data
   const insights = useMemo(() => {
     if (!moments || moments.length === 0) {
@@ -387,6 +389,7 @@ export default function InsightsSheet({ moments, profile, onClose }) {
   const isPremium = profile?.crossd_plus;
 
   return (
+    <>
     <motion.div
       initial={{ y: '100%' }}
       animate={{ y: 0 }}
@@ -786,8 +789,11 @@ export default function InsightsSheet({ moments, profile, onClose }) {
                 </div>
                 
                 <div className="flex gap-3">
-                  <button className="flex-1 py-3 bg-[#E70F72] text-white font-semibold rounded-xl hover:bg-[#ff1a8c] transition-colors">
-                    Plan a Moment
+                  <button
+                    onClick={() => setShowPlanModal(true)}
+                    className="flex-1 py-3 bg-[#E70F72] text-white font-semibold rounded-xl hover:bg-[#ff1a8c] transition-colors"
+                  >
+                    My Places
                   </button>
                   <button className="flex-1 py-3 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors border border-white/20">
                     Log a Moment
@@ -949,6 +955,13 @@ export default function InsightsSheet({ moments, profile, onClose }) {
         </div>
       </motion.div>
     </motion.div>
+
+    <AnimatePresence>
+      {showPlanModal && (
+        <PlanMomentModal userId={userId} onClose={() => setShowPlanModal(false)} />
+      )}
+    </AnimatePresence>
+    </>
   );
 }
 
