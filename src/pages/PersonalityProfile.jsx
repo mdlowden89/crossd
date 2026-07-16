@@ -446,9 +446,37 @@ export default function PersonalityProfile() {
         )}
 
         {description.loveLanguage && (
-          <SectionCard icon={<Heart className="w-5 h-5" />} title="Love Language">
-            <InfoGrid items={description.loveLanguage} />
-          </SectionCard>
+          <div className="rounded-3xl border border-[#E70F72]/25 bg-[#0d0d0d] p-6">
+            <div className="flex items-center gap-2 mb-2">
+              <Heart className="w-5 h-5 text-[#E70F72]" />
+              <h3 className="text-lg font-bold text-white">Love Language</h3>
+            </div>
+            <p className="text-white/35 text-xs mb-5">Ranked by natural intensity — how they give and receive love</p>
+            <div className="space-y-3">
+              {description.loveLanguage.map((item, i) => {
+                const fillPct = Math.round(100 - i * 16);
+                const isTop = i === 0;
+                return (
+                  <div key={i} className={`rounded-2xl p-4 border ${isTop ? 'border-[#E70F72]/40 bg-[#E70F72]/10' : 'border-white/8 bg-white/3'}`}>
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-[11px] font-black ${isTop ? 'bg-[#E70F72] text-white' : 'bg-white/10 text-white/50'}`}>
+                        {i + 1}
+                      </span>
+                      <p className={`font-bold text-sm flex-1 ${isTop ? 'text-white' : 'text-white/80'}`}>{item.title}</p>
+                      <span className={`text-xs font-bold ${isTop ? 'text-[#E70F72]' : 'text-white/30'}`}>{fillPct}%</span>
+                    </div>
+                    <div className="h-1 bg-white/8 rounded-full overflow-hidden mb-2 ml-9">
+                      <div
+                        className={`h-full rounded-full transition-all ${isTop ? 'bg-[#E70F72]' : 'bg-white/20'}`}
+                        style={{ width: `${fillPct}%` }}
+                      />
+                    </div>
+                    <p className="text-white/45 text-xs leading-relaxed ml-9">{item.description}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         )}
 
         {description.compatibilityConstellation && (
