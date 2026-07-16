@@ -858,21 +858,26 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30 cursor-pointer hover:border-[#E70F72]/50 transition-colors"
-          onClick={() => navigate(createPageUrl('ActivityMapPage'))}
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl overflow-hidden border border-[#E70F72]/30"
         >
-          <div className="flex items-center gap-2 mb-2">
-            <Map className="w-5 h-5 text-[#E70F72]" />
-            <h2 className="text-2xl font-bold text-white">Your Activity Map</h2>
+          <div className="flex items-center gap-4 px-6 py-5">
+            <div className="w-10 h-10 rounded-full bg-[#E70F72]/20 flex items-center justify-center flex-shrink-0">
+              <Map className="w-5 h-5 text-[#E70F72]" />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-lg font-bold text-white">Activity Map</h2>
+              <p className="text-white/50 text-sm">Where your paths are crossing</p>
+            </div>
+            <button
+              onClick={() => navigate(createPageUrl('ActivityMapPage'))}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#E70F72]/50 text-white text-sm font-semibold hover:bg-[#E70F72]/10 active:scale-95 transition-all"
+            >
+              Open <ChevronRight className="w-4 h-4" />
+            </button>
           </div>
-          <p className="text-white/65 mb-6">
-            A visual journey of your logged encounters.
-          </p>
-          
-          <div className="h-80 rounded-2xl overflow-hidden">
+          <div className="h-72 w-full">
             <ActivityMap moments={moments} profile={profile} />
           </div>
-          <p className="text-white/50 text-xs text-center mt-3">Click to expand</p>
         </motion.div>
 
         {/* Challenges Section */}
