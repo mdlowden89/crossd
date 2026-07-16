@@ -1,6 +1,21 @@
 import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Lock, MapPin, Clock, Sparkles, Users, TrendingUp, Star, ChevronDown, ChevronUp, Calendar, Zap } from 'lucide-react';
+import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
+
+const VENUE_EMOJIS = {
+  cafe: '☕', coffee_shop: '☕', restaurant: '🍽️', bar: '🍺', pub: '🍺',
+  night_club: '🎉', park: '🌳', museum: '🏛️', art_gallery: '🎨', gym: '🏋️',
+  library: '📚', book_store: '📚', movie_theater: '🎬', concert_hall: '🎵',
+  music_venue: '🎵', beach: '🏖️', yoga_studio: '🧘', spa: '💆', wine_bar: '🍷',
+  rooftop_bar: '🌇', bakery: '🥐', university: '🎓', school: '🎓',
+  stadium: '🏟️', amusement_park: '🎡', campground: '⛺', natural_feature: '🌿',
+  shopping_mall: '🛍️', supermarket: '🛒', hotel: '🏨', airport: '✈️',
+  train_station: '🚆', subway_station: '🚇', church: '⛪', hospital: '🏥',
+  pharmacy: '💊', bank: '🏦', post_office: '📮', laundry: '🧺',
+};
+
+const getVenueEmoji = (type) => VENUE_EMOJIS[type] || '📍';
 import { calculateUserPlacesDNA } from '@/components/spark/placesDnaEngine';
 import { getArchetypeInfo } from '@/components/spark/placesDnaEngine';
 
@@ -266,6 +281,13 @@ export default function InsightsSheet({ moments, profile, onClose }) {
       count: peakHour[1]
     } : null;
 
+    // Build 24-hour activity chart data
+    const hourlyChartData = Array.from({ length: 24 }, (_, h) => ({
+      hour: h === 0 ? '12am' : h === 12 ? '12pm' : h < 12 ? `${h}am` : `${h - 12}pm`,
+      h,
+      activity: hourMap[h] || 0,
+    }));
+
     // Spark Potential recommendation with enhanced formatting
     const recommendation = topZones[0] && peakTime ? {
       zone: topZones[0].area,
@@ -356,7 +378,8 @@ export default function InsightsSheet({ moments, profile, onClose }) {
       compatibleTypes,
       overlapZones,
       sparkWindows,
-      anonymizedActivity
+      anonymizedActivity,
+      hourlyChartData
     };
   }, [moments]);
 
@@ -557,7 +580,9 @@ export default function InsightsSheet({ moments, profile, onClose }) {
                                 <p className="text-white/35 text-[10px] font-bold tracking-widest uppercase mb-2">Venue Types</p>
                                 <div className="flex gap-2 flex-wrap">
                                   {allVenueTypes.slice(0, 5).map((v, i) => (
-                                    <span key={i} className="text-xs px-2.5 py-1 rounded-full bg-white/8 text-white/60 border border-white/10 font-medium capitalize">{v.replace(/_/g, ' ')}</span>
+                                    <span key={i} className="text-xs px-2.5 py-1 rounded-full bg-white/5 text-white/65 border border-white/10 font-medium capitalize">
+                                      {getVenueEmoji(v)} {v.replace(/_/g, ' ')}
+                                    </span>
                                   ))}
                                 </div>
                               </div>
@@ -622,55 +647,79 @@ export default function InsightsSheet({ moments, profile, onClose }) {
             </section>
           )}
 
-          {/* Peak Times - When your energy is strongest */}
-          {insights.peakTime && (
+          {/* Daily Activity Trend Chart */}
+          {insights.hourlyChartData && (
             <section>
-              <h3 className="text-xl font-bold text-white mb-2">When Your Energy is Strongest</h3>
-              <p className="text-white/50 text-sm mb-4">Your peak spark time</p>
+              <h3 className="text-xl font-bold text-white mb-1">Activity Through the Day</h3>
+              <p className="text-white/50 text-sm mb-4">When you show up most</p>
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="bg-gradient-to-r from-[#E70F72]/20 to-[#E70F72]/5 border border-[#E70F72]/30 rounded-2xl p-6"
+                className="bg-gradient-to-br from-[#0B0B0B] to-[#050505] border border-[#E70F72]/20 rounded-2xl p-5"
+                style={{ boxShadow: '0 0 24px rgba(231,15,114,0.08)' }}
               >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-[#E70F72]/20 flex items-center justify-center">
-                    <Clock className="w-6 h-6 text-[#E70F72]" />
+                {insights.peakTime && (
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-8 h-8 rounded-full bg-[#E70F72]/20 flex items-center justify-center">
+                      <Clock className="w-4 h-4 text-[#E70F72]" />
+                    </div>
+                    <div>
+                      <p className="text-white font-semibold text-sm">Peak: {insights.peakTime.day} · {insights.peakTime.hour}</p>
+                      <p className="text-white/40 text-xs">your most active window</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-white font-bold text-xl">
-                      {insights.peakTime.day} · {insights.peakTime.hour}
-                    </p>
-                    <p className="text-white/50 text-xs mt-1">Your most active window</p>
-                  </div>
+                )}
+
+                <div className="h-36">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={insights.hourlyChartData} margin={{ top: 4, right: 4, left: -28, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="activityGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#E70F72" stopOpacity={0.5} />
+                          <stop offset="95%" stopColor="#E70F72" stopOpacity={0.02} />
+                        </linearGradient>
+                      </defs>
+                      <XAxis
+                        dataKey="hour"
+                        tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 9 }}
+                        tickLine={false}
+                        axisLine={false}
+                        interval={5}
+                      />
+                      <YAxis
+                        tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 9 }}
+                        tickLine={false}
+                        axisLine={false}
+                        allowDecimals={false}
+                      />
+                      <Tooltip
+                        contentStyle={{ background: '#0B0B0B', border: '1px solid rgba(231,15,114,0.4)', borderRadius: 10, fontSize: 11, color: '#fff' }}
+                        itemStyle={{ color: '#E70F72' }}
+                        formatter={(v) => [`${v} moment${v !== 1 ? 's' : ''}`, '']}
+                        labelFormatter={(l) => l}
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="activity"
+                        stroke="#E70F72"
+                        strokeWidth={2}
+                        fill="url(#activityGrad)"
+                        dot={false}
+                        activeDot={{ r: 4, fill: '#E70F72', strokeWidth: 0 }}
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
                 </div>
-                
-                {/* Time visualization bar */}
-                <div className="mb-4">
-                  <div className="flex justify-between text-xs text-white/40 mb-2">
-                    <span>12am</span>
-                    <span>6am</span>
-                    <span>12pm</span>
-                    <span>6pm</span>
-                    <span>12am</span>
-                  </div>
-                  <div className="relative h-2 bg-white/10 rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.6 }}
-                      className="absolute inset-y-0 bg-[#E70F72] rounded-full"
-                      style={{
-                        left: `${(parseInt(insights.peakTime.hour) / 24) * 100}%`,
-                        width: '20%'
-                      }}
-                    />
-                  </div>
+
+                {/* Time-of-day labels */}
+                <div className="flex justify-between text-[10px] text-white/25 mt-1 px-1">
+                  <span>🌙 Night</span>
+                  <span>🌅 Morning</span>
+                  <span>☀️ Afternoon</span>
+                  <span>🌆 Evening</span>
+                  <span>🌙</span>
                 </div>
-                
-                <p className="text-white/70 text-sm leading-relaxed">
-                  You tend to log moments when you're most open, social, and present.
-                </p>
               </motion.div>
             </section>
           )}
