@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { ArrowLeft, Sparkles, Zap, Star, Target, Heart, MessageCircle, Users, AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
+import { ArrowLeft, Sparkles, Zap, Star, Target, Heart, MessageCircle, Users, AlertTriangle, CheckCircle, XCircle, Brain, Layers } from 'lucide-react';
 import { MBTI_FULL_DESCRIPTIONS } from '@/components/mbti/PersonalityDescriptions';
 import PersonalityStrengthBar from '@/components/mbti/PersonalityStrengthBar';
 
@@ -21,6 +21,67 @@ function InfoGrid({ items }) {
           <p className="text-white/55 text-xs leading-relaxed">{item.description}</p>
         </div>
       ))}
+    </div>
+  );
+}
+
+const TRAIT_ACCENTS = [
+  { border: 'border-[#E70F72]/40', bg: 'bg-[#E70F72]/10', text: 'text-[#E70F72]', num: 'bg-[#E70F72]' },
+  { border: 'border-purple-500/40', bg: 'bg-purple-500/10', text: 'text-purple-400', num: 'bg-purple-500' },
+  { border: 'border-sky-500/40', bg: 'bg-sky-500/10', text: 'text-sky-400', num: 'bg-sky-500' },
+  { border: 'border-amber-500/40', bg: 'bg-amber-500/10', text: 'text-amber-400', num: 'bg-amber-500' },
+];
+
+function CoreCharacteristicsGrid({ items }) {
+  return (
+    <div className="grid grid-cols-2 gap-3">
+      {items.map((item, i) => {
+        const accent = TRAIT_ACCENTS[i % TRAIT_ACCENTS.length];
+        return (
+          <div key={i} className={`rounded-2xl border ${accent.border} ${accent.bg} p-4 flex flex-col gap-2`}>
+            <div className="flex items-center gap-2">
+              <span className={`w-5 h-5 rounded-full ${accent.num} flex items-center justify-center flex-shrink-0`}>
+                <span className="text-white text-[10px] font-black">{i + 1}</span>
+              </span>
+              <p className={`font-bold text-sm ${accent.text}`}>{item.title}</p>
+            </div>
+            <p className="text-white/60 text-xs leading-relaxed">{item.description}</p>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+const COGNITIVE_META = [
+  { rank: 'Dom', label: 'Dominant', color: 'text-[#E70F72]', border: 'border-[#E70F72]/40', bg: 'bg-[#E70F72]/8', bar: 'bg-[#E70F72]', barW: 'w-full' },
+  { rank: 'Aux', label: 'Auxiliary', color: 'text-purple-400', border: 'border-purple-400/40', bg: 'bg-purple-500/8', bar: 'bg-purple-400', barW: 'w-3/4' },
+  { rank: 'Ter', label: 'Tertiary', color: 'text-sky-400', border: 'border-sky-400/40', bg: 'bg-sky-500/8', bar: 'bg-sky-400', barW: 'w-1/2' },
+  { rank: 'Inf', label: 'Inferior', color: 'text-white/35', border: 'border-white/15', bg: 'bg-white/5', bar: 'bg-white/25', barW: 'w-1/4' },
+];
+
+function CognitiveFunctionStack({ items }) {
+  return (
+    <div className="space-y-3">
+      {items.map((item, i) => {
+        const meta = COGNITIVE_META[i] || COGNITIVE_META[3];
+        // Strip the "Dominant — " prefix since we render it ourselves
+        const descTitle = item.title.replace(/^(Dominant|Auxiliary|Tertiary|Inferior)\s*[—-]\s*/i, '');
+        return (
+          <div key={i} className={`rounded-2xl border ${meta.border} ${meta.bg} p-4`}>
+            <div className="flex items-center gap-3 mb-2">
+              <span className={`text-[10px] font-black tracking-widest uppercase px-2 py-0.5 rounded-full border ${meta.border} ${meta.color}`}>
+                {meta.rank}
+              </span>
+              <p className={`font-bold text-sm ${meta.color} flex-1`}>{descTitle}</p>
+              <div className="w-16 h-1 bg-white/8 rounded-full overflow-hidden flex-shrink-0">
+                <div className={`h-full rounded-full ${meta.bar} ${meta.barW}`} />
+              </div>
+            </div>
+            <p className="text-white/55 text-xs leading-relaxed pl-10">{item.description}</p>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -231,13 +292,13 @@ export default function PersonalityProfile() {
 
         {description.coreCharacteristics && (
           <SectionCard icon={<Target className="w-5 h-5" />} title="Core Characteristics">
-            <InfoGrid items={description.coreCharacteristics} />
+            <CoreCharacteristicsGrid items={description.coreCharacteristics} />
           </SectionCard>
         )}
 
         {description.cognitiveFunctions && (
-          <SectionCard icon={<Sparkles className="w-5 h-5" />} title="Cognitive Function Stack">
-            <InfoGrid items={description.cognitiveFunctions} />
+          <SectionCard icon={<Brain className="w-5 h-5" />} title="Cognitive Function Stack">
+            <CognitiveFunctionStack items={description.cognitiveFunctions} />
           </SectionCard>
         )}
 
