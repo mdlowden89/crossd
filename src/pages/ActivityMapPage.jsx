@@ -58,20 +58,46 @@ export default function ActivityMapPage() {
     enabled: !!user
   });
 
+  // Mock zone data for demo purposes
+  const MOCK_HISTORIC_ZONES = [
+    { zone_id: 'ldn_brixton', centroid_lat: 51.4613, centroid_lng: -0.1156, historic_score: 0.88, dominant_archetypes: ['nightlife', 'social_buzzing'], archetype_scores: { nightlife: 0.88, social_buzzing: 0.72 }, peak_buckets: ['evening', 'night'], moment_count: 142 },
+    { zone_id: 'ldn_peckham', centroid_lat: 51.4740, centroid_lng: -0.0697, historic_score: 0.75, dominant_archetypes: ['creative', 'social_buzzing'], archetype_scores: { creative: 0.75, social_buzzing: 0.60 }, peak_buckets: ['evening', 'afternoon'], moment_count: 98 },
+    { zone_id: 'ldn_dalston', centroid_lat: 51.5462, centroid_lng: -0.0754, historic_score: 0.82, dominant_archetypes: ['live_electric', 'nightlife'], archetype_scores: { live_electric: 0.82, nightlife: 0.70 }, peak_buckets: ['night', 'late'], moment_count: 117 },
+    { zone_id: 'ldn_shoreditch', centroid_lat: 51.5225, centroid_lng: -0.0755, historic_score: 0.91, dominant_archetypes: ['creative', 'live_electric'], archetype_scores: { creative: 0.91, live_electric: 0.78 }, peak_buckets: ['evening', 'night'], moment_count: 203 },
+    { zone_id: 'ldn_soho', centroid_lat: 51.5137, centroid_lng: -0.1337, historic_score: 0.95, dominant_archetypes: ['social_buzzing', 'romantic'], archetype_scores: { social_buzzing: 0.95, romantic: 0.80 }, peak_buckets: ['afternoon', 'evening', 'night'], moment_count: 289 },
+    { zone_id: 'ldn_greenwich', centroid_lat: 51.4827, centroid_lng: -0.0077, historic_score: 0.62, dominant_archetypes: ['nature_grounded', 'calm_cozy'], archetype_scores: { nature_grounded: 0.62, calm_cozy: 0.50 }, peak_buckets: ['morning', 'afternoon'], moment_count: 74 },
+    { zone_id: 'ldn_hackney', centroid_lat: 51.5450, centroid_lng: -0.0553, historic_score: 0.70, dominant_archetypes: ['creative', 'intimate_local'], archetype_scores: { creative: 0.70, intimate_local: 0.58 }, peak_buckets: ['afternoon', 'evening'], moment_count: 88 },
+    { zone_id: 'ldn_kingsxrd', centroid_lat: 51.5306, centroid_lng: -0.1234, historic_score: 0.78, dominant_archetypes: ['deep_intellectual', 'social_buzzing'], archetype_scores: { deep_intellectual: 0.78, social_buzzing: 0.65 }, peak_buckets: ['morning', 'evening'], moment_count: 105 },
+  ];
+
+  const MOCK_LIVE_ZONES = [
+    { zone_id: 'ldn_brixton',   live_score: 0.95, state: 'peaking', activity_band: 'high', recent_moment_count: 18 },
+    { zone_id: 'ldn_shoreditch', live_score: 0.80, state: 'peaking', activity_band: 'high', recent_moment_count: 24 },
+    { zone_id: 'ldn_soho',      live_score: 0.72, state: 'active',  activity_band: 'high', recent_moment_count: 31 },
+    { zone_id: 'ldn_peckham',   live_score: 0.55, state: 'active',  activity_band: 'med',  recent_moment_count: 9  },
+    { zone_id: 'ldn_dalston',   live_score: 0.40, state: 'active',  activity_band: 'med',  recent_moment_count: 7  },
+    { zone_id: 'ldn_hackney',   live_score: 0.20, state: 'calm',    activity_band: 'low',  recent_moment_count: 3  },
+    { zone_id: 'ldn_kingsxrd',  live_score: 0.35, state: 'active',  activity_band: 'med',  recent_moment_count: 6  },
+  ];
+
   // Fetch historic + live zone data
-  const { data: historicZones = [] } = useQuery({
+  const { data: historicZonesRaw = [] } = useQuery({
     queryKey: ['zone-historic'],
     queryFn: () => base44.entities.ZoneHistoric.list('-historic_score', 100),
     enabled: liveSpark,
     staleTime: 5 * 60 * 1000,
   });
 
-  const { data: liveZones = [] } = useQuery({
+  const { data: liveZonesRaw = [] } = useQuery({
     queryKey: ['zone-live'],
     queryFn: () => base44.entities.ZoneLive.list('-live_score', 100),
     enabled: liveSpark,
     refetchInterval: 60 * 1000, // refresh every minute
   });
+
+  // Fall back to mock data if DB is empty
+  const historicZones = historicZonesRaw.length > 0 ? historicZonesRaw : MOCK_HISTORIC_ZONES;
+  const liveZones = liveZonesRaw.length > 0 ? liveZonesRaw : MOCK_LIVE_ZONES;
 
   const { data: moments = [] } = useQuery({
     queryKey: ['my-moments'],
