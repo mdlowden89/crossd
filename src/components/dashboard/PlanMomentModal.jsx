@@ -128,7 +128,7 @@ export default function PlanMomentModal({ onClose, userId }) {
             <Search className="w-4 h-4 text-white/40 flex-shrink-0" />
             <input
               type="text"
-              placeholder="Search a caf\u00e9, park, gym you love..."
+              placeholder="Search a café, park, gym you love..."
               value={search}
               onChange={e => setSearch(e.target.value)}
               onKeyDown={handleKeyDown}
