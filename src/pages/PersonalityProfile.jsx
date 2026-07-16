@@ -302,50 +302,108 @@ export default function PersonalityProfile() {
           </SectionCard>
         )}
 
-        {description.datingStrengths && (
-          <div className="rounded-3xl border border-green-500/20 bg-[#0d0d0d] p-6">
+        {(description.datingStrengths || description.datingChallenges) && (
+          <div className="rounded-3xl border border-white/10 bg-[#0d0d0d] p-6">
             <div className="flex items-center gap-2 mb-5">
-              <CheckCircle className="w-5 h-5 text-green-400" />
-              <h3 className="text-lg font-bold text-white">Dating Strengths</h3>
+              <Heart className="w-5 h-5 text-[#E70F72]" />
+              <h3 className="text-lg font-bold text-white">Dating Profile</h3>
             </div>
-            <InfoGrid items={description.datingStrengths} />
-          </div>
-        )}
-
-        {description.datingChallenges && (
-          <div className="rounded-3xl border border-orange-500/20 bg-[#0d0d0d] p-6">
-            <div className="flex items-center gap-2 mb-5">
-              <XCircle className="w-5 h-5 text-orange-400" />
-              <h3 className="text-lg font-bold text-white">Dating Challenges</h3>
-            </div>
-            <InfoGrid items={description.datingChallenges} />
+            {description.datingStrengths && (
+              <>
+                <p className="text-green-400 text-xs font-bold tracking-widest uppercase mb-3">✦ Strengths</p>
+                <div className="space-y-2 mb-6">
+                  {description.datingStrengths.map((item, i) => (
+                    <div key={i} className="flex items-start gap-3 bg-green-500/8 border border-green-500/20 rounded-2xl p-3.5">
+                      <div className="w-7 h-7 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <CheckCircle className="w-3.5 h-3.5 text-green-400" />
+                      </div>
+                      <div>
+                        <p className="text-white font-semibold text-sm">{item.title}</p>
+                        <p className="text-white/50 text-xs leading-relaxed mt-0.5">{item.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+            {description.datingChallenges && (
+              <>
+                <p className="text-orange-400 text-xs font-bold tracking-widest uppercase mb-3">△ Challenges</p>
+                <div className="space-y-2">
+                  {description.datingChallenges.map((item, i) => (
+                    <div key={i} className="flex items-start gap-3 bg-orange-500/8 border border-orange-500/20 rounded-2xl p-3.5">
+                      <div className="w-7 h-7 rounded-full bg-orange-500/20 border border-orange-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <AlertTriangle className="w-3.5 h-3.5 text-orange-400" />
+                      </div>
+                      <div>
+                        <p className="text-white font-semibold text-sm">{item.title}</p>
+                        <p className="text-white/50 text-xs leading-relaxed mt-0.5">{item.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         )}
 
         {description.friendship && (
-          <SectionCard icon={<Users className="w-5 h-5" />} title="Friendship">
-            <p className="text-white/60 text-sm mb-5 leading-relaxed">{description.friendship.description}</p>
-            <p className="text-white/30 text-xs tracking-widest uppercase mb-3">Core Needs</p>
-            <InfoGrid items={description.friendship.coreNeeds} />
-            <p className="text-white/30 text-xs tracking-widest uppercase mb-3 mt-5">Red Flags</p>
-            <InfoGrid items={description.friendship.redFlags} />
-          </SectionCard>
+          <div className="rounded-3xl border border-sky-500/20 bg-[#0d0d0d] p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Users className="w-5 h-5 text-sky-400" />
+              <h3 className="text-lg font-bold text-white">Friendship</h3>
+            </div>
+            <p className="text-white/60 text-sm mb-5 leading-relaxed italic border-l-2 border-sky-500/40 pl-3">{description.friendship.description}</p>
+            <p className="text-sky-400 text-xs font-bold tracking-widest uppercase mb-3">Core Needs</p>
+            <div className="grid grid-cols-2 gap-2 mb-5">
+              {description.friendship.coreNeeds.map((item, i) => (
+                <div key={i} className="bg-sky-500/8 border border-sky-500/20 rounded-2xl p-3">
+                  <p className="text-sky-300 font-semibold text-xs mb-1">{item.title}</p>
+                  <p className="text-white/50 text-xs leading-relaxed">{item.description}</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-red-400 text-xs font-bold tracking-widest uppercase mb-3">🚩 Red Flags</p>
+            <div className="space-y-2">
+              {description.friendship.redFlags.map((item, i) => (
+                <div key={i} className="flex items-start gap-3 bg-red-500/8 border border-red-500/20 rounded-2xl p-3">
+                  <XCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-white font-semibold text-xs">{item.title}</p>
+                    <p className="text-white/45 text-xs leading-relaxed mt-0.5">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
 
         {description.romance && (
-          <div className="rounded-3xl border border-[#E70F72]/20 bg-[#0d0d0d] p-6">
+          <div className="rounded-3xl border border-[#E70F72]/25 bg-[#0d0d0d] p-6">
             <div className="flex items-center gap-2 mb-4">
               <Heart className="w-5 h-5 text-[#E70F72]" />
               <h3 className="text-lg font-bold text-white">Romance</h3>
             </div>
-            <p className="text-white/60 text-sm mb-5 leading-relaxed">{description.romance.description}</p>
-            <p className="text-white/30 text-xs tracking-widest uppercase mb-3">How They Show Love</p>
-            <InfoGrid items={description.romance.howTheyShowLove} />
+            <p className="text-white/60 text-sm mb-5 leading-relaxed italic border-l-2 border-[#E70F72]/40 pl-3">{description.romance.description}</p>
+            <p className="text-[#E70F72] text-xs font-bold tracking-widest uppercase mb-3">How They Show Love</p>
+            <div className="space-y-2 mb-4">
+              {description.romance.howTheyShowLove.map((item, i) => (
+                <div key={i} className="flex items-start gap-3 bg-[#E70F72]/8 border border-[#E70F72]/20 rounded-2xl p-3.5">
+                  <div className="w-6 h-6 rounded-full bg-[#E70F72]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-[#E70F72] text-[10px] font-black">{i + 1}</span>
+                  </div>
+                  <div>
+                    <p className="text-white font-semibold text-sm">{item.title}</p>
+                    <p className="text-white/50 text-xs leading-relaxed mt-0.5">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
             {description.romance.romanticChallenge && (
-              <div className="mt-4 p-4 rounded-xl border border-red-500/20 bg-red-500/5 flex items-start gap-2">
-                <AlertTriangle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
-                <p className="text-white/70 text-sm">
-                  <span className="text-red-400 font-semibold">Romantic challenge: </span>
+              <div className="p-4 rounded-2xl border border-amber-500/25 bg-amber-500/8 flex items-start gap-3">
+                <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                <p className="text-white/70 text-sm leading-relaxed">
+                  <span className="text-amber-400 font-semibold">Growth edge: </span>
                   {description.romance.romanticChallenge}
                 </p>
               </div>
