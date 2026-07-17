@@ -679,80 +679,29 @@ export default function ProfileDetail() {
             transition={{ delay: 0.45 }}
             className="mb-6"
           >
-            <p className="text-white/45 text-xs uppercase tracking-wider mb-3 ml-1">Lifestyle & Background</p>
+            <p className="text-white/50 text-xs font-semibold uppercase tracking-widest mb-3 ml-1">Lifestyle & Background</p>
             <div className="grid grid-cols-2 gap-3">
-              {profile.height && (
-                <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Ruler className="w-4 h-4 text-[#E70F72]" />
-                    <p className="text-white/50 text-xs">Height</p>
+              {[
+                profile.height && { icon: Ruler, label: 'HEIGHT', value: `${profile.height}cm` },
+                profile.ethnicity && profile.ethnicity !== 'Prefer Not to Say' && { icon: Users, label: 'ETHNICITY', value: profile.ethnicity.replace('White/Caucasian', 'White').replace('Black/African Descent', 'Black') },
+                profile.religion && profile.religion !== 'Prefer Not to Say' && { icon: Church, label: 'RELIGION', value: profile.religion },
+                profile.children && { icon: Baby, label: 'CHILDREN', value: profile.children.replace("Don't have children", "Don't have kids") },
+                profile.family_plans && { icon: HeartHandshake, label: 'FAMILY PLANS', value: profile.family_plans },
+                profile.drinking && { icon: Wine, label: 'DRINKING', value: profile.drinking },
+                profile.smoking && { icon: Wind, label: 'SMOKING', value: profile.smoking },
+                profile.zodiac_sign && { icon: Star, label: 'ZODIAC', value: profile.zodiac_sign },
+              ].filter(Boolean).map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <div key={index} className="bg-black border border-[#E70F72]/25 rounded-2xl p-4" style={{ boxShadow: 'inset 0 0 20px rgba(231,15,114,0.04)' }}>
+                    <div className="flex items-center gap-2 mb-3">
+                      <Icon className="w-4 h-4 text-white/40" />
+                      <p className="text-white/40 text-xs font-semibold tracking-wider">{item.label}</p>
+                    </div>
+                    <p className="text-white font-bold text-base">{item.value || '—'}</p>
                   </div>
-                  <p className="text-white font-medium">{profile.height}cm</p>
-                </div>
-              )}
-              {profile.ethnicity && profile.ethnicity !== 'Prefer Not to Say' && (
-                <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Users className="w-4 h-4 text-[#E70F72]" />
-                    <p className="text-white/50 text-xs">Ethnicity</p>
-                  </div>
-                  <p className="text-white font-medium">{profile.ethnicity.replace('White/Caucasian', 'White').replace('Black/African Descent', 'Black')}</p>
-                </div>
-              )}
-              {profile.religion && profile.religion !== 'Prefer Not to Say' && (
-                <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Church className="w-4 h-4 text-[#E70F72]" />
-                    <p className="text-white/50 text-xs">Religion</p>
-                  </div>
-                  <p className="text-white font-medium">{profile.religion}</p>
-                </div>
-              )}
-              {profile.children && (
-                <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Baby className="w-4 h-4 text-[#E70F72]" />
-                    <p className="text-white/50 text-xs">Children</p>
-                  </div>
-                  <p className="text-white font-medium">{profile.children.replace("Don't have children", "Don't have kids")}</p>
-                </div>
-              )}
-              {profile.family_plans && (
-                <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
-                  <div className="flex items-center gap-2 mb-2">
-                    <HeartHandshake className="w-4 h-4 text-[#E70F72]" />
-                    <p className="text-white/50 text-xs">Family Plans</p>
-                  </div>
-                  <p className="text-white font-medium">{profile.family_plans}</p>
-                </div>
-              )}
-              {profile.drinking && (
-                <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Wine className="w-4 h-4 text-[#E70F72]" />
-                    <p className="text-white/50 text-xs">Drinking</p>
-                  </div>
-                  <p className="text-white font-medium">{profile.drinking}</p>
-                </div>
-              )}
-              {profile.smoking && (
-                <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Wind className="w-4 h-4 text-[#E70F72]" />
-                    <p className="text-white/50 text-xs">Smoking</p>
-                  </div>
-                  <p className="text-white font-medium">{profile.smoking}</p>
-                </div>
-              )}
-              {profile.zodiac_sign && (
-                <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#E70F72]/30 transition-colors">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Star className="w-4 h-4 text-[#E70F72]" />
-                    <p className="text-white/50 text-xs">Zodiac</p>
-                  </div>
-                  <p className="text-white font-medium">{profile.zodiac_sign}</p>
-                </div>
-              )}
+                );
+              })}
             </div>
           </motion.div>
         )}
