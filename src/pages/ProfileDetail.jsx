@@ -242,6 +242,8 @@ export default function ProfileDetail() {
       </div>
 
       {/* Profile Info */}
+      <div className="flex flex-col md:flex-row">
+      <div className="flex-1 md:overflow-y-auto">
       <div className="px-6 pb-32 -mt-16 relative">
         {/* Animated Aura Background */}
         {profile.mbti_type && (
@@ -823,8 +825,8 @@ export default function ProfileDetail() {
           </button>
         </motion.div>
       </div>
-        </div>
-      </div>
+        </div>{/* end right scrollable col */}
+      </div>{/* end flex row */}
 
       {/* Mobile Fixed Action Buttons */}
       <div className="md:hidden fixed bottom-20 left-0 right-0 px-6 pb-4 bg-gradient-to-t from-black via-black to-transparent pt-8">
