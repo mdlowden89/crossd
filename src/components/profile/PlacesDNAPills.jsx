@@ -1,15 +1,45 @@
 import React from 'react';
-import { calculateUserPlacesDNA, getArchetypeInfo } from '@/components/spark/placesDnaEngine';
+import { calculateUserPlacesDNA, getArchetypeInfo, ARCHETYPES } from '@/components/spark/placesDnaEngine';
+
+// Map vibe tags directly to PlacesDNA archetypes as a fallback
+const VIBE_TO_ARCHETYPE = {
+  'Romantic': ARCHETYPES.ROMANTIC,
+  'Flirty': ARCHETYPES.ROMANTIC,
+  'Cozy': ARCHETYPES.CALM_COZY,
+  'Calm': ARCHETYPES.CALM_COZY,
+  'Peaceful': ARCHETYPES.CALM_COZY,
+  'Creative': ARCHETYPES.CREATIVE,
+  'Artistic': ARCHETYPES.CREATIVE,
+  'Social': ARCHETYPES.SOCIAL_BUZZING,
+  'Outgoing': ARCHETYPES.SOCIAL_BUZZING,
+  'Vibrant': ARCHETYPES.SOCIAL_BUZZING,
+  'Natural': ARCHETYPES.NATURE_GROUNDED,
+  'Outdoorsy': ARCHETYPES.NATURE_GROUNDED,
+  'Energetic': ARCHETYPES.LIVE_ELECTRIC,
+  'Live music': ARCHETYPES.LIVE_ELECTRIC,
+  'Deep talk': ARCHETYPES.DEEP_INTELLECTUAL,
+  'Intellectual': ARCHETYPES.DEEP_INTELLECTUAL,
+  'Bookish': ARCHETYPES.DEEP_INTELLECTUAL,
+  'Active': ARCHETYPES.ACTIVE_ENERGETIC,
+  'Sporty': ARCHETYPES.ACTIVE_ENERGETIC,
+  'Party': ARCHETYPES.NIGHTLIFE,
+  'Night owl': ARCHETYPES.NIGHTLIFE,
+  'Low-key': ARCHETYPES.INTIMATE_LOCAL,
+  'Introvert': ARCHETYPES.INTIMATE_LOCAL,
+  'Spontaneous': ARCHETYPES.LIVE_ELECTRIC,
+  'Adventurous': ARCHETYPES.ACTIVE_ENERGETIC,
+};
 
 export default function PlacesDNAPills({ profile, moments = [] }) {
-  const dna = calculateUserPlacesDNA(moments);
-  
-  // Fall back to hangout_areas venue_types if no moments
-  let archetypes = dna?.dominantArchetypes || [];
+  let archetypes = [];
 
-  // If no moments data, derive from profile hangout_areas or vibe_tags
-  if (archetypes.length === 0 && profile.hangout_areas && profile.hangout_areas.length > 0) {
-    // Build synthetic moments from hangout_areas venue_types
+  // 1. Try real moments
+  if (moments.length > 0) {
+    archetypes = calculateUserPlacesDNA(moments)?.dominantArchetypes || [];
+  }
+
+  // 2. Try hangout_areas venue_types
+  if (archetypes.length === 0 && profile.hangout_areas?.length > 0) {
     const syntheticMoments = profile.hangout_areas.flatMap(area =>
       (area.venue_types || []).map(type => ({
         venue_types: [type],
@@ -17,8 +47,16 @@ export default function PlacesDNAPills({ profile, moments = [] }) {
         created_date: new Date().toISOString()
       }))
     );
-    const syntheticDna = calculateUserPlacesDNA(syntheticMoments);
-    archetypes = syntheticDna?.dominantArchetypes || [];
+    archetypes = calculateUserPlacesDNA(syntheticMoments)?.dominantArchetypes || [];
+  }
+
+  // 3. Derive from vibe_tags
+  if (archetypes.length === 0 && profile.vibe_tags?.length > 0) {
+    const seen = new Set();
+    archetypes = profile.vibe_tags
+      .map(tag => VIBE_TO_ARCHETYPE[tag])
+      .filter(arch => arch && !seen.has(arch) && seen.add(arch))
+      .map(archetype => ({ archetype, score: 1 }));
   }
 
   if (archetypes.length === 0) return null;
