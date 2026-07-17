@@ -296,7 +296,7 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull, myPro
 
           {/* Spark Signature Row */}
           <div>
-            <p className="text-white/35 text-xs font-semibold uppercase tracking-widest mb-2">Places DNA</p>
+            <p className="text-white/35 text-xs font-semibold uppercase tracking-widest mb-2">Their Places DNA</p>
             <SparkSignatureRow profile={profile} moments={[]} />
           </div>
 
