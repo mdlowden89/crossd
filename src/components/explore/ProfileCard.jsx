@@ -283,40 +283,46 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull, myPro
             )}
             
             {/* Compatibility Badge */}
-            {compatibility && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="mt-2"
-              >
-                <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-xl ${
-                  isHighCompatibility 
-                    ? 'bg-[#E70F72]/90 border border-[#E70F72]' 
-                    : 'bg-black/70 border border-white/20'
-                }`}
-                  style={isHighCompatibility ? {
-                    boxShadow: '0 0 20px rgba(231, 15, 114, 0.4)'
-                  } : {}}
+            {compatibility && (() => {
+              const pct = compatibility.total;
+              const tier = pct >= 90
+                ? { bg: 'rgba(255,215,0,0.15)', border: '#FFD700', text: '#FFD700', glow: 'rgba(255,215,0,0.5)' }
+                : pct >= 75
+                ? { bg: 'rgba(255,165,0,0.15)', border: '#FFA500', text: '#FFA500', glow: 'rgba(255,165,0,0.45)' }
+                : pct >= 60
+                ? { bg: 'rgba(155,93,229,0.15)', border: '#9B5DE5', text: '#9B5DE5', glow: 'rgba(155,93,229,0.35)' }
+                : { bg: 'rgba(255,255,255,0.07)', border: 'rgba(255,255,255,0.2)', text: 'rgba(255,255,255,0.6)', glow: 'none' };
+
+              return (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="mt-2"
                 >
-                  <motion.span
-                    animate={isHighCompatibility ? { 
-                      scale: [1, 1.2, 1],
-                      rotate: [0, 10, -10, 0]
-                    } : {}}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="text-base"
+                  <div
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-xl"
+                    style={{
+                      background: tier.bg,
+                      border: `1px solid ${tier.border}`,
+                      boxShadow: tier.glow !== 'none' ? `0 0 14px ${tier.glow}, 0 0 28px ${tier.glow}40` : 'none'
+                    }}
                   >
-                    {isHighCompatibility ? '⚡' : '✨'}
-                  </motion.span>
-                  <span className={`text-xs font-bold ${
-                    isHighCompatibility ? 'text-black' : 'text-white'
-                  }`}>
-                    {compatibility.total}% Energy Match
-                  </span>
-                </div>
-              </motion.div>
-            )}
+                    <motion.span
+                      animate={pct >= 75 ? { scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] } : {}}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      style={{ color: tier.text }}
+                      className="text-sm font-bold leading-none"
+                    >
+                      ⚡
+                    </motion.span>
+                    <span className="text-xs font-bold" style={{ color: tier.text }}>
+                      {pct}% Energy Match
+                    </span>
+                  </div>
+                </motion.div>
+              );
+            })()}
           </div>
         </div>
 
