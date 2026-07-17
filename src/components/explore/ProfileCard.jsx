@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, X, ChevronLeft, ChevronRight, MapPin, Briefcase, BadgeCheck, Sparkles, Flame, Music, Zap, Lightbulb, Info } from 'lucide-react';
 import { CrossdCard } from '@/components/ui/crossd-card';
-import SparkSignatureRow from '@/components/profile/SparkSignatureRow';
+import PlacesDNAPills from '@/components/profile/PlacesDNAPills';
 import { calculateMatchRarity } from '@/components/spark/rarityEngine';
 import RareMatchBadge from '@/components/profile/RareMatchBadge';
 import { calculateCompatibility } from '@/components/spark/compatibilityEngine';
@@ -297,7 +297,7 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull, myPro
           {/* Spark Signature Row */}
           <div>
             <p className="text-white/35 text-xs font-semibold uppercase tracking-widest mb-2">Their Places DNA</p>
-            <SparkSignatureRow profile={profile} moments={[]} />
+            <PlacesDNAPills profile={profile} moments={[]} />
           </div>
 
           {/* Vibe Tags */}
