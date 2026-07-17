@@ -11,7 +11,7 @@ export default function SparkSignatureRow({ profile, moments = [] }) {
   return (
     <div className="relative mb-6 -mx-5 px-5">
       {/* Signals Row */}
-      <div className="flex flex-wrap gap-3 pb-2">
+      <div className="grid grid-cols-2 gap-3 pb-2">
         {signals.map((signal, idx) => (
           <motion.button
             key={signal.id}
@@ -22,7 +22,7 @@ export default function SparkSignatureRow({ profile, moments = [] }) {
               e.stopPropagation();
               setSelectedSignal(signal);
             }}
-            className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-full border transition-all hover:scale-105"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-full border transition-all hover:scale-105"
             style={{
               borderColor: `${signal.color}40`,
               background: `linear-gradient(135deg, ${signal.color}10, ${signal.color}05)`,
@@ -31,7 +31,7 @@ export default function SparkSignatureRow({ profile, moments = [] }) {
           >
             <span className="text-base">{signal.icon}</span>
             <span 
-              className="text-sm font-semibold whitespace-nowrap"
+              className="text-sm font-semibold truncate"
               style={{ color: signal.color }}
             >
               {signal.label}
