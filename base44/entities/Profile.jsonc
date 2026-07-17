@@ -202,7 +202,7 @@
           }
         }
       },
-      "description": "Google Places-backed areas where the user usually spends time \u2014 place_id, lat/lng, and venue_types enable PlacesDNA scoring and cross-user matching"
+      "description": "Google Places-backed areas where the user usually spends time"
     },
     "photos": {
       "type": "array",
@@ -358,6 +358,11 @@
     },
     "location_geohash": {
       "type": "string"
+    },
+    "top_contributor": {
+      "type": "boolean",
+      "default": false,
+      "description": "Awarded to users who frequently log moments and actively keep City Pulse data alive in their area"
     }
   },
   "required": [

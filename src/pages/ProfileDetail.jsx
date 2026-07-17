@@ -291,7 +291,12 @@ export default function ProfileDetail() {
             {profile.display_name}
             <span className="text-white/50 font-normal">{age ? `, ${age}` : ''}</span>
           </h1>
-          <span className="text-2xl mb-1">✨</span>
+          {profile.top_contributor && (
+            <div className="flex flex-col items-center mb-1">
+              <span className="text-2xl">✨</span>
+              <span className="text-[10px] text-yellow-400/80 font-semibold uppercase tracking-wide leading-none">Top Contributor</span>
+            </div>
+          )}
           {profile.verification_status === 'verified' && (
             <motion.div
               initial={{ scale: 0 }}

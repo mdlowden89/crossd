@@ -225,7 +225,9 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull, myPro
               <h2 className="text-2xl font-bold text-white">
                 {profile.display_name}{age ? `, ${age}` : ''}
               </h2>
-              <span className="text-lg">✨</span>
+              {profile.top_contributor && (
+                <span title="Top Contributor — keeps City Pulse active in their area" className="text-lg cursor-help">✨</span>
+              )}
               {profile.verification_status === 'verified' && (
                 <BadgeCheck className="w-5 h-5 text-[#E70F72]" />
               )}
