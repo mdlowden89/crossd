@@ -76,7 +76,7 @@ export default function PlacesDNAPills({ profile, moments = [] }) {
             }}
           >
             <span className="text-base">{info.emoji}</span>
-            <span className="text-sm font-semibold truncate" style={{ color: info.color }}>
+            <span className="text-sm font-semibold leading-tight" style={{ color: info.color }}>
               {info.label}
             </span>
           </div>
