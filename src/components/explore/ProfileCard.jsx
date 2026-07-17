@@ -15,7 +15,7 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull, myPro
   
   // Calculate compatibility
   const compatibility = myProfile ? calculateCompatibility(myProfile, profile, myMoments, []) : null;
-  const isHighCompatibility = compatibility && compatibility.total >= 75;
+  const isHighCompatibility = compatibility && compatibility.total >= 65;
   const photos = profile.photos || [];
 
   const nextPhoto = (e) => {
@@ -285,11 +285,11 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull, myPro
             {/* Compatibility Badge */}
             {compatibility && (() => {
               const pct = compatibility.total;
-              const tier = pct >= 90
+              const tier = pct >= 80
                 ? { border: '#FFD700', text: '#FFD700', glow: 'rgba(255,215,0,0.6)' }
-                : pct >= 75
+                : pct >= 65
                 ? { border: '#FFA500', text: '#FFA500', glow: 'rgba(255,165,0,0.6)' }
-                : pct >= 60
+                : pct >= 50
                 ? { border: '#9B5DE5', text: '#9B5DE5', glow: 'rgba(155,93,229,0.5)' }
                 : { border: 'rgba(255,255,255,0.3)', text: 'rgba(255,255,255,0.7)', glow: 'none' };
 
