@@ -823,9 +823,11 @@ export default function ProfileDetail() {
           </button>
         </motion.div>
       </div>
+        </div>
+      </div>
 
-      {/* Fixed Action Buttons */}
-      <div className="fixed bottom-20 left-0 right-0 px-6 pb-4 bg-gradient-to-t from-black via-black to-transparent pt-8">
+      {/* Mobile Fixed Action Buttons */}
+      <div className="md:hidden fixed bottom-20 left-0 right-0 px-6 pb-4 bg-gradient-to-t from-black via-black to-transparent pt-8">
         <div className="flex items-center justify-center gap-6">
           <motion.button
             whileHover={{ scale: 1.1 }}
@@ -835,7 +837,6 @@ export default function ProfileDetail() {
           >
             <X className="w-7 h-7 text-white/60" />
           </motion.button>
-          
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
