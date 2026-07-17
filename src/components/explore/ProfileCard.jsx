@@ -220,69 +220,45 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull, myPro
           )}
 
           {/* Info Overlay */}
-          <div className="absolute bottom-0 left-0 right-0 p-5 relative z-10">
-            <div className="flex items-center gap-2 mb-1">
-              <h2 className="text-2xl font-bold text-white">
+          <div className="absolute bottom-0 left-0 right-0 p-4 z-10">
+            {/* Row 1: Name + badges */}
+            <div className="flex items-center gap-1.5 mb-1">
+              <h2 className="text-2xl font-bold text-white leading-tight">
                 {profile.display_name}{age ? `, ${age}` : ''}
               </h2>
-              {profile.top_contributor && (
-                <span title="Top Contributor — keeps City Pulse active in their area" className="text-lg cursor-help">✨</span>
-              )}
-              {profile.verification_status === 'verified' && (
-                <BadgeCheck className="w-5 h-5 text-[#E70F72]" />
-              )}
+              {profile.top_contributor && <span title="Top Contributor" className="text-base">✨</span>}
+              {profile.verification_status === 'verified' && <BadgeCheck className="w-5 h-5 text-[#E70F72] flex-shrink-0" />}
               {isGlowing && (
-                <motion.div
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                >
+                <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 1.5, repeat: Infinity }}>
                   <Sparkles className="w-4 h-4 text-[#E70F72]" />
                 </motion.div>
               )}
             </div>
-            
-            <div className="flex items-center gap-2 text-white/60 text-sm mb-2">
-              {profile.city && (
+
+            {/* Row 2: Location · Verified · MBTI all inline */}
+            <div className="flex items-center gap-1.5 text-white/55 text-xs mb-3 flex-wrap">
+              {profile.city && <><MapPin className="w-3 h-3 flex-shrink-0" /><span>{profile.city}</span></>}
+              {profile.city && profile.verification_status === 'verified' && <span className="text-white/25">·</span>}
+              {profile.verification_status === 'verified' && <span className="text-[#E70F72] font-semibold">Verified</span>}
+              {profile.mbti_type && (
                 <>
-                  <MapPin className="w-3.5 h-3.5" />
-                  <span>{profile.city}</span>
-                </>
-              )}
-              {profile.verification_status === 'verified' && (
-                <>
-                  <span className="text-white/30">·</span>
-                  <span className="text-[#E70F72] font-medium">Verified</span>
+                  <span className="text-white/25">·</span>
+                  <span className="text-white/80 font-medium">
+                    {profile.mbti_type} · {(() => {
+                      const mbtiNames = {
+                        'ENFJ': 'Protagonist', 'ENFP': 'Campaigner', 'INFJ': 'Advocate', 'INFP': 'Mediator',
+                        'ENTJ': 'Commander', 'ENTP': 'Debater', 'INTJ': 'Architect', 'INTP': 'Logician',
+                        'ESFJ': 'Consul', 'ESFP': 'Entertainer', 'ISFJ': 'Defender', 'ISFP': 'Adventurer',
+                        'ESTJ': 'Executive', 'ESTP': 'Entrepreneur', 'ISTJ': 'Logistician', 'ISTP': 'Virtuoso'
+                      };
+                      return mbtiNames[profile.mbti_type] || 'Personality';
+                    })()}
+                  </span>
                 </>
               )}
             </div>
 
-            {profile.mbti_type && (
-              <motion.div 
-                className="flex items-center gap-1.5 mt-2"
-                animate={isHighCompatibility ? {
-                  boxShadow: [
-                    '0 0 0px rgba(231, 15, 114, 0)',
-                    '0 0 15px rgba(231, 15, 114, 0.4)',
-                    '0 0 0px rgba(231, 15, 114, 0)'
-                  ]
-                } : {}}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                <span className="text-white/90 font-semibold text-sm">
-                  {profile.mbti_type} · {(() => {
-                    const mbtiNames = {
-                      'ENFJ': 'Protagonist', 'ENFP': 'Campaigner', 'INFJ': 'Advocate', 'INFP': 'Mediator',
-                      'ENTJ': 'Commander', 'ENTP': 'Debater', 'INTJ': 'Architect', 'INTP': 'Logician',
-                      'ESFJ': 'Consul', 'ESFP': 'Entertainer', 'ISFJ': 'Defender', 'ISFP': 'Adventurer',
-                      'ESTJ': 'Executive', 'ESTP': 'Entrepreneur', 'ISTJ': 'Logistician', 'ISTP': 'Virtuoso'
-                    };
-                    return mbtiNames[profile.mbti_type] || 'Personality';
-                  })()}
-                </span>
-              </motion.div>
-            )}
-            
-            {/* Compatibility Badge */}
+            {/* Row 3: Energy Match badge */}
             {compatibility && (() => {
               const pct = compatibility.total;
               const tier = pct >= 90
@@ -292,28 +268,18 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull, myPro
                 : pct >= 60
                 ? { border: '#9B5DE5', text: '#9B5DE5', glow: 'rgba(155,93,229,0.5)' }
                 : { border: 'rgba(255,255,255,0.3)', text: 'rgba(255,255,255,0.7)', glow: 'none' };
-
               return (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="mt-2"
+                <div
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full"
+                  style={{
+                    background: '#0a0a0a',
+                    border: `2px solid ${tier.border}`,
+                    boxShadow: tier.glow !== 'none' ? `0 0 12px ${tier.glow}, inset 0 0 8px ${tier.glow}20` : 'none'
+                  }}
                 >
-                  <div
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full"
-                    style={{
-                      background: '#0a0a0a',
-                      border: `2px solid ${tier.border}`,
-                      boxShadow: tier.glow !== 'none' ? `0 0 12px ${tier.glow}, inset 0 0 12px ${tier.glow}20` : 'none'
-                    }}
-                  >
-                    <Zap className="w-4 h-4 flex-shrink-0" style={{ color: tier.text }} />
-                    <span className="text-sm font-bold" style={{ color: tier.text }}>
-                      {pct}% Energy Match
-                    </span>
-                  </div>
-                </motion.div>
+                  <Zap className="w-4 h-4 flex-shrink-0" style={{ color: tier.text }} />
+                  <span className="text-sm font-bold" style={{ color: tier.text }}>{pct}% Energy Match</span>
+                </div>
               );
             })()}
           </div>
