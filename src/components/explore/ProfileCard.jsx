@@ -295,10 +295,15 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull, myPro
           )}
 
           {/* Spark Signature Row */}
-          <SparkSignatureRow profile={profile} moments={[]} />
+          <div>
+            <p className="text-white/35 text-xs font-semibold uppercase tracking-widest mb-2">Places DNA</p>
+            <SparkSignatureRow profile={profile} moments={[]} />
+          </div>
 
-          {/* Vibe Tags - More Creative Display */}
+          {/* Vibe Tags */}
           {profile.vibe_tags && profile.vibe_tags.length > 0 && (
+            <div>
+            <p className="text-white/35 text-xs font-semibold uppercase tracking-widest mb-2">Vibes</p>
             <div className="flex flex-wrap gap-2">
               {profile.vibe_tags.slice(0, 4).map((tag, index) => {
                 const vibeEmojis = {
@@ -332,6 +337,7 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull, myPro
                   </span>
                 );
               })}
+            </div>
             </div>
           )}
 
