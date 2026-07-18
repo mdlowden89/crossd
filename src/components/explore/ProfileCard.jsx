@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence, useMotionValue, useTransform, animate } from 'framer-motion';
 import { Heart, X, ChevronLeft, ChevronRight, MapPin, Briefcase, BadgeCheck, Sparkles, Flame, Music, Zap, Lightbulb, Info } from 'lucide-react';
 import { CrossdCard } from '@/components/ui/crossd-card';
 import PlacesDNAPills from '@/components/profile/PlacesDNAPills';
@@ -9,7 +9,10 @@ import { calculateCompatibility } from '@/components/spark/compatibilityEngine';
 
 export default function ProfileCard({ profile, onLike, onPass, onViewFull, myProfile, myMoments = [] }) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
-  
+  const [dragDirection, setDragDirection] = useState(0); // -1 left, 1 right, 0 none
+  const dragX = useMotionValue(0);
+  const containerRef = useRef(null);
+
   // Calculate match rarity
   const matchRarity = myProfile ? calculateMatchRarity(myProfile, profile, myMoments, []) : null;
   
@@ -18,18 +21,24 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull, myPro
   const isHighCompatibility = compatibility && compatibility.total >= 75;
   const photos = profile.photos || [];
 
-  const nextPhoto = (e) => {
-    e.stopPropagation();
-    if (currentPhotoIndex < photos.length - 1) {
-      setCurrentPhotoIndex(currentPhotoIndex + 1);
-    }
+  const PEEK = 22; // pixels the adjacent photo peeks in
+  const photoRotate = useTransform(dragX, [-120, 0, 120], [-3, 0, 3]);
+
+  const goToPhoto = (index) => {
+    setCurrentPhotoIndex(index);
+    animate(dragX, 0, { type: 'spring', stiffness: 400, damping: 35 });
   };
 
-  const prevPhoto = (e) => {
-    e.stopPropagation();
-    if (currentPhotoIndex > 0) {
-      setCurrentPhotoIndex(currentPhotoIndex - 1);
+  const handleDragEnd = (_, info) => {
+    const threshold = 50;
+    if (info.offset.x < -threshold && currentPhotoIndex < photos.length - 1) {
+      goToPhoto(currentPhotoIndex + 1);
+    } else if (info.offset.x > threshold && currentPhotoIndex > 0) {
+      goToPhoto(currentPhotoIndex - 1);
+    } else {
+      animate(dragX, 0, { type: 'spring', stiffness: 400, damping: 35 });
     }
+    setDragDirection(0);
   };
 
   const age = profile.birthdate
@@ -118,63 +127,83 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull, myPro
           })()}25` : isGlowing ? '0 0 40px rgba(231,15,114,0.3)' : 'none'
         }}
       >
-        {/* Photo Section */}
-        <div className="relative aspect-[3/4]">
+        {/* Photo Section — Peek Stack */}
+        <div className="relative aspect-[3/4] overflow-hidden" ref={containerRef}>
           {photos.length > 0 ? (
             <>
-              <img
-                src={photos[currentPhotoIndex]?.url}
-                alt={profile.display_name}
-                className="w-full h-full object-cover"
-              />
-              
-              {/* Photo Navigation */}
-              {photos.length > 1 && (
-                <>
-                  <div className="absolute top-2.5 left-0 right-0 flex gap-1.5 px-3 z-30">
-                    {photos.map((_, index) => (
-                      <div
-                        key={index}
-                        style={{
-                          height: '3px',
-                          flex: 1,
-                          borderRadius: '999px',
-                          transition: 'all 0.3s',
-                          background: index === currentPhotoIndex ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.35)',
-                          boxShadow: index === currentPhotoIndex ? '0 0 8px rgba(255,255,255,0.9)' : 'none',
-                        }}
-                      />
-                    ))}
-                  </div>
-                  
-                  {/* Invisible tap zones — left/right halves */}
-                  <button
-                    onClick={prevPhoto}
-                    className="absolute left-0 top-0 bottom-0 w-1/2 z-10"
-                    disabled={currentPhotoIndex === 0}
+              {/* Peeking PREV photo on the left */}
+              {photos.length > 1 && currentPhotoIndex > 0 && (
+                <div
+                  className="absolute inset-0 rounded-none"
+                  style={{ transform: `translateX(-${100 - PEEK / 4}%)` }}
+                >
+                  <img
+                    src={photos[currentPhotoIndex - 1]?.url}
+                    alt=""
+                    className="w-full h-full object-cover"
+                    style={{ filter: 'brightness(0.45)' }}
                   />
-                  <button
-                    onClick={nextPhoto}
-                    className="absolute right-0 top-0 bottom-0 w-1/2 z-10"
-                    disabled={currentPhotoIndex === photos.length - 1}
-                  />
+                </div>
+              )}
 
-                  {/* Visible arrow hints */}
-                  {currentPhotoIndex > 0 && (
-                    <div className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-black/30 rounded-full pointer-events-none z-20">
-                      <ChevronLeft className="w-6 h-6 text-white" />
-                    </div>
-                  )}
-                  {currentPhotoIndex < photos.length - 1 && (
-                    <div className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-black/30 rounded-full pointer-events-none z-20">
-                      <ChevronRight className="w-6 h-6 text-white" />
-                    </div>
-                  )}
-                </>
+              {/* Peeking NEXT photo on the right */}
+              {photos.length > 1 && currentPhotoIndex < photos.length - 1 && (
+                <div
+                  className="absolute inset-0"
+                  style={{ transform: `translateX(${100 - PEEK / 4}%)` }}
+                >
+                  <img
+                    src={photos[currentPhotoIndex + 1]?.url}
+                    alt=""
+                    className="w-full h-full object-cover"
+                    style={{ filter: 'brightness(0.5)' }}
+                  />
+                </div>
+              )}
+
+              {/* Current photo — draggable */}
+              <motion.div
+                className="absolute inset-0 cursor-grab active:cursor-grabbing"
+                style={{ x: dragX }}
+                drag="x"
+                dragConstraints={{ left: -120, right: 120 }}
+                dragElastic={0.18}
+                onDragStart={(_, info) => setDragDirection(info.offset.x < 0 ? -1 : 1)}
+                onDragEnd={handleDragEnd}
+                whileDrag={{ scale: 0.97 }}
+              >
+                <motion.img
+                  src={photos[currentPhotoIndex]?.url}
+                  alt={profile.display_name}
+                  className="w-full h-full object-cover pointer-events-none select-none"
+                  style={{
+                    rotate: photoRotate,
+                  }}
+                  draggable={false}
+                />
+              </motion.div>
+
+              {/* Segment dots at top */}
+              {photos.length > 1 && (
+                <div className="absolute top-2.5 left-0 right-0 flex gap-1.5 px-3 z-30 pointer-events-none">
+                  {photos.map((_, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        height: '3px',
+                        flex: 1,
+                        borderRadius: '999px',
+                        transition: 'all 0.3s',
+                        background: index === currentPhotoIndex ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.35)',
+                        boxShadow: index === currentPhotoIndex ? '0 0 8px rgba(255,255,255,0.9)' : 'none',
+                      }}
+                    />
+                  ))}
+                </div>
               )}
 
               {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent pointer-events-none z-10" />
               
               {/* Rare Match Badge */}
               {matchRarity && !matchRarity.hidden && <RareMatchBadge matchRarity={matchRarity} />}
@@ -231,7 +260,7 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull, myPro
           )}
 
           {/* Info Overlay */}
-          <div className="absolute bottom-0 left-0 right-0 p-4 z-10">
+          <div className="absolute bottom-0 left-0 right-0 p-4 z-20 pointer-events-none">
             {/* Row 1: Name + badges */}
             <div className="flex items-center gap-1.5 mb-1">
               <h2 className="text-2xl font-bold text-white leading-tight">
