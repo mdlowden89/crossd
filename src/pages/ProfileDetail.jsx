@@ -391,25 +391,16 @@ export default function ProfileDetail() {
 
         {/* Bio */}
         {profile.bio && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
             <CrossdCard className="mb-6 bg-gradient-to-br from-[#0B0B0B] to-[#1a1a1a]">
               <p className="text-white/90 text-base leading-relaxed">{profile.bio}</p>
             </CrossdCard>
           </motion.div>
         )}
 
-        {/* Photo 2 — after bio intro */}
+        {/* Photo 2 */}
         {photos[1] && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.97 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
-            className="aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 mb-6"
-          >
+          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 mb-6">
             <img src={photos[1].url} alt="" className="w-full h-full object-cover" />
           </motion.div>
         )}
@@ -419,18 +410,9 @@ export default function ProfileDetail() {
 
         {/* Spark Pattern Insight */}
         {sparkPattern && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mb-6 -mt-3"
-          >
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mb-6 -mt-3">
             <div className="relative group">
-              <motion.div
-                animate={{ opacity: [0.3, 0.6, 0.3] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-0 bg-gradient-to-r from-[#E70F72]/10 via-[#E70F72]/20 to-[#E70F72]/10 rounded-2xl blur-xl"
-              />
+              <motion.div animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} className="absolute inset-0 bg-gradient-to-r from-[#E70F72]/10 via-[#E70F72]/20 to-[#E70F72]/10 rounded-2xl blur-xl" />
               <div className="relative bg-gradient-to-br from-[#1a1a1a] to-[#0B0B0B] border border-[#E70F72]/30 rounded-2xl p-5">
                 <div className="flex items-start gap-3">
                   <span className="text-2xl">🪄</span>
@@ -446,16 +428,8 @@ export default function ProfileDetail() {
 
         {/* Compatibility Tease */}
         {compatibilityTease && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35 }}
-            className="mb-6"
-          >
-            <button
-              onClick={() => setShowCompatibilityModal(true)}
-              className="w-full bg-gradient-to-r from-[#E70F72]/10 via-[#E70F72]/5 to-transparent border border-[#E70F72]/20 rounded-xl p-4 hover:border-[#E70F72]/40 transition-all cursor-pointer group text-left"
-            >
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="mb-6">
+            <button onClick={() => setShowCompatibilityModal(true)} className="w-full bg-gradient-to-r from-[#E70F72]/10 via-[#E70F72]/5 to-transparent border border-[#E70F72]/20 rounded-xl p-4 hover:border-[#E70F72]/40 transition-all cursor-pointer group text-left">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className="text-xl">💞</span>
@@ -474,15 +448,15 @@ export default function ProfileDetail() {
           </motion.div>
         )}
 
+        {/* Photo 3 */}
+        {photos[2] && (
+          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 mb-6">
+            <img src={photos[2].url} alt="" className="w-full h-full object-cover" />
+          </motion.div>
+        )}
 
-
-        {/* MBTI + Vibe Tags Row */}
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="mb-6"
-        >
+        {/* MBTI + Vibe Tags */}
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mb-6">
           {profile.mbti_type && (
             <div className="mb-4">
               <p className="text-white/45 text-xs uppercase tracking-wider mb-2 ml-1">Personality</p>
@@ -492,93 +466,28 @@ export default function ProfileDetail() {
                     <span className="text-black font-bold text-sm">{profile.mbti_type}</span>
                   </div>
                   <span className="text-white font-semibold text-base">The {(() => {
-                    const mbtiNames = {
-                      'ENFJ': 'Protagonist',
-                      'ENFP': 'Campaigner',
-                      'INFJ': 'Advocate',
-                      'INFP': 'Mediator',
-                      'ENTJ': 'Commander',
-                      'ENTP': 'Debater',
-                      'INTJ': 'Architect',
-                      'INTP': 'Logician',
-                      'ESFJ': 'Consul',
-                      'ESFP': 'Entertainer',
-                      'ISFJ': 'Defender',
-                      'ISFP': 'Adventurer',
-                      'ESTJ': 'Executive',
-                      'ESTP': 'Entrepreneur',
-                      'ISTJ': 'Logistician',
-                      'ISTP': 'Virtuoso'
-                    };
+                    const mbtiNames = { 'ENFJ': 'Protagonist', 'ENFP': 'Campaigner', 'INFJ': 'Advocate', 'INFP': 'Mediator', 'ENTJ': 'Commander', 'ENTP': 'Debater', 'INTJ': 'Architect', 'INTP': 'Logician', 'ESFJ': 'Consul', 'ESFP': 'Entertainer', 'ISFJ': 'Defender', 'ISFP': 'Adventurer', 'ESTJ': 'Executive', 'ESTP': 'Entrepreneur', 'ISTJ': 'Logistician', 'ISTP': 'Virtuoso' };
                     return mbtiNames[profile.mbti_type] || 'Personality';
                   })()}</span>
                 </div>
                 <p className="text-white/70 text-sm leading-relaxed">
                   {(() => {
-                    const mbtiDescs = {
-                      'ENFJ': 'High-energy connector with a love for discovery.',
-                      'ENFP': 'Enthusiastic and creative free spirit.',
-                      'INFJ': 'Quiet and mystical, yet inspiring.',
-                      'INFP': 'Poetic, kind, and altruistic.',
-                      'ENTJ': 'Bold, imaginative, and strong-willed.',
-                      'ENTP': 'Smart and curious thinker.',
-                      'INTJ': 'Imaginative and strategic thinker.',
-                      'INTP': 'Innovative inventor with endless curiosity.',
-                      'ESFJ': 'Caring and social helper.',
-                      'ESFP': 'Spontaneous and energetic entertainer.',
-                      'ISFJ': 'Warm and dedicated protector.',
-                      'ISFP': 'Flexible and charming artist.',
-                      'ESTJ': 'Excellent administrator and manager.',
-                      'ESTP': 'Smart and energetic perceiver.',
-                      'ISTJ': 'Practical and fact-minded individual.',
-                      'ISTP': 'Bold and practical experimenter.'
-                    };
+                    const mbtiDescs = { 'ENFJ': 'High-energy connector with a love for discovery.', 'ENFP': 'Enthusiastic and creative free spirit.', 'INFJ': 'Quiet and mystical, yet inspiring.', 'INFP': 'Poetic, kind, and altruistic.', 'ENTJ': 'Bold, imaginative, and strong-willed.', 'ENTP': 'Smart and curious thinker.', 'INTJ': 'Imaginative and strategic thinker.', 'INTP': 'Innovative inventor with endless curiosity.', 'ESFJ': 'Caring and social helper.', 'ESFP': 'Spontaneous and energetic entertainer.', 'ISFJ': 'Warm and dedicated protector.', 'ISFP': 'Flexible and charming artist.', 'ESTJ': 'Excellent administrator and manager.', 'ESTP': 'Smart and energetic perceiver.', 'ISTJ': 'Practical and fact-minded individual.', 'ISTP': 'Bold and practical experimenter.' };
                     return mbtiDescs[profile.mbti_type] || 'Unique personality with strong values.';
                   })()}
                 </p>
               </div>
             </div>
           )}
-
           {profile.vibe_tags && profile.vibe_tags.length > 0 && (
             <div>
               <p className="text-white/45 text-xs uppercase tracking-wider mb-2 ml-1">Vibes</p>
               <div className="flex flex-wrap gap-2">
                 {profile.vibe_tags.map((tag, index) => {
-                  const vibeEmojis = {
-                    'Romantic': '💕',
-                    'Flirty': '😏',
-                    'Cozy': '🕯️',
-                    'Calm': '🌊',
-                    'Creative': '🎨',
-                    'Artistic': '🖼️',
-                    'Social': '🎉',
-                    'Energetic': '⚡',
-                    'Vibrant': '🌟',
-                    'Peaceful': '🕊️',
-                    'Natural': '🌿',
-                    'Spontaneous': '🎲',
-                    'Adventurous': '🧗',
-                    'Deep talk': '💭',
-                    'Intellectual': '📚',
-                    'Active': '🏃',
-                    'Low-key': '🤫',
-                    'Outgoing': '🎊',
-                    'adventurous': '🧗',
-                    'foodie': '🍽️',
-                    'art lover': '🎨',
-                    'spontaneous': '🎲'
-                  };
+                  const vibeEmojis = { 'Romantic': '💕', 'Flirty': '😏', 'Cozy': '🕯️', 'Calm': '🌊', 'Creative': '🎨', 'Artistic': '🖼️', 'Social': '🎉', 'Energetic': '⚡', 'Vibrant': '🌟', 'Peaceful': '🕊️', 'Natural': '🌿', 'Spontaneous': '🎲', 'Adventurous': '🧗', 'Deep talk': '💭', 'Intellectual': '📚', 'Active': '🏃', 'Low-key': '🤫', 'Outgoing': '🎊', 'adventurous': '🧗', 'foodie': '🍽️', 'art lover': '🎨', 'spontaneous': '🎲' };
                   const emoji = vibeEmojis[tag] || '✨';
-                  
                   return (
-                    <motion.span
-                      key={index}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.4 + index * 0.05 }}
-                      className="px-4 py-2 rounded-xl bg-white/5 text-white/90 text-sm border border-white/15 hover:border-[#E70F72]/40 transition-colors"
-                    >
+                    <motion.span key={index} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.4 + index * 0.05 }} className="px-4 py-2 rounded-xl bg-white/5 text-white/90 text-sm border border-white/15 hover:border-[#E70F72]/40 transition-colors">
                       {emoji} {tag.charAt(0).toUpperCase() + tag.slice(1)}
                     </motion.span>
                   );
@@ -588,6 +497,35 @@ export default function ProfileDetail() {
           )}
         </motion.div>
 
+        {/* Photo 4 */}
+        {photos[3] && (
+          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 mb-6">
+            <img src={photos[3].url} alt="" className="w-full h-full object-cover" />
+          </motion.div>
+        )}
+
+        {/* Prompts */}
+        {profile.prompts && profile.prompts.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mb-6">
+            <p className="text-white/45 text-xs uppercase tracking-wider mb-3 ml-1">Prompts</p>
+            <div className="space-y-3">
+              {profile.prompts.map((prompt, index) => (
+                <motion.div key={index} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 + index * 0.05 }} className="bg-gradient-to-br from-[#1a1a1a] via-[#0B0B0B] to-[#1a1a1a] border border-[#E70F72]/30 rounded-2xl p-5 shadow-lg hover:shadow-[#E70F72]/10 transition-shadow">
+                  <p className="text-[#E70F72] text-sm font-bold mb-2">{prompt.question}</p>
+                  <p className="text-white text-base leading-relaxed">{prompt.answer}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* Photo 5 */}
+        {photos[4] && (
+          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 mb-6">
+            <img src={photos[4].url} alt="" className="w-full h-full object-cover" />
+          </motion.div>
+        )}
+
         {/* PlacesDNA Profile */}
         <PlacesDNAProfile profile={profile} moments={moments} />
 
@@ -596,12 +534,7 @@ export default function ProfileDetail() {
 
         {/* Lifestyle Info Grid */}
         {(profile.height || profile.ethnicity || profile.religion || profile.children || profile.family_plans || profile.drinking || profile.smoking || profile.zodiac_sign) && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.45 }}
-            className="mb-6"
-          >
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="mb-6">
             <p className="text-white/50 text-xs font-semibold uppercase tracking-widest mb-3 ml-1">Lifestyle & Background</p>
             <div className="grid grid-cols-2 gap-3">
               {[
@@ -629,54 +562,9 @@ export default function ProfileDetail() {
           </motion.div>
         )}
 
-        {/* Prompts */}
-        {profile.prompts && profile.prompts.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="mb-6"
-          >
-            <p className="text-white/45 text-xs uppercase tracking-wider mb-3 ml-1">Prompts</p>
-            <div className="space-y-3">
-              {profile.prompts.map((prompt, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 + index * 0.05 }}
-                  className="bg-gradient-to-br from-[#1a1a1a] via-[#0B0B0B] to-[#1a1a1a] border border-[#E70F72]/30 rounded-2xl p-5 shadow-lg hover:shadow-[#E70F72]/10 transition-shadow"
-                >
-                  <p className="text-[#E70F72] text-sm font-bold mb-2">
-                    {prompt.question}
-                  </p>
-                  <p className="text-white text-base leading-relaxed">{prompt.answer}</p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-
-        {/* Photo 3 — after prompts */}
-        {photos[2] && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.97 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
-            className="aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 mb-6"
-          >
-            <img src={photos[2].url} alt="" className="w-full h-full object-cover" />
-          </motion.div>
-        )}
-
         {/* Relationship Info */}
         {(profile.relationship_type || profile.dating_intentions || profile.family_plans) && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="mb-6"
-          >
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="mb-6">
             <p className="text-white/45 text-xs uppercase tracking-wider mb-3 ml-1">Looking For</p>
             <div className="space-y-3">
               {profile.dating_intentions && (
@@ -699,23 +587,6 @@ export default function ProfileDetail() {
               )}
             </div>
           </motion.div>
-        )}
-
-        {/* Photos 4+ — pair at the bottom */}
-        {photos.length > 3 && (
-          <div className="grid grid-cols-2 gap-2 mb-6">
-            {photos.slice(3).map((photo, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.1 + index * 0.05 }}
-                className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10"
-              >
-                <img src={photo.url} alt="" className="w-full h-full object-cover" />
-              </motion.div>
-            ))}
-          </div>
         )}
 
         {/* Safety Actions */}
