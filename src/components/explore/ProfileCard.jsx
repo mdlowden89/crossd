@@ -131,13 +131,18 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull, myPro
               {/* Photo Navigation */}
               {photos.length > 1 && (
                 <>
-                  <div className="absolute top-3 left-0 right-0 flex gap-1.5 px-3">
+                  <div className="absolute top-2.5 left-0 right-0 flex gap-1.5 px-3 z-30">
                     {photos.map((_, index) => (
                       <div
                         key={index}
-                        className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-                          index === currentPhotoIndex ? 'bg-white shadow-[0_0_6px_rgba(255,255,255,0.8)]' : 'bg-white/30'
-                        }`}
+                        style={{
+                          height: '3px',
+                          flex: 1,
+                          borderRadius: '999px',
+                          transition: 'all 0.3s',
+                          background: index === currentPhotoIndex ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.35)',
+                          boxShadow: index === currentPhotoIndex ? '0 0 8px rgba(255,255,255,0.9)' : 'none',
+                        }}
                       />
                     ))}
                   </div>
