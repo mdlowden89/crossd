@@ -142,22 +142,28 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull, myPro
                     ))}
                   </div>
                   
+                  {/* Invisible tap zones — left/right halves */}
+                  <button
+                    onClick={prevPhoto}
+                    className="absolute left-0 top-0 bottom-0 w-1/2 z-10"
+                    disabled={currentPhotoIndex === 0}
+                  />
+                  <button
+                    onClick={nextPhoto}
+                    className="absolute right-0 top-0 bottom-0 w-1/2 z-10"
+                    disabled={currentPhotoIndex === photos.length - 1}
+                  />
+
+                  {/* Visible arrow hints */}
                   {currentPhotoIndex > 0 && (
-                    <button
-                      onClick={prevPhoto}
-                      className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-black/30 rounded-full"
-                    >
+                    <div className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-black/30 rounded-full pointer-events-none z-20">
                       <ChevronLeft className="w-6 h-6 text-white" />
-                    </button>
+                    </div>
                   )}
-                  
                   {currentPhotoIndex < photos.length - 1 && (
-                    <button
-                      onClick={nextPhoto}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-black/30 rounded-full"
-                    >
+                    <div className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-black/30 rounded-full pointer-events-none z-20">
                       <ChevronRight className="w-6 h-6 text-white" />
-                    </button>
+                    </div>
                   )}
                 </>
               )}
