@@ -126,54 +126,25 @@ export default function ProfileDetail() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Photo Gallery */}
-      <div className="relative overflow-hidden">
-        <motion.div 
-          className="aspect-[3/4] max-h-[70vh] relative"
-          initial={{ scale: 1.1 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
-          {photos.length > 0 ? (
-            <motion.img
-              key={currentPhotoIndex}
-              src={photos[currentPhotoIndex]?.url}
-              alt={profile.display_name}
-              className="w-full h-full object-cover"
-              initial={{ opacity: 0, scale: 1.05 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4 }}
-            />
-          ) : (
-            <div className="w-full h-full bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] flex items-center justify-center">
-              <span className="text-white/40">No photos</span>
-            </div>
-          )}
-          
-          {/* Animated gradient overlays */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-60" />
-          <div className="absolute inset-0 bg-gradient-to-br from-[#E70F72]/10 via-transparent to-transparent mix-blend-overlay" />
-        </motion.div>
-
-        {/* Photo Indicators - redesigned */}
-        {photos.length > 1 && (
-          <div className="absolute top-6 left-6 right-6 flex gap-1.5 z-20">
-            {photos.map((_, index) => (
-              <motion.button
-                key={index}
-                onClick={() => setCurrentPhotoIndex(index)}
-                whileHover={{ scale: 1.2 }}
-                className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-                  index === currentPhotoIndex 
-                    ? 'bg-white shadow-lg shadow-white/50' 
-                    : 'bg-white/25 backdrop-blur-sm'
-                }`}
-              />
-            ))}
+      {/* Hero Photo + Back Button */}
+      <div className="relative">
+        {photos.length > 0 ? (
+          <motion.img
+            src={photos[0]?.url}
+            alt={profile.display_name}
+            className="w-full aspect-[3/4] max-h-[75vh] object-cover"
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4 }}
+          />
+        ) : (
+          <div className="w-full aspect-[3/4] max-h-[75vh] bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] flex items-center justify-center">
+            <span className="text-white/40">No photos</span>
           </div>
         )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
 
-        {/* Back Button - glassmorphic */}
+        {/* Back Button */}
         <motion.button
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -183,67 +154,20 @@ export default function ProfileDetail() {
           <ChevronLeft className="w-6 h-6 text-white" />
         </motion.button>
 
-        {/* Glow badge if active */}
+        {/* Glow badge */}
         {isGlowing && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="absolute top-6 right-6 z-20"
-          >
+          <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="absolute top-6 right-6 z-20">
             <div className="px-4 py-2 bg-[#E70F72]/90 backdrop-blur-xl rounded-full border border-[#E70F72] shadow-lg shadow-[#E70F72]/50 flex items-center gap-2">
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-              >
+              <motion.div animate={{ rotate: 360 }} transition={{ duration: 3, repeat: Infinity, ease: "linear" }}>
                 <Sparkles className="w-4 h-4 text-white" />
               </motion.div>
               <span className="text-white text-xs font-semibold">GLOW MODE</span>
             </div>
           </motion.div>
         )}
-
-        {/* Photo Navigation */}
-        {photos.length > 1 && (
-          <>
-            <button
-              onClick={() => setCurrentPhotoIndex(Math.max(0, currentPhotoIndex - 1))}
-              className="absolute left-0 top-0 bottom-0 w-1/3 z-10"
-              disabled={currentPhotoIndex === 0}
-            />
-            <button
-              onClick={() => setCurrentPhotoIndex(Math.min(photos.length - 1, currentPhotoIndex + 1))}
-              className="absolute right-0 top-0 bottom-0 w-1/3 z-10"
-              disabled={currentPhotoIndex === photos.length - 1}
-            />
-            
-            {/* Visible Navigation Arrows */}
-            {currentPhotoIndex > 0 && (
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                onClick={() => setCurrentPhotoIndex(currentPhotoIndex - 1)}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/40 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/10 z-20 hover:bg-black/60 transition-colors"
-              >
-                <ChevronLeft className="w-6 h-6 text-white" />
-              </motion.button>
-            )}
-            {currentPhotoIndex < photos.length - 1 && (
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                onClick={() => setCurrentPhotoIndex(currentPhotoIndex + 1)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/40 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/10 z-20 hover:bg-black/60 transition-colors"
-              >
-                <ChevronRight className="w-6 h-6 text-white" />
-              </motion.button>
-            )}
-          </>
-        )}
       </div>
 
       {/* Profile Info */}
-      <div className="flex flex-col md:flex-row">
-      <div className="flex-1 md:overflow-y-auto">
       <div className="px-6 pb-32 -mt-16 relative">
         {/* Animated Aura Background */}
         {profile.mbti_type && (
@@ -478,6 +402,23 @@ export default function ProfileDetail() {
           </motion.div>
         )}
 
+        {/* All remaining photos */}
+        {photos.length > 1 && (
+          <div className="grid grid-cols-2 gap-2 mb-6">
+            {photos.slice(1).map((photo, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.1 + index * 0.05 }}
+                className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10"
+              >
+                <img src={photo.url} alt="" className="w-full h-full object-cover" />
+              </motion.div>
+            ))}
+          </div>
+        )}
+
         {/* Spark Signature Row */}
         <SparkSignatureRow profile={profile} moments={[]} />
 
@@ -538,22 +479,7 @@ export default function ProfileDetail() {
           </motion.div>
         )}
 
-        {/* Additional Photos (2-3) - After Bio */}
-        {photos.length > 1 && photos.slice(1, 3).length > 0 && (
-          <div className="grid grid-cols-2 gap-3 mb-6">
-            {photos.slice(1, 3).map((photo, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.25 + index * 0.1 }}
-                className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10"
-              >
-                <img src={photo.url} alt="" className="w-full h-full object-cover" />
-              </motion.div>
-            ))}
-          </div>
-        )}
+
 
         {/* MBTI + Vibe Tags Row */}
         <motion.div 
@@ -708,23 +634,6 @@ export default function ProfileDetail() {
           </motion.div>
         )}
 
-        {/* Additional Photos (4-5) - After About */}
-        {photos.length > 3 && photos.slice(3, 5).length > 0 && (
-          <div className="grid grid-cols-2 gap-3 mb-6">
-            {photos.slice(3, 5).map((photo, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.5 + index * 0.1 }}
-                className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10"
-              >
-                <img src={photo.url} alt="" className="w-full h-full object-cover" />
-              </motion.div>
-            ))}
-          </div>
-        )}
-
         {/* Prompts */}
         {profile.prompts && profile.prompts.length > 0 && (
           <motion.div
@@ -751,23 +660,6 @@ export default function ProfileDetail() {
               ))}
             </div>
           </motion.div>
-        )}
-
-        {/* Additional Photos (6+) - After Prompts */}
-        {photos.length > 5 && photos.slice(5).length > 0 && (
-          <div className="grid grid-cols-2 gap-3 mb-6">
-            {photos.slice(5).map((photo, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.6 + index * 0.1 }}
-                className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10"
-              >
-                <img src={photo.url} alt="" className="w-full h-full object-cover" />
-              </motion.div>
-            ))}
-          </div>
         )}
 
         {/* Relationship Info */}
@@ -825,8 +717,6 @@ export default function ProfileDetail() {
           </button>
         </motion.div>
       </div>
-        </div>{/* end right scrollable col */}
-      </div>{/* end flex row */}
 
       {/* Mobile Fixed Action Buttons */}
       <div className="md:hidden fixed bottom-20 left-0 right-0 px-6 pb-4 bg-gradient-to-t from-black via-black to-transparent pt-8">
