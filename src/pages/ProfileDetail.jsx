@@ -402,21 +402,16 @@ export default function ProfileDetail() {
           </motion.div>
         )}
 
-        {/* All remaining photos */}
-        {photos.length > 1 && (
-          <div className="grid grid-cols-2 gap-2 mb-6">
-            {photos.slice(1).map((photo, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.1 + index * 0.05 }}
-                className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10"
-              >
-                <img src={photo.url} alt="" className="w-full h-full object-cover" />
-              </motion.div>
-            ))}
-          </div>
+        {/* Photo 2 — after bio intro */}
+        {photos[1] && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 mb-6"
+          >
+            <img src={photos[1].url} alt="" className="w-full h-full object-cover" />
+          </motion.div>
         )}
 
         {/* Spark Signature Row */}
@@ -662,6 +657,18 @@ export default function ProfileDetail() {
           </motion.div>
         )}
 
+        {/* Photo 3 — after prompts */}
+        {photos[2] && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 mb-6"
+          >
+            <img src={photos[2].url} alt="" className="w-full h-full object-cover" />
+          </motion.div>
+        )}
+
         {/* Relationship Info */}
         {(profile.relationship_type || profile.dating_intentions || profile.family_plans) && (
           <motion.div
@@ -692,6 +699,23 @@ export default function ProfileDetail() {
               )}
             </div>
           </motion.div>
+        )}
+
+        {/* Photos 4+ — pair at the bottom */}
+        {photos.length > 3 && (
+          <div className="grid grid-cols-2 gap-2 mb-6">
+            {photos.slice(3).map((photo, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.1 + index * 0.05 }}
+                className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10"
+              >
+                <img src={photo.url} alt="" className="w-full h-full object-cover" />
+              </motion.div>
+            ))}
+          </div>
         )}
 
         {/* Safety Actions */}
