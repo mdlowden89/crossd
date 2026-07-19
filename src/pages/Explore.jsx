@@ -218,7 +218,7 @@ export default function Explore() {
   }
 
   return (
-    <div className="min-h-screen bg-black px-4 py-4">
+    <div className="min-h-screen bg-black py-4" style={{ overflowX: 'hidden' }}>
       {/* Match Confirmation Overlay */}
       <AnimatePresence>
         {showMatch && (
@@ -234,19 +234,22 @@ export default function Explore() {
       {/* Main Content */}
       <AnimatePresence mode="wait">
         {currentProfile ? (
-          <div className="relative w-full max-w-sm mx-auto">
-            {/* Blurred next card staggered behind */}
+          <div className="relative flex items-start justify-center px-4">
+            {/* Next card — peeking on the right */}
             {profiles[currentIndex + 1] && (
               <div
-                className="absolute inset-0 rounded-3xl overflow-hidden pointer-events-none"
+                className="absolute top-0 rounded-3xl overflow-hidden pointer-events-none"
                 style={{
-                  transform: 'scale(0.93) translateY(18px)',
-                  filter: 'blur(6px)',
-                  opacity: 0.45,
+                  width: '84vw',
+                  maxWidth: '384px',
+                  left: '50%',
+                  transform: 'translateX(46%)',
+                  filter: 'blur(4px)',
+                  opacity: 0.5,
                   zIndex: 0,
                 }}
               >
-                <div className="w-full h-full bg-[#0B0B0B] rounded-3xl overflow-hidden">
+                <div className="bg-[#0B0B0B] rounded-3xl overflow-hidden">
                   {profiles[currentIndex + 1].photos?.[0]?.url && (
                     <img
                       src={profiles[currentIndex + 1].photos[0].url}
@@ -257,7 +260,7 @@ export default function Explore() {
                 </div>
               </div>
             )}
-            <div style={{ position: 'relative', zIndex: 1 }}>
+            <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: '384px' }}>
               <ProfileCard
                 key={currentProfile.id}
                 profile={currentProfile}
