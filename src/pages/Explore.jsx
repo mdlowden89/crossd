@@ -234,15 +234,41 @@ export default function Explore() {
       {/* Main Content */}
       <AnimatePresence mode="wait">
         {currentProfile ? (
-          <ProfileCard
-            key={currentProfile.id}
-            profile={currentProfile}
-            myProfile={myProfile}
-            myMoments={[]}
-            onLike={handleLike}
-            onPass={handlePass}
-            onViewFull={handleViewProfile}
-          />
+          <div className="relative w-full max-w-sm mx-auto">
+            {/* Blurred next card staggered behind */}
+            {profiles[currentIndex + 1] && (
+              <div
+                className="absolute inset-0 rounded-3xl overflow-hidden pointer-events-none"
+                style={{
+                  transform: 'scale(0.93) translateY(18px)',
+                  filter: 'blur(6px)',
+                  opacity: 0.45,
+                  zIndex: 0,
+                }}
+              >
+                <div className="w-full h-full bg-[#0B0B0B] rounded-3xl overflow-hidden">
+                  {profiles[currentIndex + 1].photos?.[0]?.url && (
+                    <img
+                      src={profiles[currentIndex + 1].photos[0].url}
+                      alt=""
+                      className="w-full aspect-[3/4] object-cover"
+                    />
+                  )}
+                </div>
+              </div>
+            )}
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              <ProfileCard
+                key={currentProfile.id}
+                profile={currentProfile}
+                myProfile={myProfile}
+                myMoments={[]}
+                onLike={handleLike}
+                onPass={handlePass}
+                onViewFull={handleViewProfile}
+              />
+            </div>
+          </div>
         ) : (
           <motion.div
             initial={{ opacity: 0 }}
