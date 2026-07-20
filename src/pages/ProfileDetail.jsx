@@ -168,7 +168,7 @@ export default function ProfileDetail() {
       </div>
 
       {/* Profile Info */}
-      <div className="px-6 pb-32 -mt-16 relative">
+      <div className="px-5 sm:px-6 pb-32 -mt-16 relative">
         {/* Animated Aura Background */}
         {profile.mbti_type && (
           <motion.div
@@ -211,7 +211,7 @@ export default function ProfileDetail() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-end gap-2 mb-2 relative z-10"
+          className="flex items-end gap-2 mb-3 relative z-10"
         >
           <h1 className="text-4xl font-bold text-white leading-none">
             {profile.display_name}
@@ -262,7 +262,7 @@ export default function ProfileDetail() {
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35 }}
-            className="flex flex-wrap gap-2 mb-4"
+            className="flex flex-wrap gap-2 mb-5"
           >
             {profile.dating_intentions && (
               <div className="px-3 py-1.5 bg-[#E70F72]/10 border border-[#E70F72]/30 rounded-full">
@@ -281,7 +281,7 @@ export default function ProfileDetail() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.1 }}
-          className="mb-6 relative z-10"
+          className="mb-7 relative z-10"
         >
           <div className="flex items-center gap-2 text-white/60 text-sm mb-1">
             <MapPin className="w-4 h-4" />
@@ -353,7 +353,7 @@ export default function ProfileDetail() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.15 }}
-          className="flex flex-wrap items-center gap-2 mb-6"
+          className="flex flex-wrap items-center gap-2 mb-7"
         >
           {(() => {
             const badges = [
@@ -393,7 +393,7 @@ export default function ProfileDetail() {
         {profile.bio && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
             <p className="text-white/45 text-xs uppercase tracking-wider mb-2 ml-1">About</p>
-            <CrossdCard className="mb-6 bg-gradient-to-br from-[#0B0B0B] to-[#1a1a1a]">
+            <CrossdCard className="mb-7 bg-gradient-to-br from-[#0B0B0B] to-[#1a1a1a]">
               <p className="text-white/90 text-base leading-relaxed">{profile.bio}</p>
             </CrossdCard>
           </motion.div>
@@ -401,7 +401,7 @@ export default function ProfileDetail() {
 
         {/* Photos 2–3 pair */}
         {photos[1] && (
-          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="grid grid-cols-2 gap-2 mb-6">
+          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="grid grid-cols-2 gap-3 mb-7">
             <div className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10">
               <img src={photos[1].url} alt="" className="w-full h-full object-cover" />
             </div>
@@ -414,15 +414,15 @@ export default function ProfileDetail() {
         )}
 
         {/* Spark Signature Row */}
-        <div className="mb-2">
+        <div className="mb-3">
           <p className="text-white/45 text-xs uppercase tracking-wider mb-2 ml-1">Spark Signals</p>
-          <p className="text-white/30 text-xs ml-1 mb-3">Spark Signals reveal the real-world clues behind someone's vibe — personality, places, moments, and connection style — so you can see what kind of spark they naturally bring.</p>
+          <p className="text-white/30 text-xs ml-1 mb-3 leading-relaxed">Spark Signals reveal the real-world clues behind someone's vibe — personality, places, moments, and connection style — so you can see what kind of spark they naturally bring.</p>
         </div>
         <SparkSignatureRow profile={profile} moments={[]} />
 
         {/* Spark Pattern Insight */}
         {sparkPattern && (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mb-6 mt-2">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}           className="mb-7 mt-4">
             <p className="text-white/45 text-xs uppercase tracking-wider mb-2 ml-1">Spark Pattern</p>
             <p className="text-white/30 text-xs ml-1 mb-3">A snapshot of how they show up socially and what energises them</p>
             <div className="relative group">
@@ -509,7 +509,7 @@ export default function ProfileDetail() {
 
         {/* Photos 4–5 pair */}
         {photos[3] && (
-          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="grid grid-cols-2 gap-2 mb-6">
+          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="grid grid-cols-2 gap-3 mb-7">
             <div className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10">
               <img src={photos[3].url} alt="" className="w-full h-full object-cover" />
             </div>
