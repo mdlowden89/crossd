@@ -101,8 +101,8 @@ function StepCard({ step, index }) {
           </div>
           <span className="text-[10px] font-semibold tracking-widest text-white/40 uppercase">{step.label}</span>
         </div>
-        <h3 className="text-white font-bold text-xl mb-2">{step.heading}</h3>
-        <p className="text-white/50 text-sm leading-relaxed">{step.body}</p>
+        <h3 className="text-white font-bold text-2xl mb-3">{step.heading}</h3>
+        <p className="text-white/50 text-base leading-relaxed">{step.body}</p>
       </div>
     </motion.div>
   );
@@ -132,8 +132,8 @@ function SafetyCard({ card, index }) {
         </div>
         <span className="text-[10px] font-semibold tracking-widest text-white/40 uppercase">{card.label}</span>
       </div>
-      <h3 className="text-white font-bold text-lg mb-2">{card.heading}</h3>
-      <p className="text-white/50 text-sm leading-relaxed">{card.body}</p>
+      <h3 className="text-white font-bold text-2xl mb-3">{card.heading}</h3>
+      <p className="text-white/50 text-base leading-relaxed">{card.body}</p>
     </motion.div>
   );
 }
@@ -168,11 +168,11 @@ export default function HowItWorks({ onBack }) {
           <div className="inline-block text-[#E70F72] text-[11px] font-semibold tracking-widest uppercase border border-[#E70F72]/35 rounded-full px-4 py-1.5 mb-6" style={{ background: 'rgba(231,15,114,0.08)' }}>
             HOW IT WORKS
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-5">
+          <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-5">
             You've already met them.<br />
             <span className="text-[#E70F72]">You just don't know it yet.</span>
           </h1>
-          <p className="text-white/50 text-base leading-relaxed max-w-md">
+          <p className="text-white/50 text-lg leading-relaxed max-w-md">
             Crossd finds the connection that was always there — hidden in the places you both call yours.
           </p>
         </motion.div>
@@ -216,8 +216,8 @@ export default function HowItWorks({ onBack }) {
           transition={{ duration: 0.5 }}
           className="flex flex-col items-center text-center"
         >
-          <h2 className="text-white font-bold text-3xl mb-2">Begin crossing paths</h2>
-          <p className="text-white/45 text-sm mb-8">Join Crossd today and discover the connections waiting in the places you already love.</p>
+          <h2 className="text-white font-bold text-4xl mb-3">Begin crossing paths</h2>
+          <p className="text-white/45 text-base mb-8">Join Crossd today and discover the connections waiting in the places you already love.</p>
           <CrossdButton
             size="lg"
             onClick={() => window.location.href = createPageUrl('Onboarding')}
