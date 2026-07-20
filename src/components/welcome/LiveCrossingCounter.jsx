@@ -101,7 +101,7 @@ export default function LiveCrossingCounter() {
         onClick={() => setExpanded(v => !v)}
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.97 }}
-        className="flex items-center gap-3 px-4 py-2.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm cursor-pointer transition-colors hover:border-[#E70F72]/40 hover:bg-[#E70F72]/5"
+        className="flex items-center gap-3 px-5 py-3 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm cursor-pointer transition-colors hover:border-[#E70F72]/40 hover:bg-[#E70F72]/5 whitespace-nowrap"
       >
         {/* Pulsing live dot */}
         <span className="relative flex h-2.5 w-2.5 flex-shrink-0">
@@ -123,7 +123,7 @@ export default function LiveCrossingCounter() {
             </motion.span>
           </AnimatePresence>
           <span className="text-white/60">
-            crossings happening right now in <span className="text-white/85 font-medium">{city}</span>
+            crossings right now in <span className="text-white/85 font-medium">{city}</span>
           </span>
         </div>
 
