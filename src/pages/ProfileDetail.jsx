@@ -392,6 +392,7 @@ export default function ProfileDetail() {
         {/* Bio */}
         {profile.bio && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+            <p className="text-white/45 text-xs uppercase tracking-wider mb-2 ml-1">About</p>
             <CrossdCard className="mb-6 bg-gradient-to-br from-[#0B0B0B] to-[#1a1a1a]">
               <p className="text-white/90 text-base leading-relaxed">{profile.bio}</p>
             </CrossdCard>
@@ -413,18 +414,23 @@ export default function ProfileDetail() {
         )}
 
         {/* Spark Signature Row */}
+        <div className="mb-2">
+          <p className="text-white/45 text-xs uppercase tracking-wider mb-2 ml-1">Spark Signals</p>
+          <p className="text-white/30 text-xs ml-1 mb-3">AI-generated personality traits based on their profile & habits</p>
+        </div>
         <SparkSignatureRow profile={profile} moments={[]} />
 
         {/* Spark Pattern Insight */}
         {sparkPattern && (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mb-6 -mt-3">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mb-6 mt-2">
+            <p className="text-white/45 text-xs uppercase tracking-wider mb-2 ml-1">Spark Pattern</p>
+            <p className="text-white/30 text-xs ml-1 mb-3">A snapshot of how they show up socially and what energises them</p>
             <div className="relative group">
               <motion.div animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} className="absolute inset-0 bg-gradient-to-r from-[#E70F72]/10 via-[#E70F72]/20 to-[#E70F72]/10 rounded-2xl blur-xl" />
               <div className="relative bg-gradient-to-br from-[#1a1a1a] to-[#0B0B0B] border border-[#E70F72]/30 rounded-2xl p-5">
                 <div className="flex items-start gap-3">
                   <span className="text-2xl">🪄</span>
                   <div className="flex-1">
-                    <p className="text-[#E70F72] text-xs font-bold mb-2 uppercase tracking-wider">Spark Pattern</p>
                     <p className="text-white/90 text-base italic leading-relaxed">{sparkPattern}</p>
                   </div>
                 </div>
@@ -436,6 +442,8 @@ export default function ProfileDetail() {
         {/* Compatibility Tease */}
         {compatibilityTease && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="mb-6">
+            <p className="text-white/45 text-xs uppercase tracking-wider mb-2 ml-1">Your Compatibility</p>
+            <p className="text-white/30 text-xs ml-1 mb-3">Based on personality, vibe, and shared energy patterns</p>
             <button onClick={() => setShowCompatibilityModal(true)} className="w-full bg-gradient-to-r from-[#E70F72]/10 via-[#E70F72]/5 to-transparent border border-[#E70F72]/20 rounded-xl p-4 hover:border-[#E70F72]/40 transition-all cursor-pointer group text-left">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
