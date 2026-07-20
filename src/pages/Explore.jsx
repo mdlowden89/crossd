@@ -218,7 +218,7 @@ export default function Explore() {
   }
 
   return (
-    <div className="min-h-screen bg-black py-4" style={{ overflowX: 'hidden' }}>
+    <div className="min-h-screen bg-black px-4 py-4">
       {/* Match Confirmation Overlay */}
       <AnimatePresence>
         {showMatch && (
@@ -234,44 +234,15 @@ export default function Explore() {
       {/* Main Content */}
       <AnimatePresence mode="wait">
         {currentProfile ? (
-          <div className="relative flex items-start justify-center px-4">
-            {/* Next card — peeking on the right */}
-            {profiles[currentIndex + 1] && (
-              <div
-                className="absolute top-0 rounded-3xl overflow-hidden pointer-events-none"
-                style={{
-                  width: '84vw',
-                  maxWidth: '384px',
-                  left: '50%',
-                  transform: 'translateX(58%)',
-                  filter: 'blur(6px)',
-                  opacity: 0.4,
-                  zIndex: 0,
-                }}
-              >
-                <div className="bg-[#0B0B0B] rounded-3xl overflow-hidden">
-                  {profiles[currentIndex + 1].photos?.[0]?.url && (
-                    <img
-                      src={profiles[currentIndex + 1].photos[0].url}
-                      alt=""
-                      className="w-full aspect-[3/4] object-cover"
-                    />
-                  )}
-                </div>
-              </div>
-            )}
-            <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: '384px' }}>
-              <ProfileCard
-                key={currentProfile.id}
-                profile={currentProfile}
-                myProfile={myProfile}
-                myMoments={[]}
-                onLike={handleLike}
-                onPass={handlePass}
-                onViewFull={handleViewProfile}
-              />
-            </div>
-          </div>
+          <ProfileCard
+            key={currentProfile.id}
+            profile={currentProfile}
+            myProfile={myProfile}
+            myMoments={[]}
+            onLike={handleLike}
+            onPass={handlePass}
+            onViewFull={handleViewProfile}
+          />
         ) : (
           <motion.div
             initial={{ opacity: 0 }}
