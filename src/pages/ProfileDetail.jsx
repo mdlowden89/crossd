@@ -129,14 +129,28 @@ export default function ProfileDetail() {
       {/* Hero Photo + Back Button */}
       <div className="relative">
         {photos.length > 0 ? (
-          <motion.img
-            src={photos[0]?.url}
-            alt={profile.display_name}
-            className="w-full aspect-[3/4] max-h-[75vh] object-cover"
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4 }}
-          />
+          <motion.div
+            className="relative w-full aspect-[3/4] max-h-[75vh]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.35 }}
+          >
+            <motion.div
+              className="absolute inset-0 rounded-none pointer-events-none z-10"
+              initial={{ opacity: 0.8 }}
+              animate={{ opacity: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              style={{ background: 'radial-gradient(ellipse at 50% 40%, rgba(231,15,114,0.35) 0%, rgba(0,0,0,0.6) 60%, transparent 100%)' }}
+            />
+            <motion.img
+              src={photos[0]?.url}
+              alt={profile.display_name}
+              className="w-full h-full object-cover"
+              initial={{ scale: 1.06, filter: 'brightness(0.7) saturate(1.4)' }}
+              animate={{ scale: 1, filter: 'brightness(1) saturate(1)' }}
+              transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
+            />
+          </motion.div>
         ) : (
           <div className="w-full aspect-[3/4] max-h-[75vh] bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] flex items-center justify-center">
             <span className="text-white/40">No photos</span>
@@ -402,13 +416,28 @@ export default function ProfileDetail() {
         {/* Photos 2–3 pair */}
         {photos[1] && (
           <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="grid grid-cols-2 gap-3 mb-7">
-            <div className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10">
+            <motion.div
+              className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 relative"
+              initial={{ filter: 'brightness(0.5) saturate(1.5)' }}
+              animate={{ filter: 'brightness(1) saturate(1)' }}
+              transition={{ duration: 0.5, delay: 0.25, ease: "easeOut" }}
+              style={{ boxShadow: '0 0 0 0 rgba(231,15,114,0)' }}
+              whileInView={{ boxShadow: ['0 0 30px 8px rgba(231,15,114,0.25)', '0 0 0px 0px rgba(231,15,114,0)'] }}
+              viewport={{ once: true }}
+            >
               <img src={photos[1].url} alt="" className="w-full h-full object-cover" />
-            </div>
+            </motion.div>
             {photos[2] && (
-              <div className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10">
+              <motion.div
+                className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 relative"
+                initial={{ filter: 'brightness(0.5) saturate(1.5)' }}
+                animate={{ filter: 'brightness(1) saturate(1)' }}
+                transition={{ duration: 0.5, delay: 0.35, ease: "easeOut" }}
+                whileInView={{ boxShadow: ['0 0 30px 8px rgba(231,15,114,0.25)', '0 0 0px 0px rgba(231,15,114,0)'] }}
+                viewport={{ once: true }}
+              >
                 <img src={photos[2].url} alt="" className="w-full h-full object-cover" />
-              </div>
+              </motion.div>
             )}
           </motion.div>
         )}
@@ -510,13 +539,27 @@ export default function ProfileDetail() {
         {/* Photos 4–5 pair */}
         {photos[3] && (
           <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="grid grid-cols-2 gap-3 mb-7">
-            <div className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10">
+            <motion.div
+              className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10"
+              initial={{ filter: 'brightness(0.5) saturate(1.5)' }}
+              animate={{ filter: 'brightness(1) saturate(1)' }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              whileInView={{ boxShadow: ['0 0 30px 8px rgba(231,15,114,0.25)', '0 0 0px 0px rgba(231,15,114,0)'] }}
+              viewport={{ once: true }}
+            >
               <img src={photos[3].url} alt="" className="w-full h-full object-cover" />
-            </div>
+            </motion.div>
             {photos[4] && (
-              <div className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10">
+              <motion.div
+                className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10"
+                initial={{ filter: 'brightness(0.5) saturate(1.5)' }}
+                animate={{ filter: 'brightness(1) saturate(1)' }}
+                transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+                whileInView={{ boxShadow: ['0 0 30px 8px rgba(231,15,114,0.25)', '0 0 0px 0px rgba(231,15,114,0)'] }}
+                viewport={{ once: true }}
+              >
                 <img src={photos[4].url} alt="" className="w-full h-full object-cover" />
-              </div>
+              </motion.div>
             )}
           </motion.div>
         )}
