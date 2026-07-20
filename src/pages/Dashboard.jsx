@@ -507,24 +507,24 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-black pb-24">
-      <div className="max-w-md mx-auto px-4 py-6 space-y-4">
+      <div className="max-w-md mx-auto px-3 py-3 space-y-3">
         
         {/* Welcome Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative overflow-hidden rounded-2xl p-4"
+          className="relative overflow-hidden rounded-2xl p-3"
           style={{
             background: 'linear-gradient(135deg, #1a0510 0%, #0d000a 100%)',
             border: '1px solid rgba(231,15,114,0.3)'
           }}>
 
-          <div className="flex items-start gap-3 mb-4">
-            <div className="w-10 h-10 rounded-full bg-[#E70F72]/20 flex items-center justify-center flex-shrink-0">
-              <Sparkles className="w-5 h-5 text-[#E70F72]" />
+          <div className="flex items-start gap-3 mb-3">
+            <div className="w-9 h-9 rounded-full bg-[#E70F72]/20 flex items-center justify-center flex-shrink-0">
+              <Sparkles className="w-4 h-4 text-[#E70F72]" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">Welcome back, {profile.display_name}!</h1>
+              <h1 className="text-lg font-bold text-white">Welcome back, {profile.display_name}!</h1>
               <p className="text-white/50 text-sm mt-0.5">Did you see anyone interesting today?</p>
             </div>
           </div>
@@ -532,7 +532,7 @@ export default function Dashboard() {
           {todayPath ? (
             <button
               onClick={() => navigate('/LogDailyPath')}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-green-500/20 border border-green-500/30 text-green-400 text-sm font-semibold hover:bg-green-500/30 active:scale-95 transition-all mb-5"
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-green-500/20 border border-green-500/30 text-green-400 text-sm font-semibold hover:bg-green-500/30 active:scale-95 transition-all mb-3"
             >
               <CheckCircle2 className="w-4 h-4" />
               Today's path logged — {todayPath.stops?.length || 0} stop{(todayPath.stops?.length || 0) !== 1 ? 's' : ''}
@@ -540,7 +540,7 @@ export default function Dashboard() {
           ) : (
             <button
               onClick={() => navigate('/LogDailyPath')}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#E70F72] text-black text-sm font-semibold hover:bg-[#E70F72]/90 active:scale-95 transition-all mb-5"
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#E70F72] text-black text-sm font-semibold hover:bg-[#E70F72]/90 active:scale-95 transition-all mb-3"
             >
               <MapPin className="w-4 h-4" />
               Log today's path
@@ -549,20 +549,20 @@ export default function Dashboard() {
 
           {/* How it works */}
           {!todayPath && (
-            <div className="bg-white/5 border border-[#E70F72]/40 rounded-2xl px-4 py-4">
-              <div className="flex items-center gap-2 mb-3">
+            <div className="bg-white/5 border border-[#E70F72]/40 rounded-2xl px-3 py-3">
+              <div className="flex items-center gap-2 mb-2">
                 <Route className="w-4 h-4 text-white/60" />
                 <span className="text-white font-semibold text-sm">How it works</span>
               </div>
-              <div className="space-y-2.5">
+              <div className="space-y-2">
                 {[
                   'Tap the button and add the places you visited today.',
                   'Set rough times and how long you stayed — your route is private.',
                   "If someone near your path logged a place, we'll ping you to confirm the crossing."
                 ].map((text, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-[#E70F72]/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-[#E70F72] text-[10px] font-bold">{i + 1}</span>
+                  <div key={i} className="flex items-start gap-2">
+                    <div className="w-4 h-4 rounded-full bg-[#E70F72]/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-[#E70F72] text-[9px] font-bold">{i + 1}</span>
                     </div>
                     <p className="text-white/60 text-sm leading-snug">{text}</p>
                   </div>
@@ -587,19 +587,19 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl p-5 border border-[#E70F72]/30">
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl p-4 border border-[#E70F72]/30">
 
           <div className="flex items-center gap-2 mb-1">
             <Sparkles className="w-5 h-5 text-[#E70F72]" />
-            <h2 className="text-lg font-bold text-white">Profile Strength</h2>
+            <h2 className="text-base font-bold text-white">Profile Strength</h2>
           </div>
-          <p className="text-white/65 text-sm mb-4">
+          <p className="text-white/65 text-sm mb-3">
             Complete your profile to attract more compatible matches.
           </p>
 
           {/* Payoff preview — only show when profile is incomplete */}
           {profileStrength < 100 && (
-            <div className="flex items-start gap-3 mb-6 px-4 py-3 rounded-2xl border border-[#E70F72]/25 bg-[#E70F72]/5">
+            <div className="flex items-start gap-3 mb-3 px-3 py-2.5 rounded-2xl border border-[#E70F72]/25 bg-[#E70F72]/5">
               <TrendingUp className="w-4 h-4 text-[#E70F72] mt-0.5 flex-shrink-0" />
               <div>
                 <p className="text-white/90 text-sm font-medium leading-snug">
@@ -657,18 +657,18 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl p-5 border border-[#E70F72]/30">
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl p-4 border border-[#E70F72]/30">
 
           <div className="flex items-center gap-2 mb-1">
             <TrendingUp className="w-5 h-5 text-[#E70F72]" />
-            <h2 className="text-lg font-bold text-[#E70F72]">Spark Energy Meter</h2>
+            <h2 className="text-base font-bold text-[#E70F72]">Spark Energy Meter</h2>
           </div>
-          <p className="text-white/65 text-sm mb-4">
+          <p className="text-white/65 text-sm mb-3">
             Your weekly engagement fuels your spark. Keep it high for better visibility!
           </p>
           
           {/* Energy Bar */}
-          <div className="mb-4">
+          <div className="mb-3">
             <TooltipProvider>
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
@@ -739,10 +739,10 @@ export default function Dashboard() {
               {/* Day Streak */}
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
-                  <div className="bg-black/40 rounded-2xl p-4 text-center border border-[#E70F72]/20 cursor-pointer hover:border-orange-500/40 transition-colors">
-                    <Flame className="w-6 h-6 text-orange-500 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-white mb-1">{dayStreak}</div>
-                    <div className="text-white/50 text-sm leading-snug">Day Streak</div>
+                  <div className="bg-black/40 rounded-2xl p-3 text-center border border-[#E70F72]/20 cursor-pointer hover:border-orange-500/40 transition-colors">
+                    <Flame className="w-5 h-5 text-orange-500 mx-auto mb-1" />
+                    <div className="text-xl font-bold text-white mb-0.5">{dayStreak}</div>
+                    <div className="text-white/50 text-xs leading-snug">Day Streak</div>
                     {dayStreak === 0 && (
                       <div className="mt-2 text-[#E70F72] text-xs font-medium">Log a moment →</div>
                     )}
@@ -770,10 +770,10 @@ export default function Dashboard() {
               {/* Sparks This Week */}
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
-                  <div className="bg-black/40 rounded-2xl p-4 text-center border border-[#E70F72]/20 cursor-pointer hover:border-[#E70F72]/50 transition-colors">
-                    <Sparkles className="w-6 h-6 text-[#E70F72] mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-white mb-1">{sparksThisWeek}</div>
-                    <div className="text-white/50 text-sm leading-snug">Sparks this week</div>
+                  <div className="bg-black/40 rounded-2xl p-3 text-center border border-[#E70F72]/20 cursor-pointer hover:border-[#E70F72]/50 transition-colors">
+                    <Sparkles className="w-5 h-5 text-[#E70F72] mx-auto mb-1" />
+                    <div className="text-xl font-bold text-white mb-0.5">{sparksThisWeek}</div>
+                    <div className="text-white/50 text-xs leading-snug">Sparks this week</div>
                     {sparksThisWeek === 0 && (
                       <div className="mt-2 text-[#E70F72] text-xs font-medium">Log a moment →</div>
                     )}
@@ -801,10 +801,10 @@ export default function Dashboard() {
               {/* Expiring Moments */}
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
-                  <div className="bg-black/40 rounded-2xl p-4 text-center border border-[#E70F72]/20 cursor-pointer hover:border-blue-500/40 transition-colors">
-                    <Clock className="w-6 h-6 text-blue-500 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-white mb-1">{expiringMoments}</div>
-                    <div className="text-white/50 text-sm leading-snug">Expiring Moments</div>
+                  <div className="bg-black/40 rounded-2xl p-3 text-center border border-[#E70F72]/20 cursor-pointer hover:border-blue-500/40 transition-colors">
+                    <Clock className="w-5 h-5 text-blue-500 mx-auto mb-1" />
+                    <div className="text-xl font-bold text-white mb-0.5">{expiringMoments}</div>
+                    <div className="text-white/50 text-xs leading-snug">Expiring Moments</div>
                   </div>
                 </TooltipTrigger>
                 <TooltipContent className="p-4 w-64 bg-[#0B0B0B] border-white/10">
@@ -859,12 +859,12 @@ export default function Dashboard() {
           transition={{ delay: 0.4 }}
           className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl overflow-hidden border border-[#E70F72]/30"
         >
-          <div className="flex items-center gap-4 px-5 py-5">
-            <div className="w-10 h-10 rounded-full bg-[#E70F72]/20 flex items-center justify-center flex-shrink-0">
-              <Map className="w-5 h-5 text-[#E70F72]" />
+          <div className="flex items-center gap-3 px-4 py-4">
+            <div className="w-9 h-9 rounded-full bg-[#E70F72]/20 flex items-center justify-center flex-shrink-0">
+              <Map className="w-4 h-4 text-[#E70F72]" />
             </div>
             <div className="flex-1">
-              <h2 className="text-lg font-bold text-white">Activity Map</h2>
+              <h2 className="text-base font-bold text-white">Activity Map</h2>
               <p className="text-white/50 text-sm">Where your paths are crossing</p>
             </div>
             <button
@@ -888,16 +888,16 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="relative overflow-hidden rounded-2xl p-10 text-center border border-[#E70F72]/30"
+          className="relative overflow-hidden rounded-2xl p-5 text-center border border-[#E70F72]/30"
           style={{
             background: 'linear-gradient(135deg, #1a0510 0%, #0B0B0B 100%)'
           }}>
 
-            <div className="w-16 h-16 bg-[#E70F72] rounded-full flex items-center justify-center mx-auto mb-6">
-              <Star className="w-8 h-8 text-white" />
+            <div className="w-12 h-12 bg-[#E70F72] rounded-full flex items-center justify-center mx-auto mb-3">
+              <Star className="w-6 h-6 text-white" />
             </div>
-            <h2 className="text-3xl font-bold text-[#E70F72] mb-3">Unlock Crossd+</h2>
-            <p className="text-white/65 text-base mb-8 max-w-md mx-auto">
+            <h2 className="text-xl font-bold text-[#E70F72] mb-2">Unlock Crossd+</h2>
+            <p className="text-white/65 text-sm mb-4 max-w-md mx-auto">
               Supercharge your experience with unlimited likes, see who likes you, 
               and more exclusive perks!
             </p>
@@ -917,13 +917,13 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl p-5 border border-[#E70F72]/30">
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl p-4 border border-[#E70F72]/30">
 
           <div className="flex items-center gap-2 mb-1">
             <Gift className="w-5 h-5 text-[#E70F72]" />
-            <h2 className="text-lg font-bold text-white">À La Carte Boosters</h2>
+            <h2 className="text-base font-bold text-white">À La Carte Boosters</h2>
           </div>
-          <p className="text-white/65 text-sm mb-4">
+          <p className="text-white/65 text-sm mb-3">
             Enhance your experience with powerful one-time purchases.
           </p>
           
