@@ -398,10 +398,17 @@ export default function ProfileDetail() {
           </motion.div>
         )}
 
-        {/* Photo 2 */}
+        {/* Photos 2–3 pair */}
         {photos[1] && (
-          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 mb-6">
-            <img src={photos[1].url} alt="" className="w-full h-full object-cover" />
+          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="grid grid-cols-2 gap-2 mb-6">
+            <div className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10">
+              <img src={photos[1].url} alt="" className="w-full h-full object-cover" />
+            </div>
+            {photos[2] && (
+              <div className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10">
+                <img src={photos[2].url} alt="" className="w-full h-full object-cover" />
+              </div>
+            )}
           </motion.div>
         )}
 
@@ -448,12 +455,7 @@ export default function ProfileDetail() {
           </motion.div>
         )}
 
-        {/* Photo 3 */}
-        {photos[2] && (
-          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 mb-6">
-            <img src={photos[2].url} alt="" className="w-full h-full object-cover" />
-          </motion.div>
-        )}
+
 
         {/* MBTI + Vibe Tags */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mb-6">
@@ -497,10 +499,17 @@ export default function ProfileDetail() {
           )}
         </motion.div>
 
-        {/* Photo 4 */}
+        {/* Photos 4–5 pair */}
         {photos[3] && (
-          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 mb-6">
-            <img src={photos[3].url} alt="" className="w-full h-full object-cover" />
+          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="grid grid-cols-2 gap-2 mb-6">
+            <div className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10">
+              <img src={photos[3].url} alt="" className="w-full h-full object-cover" />
+            </div>
+            {photos[4] && (
+              <div className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10">
+                <img src={photos[4].url} alt="" className="w-full h-full object-cover" />
+              </div>
+            )}
           </motion.div>
         )}
 
@@ -519,12 +528,7 @@ export default function ProfileDetail() {
           </motion.div>
         )}
 
-        {/* Photo 5 */}
-        {photos[4] && (
-          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 mb-6">
-            <img src={photos[4].url} alt="" className="w-full h-full object-cover" />
-          </motion.div>
-        )}
+
 
         {/* PlacesDNA Profile */}
         <PlacesDNAProfile profile={profile} moments={moments} />
