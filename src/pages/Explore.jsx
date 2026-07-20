@@ -243,9 +243,9 @@ export default function Explore() {
                   width: '84vw',
                   maxWidth: '384px',
                   left: '50%',
-                  transform: 'translateX(46%)',
-                  filter: 'blur(4px)',
-                  opacity: 0.5,
+                  transform: 'translateX(58%)',
+                  filter: 'blur(6px)',
+                  opacity: 0.4,
                   zIndex: 0,
                 }}
               >
