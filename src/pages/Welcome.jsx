@@ -62,7 +62,7 @@ export default function Welcome() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight mb-6"
+            className="text-4xl md:text-7xl lg:text-8xl font-bold leading-tight mb-6"
           >
             Crossed Paths?{' '}
             <span className="text-[#E70F72]">Reconnect Now.</span>
