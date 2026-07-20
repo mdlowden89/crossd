@@ -416,7 +416,7 @@ export default function ProfileDetail() {
         {/* Spark Signature Row */}
         <div className="mb-2">
           <p className="text-white/45 text-xs uppercase tracking-wider mb-2 ml-1">Spark Signals</p>
-          <p className="text-white/30 text-xs ml-1 mb-3">AI-generated personality traits based on their profile & habits</p>
+          <p className="text-white/30 text-xs ml-1 mb-3">Spark Signals reveal the real-world clues behind someone's vibe — personality, places, moments, and connection style — so you can see what kind of spark they naturally bring.</p>
         </div>
         <SparkSignatureRow profile={profile} moments={[]} />
 
