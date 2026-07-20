@@ -5,6 +5,7 @@ import StarBackground from '@/components/common/StarBackground';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import { motion } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
+import { Link } from 'react-router-dom';
 
 const steps = [
   {
@@ -148,11 +149,10 @@ export default function HowItWorks({ onBack }) {
       <div className="fixed bottom-[-80px] right-[-80px] w-[300px] h-[300px] rounded-full pointer-events-none z-0" style={{ background: 'rgba(231,15,114,0.07)', filter: 'blur(90px)' }} />
 
       {/* Nav */}
-      <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 h-16 border-b border-white/[0.08]" style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(12px)' }}>
-        <CrossdLogo size="sm" />
-        <button onClick={onBack} className="flex items-center gap-1 text-white/60 hover:text-white text-sm font-medium transition-colors">
-          ← Back
-        </button>
+      <div className="fixed top-0 left-0 right-0 z-50 flex items-center px-6 h-16 border-b border-white/[0.08]" style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(12px)' }}>
+        <Link to="/Welcome">
+          <CrossdLogo size="sm" />
+        </Link>
       </div>
 
       {/* Content */}
