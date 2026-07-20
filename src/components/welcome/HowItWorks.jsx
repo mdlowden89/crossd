@@ -148,9 +148,9 @@ export default function HowItWorks({ onBack }) {
 
       {/* Nav */}
       <div className="fixed top-0 left-0 right-0 z-50 flex items-center px-6 h-16 border-b border-white/[0.08]" style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(12px)' }}>
-        <Link to="/">
+        <button onClick={onBack}>
           <CrossdLogo size="sm" />
-        </Link>
+        </button>
       </div>
 
       {/* Content */}
