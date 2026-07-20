@@ -507,24 +507,24 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-black pb-24">
-      <div className="max-w-6xl mx-auto px-6 py-8 space-y-6">
+      <div className="max-w-md mx-auto px-4 py-6 space-y-4">
         
         {/* Welcome Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative overflow-hidden rounded-3xl p-6"
+          className="relative overflow-hidden rounded-2xl p-4"
           style={{
             background: 'linear-gradient(135deg, #1a0510 0%, #0d000a 100%)',
             border: '1px solid rgba(231,15,114,0.3)'
           }}>
 
-          <div className="flex items-start gap-4 mb-5">
-            <div className="w-12 h-12 rounded-full bg-[#E70F72]/20 flex items-center justify-center flex-shrink-0">
-              <Sparkles className="w-6 h-6 text-[#E70F72]" />
+          <div className="flex items-start gap-3 mb-4">
+            <div className="w-10 h-10 rounded-full bg-[#E70F72]/20 flex items-center justify-center flex-shrink-0">
+              <Sparkles className="w-5 h-5 text-[#E70F72]" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-white">Welcome back, {profile.display_name}!</h1>
+              <h1 className="text-xl font-bold text-white">Welcome back, {profile.display_name}!</h1>
               <p className="text-white/50 text-sm mt-0.5">Did you see anyone interesting today?</p>
             </div>
           </div>
@@ -587,13 +587,13 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30">
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl p-5 border border-[#E70F72]/30">
 
-          <div className="flex items-center gap-2 mb-2">
+          <div className="flex items-center gap-2 mb-1">
             <Sparkles className="w-5 h-5 text-[#E70F72]" />
-            <h2 className="text-2xl font-bold text-white">Profile Strength</h2>
+            <h2 className="text-lg font-bold text-white">Profile Strength</h2>
           </div>
-          <p className="text-white/65 mb-4">
+          <p className="text-white/65 text-sm mb-4">
             Complete your profile to attract more compatible matches.
           </p>
 
@@ -612,16 +612,16 @@ export default function Dashboard() {
             </div>
           )}
           
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="space-y-2">
             {/* Checklist */}
-            <div className="space-y-3">
+            <div className="space-y-1">
               {profileItems.map((item, idx) => {
                 const inner = (
                   <>
                     {item.completed
                       ? <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
                       : <Circle className="w-5 h-5 text-white/30 flex-shrink-0" />}
-                    <span className={`flex-1 ${item.completed ? 'text-white/90' : 'text-white/50'}`}>
+                    <span className={`flex-1 text-sm ${item.completed ? 'text-white/90' : 'text-white/50'}`}>
                       {item.text}
                     </span>
                     {!item.completed && <ChevronRight className="w-4 h-4 text-white/25 flex-shrink-0" />}
@@ -642,13 +642,12 @@ export default function Dashboard() {
             </div>
             
             {/* Progress Ring */}
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center pt-4">
               <CrossdProgressRing
                 percentage={profileStrength}
-                size={180}
-                strokeWidth={12}
+                size={140}
+                strokeWidth={10}
                 showLabel={true} />
-
             </div>
           </div>
         </motion.div>
@@ -658,18 +657,18 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30">
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl p-5 border border-[#E70F72]/30">
 
-          <div className="flex items-center gap-2 mb-2">
+          <div className="flex items-center gap-2 mb-1">
             <TrendingUp className="w-5 h-5 text-[#E70F72]" />
-            <h2 className="text-2xl font-bold text-[#E70F72]">Spark Energy Meter</h2>
+            <h2 className="text-lg font-bold text-[#E70F72]">Spark Energy Meter</h2>
           </div>
-          <p className="text-white/65 mb-6">
+          <p className="text-white/65 text-sm mb-4">
             Your weekly engagement fuels your spark. Keep it high for better visibility!
           </p>
           
           {/* Energy Bar */}
-          <div className="mb-8">
+          <div className="mb-4">
             <TooltipProvider>
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
@@ -736,14 +735,14 @@ export default function Dashboard() {
           
           {/* Metric Cards */}
           <TooltipProvider>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-2">
               {/* Day Streak */}
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
-                  <div className="bg-black/40 rounded-2xl p-4 sm:p-5 text-center border border-[#E70F72]/20 cursor-pointer hover:border-orange-500/40 transition-colors">
-                    <Flame className="w-6 h-6 text-orange-500 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-white mb-1">{dayStreak}</div>
-                    <div className="text-white/50 text-xs sm:text-sm leading-snug">Day Streak</div>
+                  <div className="bg-black/40 rounded-2xl p-3 text-center border border-[#E70F72]/20 cursor-pointer hover:border-orange-500/40 transition-colors">
+                    <Flame className="w-5 h-5 text-orange-500 mx-auto mb-1" />
+                    <div className="text-xl font-bold text-white mb-0.5">{dayStreak}</div>
+                    <div className="text-white/50 text-xs leading-snug">Day Streak</div>
                     {dayStreak === 0 && (
                       <div className="mt-2 text-[#E70F72] text-xs font-medium">Log a moment →</div>
                     )}
@@ -771,10 +770,10 @@ export default function Dashboard() {
               {/* Sparks This Week */}
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
-                  <div className="bg-black/40 rounded-2xl p-4 sm:p-5 text-center border border-[#E70F72]/20 cursor-pointer hover:border-[#E70F72]/50 transition-colors">
-                    <Sparkles className="w-6 h-6 text-[#E70F72] mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-white mb-1">{sparksThisWeek}</div>
-                    <div className="text-white/50 text-xs sm:text-sm leading-snug">Sparks this week</div>
+                  <div className="bg-black/40 rounded-2xl p-3 text-center border border-[#E70F72]/20 cursor-pointer hover:border-[#E70F72]/50 transition-colors">
+                    <Sparkles className="w-5 h-5 text-[#E70F72] mx-auto mb-1" />
+                    <div className="text-xl font-bold text-white mb-0.5">{sparksThisWeek}</div>
+                    <div className="text-white/50 text-xs leading-snug">Sparks this week</div>
                     {sparksThisWeek === 0 && (
                       <div className="mt-2 text-[#E70F72] text-xs font-medium">Log a moment →</div>
                     )}
@@ -802,10 +801,10 @@ export default function Dashboard() {
               {/* Expiring Moments */}
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
-                  <div className="bg-black/40 rounded-2xl p-4 sm:p-5 text-center border border-[#E70F72]/20 cursor-pointer hover:border-blue-500/40 transition-colors">
-                    <Clock className="w-6 h-6 text-blue-500 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-white mb-1">{expiringMoments}</div>
-                    <div className="text-white/50 text-xs sm:text-sm leading-snug">Expiring Moments</div>
+                  <div className="bg-black/40 rounded-2xl p-3 text-center border border-[#E70F72]/20 cursor-pointer hover:border-blue-500/40 transition-colors">
+                    <Clock className="w-5 h-5 text-blue-500 mx-auto mb-1" />
+                    <div className="text-xl font-bold text-white mb-0.5">{expiringMoments}</div>
+                    <div className="text-white/50 text-xs leading-snug">Expiring Moments</div>
                   </div>
                 </TooltipTrigger>
                 <TooltipContent className="p-4 w-64 bg-[#0B0B0B] border-white/10">
@@ -858,15 +857,15 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl overflow-hidden border border-[#E70F72]/30"
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl overflow-hidden border border-[#E70F72]/30"
         >
-          <div className="flex items-center gap-4 px-6 py-5">
-            <div className="w-10 h-10 rounded-full bg-[#E70F72]/20 flex items-center justify-center flex-shrink-0">
-              <Map className="w-5 h-5 text-[#E70F72]" />
+          <div className="flex items-center gap-3 px-4 py-4">
+            <div className="w-9 h-9 rounded-full bg-[#E70F72]/20 flex items-center justify-center flex-shrink-0">
+              <Map className="w-4 h-4 text-[#E70F72]" />
             </div>
             <div className="flex-1">
-              <h2 className="text-lg font-bold text-white">Activity Map</h2>
-              <p className="text-white/50 text-sm">Where your paths are crossing</p>
+              <h2 className="text-base font-bold text-white">Activity Map</h2>
+              <p className="text-white/50 text-xs">Where your paths are crossing</p>
             </div>
             <button
               onClick={() => navigate(createPageUrl('ActivityMapPage'))}
@@ -889,16 +888,16 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="relative overflow-hidden rounded-3xl p-12 text-center border border-[#E70F72]/30"
+          className="relative overflow-hidden rounded-2xl p-7 text-center border border-[#E70F72]/30"
           style={{
             background: 'linear-gradient(135deg, #1a0510 0%, #0B0B0B 100%)'
           }}>
 
-            <div className="w-16 h-16 bg-[#E70F72] rounded-full flex items-center justify-center mx-auto mb-6">
-              <Star className="w-8 h-8 text-white" />
+            <div className="w-14 h-14 bg-[#E70F72] rounded-full flex items-center justify-center mx-auto mb-4">
+              <Star className="w-7 h-7 text-white" />
             </div>
-            <h2 className="text-3xl font-bold text-[#E70F72] mb-3">Unlock Crossd+</h2>
-            <p className="text-white/65 text-base mb-8 max-w-md mx-auto">
+            <h2 className="text-2xl font-bold text-[#E70F72] mb-2">Unlock Crossd+</h2>
+            <p className="text-white/65 text-sm mb-6 max-w-md mx-auto">
               Supercharge your experience with unlimited likes, see who likes you, 
               and more exclusive perks!
             </p>
@@ -918,13 +917,13 @@ export default function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-3xl p-8 border border-[#E70F72]/30">
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl p-5 border border-[#E70F72]/30">
 
-          <div className="flex items-center gap-2 mb-2">
+          <div className="flex items-center gap-2 mb-1">
             <Gift className="w-5 h-5 text-[#E70F72]" />
-            <h2 className="text-2xl font-bold text-white">À La Carte Boosters</h2>
+            <h2 className="text-lg font-bold text-white">À La Carte Boosters</h2>
           </div>
-          <p className="text-white/65 mb-6">
+          <p className="text-white/65 text-sm mb-4">
             Enhance your experience with powerful one-time purchases.
           </p>
           
