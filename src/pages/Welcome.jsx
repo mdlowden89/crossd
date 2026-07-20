@@ -62,7 +62,7 @@ export default function Welcome() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="text-4xl md:text-7xl lg:text-8xl font-bold leading-tight mb-6"
+            className="text-4xl md:text-7xl lg:text-8xl font-bold leading-tight mb-6 text-center w-full"
           >
             Crossed Paths?{' '}
             <span className="text-[#E70F72]">Reconnect Now.</span>
@@ -72,7 +72,7 @@ export default function Welcome() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="text-white/70 text-lg md:text-xl mb-12 max-w-2xl leading-relaxed"
+            className="text-white/70 text-sm md:text-lg mb-12 max-w-2xl leading-relaxed"
           >
             Crossd helps you find and connect with people you've encountered in real life. 
             Turn missed connections into meaningful conversations.
