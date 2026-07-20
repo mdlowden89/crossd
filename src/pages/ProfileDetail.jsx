@@ -133,22 +133,31 @@ export default function ProfileDetail() {
             className="relative w-full aspect-[3/4] max-h-[75vh]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.35 }}
+            transition={{ duration: 0.25 }}
           >
+            {/* Neon glow burst — fades out after mount */}
             <motion.div
-              className="absolute inset-0 rounded-none pointer-events-none z-10"
-              initial={{ opacity: 0.8 }}
+              className="absolute inset-0 pointer-events-none z-10"
+              initial={{ opacity: 1 }}
               animate={{ opacity: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              style={{ background: 'radial-gradient(ellipse at 50% 40%, rgba(231,15,114,0.35) 0%, rgba(0,0,0,0.6) 60%, transparent 100%)' }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 35%, rgba(231,15,114,0.55) 0%, rgba(231,15,114,0.15) 40%, transparent 70%)' }}
+            />
+            {/* Edge glow ring */}
+            <motion.div
+              className="absolute inset-0 pointer-events-none z-10"
+              initial={{ opacity: 0.9 }}
+              animate={{ opacity: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              style={{ boxShadow: 'inset 0 0 60px 20px rgba(231,15,114,0.4)' }}
             />
             <motion.img
               src={photos[0]?.url}
               alt={profile.display_name}
               className="w-full h-full object-cover"
-              initial={{ scale: 1.06, filter: 'brightness(0.7) saturate(1.4)' }}
+              initial={{ scale: 1.04, filter: 'brightness(0.6) saturate(1.6)' }}
               animate={{ scale: 1, filter: 'brightness(1) saturate(1)' }}
-              transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             />
           </motion.div>
         ) : (
@@ -416,29 +425,26 @@ export default function ProfileDetail() {
         {/* Photos 2–3 pair */}
         {photos[1] && (
           <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="grid grid-cols-2 gap-3 mb-7">
-            <motion.div
-              className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 relative"
-              initial={{ filter: 'brightness(0.5) saturate(1.5)' }}
-              animate={{ filter: 'brightness(1) saturate(1)' }}
-              transition={{ duration: 0.5, delay: 0.25, ease: "easeOut" }}
-              style={{ boxShadow: '0 0 0 0 rgba(231,15,114,0)' }}
-              whileInView={{ boxShadow: ['0 0 30px 8px rgba(231,15,114,0.25)', '0 0 0px 0px rgba(231,15,114,0)'] }}
-              viewport={{ once: true }}
-            >
-              <img src={photos[1].url} alt="" className="w-full h-full object-cover" />
-            </motion.div>
-            {photos[2] && (
+            {[photos[1], photos[2]].filter(Boolean).map((photo, i) => (
               <motion.div
+                key={i}
                 className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 relative"
-                initial={{ filter: 'brightness(0.5) saturate(1.5)' }}
-                animate={{ filter: 'brightness(1) saturate(1)' }}
-                transition={{ duration: 0.5, delay: 0.35, ease: "easeOut" }}
-                whileInView={{ boxShadow: ['0 0 30px 8px rgba(231,15,114,0.25)', '0 0 0px 0px rgba(231,15,114,0)'] }}
+                initial={{ filter: 'brightness(0.5) saturate(1.6)' }}
+                whileInView={{ filter: 'brightness(1) saturate(1)' }}
+                transition={{ duration: 0.4, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
                 viewport={{ once: true }}
               >
-                <img src={photos[2].url} alt="" className="w-full h-full object-cover" />
+                <img src={photo.url} alt="" className="w-full h-full object-cover" />
+                <motion.div
+                  className="absolute inset-0 pointer-events-none rounded-2xl"
+                  initial={{ opacity: 1 }}
+                  whileInView={{ opacity: 0 }}
+                  transition={{ duration: 0.55, delay: i * 0.08, ease: "easeOut" }}
+                  viewport={{ once: true }}
+                  style={{ boxShadow: 'inset 0 0 40px 12px rgba(231,15,114,0.45)' }}
+                />
               </motion.div>
-            )}
+            ))}
           </motion.div>
         )}
 
@@ -539,28 +545,26 @@ export default function ProfileDetail() {
         {/* Photos 4–5 pair */}
         {photos[3] && (
           <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="grid grid-cols-2 gap-3 mb-7">
-            <motion.div
-              className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10"
-              initial={{ filter: 'brightness(0.5) saturate(1.5)' }}
-              animate={{ filter: 'brightness(1) saturate(1)' }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              whileInView={{ boxShadow: ['0 0 30px 8px rgba(231,15,114,0.25)', '0 0 0px 0px rgba(231,15,114,0)'] }}
-              viewport={{ once: true }}
-            >
-              <img src={photos[3].url} alt="" className="w-full h-full object-cover" />
-            </motion.div>
-            {photos[4] && (
+            {[photos[3], photos[4]].filter(Boolean).map((photo, i) => (
               <motion.div
-                className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10"
-                initial={{ filter: 'brightness(0.5) saturate(1.5)' }}
-                animate={{ filter: 'brightness(1) saturate(1)' }}
-                transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-                whileInView={{ boxShadow: ['0 0 30px 8px rgba(231,15,114,0.25)', '0 0 0px 0px rgba(231,15,114,0)'] }}
+                key={i}
+                className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 relative"
+                initial={{ filter: 'brightness(0.5) saturate(1.6)' }}
+                whileInView={{ filter: 'brightness(1) saturate(1)' }}
+                transition={{ duration: 0.4, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
                 viewport={{ once: true }}
               >
-                <img src={photos[4].url} alt="" className="w-full h-full object-cover" />
+                <img src={photo.url} alt="" className="w-full h-full object-cover" />
+                <motion.div
+                  className="absolute inset-0 pointer-events-none rounded-2xl"
+                  initial={{ opacity: 1 }}
+                  whileInView={{ opacity: 0 }}
+                  transition={{ duration: 0.55, delay: i * 0.08, ease: "easeOut" }}
+                  viewport={{ once: true }}
+                  style={{ boxShadow: 'inset 0 0 40px 12px rgba(231,15,114,0.45)' }}
+                />
               </motion.div>
-            )}
+            ))}
           </motion.div>
         )}
 
