@@ -77,7 +77,7 @@ function StepCard({ step, index }) {
     >
       {/* Card */}
       <div
-        className="border rounded-2xl p-7 cursor-default"
+        className="border rounded-2xl p-5 sm:p-7 cursor-default"
         style={{
           background: '#111',
           borderColor: hovered ? 'rgba(231,15,114,0.7)' : 'rgba(255,255,255,0.07)',
@@ -102,8 +102,8 @@ function StepCard({ step, index }) {
           </div>
           <span className="text-[10px] font-semibold tracking-widest text-white/40 uppercase">{step.label}</span>
         </div>
-        <h3 className="text-white font-bold text-2xl mb-3">{step.heading}</h3>
-        <p className="text-white/50 text-base leading-relaxed">{step.body}</p>
+        <h3 className="text-white font-bold text-xl sm:text-2xl mb-2">{step.heading}</h3>
+        <p className="text-white/50 text-sm sm:text-base leading-relaxed">{step.body}</p>
       </div>
     </motion.div>
   );
@@ -118,7 +118,7 @@ function SafetyCard({ card, index }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="border rounded-2xl p-6 transition-all duration-300 cursor-default"
+      className="border rounded-2xl p-5 sm:p-6 transition-all duration-300 cursor-default"
       style={{
         background: '#111',
         borderColor: hovered ? 'rgba(231,15,114,0.6)' : 'rgba(255,255,255,0.07)',
@@ -133,66 +133,66 @@ function SafetyCard({ card, index }) {
         </div>
         <span className="text-[10px] font-semibold tracking-widest text-white/40 uppercase">{card.label}</span>
       </div>
-      <h3 className="text-white font-bold text-2xl mb-3">{card.heading}</h3>
-      <p className="text-white/50 text-base leading-relaxed">{card.body}</p>
+      <h3 className="text-white font-bold text-xl sm:text-2xl mb-2">{card.heading}</h3>
+      <p className="text-white/50 text-sm sm:text-base leading-relaxed">{card.body}</p>
     </motion.div>
   );
 }
 
 export default function HowItWorks({ onBack }) {
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden">
-      {/* Ambient orbs */}
-      <div className="fixed top-[-80px] left-[-80px] w-[360px] h-[360px] rounded-full pointer-events-none z-0" style={{ background: 'rgba(231,15,114,0.09)', filter: 'blur(90px)' }} />
-      <div className="fixed bottom-[-80px] right-[-80px] w-[300px] h-[300px] rounded-full pointer-events-none z-0" style={{ background: 'rgba(231,15,114,0.07)', filter: 'blur(90px)' }} />
+    <div className="min-h-screen bg-black relative" style={{ WebkitOverflowScrolling: 'touch' }}>
+      {/* Ambient orbs — absolute so they don't interfere with scroll */}
+      <div className="absolute top-0 left-0 w-[280px] h-[280px] rounded-full pointer-events-none z-0" style={{ background: 'rgba(231,15,114,0.09)', filter: 'blur(90px)' }} />
+      <div className="absolute bottom-0 right-0 w-[240px] h-[240px] rounded-full pointer-events-none z-0" style={{ background: 'rgba(231,15,114,0.07)', filter: 'blur(90px)' }} />
 
       {/* Nav */}
-      <div className="fixed top-0 left-0 right-0 z-50 flex items-center px-6 h-16 border-b border-white/[0.08]" style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(12px)' }}>
+      <div className="sticky top-0 left-0 right-0 z-50 flex items-center px-5 h-14 border-b border-white/[0.08]" style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
         <button onClick={onBack}>
           <CrossdLogo size="sm" />
         </button>
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-2xl mx-auto px-6 pt-32 pb-24">
+      <div className="relative z-10 max-w-2xl mx-auto px-5 pt-10 pb-20">
 
-        {/* Header — left aligned */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-14"
+          className="mb-10"
         >
-          <div className="inline-block text-[#E70F72] text-[11px] font-semibold tracking-widest uppercase border border-[#E70F72]/35 rounded-full px-4 py-1.5 mb-6" style={{ background: 'rgba(231,15,114,0.08)' }}>
+          <div className="inline-block text-[#E70F72] text-[11px] font-semibold tracking-widest uppercase border border-[#E70F72]/35 rounded-full px-4 py-1.5 mb-5" style={{ background: 'rgba(231,15,114,0.08)' }}>
             HOW IT WORKS
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-5">
+          <h1 className="text-[2rem] sm:text-5xl md:text-6xl font-bold leading-tight mb-4">
             You've already met them.<br />
             <span className="text-[#E70F72]">You just don't know it yet.</span>
           </h1>
-          <p className="text-white/50 text-lg leading-relaxed max-w-md">
+          <p className="text-white/50 text-base sm:text-lg leading-relaxed">
             Crossd finds the connection that was always there — hidden in the places you both call yours.
           </p>
         </motion.div>
 
         {/* Steps with continuous vertical line */}
-        <div className="flex gap-5 mb-10">
-          {/* Left column: number bubbles + continuous line */}
-          <div className="flex flex-col items-center flex-shrink-0" style={{ width: '48px' }}>
+        <div className="flex gap-4 mb-8">
+          {/* Left column: number bubbles + connecting line */}
+          <div className="flex flex-col items-center flex-shrink-0 w-10">
             {steps.map((step, i) => (
               <React.Fragment key={i}>
-                <div className="w-12 h-12 rounded-full border border-[#E70F72]/50 flex items-center justify-center text-[#E70F72] font-bold text-lg flex-shrink-0"
+                <div className="w-10 h-10 rounded-full border border-[#E70F72]/50 flex items-center justify-center text-[#E70F72] font-bold text-base flex-shrink-0"
                   style={{ background: 'rgba(231,15,114,0.08)' }}>
                   {step.num}
                 </div>
                 {i < steps.length - 1 && (
-                  <div className="flex-1 w-px" style={{ background: 'rgba(231,15,114,0.35)', minHeight: '20px' }} />
+                  <div className="flex-1 w-px my-1" style={{ background: 'rgba(231,15,114,0.35)', minHeight: '16px' }} />
                 )}
               </React.Fragment>
             ))}
           </div>
           {/* Right column: cards */}
-          <div className="flex flex-col flex-1 gap-4">
+          <div className="flex flex-col flex-1 gap-3 min-w-0">
             {steps.map((step, i) => (
               <StepCard key={i} step={step} index={i} />
             ))}
@@ -200,13 +200,13 @@ export default function HowItWorks({ onBack }) {
         </div>
 
         {/* Safety cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-12">
           {safetyCards.map((card, i) => (
             <SafetyCard key={i} card={card} index={i} />
           ))}
         </div>
 
-        {/* CTA — centred */}
+        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -214,12 +214,12 @@ export default function HowItWorks({ onBack }) {
           transition={{ duration: 0.5 }}
           className="flex flex-col items-center text-center"
         >
-          <h2 className="text-white font-bold text-4xl mb-3">Begin crossing paths</h2>
-          <p className="text-white/45 text-base mb-8">Join Crossd today and discover the connections waiting in the places you already love.</p>
+          <h2 className="text-white font-bold text-3xl sm:text-4xl mb-3">Begin crossing paths</h2>
+          <p className="text-white/45 text-sm sm:text-base mb-7 max-w-xs sm:max-w-none">Join Crossd today and discover the connections waiting in the places you already love.</p>
           <CrossdButton
             size="lg"
             onClick={() => window.location.href = createPageUrl('Onboarding')}
-            className="min-w-[220px]"
+            className="w-full max-w-xs"
           >
             Get Started →
           </CrossdButton>
