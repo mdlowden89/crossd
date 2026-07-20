@@ -513,6 +513,8 @@ export default function Dashboard() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+          whileHover={{ boxShadow: '0 0 0 1.5px rgba(231,15,114,0.7), 0 0 24px 4px rgba(231,15,114,0.2)' }}
+          transition={{ duration: 0.2 }}
           className="relative overflow-hidden rounded-2xl p-5"
           style={{
             background: 'linear-gradient(135deg, #1a0510 0%, #0d000a 100%)',
