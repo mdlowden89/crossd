@@ -142,8 +142,6 @@ function SafetyCard({ card, index }) {
 export default function HowItWorks({ onBack }) {
   return (
     <div className="min-h-screen bg-black relative overflow-hidden">
-      <StarBackground />
-
       {/* Ambient orbs */}
       <div className="fixed top-[-80px] left-[-80px] w-[360px] h-[360px] rounded-full pointer-events-none z-0" style={{ background: 'rgba(231,15,114,0.09)', filter: 'blur(90px)' }} />
       <div className="fixed bottom-[-80px] right-[-80px] w-[300px] h-[300px] rounded-full pointer-events-none z-0" style={{ background: 'rgba(231,15,114,0.07)', filter: 'blur(90px)' }} />
