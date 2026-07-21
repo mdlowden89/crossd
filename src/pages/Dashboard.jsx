@@ -327,27 +327,30 @@ export default function Dashboard() {
     };
   };
 
-  // Calculate day streak
+  // Calculate day streak — using only real moments, deduped by calendar date
   const calculateStreak = () => {
-    if (moments.length === 0) return 0;
+    const realMoments = moments.filter(m => !m._isSample);
+    if (realMoments.length === 0) return 0;
 
-    const sortedMoments = [...moments].sort((a, b) =>
-    new Date(b.created_date) - new Date(a.created_date)
-    );
+    // Get unique calendar dates (YYYY-MM-DD) sorted descending
+    const uniqueDates = [...new Set(
+      realMoments.map(m => new Date(m.created_date).toISOString().slice(0, 10))
+    )].sort((a, b) => b.localeCompare(a));
 
-    let streak = 0;
-    let currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
+    const today = new Date().toISOString().slice(0, 10);
+    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
 
-    for (const moment of sortedMoments) {
-      const momentDate = new Date(moment.created_date);
-      momentDate.setHours(0, 0, 0, 0);
+    // Streak must start from today or yesterday (otherwise already broken)
+    if (uniqueDates[0] !== today && uniqueDates[0] !== yesterday) return 0;
 
-      const diffDays = Math.floor((currentDate - momentDate) / (1000 * 60 * 60 * 24));
-
-      if (diffDays === streak) {
+    let streak = 1;
+    for (let i = 1; i < uniqueDates.length; i++) {
+      const prev = new Date(uniqueDates[i - 1]);
+      const curr = new Date(uniqueDates[i]);
+      const diffDays = Math.round((prev - curr) / 86400000);
+      if (diffDays === 1) {
         streak++;
-      } else if (diffDays > streak) {
+      } else {
         break;
       }
     }
@@ -355,10 +358,10 @@ export default function Dashboard() {
     return streak;
   };
 
-  // Calculate expiring moments (moments from over a week ago)
+  // Calculate expiring moments — real moments older than 7 days
   const calculateExpiringMoments = () => {
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-    return moments.filter((m) => new Date(m.created_date) < weekAgo).length;
+    return moments.filter(m => !m._isSample && new Date(m.created_date) < weekAgo).length;
   };
 
   // MBTI personality types with emojis and descriptions
@@ -502,7 +505,7 @@ export default function Dashboard() {
   const dayStreak = calculateStreak();
   const expiringMoments = calculateExpiringMoments();
   const sparksThisWeek = moments.filter((m) =>
-  new Date(m.created_date) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+    !m._isSample && new Date(m.created_date) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
   ).length;
 
   return (
