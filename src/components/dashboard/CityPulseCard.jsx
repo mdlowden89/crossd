@@ -194,8 +194,10 @@ export default function CityPulseCard({ moments = [], profile = null, isNew = tr
       </div>
 
       <div className="flex items-center justify-between mb-5">
-        <p className="text-white/50 text-xs">
-          {activePulse.fromSetup ? 'Based on your setup — log moments to refine your pulse.' : 'Weekly recap of where your vibe shows up.'}
+        <p className="text-white/50 text-xs leading-relaxed">
+          {activePulse.fromSetup
+            ? 'Your City Pulse maps where you hang out so Crossd can find people who cross paths with you in the same spots. Log moments to make it more accurate.'
+            : 'A snapshot of your real-world patterns — the zones, times, and vibes that shape who you\'re likely to cross paths with.'}
         </p>
         <button
           onClick={() => navigate('/city-pulse')}
