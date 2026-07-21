@@ -614,9 +614,18 @@ export default function Dashboard() {
             </div>
           )}
           
-          <div className="space-y-2">
+          <div className="space-y-4">
+            {/* Progress Ring */}
+            <div className="flex items-center justify-center py-2">
+              <CrossdProgressRing
+                percentage={profileStrength}
+                size={150}
+                strokeWidth={10}
+                showLabel={true} />
+            </div>
+
             {/* Checklist */}
-            <div className="space-y-1">
+            <div className="space-y-2.5">
               {profileItems.map((item, idx) => {
                 const inner = (
                   <>
@@ -630,26 +639,17 @@ export default function Dashboard() {
                   </>
                 );
                 return item.completed ? (
-                  <div key={idx} className="flex items-center gap-3">{inner}</div>
+                  <div key={idx} className="flex items-center gap-3 px-2 py-2.5 rounded-xl bg-white/[0.03] border border-white/5">{inner}</div>
                 ) : (
                   <Link
                     key={idx}
                     to={item.href}
-                    className="flex items-center gap-3 rounded-xl px-2 py-1 -mx-2 hover:bg-white/5 active:bg-white/10 transition-colors"
+                    className="flex items-center gap-3 rounded-xl px-2 py-2.5 border border-white/5 hover:bg-white/5 hover:border-[#E70F72]/20 active:bg-white/10 transition-colors"
                   >
                     {inner}
                   </Link>
                 );
               })}
-            </div>
-            
-            {/* Progress Ring */}
-            <div className="flex items-center justify-center pt-4">
-              <CrossdProgressRing
-                percentage={profileStrength}
-                size={140}
-                strokeWidth={10}
-                showLabel={true} />
             </div>
           </div>
         </motion.div>
