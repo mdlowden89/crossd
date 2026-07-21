@@ -722,19 +722,16 @@ export default function Dashboard() {
             </TooltipProvider>
           </div>
           
-          {/* Metric Cards */}
+          {/* Metric Cards — stacked vertical */}
           <TooltipProvider>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="flex flex-col gap-3">
               {/* Day Streak */}
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
-                  <div className="bg-black/40 rounded-2xl p-4 text-center border border-[#E70F72]/20 cursor-pointer hover:border-orange-500/40 transition-colors">
-                    <Flame className="w-6 h-6 text-orange-500 mx-auto mb-1.5" />
-                    <div className="text-2xl font-bold text-white mb-0.5">{dayStreak}</div>
-                    <div className="text-white/50 text-sm leading-snug">Day Streak</div>
-                    {dayStreak === 0 && (
-                      <div className="mt-2 text-[#E70F72] text-xs font-medium">Log a moment →</div>
-                    )}
+                  <div className="bg-black/40 rounded-2xl py-6 text-center border border-orange-500/40 cursor-pointer hover:border-orange-500/70 transition-colors">
+                    <Flame className="w-7 h-7 text-orange-500 mx-auto mb-3" />
+                    <div className="text-4xl font-bold text-white mb-1">{dayStreak}</div>
+                    <div className="text-white/50 text-sm">Day Streak</div>
                   </div>
                 </TooltipTrigger>
                 <TooltipContent className="p-4 w-64 bg-[#0B0B0B] border-white/10">
@@ -746,7 +743,7 @@ export default function Dashboard() {
                     You've logged moments on <span className="text-orange-400 font-semibold">{dayStreak} consecutive day{dayStreak !== 1 ? 's' : ''}</span>. Keep it going!
                   </p>
                   <p className="text-white/45 text-xs leading-relaxed">
-                    A 7-day streak maxes out your Streak score and boosts your overall Spark Energy. Log at least one moment per day to maintain it.
+                    A 7-day streak maxes out your Streak score and boosts your overall Spark Energy.
                   </p>
                   {dayStreak < 7 && (
                     <div className="mt-2 pt-2 border-t border-white/10">
@@ -759,13 +756,10 @@ export default function Dashboard() {
               {/* Sparks This Week */}
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
-                  <div className="bg-black/40 rounded-2xl p-4 text-center border border-[#E70F72]/20 cursor-pointer hover:border-[#E70F72]/50 transition-colors">
-                    <Sparkles className="w-6 h-6 text-[#E70F72] mx-auto mb-1.5" />
-                    <div className="text-2xl font-bold text-white mb-0.5">{sparksThisWeek}</div>
-                    <div className="text-white/50 text-sm leading-snug">Sparks this week</div>
-                    {sparksThisWeek === 0 && (
-                      <div className="mt-2 text-[#E70F72] text-xs font-medium">Log a moment →</div>
-                    )}
+                  <div className="bg-black/40 rounded-2xl py-6 text-center border border-[#E70F72]/40 cursor-pointer hover:border-[#E70F72]/70 transition-colors">
+                    <Sparkles className="w-7 h-7 text-[#E70F72] mx-auto mb-3" />
+                    <div className="text-4xl font-bold text-white mb-1">{sparksThisWeek}</div>
+                    <div className="text-white/50 text-sm">Sparks this week</div>
                   </div>
                 </TooltipTrigger>
                 <TooltipContent className="p-4 w-64 bg-[#0B0B0B] border-white/10">
@@ -777,7 +771,7 @@ export default function Dashboard() {
                     You've logged <span className="text-[#E70F72] font-semibold">{sparksThisWeek} moment{sparksThisWeek !== 1 ? 's' : ''}</span> in the last 7 days.
                   </p>
                   <p className="text-white/45 text-xs leading-relaxed">
-                    Each moment you log builds your Activity score and adds to your PlacesDNA — making your matches more accurate. Aim for 5+ moments a week for peak visibility.
+                    Aim for 5+ moments a week for peak visibility.
                   </p>
                   {sparksThisWeek < 5 && (
                     <div className="mt-2 pt-2 border-t border-white/10">
@@ -790,10 +784,10 @@ export default function Dashboard() {
               {/* Expiring Moments */}
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
-                  <div className="bg-black/40 rounded-2xl p-4 text-center border border-[#E70F72]/20 cursor-pointer hover:border-blue-500/40 transition-colors">
-                    <Clock className="w-6 h-6 text-blue-500 mx-auto mb-1.5" />
-                    <div className="text-2xl font-bold text-white mb-0.5">{expiringMoments}</div>
-                    <div className="text-white/50 text-sm leading-snug">Expiring Moments</div>
+                  <div className="bg-black/40 rounded-2xl py-6 text-center border border-blue-500/40 cursor-pointer hover:border-blue-500/70 transition-colors">
+                    <Clock className="w-7 h-7 text-blue-500 mx-auto mb-3" />
+                    <div className="text-4xl font-bold text-white mb-1">{expiringMoments}</div>
+                    <div className="text-white/50 text-sm">Expiring Moments</div>
                   </div>
                 </TooltipTrigger>
                 <TooltipContent className="p-4 w-64 bg-[#0B0B0B] border-white/10">
@@ -805,7 +799,7 @@ export default function Dashboard() {
                     <span className="text-blue-400 font-semibold">{expiringMoments} moment{expiringMoments !== 1 ? 's' : ''}</span> {expiringMoments !== 1 ? 'are' : 'is'} older than 7 days and no longer contributing to active crossings.
                   </p>
                   <p className="text-white/45 text-xs leading-relaxed">
-                    Moments power your ability to cross paths with others nearby. Only moments from the last 7 days are active — so keep logging to stay discoverable.
+                    Keep logging to stay discoverable.
                   </p>
                   {expiringMoments > 0 && (
                     <div className="mt-2 pt-2 border-t border-white/10">
