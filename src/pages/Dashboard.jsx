@@ -599,20 +599,7 @@ export default function Dashboard() {
             Complete your profile to attract more compatible matches.
           </p>
 
-          {/* Payoff preview — only show when profile is incomplete */}
-          {profileStrength < 100 && (
-            <div className="flex items-start gap-3 mb-3 px-3 py-2.5 rounded-2xl border border-[#E70F72]/25 bg-[#E70F72]/5">
-              <TrendingUp className="w-4 h-4 text-[#E70F72] mt-0.5 flex-shrink-0" />
-              <div>
-                <p className="text-white/90 text-sm font-medium leading-snug">
-                  Users with complete profiles get <span className="text-[#E70F72] font-bold">3.2× more crossing matches</span>
-                </p>
-                <p className="text-white/45 text-xs mt-0.5">
-                  Profile quality is worth 20% of your Spark Energy score — the biggest single factor in who sees you.
-                </p>
-              </div>
-            </div>
-          )}
+
           
           <div className="space-y-4">
             {/* Progress Ring */}
