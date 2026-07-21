@@ -20,6 +20,7 @@ import SparkChanceMeter from '@/components/dashboard/SparkChanceMeter';
 import TopPicksCard from '@/components/dashboard/TopPicksCard';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import MetricCards from '@/components/dashboard/MetricCards';
+import SparkEnergyBar from '@/components/dashboard/SparkEnergyBar';
 import { Progress } from '@/components/ui/progress';
 
 export default function Dashboard() {
@@ -660,71 +661,8 @@ export default function Dashboard() {
             Your weekly engagement fuels your spark. Keep it high for better visibility!
           </p>
           
-          {/* Energy Bar */}
-          <div className="mb-3">
-            <TooltipProvider>
-              <Tooltip delayDuration={100}>
-                <TooltipTrigger asChild>
-                  <div className="cursor-help">
-                    <div className="flex items-center justify-between text-xs mb-2">
-                      <span className="text-white/60">
-                        <span className="text-[#E70F72] font-bold">{energyData.score}%</span> toward this week's Spark goal
-                      </span>
-                      <span className="text-white/40">Goal: 80%</span>
-                    </div>
-                    <div className="relative h-3 bg-white/10 rounded-full overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${energyData.score}%` }}
-                        transition={{ duration: 1, ease: "easeOut" }}
-                        className="h-full bg-[#E70F72] rounded-full" />
-                      {/* 80% milestone marker */}
-                      <div className="absolute top-0 bottom-0 w-0.5 bg-white/40" style={{ left: '80%' }} />
-                    </div>
-                    <div className="flex items-center justify-between mt-1.5">
-                      <span className="text-white/35 text-xs">
-                        {energyData.score >= 80
-                          ? '🎯 Spark goal reached — you\'re fully visible this week!'
-                          : `Log ${5 - Math.min(sparksThisWeek, 5)} more moment${5 - Math.min(sparksThisWeek, 5) !== 1 ? 's' : ''} to boost your score`}
-                      </span>
-                      <span className="text-white/30 text-xs">↑ 80% = peak visibility</span>
-                    </div>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent className="p-3 w-72 bg-[#0B0B0B] border-white/10">
-                  <h4 className="font-semibold mb-2 text-white text-sm">Energy Breakdown</h4>
-                  <div className="space-y-2.5">
-                    {[
-                      { icon: Activity, label: 'Activity', value: energyData.components.activity, color: '#E70F72', desc: 'Moments logged in the last 7 days.' },
-                      { icon: Flame, label: 'Streak', value: energyData.components.streak, color: '#F97316', desc: 'Consecutive daily logging streak.' },
-                      { icon: ShieldCheck, label: 'Profile Quality', value: energyData.components.profileQuality, color: '#22C55E', desc: 'Photos, bio, prompts, MBTI & verification.' },
-                      { icon: Sparkles, label: 'Resonance', value: energyData.components.resonance, color: '#A855F7', desc: 'Consistency of your PlacesDNA vibe.' },
-                      { icon: Clock, label: 'Freshness', value: energyData.components.freshness, color: '#3B82F6', desc: 'How recently you were active.' },
-                    ].map(({ icon: Icon, label, value, color, desc }) => (
-                      <div key={label}>
-                        <div className="flex items-center gap-2 text-xs mb-0.5">
-                          <Icon className="w-3.5 h-3.5 flex-shrink-0" style={{ color }} />
-                          <span className="flex-1 text-white/90 font-medium">{label}</span>
-                          <div className="w-20 h-1.5 bg-white/10 rounded-full overflow-hidden">
-                            <div className="h-full rounded-full" style={{ width: `${value}%`, backgroundColor: color }} />
-                          </div>
-                          <span className="font-semibold w-8 text-right" style={{ color }}>{value}%</span>
-                        </div>
-                        <p className="text-white/35 text-xs ml-5 leading-snug">{desc}</p>
-                      </div>
-                    ))}
-                    {energyData.components.boosts > 0 && (
-                      <div className="flex items-center gap-3 text-sm">
-                        <TrendingUp className="w-4 h-4 text-green-400 flex-shrink-0" />
-                        <span className="flex-1 text-white/90">Boosts</span>
-                        <span className="font-semibold text-green-400">+{energyData.components.boosts}</span>
-                      </div>
-                    )}
-                  </div>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
+          {/* Energy Bar — click to expand breakdown */}
+          <SparkEnergyBar energyData={energyData} sparksThisWeek={sparksThisWeek} />
           
           {/* Metric Cards — click to expand */}
           <MetricCards dayStreak={dayStreak} sparksThisWeek={sparksThisWeek} expiringMoments={expiringMoments} />
