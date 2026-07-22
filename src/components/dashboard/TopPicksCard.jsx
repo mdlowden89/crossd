@@ -59,16 +59,39 @@ function PickRow({ venue, rank, isLocked, profile, moments }) {
         onClick={() => !isLocked && setOpen(v => !v)}
       >
         {/* Rank badge */}
-        <div
-          className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-black text-xs"
-          style={{
-            background: isLocked ? 'rgba(231,15,114,0.08)' : `${rankColor}18`,
-            border: `1.5px solid ${isLocked ? 'rgba(231,15,114,0.3)' : rankColor + '50'}`,
-            color: isLocked ? '#E70F72' : rankColor,
-          }}
-        >
-          {rank <= 3 && !isLocked ? RANK_MEDALS[rank - 1] : rank}
-        </div>
+        {rank <= 3 && !isLocked ? (
+          <div className="relative flex-shrink-0 w-10 h-10">
+            {/* Medal circle background */}
+            <div
+              className="w-10 h-10 rounded-full flex items-center justify-center text-xl"
+              style={{
+                background: rank === 1 ? '#2a1f00' : rank === 2 ? '#1a1a1a' : '#1a0f00',
+                border: `2px solid ${rankColor}`,
+                boxShadow: `0 0 8px ${rankColor}60`,
+              }}
+            >
+              🏅
+            </div>
+            {/* Number badge */}
+            <div
+              className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-black"
+              style={{ background: rankColor, color: rank === 2 ? '#000' : '#000' }}
+            >
+              {rank}
+            </div>
+          </div>
+        ) : (
+          <div
+            className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-black text-xs"
+            style={{
+              background: isLocked ? 'rgba(231,15,114,0.08)' : `${rankColor}18`,
+              border: `1.5px solid ${isLocked ? 'rgba(231,15,114,0.3)' : rankColor + '50'}`,
+              color: isLocked ? '#E70F72' : rankColor,
+            }}
+          >
+            {rank}
+          </div>
+        )}
 
         {/* Icon — always shown, dimmed when locked */}
         <span className={`text-xl flex-shrink-0 ${isLocked ? 'opacity-40' : ''}`}>{venue.icon}</span>
