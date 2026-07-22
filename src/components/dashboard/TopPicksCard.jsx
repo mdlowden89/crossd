@@ -59,7 +59,7 @@ function PickRow({ venue, rank, isLocked, profile, moments }) {
         onClick={() => !isLocked && setOpen(v => !v)}
       >
         {/* Rank badge */}
-        {rank <= 3 && !isLocked ? (
+        {rank <= 3 ? (
           <div className="relative flex-shrink-0 w-10 h-10">
             {/* Medal circle background */}
             <div
