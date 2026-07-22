@@ -176,14 +176,11 @@ export default function CityPulseCard({ moments = [], profile = null, isNew = tr
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="relative overflow-hidden rounded-3xl p-6 border border-[#E70F72]/30"
-      style={{ background: 'linear-gradient(135deg, #0d0218 0%, #0B0B0B 100%)', boxShadow: '0 0 30px rgba(231,15,114,0.12)' }}
+      className="relative overflow-hidden rounded-3xl p-5 border border-[#E70F72]/30"
+      style={{ background: '#0B0B0B', boxShadow: '0 0 30px rgba(231,15,114,0.10)' }}
     >
-      {/* Shimmer bg */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at 70% 30%, #E70F72 0%, transparent 60%)' }} />
-
-      <div className="flex items-start justify-between mb-4">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-1">
         <div className="flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-[#E70F72]" />
           <span className="text-white font-bold text-lg">Your City Pulse</span>
@@ -191,71 +188,74 @@ export default function CityPulseCard({ moments = [], profile = null, isNew = tr
             <span className="text-xs bg-[#E70F72] text-white px-2 py-0.5 rounded-full font-semibold">NEW</span>
           )}
         </div>
-      </div>
-
-      <div className="flex items-center justify-between mb-5">
-        <p className="text-white/50 text-xs leading-relaxed">
-          {activePulse.fromSetup
-            ? 'Your City Pulse maps where you hang out so Crossd can find people who cross paths with you in the same spots. Log moments to make it more accurate.'
-            : 'A snapshot of your real-world patterns — the zones, times, and vibes that shape who you\'re likely to cross paths with.'}
-        </p>
-        <button
-          onClick={() => navigate('/city-pulse')}
-          className="flex-shrink-0 ml-3 text-[10px] font-semibold text-[#E70F72] border border-[#E70F72]/30 px-2.5 py-1 rounded-full hover:bg-[#E70F72]/10 transition-colors whitespace-nowrap"
-        >
-          View this week →
+        <button onClick={() => navigate('/city-pulse')} className="text-white/30 hover:text-white/60 transition-colors">
+          <span className="text-lg">›</span>
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <p className="text-white/45 text-sm mb-4 leading-snug">
+        {activePulse.fromSetup
+          ? 'Based on your setup — log moments to refine your pulse.'
+          : 'Weekly recap of where your vibe shows up.'}
+      </p>
+
+      <div className="flex flex-col gap-3">
         {/* Top Zones */}
         {activePulse.topZones.length > 0 && (
-          <div className="bg-black/40 rounded-2xl p-3 border border-white/10">
+          <div className="bg-black/60 rounded-2xl p-4 border border-white/8">
             <div className="flex items-center gap-1.5 mb-2">
               <MapPin className="w-3.5 h-3.5 text-[#E70F72]" />
-              <span className="text-white/50 text-xs">Your Zones</span>
+              <span className="text-white/45 text-sm">Top Zones</span>
               <InfoPopover text={INFO.zones} />
             </div>
             {activePulse.topZones.map((z, i) => (
-              <p key={i} className="text-white text-sm font-semibold truncate">{z}</p>
+              <p key={i} className="text-white text-lg font-bold leading-tight">{z}</p>
             ))}
           </div>
         )}
 
         {/* Peak Time */}
-        <div className="bg-black/40 rounded-2xl p-3 border border-white/10">
+        <div className="bg-black/60 rounded-2xl p-4 border border-white/8">
           <div className="flex items-center gap-1.5 mb-2">
             <Clock className="w-3.5 h-3.5 text-amber-400" />
-            <span className="text-white/50 text-xs">Peak Time</span>
+            <span className="text-white/45 text-sm">Peak Time</span>
             <InfoPopover text={INFO.peak} />
           </div>
-          <p className="text-white text-sm font-semibold">{activePulse.peakLabel}</p>
+          <p className="text-white text-lg font-bold">{activePulse.peakLabel}</p>
         </div>
 
         {/* PlacesDNA */}
         {activePulse.topArchetypes.length > 0 && (
-          <div className={`bg-black/40 rounded-2xl p-3 border border-white/10 ${activePulse.topZones.length > 0 ? 'col-span-2' : 'col-span-2'}`}>
-            <div className="flex items-center gap-1.5 mb-2">
-              <span className="text-white/50 text-xs">Your PlacesDNA</span>
+          <div className="bg-black/60 rounded-2xl p-4 border border-white/8">
+            <div className="flex items-center gap-1.5 mb-3">
+              <span className="text-white/45 text-sm">Your PlacesDNA this week</span>
               <InfoPopover text={INFO.dna} />
             </div>
-            <div className="flex gap-2 flex-wrap">
+            <div className="flex flex-col gap-2">
               {activePulse.topArchetypes.map((arch, i) => {
                 const info = getArchetypeInfo(arch);
                 return (
-                  <span key={i} className="text-xs px-2.5 py-1 rounded-full font-semibold"
-                    style={{ backgroundColor: `${info.color}20`, color: info.color, border: `1px solid ${info.color}40` }}>
+                  <span key={i} className="inline-flex items-center gap-2 self-start text-sm px-4 py-2 rounded-full font-bold"
+                    style={{ backgroundColor: `${info.color}25`, color: info.color, border: `1px solid ${info.color}50` }}>
                     {info.emoji} {info.label}
                   </span>
                 );
               })}
-              <span className="text-xs px-2.5 py-1 rounded-full bg-white/5 text-white/50 border border-white/10">
+              <span className="inline-flex items-center gap-2 self-start text-sm px-4 py-2 rounded-full bg-white/8 text-white/55 border border-white/12 font-medium">
                 ⚡ Best: {activePulse.sparkWindow}
               </span>
             </div>
           </div>
         )}
       </div>
+
+      {/* Footer CTA */}
+      <button
+        onClick={() => navigate('/city-pulse')}
+        className="w-full mt-4 text-sm text-white/40 hover:text-white/70 transition-colors text-center"
+      >
+        View this week →
+      </button>
     </motion.div>
   );
 }
