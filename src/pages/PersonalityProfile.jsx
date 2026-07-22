@@ -252,36 +252,36 @@ export default function PersonalityProfile() {
 
 
         {/* Strengths & Growth */}
-        <div className="rounded-3xl border border-white/10 bg-[#0d0d0d] p-6">
-          <div className="grid grid-cols-2 gap-6 mb-6">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <Sparkles className="w-4 h-4 text-green-400" />
-                <h3 className="text-white font-bold">Strengths</h3>
-              </div>
-              <div className="space-y-2.5">
-                {description.strengths.map((s, i) => (
-                  <div key={i} className="flex items-center gap-2 text-sm text-white/70">
-                    <div className="w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0" />{s}
-                  </div>
-                ))}
-              </div>
+        <div className="rounded-3xl border border-white/10 bg-[#0d0d0d] p-6 space-y-5">
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <Sparkles className="w-4 h-4 text-green-400" />
+              <h3 className="text-white font-bold">Strengths</h3>
             </div>
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <Zap className="w-4 h-4 text-orange-400" />
-                <h3 className="text-white font-bold">Growth Areas</h3>
-              </div>
-              <div className="space-y-2.5">
-                {description.weaknesses.map((w, i) => (
-                  <div key={i} className="flex items-center gap-2 text-sm text-white/70">
-                    <div className="w-1.5 h-1.5 rounded-full bg-orange-400 flex-shrink-0" />{w}
-                  </div>
-                ))}
-              </div>
+            <div className="space-y-2">
+              {description.strengths.map((s, i) => (
+                <div key={i} className="flex items-center gap-3 text-sm text-white/70">
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0" />
+                  <span>{s}</span>
+                </div>
+              ))}
             </div>
           </div>
-
+          <div className="h-px bg-white/6" />
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <Zap className="w-4 h-4 text-orange-400" />
+              <h3 className="text-white font-bold">Growth Areas</h3>
+            </div>
+            <div className="space-y-2">
+              {description.weaknesses.map((w, i) => (
+                <div key={i} className="flex items-center gap-3 text-sm text-white/70">
+                  <div className="w-1.5 h-1.5 rounded-full bg-orange-400 flex-shrink-0" />
+                  <span>{w}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         <PersonalityStrengthBar mbtiType={mbtiType} quizResults={quizResults} />
