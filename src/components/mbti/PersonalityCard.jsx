@@ -101,14 +101,22 @@ export default function PersonalityCard({ profile }) {
   const questionCount = answerValues.length;
   const quizLabel = questionCount >= 32 ? `Deep (${questionCount}Q)` : questionCount > 0 ? `Core (${questionCount}Q)` : 'Core (16Q)';
 
+  // Calculate confidence the same way PersonalityStrengthBar does:
+  // for each dimension, % of answers that went to the winning letter, averaged across 4 dimensions.
   let confidence = null;
   if (questionCount > 0) {
+    const [l0, l1, l2, l3] = mbtiType.split('');
+    const pairs = [
+      { win: l0, lose: l0 === 'I' ? 'E' : 'I' },
+      { win: l1, lose: l1 === 'N' ? 'S' : 'N' },
+      { win: l2, lose: l2 === 'F' ? 'T' : 'F' },
+      { win: l3, lose: l3 === 'P' ? 'J' : 'P' },
+    ];
     const counts = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
     answerValues.forEach(v => { if (counts[v] !== undefined) counts[v]++; });
-    const pairs = [['E','I'], ['S','N'], ['T','F'], ['J','P']];
-    const strengths = pairs.map(([a, b]) => {
-      const total = counts[a] + counts[b];
-      return total > 0 ? Math.abs(counts[a] - counts[b]) / total : 0;
+    const strengths = pairs.map(({ win, lose }) => {
+      const total = counts[win] + counts[lose];
+      return total > 0 ? counts[win] / total : 0;
     });
     confidence = Math.round((strengths.reduce((s, v) => s + v, 0) / strengths.length) * 100);
   }
