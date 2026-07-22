@@ -95,18 +95,23 @@ export default function PersonalityCard({ profile }) {
   const description = MBTI_FULL_DESCRIPTIONS[mbtiType];
   if (!description) return null;
 
-  // Calculate confidence from quiz dimension scores
-  const quizResults = profile?.mbti_quiz_results || {};
-  const questionCount = quizResults.question_count || (quizResults.answers ? Object.keys(quizResults.answers).length : null);
-  const quizLabel = questionCount && questionCount >= 40 ? `Deep (${questionCount}Q)` : questionCount ? `Core (${questionCount}Q)` : 'Core (24Q)';
+  // Calculate confidence from raw quiz answers (stored as {questionId: "E"/"I"/"S"/etc})
+  const quizAnswers = profile?.mbti_quiz_results || {};
+  const answerValues = Object.values(quizAnswers).filter(v => typeof v === 'string' && v.length === 1);
+  const questionCount = answerValues.length;
+  const quizLabel = questionCount >= 32 ? `Deep (${questionCount}Q)` : questionCount > 0 ? `Core (${questionCount}Q)` : 'Core (16Q)';
 
-  // Confidence = average absolute strength of each dimension (0..1 → 0..100%)
-  const dims = ['E_I', 'S_N', 'T_F', 'J_P'];
-  const dimScores = dims.map(d => Math.abs(quizResults[d] ?? quizResults[d.toLowerCase()] ?? 0));
-  const hasScores = dimScores.some(s => s > 0);
-  const confidence = hasScores
-    ? Math.round((dimScores.reduce((a, b) => a + b, 0) / dimScores.length) * 100)
-    : null;
+  let confidence = null;
+  if (questionCount > 0) {
+    const counts = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+    answerValues.forEach(v => { if (counts[v] !== undefined) counts[v]++; });
+    const pairs = [['E','I'], ['S','N'], ['T','F'], ['J','P']];
+    const strengths = pairs.map(([a, b]) => {
+      const total = counts[a] + counts[b];
+      return total > 0 ? Math.abs(counts[a] - counts[b]) / total : 0;
+    });
+    confidence = Math.round((strengths.reduce((s, v) => s + v, 0) / strengths.length) * 100);
+  }
 
   return (
     <>
