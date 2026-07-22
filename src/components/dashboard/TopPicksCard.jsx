@@ -281,9 +281,9 @@ export default function TopPicksCard({ profile, moments = [] }) {
       {!isPremium && (
         <div className="px-6 pb-6">
           <Link to="/CrossdPlus">
-            <button className="w-full py-2.5 rounded-xl bg-[#E70F72]/10 border border-[#E70F72]/30 text-[#E70F72] text-xs font-semibold hover:bg-[#E70F72]/20 transition-colors flex items-center justify-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5" />
-              Unlock your top 3 &amp; all 10 picks with Crossd+
+            <button className="w-full py-3.5 rounded-full bg-[#E70F72]/15 border border-[#E70F72]/50 text-[#E70F72] text-sm font-semibold hover:bg-[#E70F72]/25 transition-colors flex items-center justify-center gap-2">
+              <Sparkles className="w-4 h-4" />
+              Unlock all 10 picks with Crossd+
             </button>
           </Link>
         </div>
