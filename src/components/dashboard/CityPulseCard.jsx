@@ -195,8 +195,8 @@ export default function CityPulseCard({ moments = [], profile = null, isNew = tr
 
       <p className="text-white/45 text-sm mb-4 leading-snug">
         {activePulse.fromSetup
-          ? 'Your City Pulse maps where you hang out so Crossd can find people who cross paths with you in the same spots. Log moments to make it more accurate.'
-          : 'A snapshot of your real-world patterns — the zones, times, and vibes that shape who you\'re likely to cross paths with.'}
+          ? 'City Pulse looks at your personality type and the places you frequent to surface your most compatible matches. Log moments to sharpen your profile.'
+          : 'Based on your personality and the places you visit, this shows the zones and vibes where your most compatible matches are likely to be.'}
       </p>
 
       <div className="flex flex-col gap-3">
