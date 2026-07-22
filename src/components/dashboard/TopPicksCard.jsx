@@ -178,8 +178,11 @@ export default function TopPicksCard({ profile, moments = [] }) {
 
   const targetTypeInfo = compatibleType ? TYPE_DESCRIPTIONS[compatibleType] : null;
 
-  const visible = isPremium ? picks : picks.slice(0, 7);
-  const lockedFrom = isPremium ? 999 : 6;
+  // Free users see picks 4–6 (indices 3–5) — good enough to entice, not so good to replace premium.
+  // Premium users see all 10.
+  // For free users we show all 10 rows but lock picks 1–3 and 7–10.
+  const visible = picks; // always render all 10
+  const isLocked = (rank) => !isPremium && (rank <= 3 || rank >= 7);
 
   return (
     <div
@@ -212,7 +215,7 @@ export default function TopPicksCard({ profile, moments = [] }) {
           <div className="mt-3 flex items-center justify-between gap-2 bg-[#E70F72]/8 border border-[#E70F72]/20 rounded-xl px-3 py-2">
             <div className="flex items-center gap-1.5">
               <Lock className="w-3 h-3 text-[#E70F72]" />
-              <span className="text-white/55 text-xs">Picks 6–10 + full breakdown with <span className="text-[#E70F72] font-semibold">Crossd+</span></span>
+              <span className="text-white/55 text-xs">Picks 1–3 &amp; 7–10 + full breakdown with <span className="text-[#E70F72] font-semibold">Crossd+</span></span>
             </div>
             <Link to="/CrossdPlus" className="text-[10px] font-bold text-[#E70F72] hover:text-[#E70F72]/80 whitespace-nowrap">
               Unlock →
@@ -236,7 +239,7 @@ export default function TopPicksCard({ profile, moments = [] }) {
             key={venue.label}
             venue={venue}
             rank={i + 1}
-            isLocked={i + 1 >= lockedFrom && !isPremium}
+            isLocked={isLocked(i + 1)}
             profile={profile}
             moments={moments}
           />
@@ -249,7 +252,7 @@ export default function TopPicksCard({ profile, moments = [] }) {
           <Link to="/CrossdPlus">
             <button className="w-full py-2.5 rounded-xl bg-[#E70F72]/10 border border-[#E70F72]/30 text-[#E70F72] text-xs font-semibold hover:bg-[#E70F72]/20 transition-colors flex items-center justify-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5" />
-              Unlock all 10 picks with Crossd+
+              Unlock your top 3 &amp; all 10 picks with Crossd+
             </button>
           </Link>
         </div>
