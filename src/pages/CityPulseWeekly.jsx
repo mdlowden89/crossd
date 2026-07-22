@@ -209,7 +209,7 @@ export default function CityPulseWeekly() {
       <div className="px-4 pt-5 pb-4">
         <div className="flex items-start gap-3 mb-1">
           <button
-            onClick={() => navigate('/', { state: { scrollTo: 'city-pulse' } })}
+            onClick={() => navigate('/Dashboard', { state: { scrollTo: 'city-pulse' } })}
             className="w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center flex-shrink-0 mt-0.5 hover:bg-white/20 transition-colors"
           >
             <ChevronLeft className="w-5 h-5 text-white" />
