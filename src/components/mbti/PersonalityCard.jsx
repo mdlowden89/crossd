@@ -120,14 +120,15 @@ export default function PersonalityCard({ profile }) {
               <Sparkles className="w-3 h-3 text-white/40" />
               <span className="text-white/40 text-xs tracking-wide">Verified Result</span>
             </div>
-            {confidence !== null && (
-              <p className="text-white/25 text-[10px] mt-0.5 tracking-wide">
-                Confidence {confidence}% · {quizLabel}
-              </p>
-            )}
+
           </div>
           <div className="text-right">
             <p className="text-white/25 text-xs tracking-widest uppercase">Type-ID · {mbtiType}</p>
+            {confidence !== null && (
+              <p className="text-white/30 text-[10px] mt-0.5 tracking-wide">
+                Confidence {confidence}% · {quizLabel}
+              </p>
+            )}
           </div>
         </div>
 
