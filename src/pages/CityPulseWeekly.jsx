@@ -67,7 +67,7 @@ function useWindowMoments(allMoments, tab) {
 
 export default function CityPulseWeekly() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const navLocation = useLocation();
   const [activeTab, setActiveTab] = useState('This week');
   const [expandedZone, setExpandedZone] = useState(null);
   const [expandedDna, setExpandedDna] = useState(null);
@@ -207,16 +207,21 @@ export default function CityPulseWeekly() {
 
       {/* Header */}
       <div className="px-4 pt-5 pb-4">
-        <div className="flex items-center gap-3 mb-1">
-          <button onClick={() => { if (location.state?.from === 'dashboard') { navigate('/', { state: { scrollTo: 'city-pulse' } }); } else { navigate(-1); } }} className="w-9 h-9 rounded-full bg-white/8 flex items-center justify-center flex-shrink-0">
+        <div className="flex items-start gap-3 mb-1">
+          <button
+            onClick={() => { if (navLocation.state?.from === 'dashboard') { navigate('/', { state: { scrollTo: 'city-pulse' } }); } else { navigate(-1); } }}
+            className="w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center flex-shrink-0 mt-0.5 hover:bg-white/20 transition-colors"
+          >
             <ChevronLeft className="w-5 h-5 text-white" />
           </button>
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-6 h-6 text-[#E70F72]" />
-            <h1 className="text-white font-bold text-2xl">City Pulse Insights</h1>
+          <div>
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-6 h-6 text-[#E70F72]" />
+              <h1 className="text-white font-bold text-2xl">City Pulse Insights</h1>
+            </div>
+            <p className="text-white/45 text-sm mt-0.5">A recap of where you've been and what it says about your vibe.</p>
           </div>
         </div>
-        <p className="text-white/45 text-sm ml-12">A recap of where you've been and what it says about your vibe.</p>
       </div>
 
       {/* Tab bar */}
