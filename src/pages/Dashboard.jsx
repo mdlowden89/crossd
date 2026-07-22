@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import {
   Sparkles, CheckCircle2, Circle, Flame, Clock,
@@ -26,6 +26,14 @@ import { Progress } from '@/components/ui/progress';
 export default function Dashboard() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.scrollTo) {
+      const el = document.getElementById(location.state.scrollTo);
+      if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 300);
+    }
+  }, [location.state]);
 
   useEffect(() => {
     base44.auth.me().then(setUser);
@@ -669,7 +677,7 @@ export default function Dashboard() {
         </motion.div>
 
         {/* City Pulse Card */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+        <motion.div id="city-pulse" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
           <CityPulseCard moments={moments} profile={profile} isNew={true} />
         </motion.div>
 

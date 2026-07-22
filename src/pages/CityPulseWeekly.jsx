@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
 import { ChevronLeft, MapPin, Sparkles, Clock, Zap, Lightbulb } from 'lucide-react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { getArchetypeInfo } from '@/components/spark/placesDnaEngine';
 
 const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -67,6 +67,7 @@ function useWindowMoments(allMoments, tab) {
 
 export default function CityPulseWeekly() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState('This week');
   const [expandedZone, setExpandedZone] = useState(null);
   const [expandedDna, setExpandedDna] = useState(null);
@@ -207,7 +208,7 @@ export default function CityPulseWeekly() {
       {/* Header */}
       <div className="px-4 pt-5 pb-4">
         <div className="flex items-center gap-3 mb-1">
-          <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-full bg-white/8 flex items-center justify-center flex-shrink-0">
+          <button onClick={() => { if (location.state?.from === 'dashboard') { navigate('/', { state: { scrollTo: 'city-pulse' } }); } else { navigate(-1); } }} className="w-9 h-9 rounded-full bg-white/8 flex items-center justify-center flex-shrink-0">
             <ChevronLeft className="w-5 h-5 text-white" />
           </button>
           <div className="flex items-center gap-2">

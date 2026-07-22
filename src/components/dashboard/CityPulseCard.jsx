@@ -188,7 +188,7 @@ export default function CityPulseCard({ moments = [], profile = null, isNew = tr
             <span className="text-xs bg-[#E70F72] text-white px-2 py-0.5 rounded-full font-semibold">NEW</span>
           )}
         </div>
-        <button onClick={() => navigate('/city-pulse')} className="text-white/30 hover:text-white/60 transition-colors">
+        <button onClick={() => navigate('/city-pulse', { state: { from: 'dashboard' } })} className="text-white/30 hover:text-white/60 transition-colors">
           <span className="text-lg">›</span>
         </button>
       </div>
@@ -251,7 +251,7 @@ export default function CityPulseCard({ moments = [], profile = null, isNew = tr
 
       {/* Footer CTA */}
       <button
-        onClick={() => navigate('/city-pulse')}
+        onClick={() => navigate('/city-pulse', { state: { from: 'dashboard' } })}
         className="w-full mt-4 text-sm text-white/40 hover:text-white/70 transition-colors text-center"
       >
         View this week →
