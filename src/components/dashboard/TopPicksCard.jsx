@@ -53,7 +53,7 @@ function PickRow({ venue, rank, isLocked, profile, moments }) {
   const bestTime = TIME_LABELS[venue.bestTimes?.[0]] || TIME_LABELS.evening;
 
   return (
-    <div className={`transition-all ${isLocked ? 'opacity-50 pointer-events-none select-none' : ''}`}>
+    <div className="transition-all">
       <button
         className="w-full text-left flex items-center gap-3 py-2.5 px-4 rounded-2xl hover:bg-white/5 active:bg-white/8 transition-colors"
         onClick={() => !isLocked && setOpen(v => !v)}
@@ -61,40 +61,48 @@ function PickRow({ venue, rank, isLocked, profile, moments }) {
         {/* Rank badge */}
         <div
           className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-black text-xs"
-          style={{ background: `${rankColor}18`, border: `1.5px solid ${rankColor}50`, color: rankColor }}
+          style={{
+            background: isLocked ? 'rgba(231,15,114,0.08)' : `${rankColor}18`,
+            border: `1.5px solid ${isLocked ? 'rgba(231,15,114,0.3)' : rankColor + '50'}`,
+            color: isLocked ? '#E70F72' : rankColor,
+          }}
         >
-          {rank <= 3 ? RANK_MEDALS[rank - 1] : rank}
+          {rank <= 3 && !isLocked ? RANK_MEDALS[rank - 1] : rank}
         </div>
 
-        {/* Icon */}
-        <span className="text-xl flex-shrink-0">{venue.icon}</span>
+        {/* Icon — always shown, dimmed when locked */}
+        <span className={`text-xl flex-shrink-0 ${isLocked ? 'opacity-40' : ''}`}>{venue.icon}</span>
 
         {/* Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-baseline justify-between gap-2 mb-1">
-            <span className="text-white font-semibold text-sm truncate">{venue.label}</span>
-            <span className="text-[10px] text-white/35 flex-shrink-0">{bestTime.icon} {bestTime.label}</span>
+            {isLocked
+              ? <span className="text-white/30 font-semibold text-sm">Locked</span>
+              : <span className="text-white font-semibold text-sm truncate">{venue.label}</span>
+            }
+            <span className="text-[10px] text-white/30 flex-shrink-0">{bestTime.icon} {bestTime.label}</span>
           </div>
           {/* Match bar */}
           <div className="flex items-center gap-2">
             <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
-                animate={{ width: `${Math.round(venue.score * 100)}%` }}
+                animate={{ width: isLocked ? `${Math.round(venue.score * 100)}%` : `${Math.round(venue.score * 100)}%` }}
                 transition={{ duration: 0.7, ease: 'easeOut', delay: rank * 0.03 }}
                 className="h-full rounded-full"
-                style={{ backgroundColor: barColor }}
+                style={{ backgroundColor: isLocked ? 'rgba(231,15,114,0.25)' : barColor }}
               />
             </div>
-            <span className="text-[10px] font-bold tabular-nums flex-shrink-0" style={{ color: barColor }}>
-              {Math.round(venue.score * 100)}%
-            </span>
+            {isLocked
+              ? <span className="text-[10px] tabular-nums flex-shrink-0 text-white/20">—</span>
+              : <span className="text-[10px] font-bold tabular-nums flex-shrink-0" style={{ color: barColor }}>{Math.round(venue.score * 100)}%</span>
+            }
           </div>
         </div>
 
         {!isLocked
           ? <ChevronRight className={`w-3.5 h-3.5 flex-shrink-0 text-white/20 transition-transform ${open ? 'rotate-90' : ''}`} />
-          : <Lock className="w-3.5 h-3.5 flex-shrink-0 text-[#E70F72]/50" />
+          : <Lock className="w-3.5 h-3.5 flex-shrink-0 text-white/20" />
         }
       </button>
 
