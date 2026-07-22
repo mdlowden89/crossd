@@ -195,8 +195,8 @@ export default function CityPulseCard({ moments = [], profile = null, isNew = tr
 
       <p className="text-white/45 text-sm mb-4 leading-snug">
         {activePulse.fromSetup
-          ? 'City Pulse looks at your personality type and the places you frequent to surface your most compatible matches. Log moments to sharpen your profile.'
-          : 'Based on your personality and the places you visit, this shows the zones and vibes where your most compatible matches are likely to be.'}
+          ? 'City Pulse is your personal Spark Navigator—mapping your social rhythm, favourite places, PlacesDNA, and best spark windows to help guide you towards more meaningful real-world connections.'
+          : 'City Pulse is your personal Spark Navigator—mapping your social rhythm, favourite places, PlacesDNA, and best spark windows to help guide you towards more meaningful real-world connections.'}
       </p>
 
       <div className="flex flex-col gap-3">
