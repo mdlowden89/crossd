@@ -249,19 +249,7 @@ export default function PersonalityProfile() {
           )}
         </div>
 
-        {/* Hero repeat for full profile sections */}
-        <div className="rounded-3xl border border-[#E70F72]/20 bg-[#0d0d0d] p-6 flex flex-col items-center text-center">
-          <div className="w-16 h-16 rounded-full bg-[#E70F72]/15 border border-[#E70F72]/25 flex items-center justify-center mb-4">
-            <span className="text-3xl">{description.emoji}</span>
-          </div>
-          <h2 className="text-2xl font-bold text-white mb-2">{description.title}</h2>
-          <p className="text-[#E70F72] text-3xl font-black tracking-widest mb-4">{mbtiType}</p>
-          <div className="flex flex-wrap gap-2 justify-center">
-            {description.keyTraits.map((trait, i) => (
-              <span key={i} className="px-4 py-1.5 rounded-full text-sm border border-[#E70F72]/30 text-[#E70F72] bg-[#E70F72]/10">{trait}</span>
-            ))}
-          </div>
-        </div>
+
 
         {/* Strengths & Growth */}
         <div className="rounded-3xl border border-white/10 bg-[#0d0d0d] p-6">
