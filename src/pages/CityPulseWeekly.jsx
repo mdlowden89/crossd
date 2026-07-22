@@ -212,7 +212,7 @@ export default function CityPulseWeekly() {
           </button>
           <div className="flex items-center gap-2">
             <Sparkles className="w-6 h-6 text-[#E70F72]" />
-            <h1 className="text-white font-bold text-2xl">City Pulse — This week</h1>
+            <h1 className="text-white font-bold text-2xl">City Pulse Insights</h1>
           </div>
         </div>
         <p className="text-white/45 text-sm ml-12">A recap of where you've been and what it says about your vibe.</p>
