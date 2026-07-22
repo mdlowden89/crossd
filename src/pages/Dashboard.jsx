@@ -21,7 +21,6 @@ import TopPicksCard from '@/components/dashboard/TopPicksCard';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import MetricCards from '@/components/dashboard/MetricCards';
 import SparkEnergyBar from '@/components/dashboard/SparkEnergyBar';
-import CrossingsHeatmap from '@/components/dashboard/CrossingsHeatmap';
 import { Progress } from '@/components/ui/progress';
 
 export default function Dashboard() {
@@ -672,11 +671,6 @@ export default function Dashboard() {
         {/* City Pulse Card */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
           <CityPulseCard moments={moments} profile={profile} isNew={true} />
-        </motion.div>
-
-        {/* Crossings Heatmap */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.33 }}>
-          <CrossingsHeatmap moments={moments} />
         </motion.div>
 
         {/* Spark Chance Meter */}
