@@ -200,15 +200,16 @@ export default function PersonalityProfile() {
 
           <div
             className="mx-4 mb-4 rounded-2xl py-8 px-6 flex flex-col items-center text-center"
-            style={{ background: 'radial-gradient(ellipse at 50% 30%, rgba(231,15,114,0.18) 0%, #000 70%)' }}
+            style={{ background: 'radial-gradient(ellipse at 50% 20%, rgba(231,15,114,0.45) 0%, rgba(231,15,114,0.12) 35%, #000 70%)' }}
           >
-            <div className="w-20 h-20 rounded-full bg-[#E70F72]/15 border border-[#E70F72]/30 flex items-center justify-center mb-4">
+            <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4"
+                 style={{ background: 'radial-gradient(circle, rgba(231,15,114,0.5) 0%, rgba(231,15,114,0.2) 50%, transparent 100%)', boxShadow: '0 0 40px rgba(231,15,114,0.5), 0 0 80px rgba(231,15,114,0.2)' }}>
               <span className="text-4xl">{description.emoji}</span>
             </div>
             <h2 className="text-2xl font-bold text-white mb-3">{description.title}</h2>
             <div className="bg-black/60 rounded-xl px-6 py-2 mb-4 flex items-center gap-3">
               <div className="w-6 h-px bg-[#E70F72]" />
-              <span className="text-[#E70F72] text-3xl font-black tracking-widest">{mbtiType}</span>
+              <span className="text-[#E70F72] text-3xl font-black tracking-normal">{mbtiType}</span>
               <div className="w-6 h-px bg-[#E70F72]" />
             </div>
             <p className="text-white/40 text-xs tracking-widest uppercase mb-4">{description.groupLabel}</p>
