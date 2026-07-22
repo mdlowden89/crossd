@@ -95,6 +95,19 @@ export default function PersonalityCard({ profile }) {
   const description = MBTI_FULL_DESCRIPTIONS[mbtiType];
   if (!description) return null;
 
+  // Calculate confidence from quiz dimension scores
+  const quizResults = profile?.mbti_quiz_results || {};
+  const questionCount = quizResults.question_count || (quizResults.answers ? Object.keys(quizResults.answers).length : null);
+  const quizLabel = questionCount && questionCount >= 40 ? `Deep (${questionCount}Q)` : questionCount ? `Core (${questionCount}Q)` : 'Core (24Q)';
+
+  // Confidence = average absolute strength of each dimension (0..1 → 0..100%)
+  const dims = ['E_I', 'S_N', 'T_F', 'J_P'];
+  const dimScores = dims.map(d => Math.abs(quizResults[d] ?? quizResults[d.toLowerCase()] ?? 0));
+  const hasScores = dimScores.some(s => s > 0);
+  const confidence = hasScores
+    ? Math.round((dimScores.reduce((a, b) => a + b, 0) / dimScores.length) * 100)
+    : null;
+
   return (
     <>
       {/* Summary Card — matches the "IDENTITY MODULE" header design */}
@@ -107,6 +120,11 @@ export default function PersonalityCard({ profile }) {
               <Sparkles className="w-3 h-3 text-white/40" />
               <span className="text-white/40 text-xs tracking-wide">Verified Result</span>
             </div>
+            {confidence !== null && (
+              <p className="text-white/25 text-[10px] mt-0.5 tracking-wide">
+                Confidence {confidence}% · {quizLabel}
+              </p>
+            )}
           </div>
           <div className="text-right">
             <p className="text-white/25 text-xs tracking-widest uppercase">Type-ID · {mbtiType}</p>
