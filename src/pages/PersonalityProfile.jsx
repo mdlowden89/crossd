@@ -200,7 +200,7 @@ export default function PersonalityProfile() {
 
           <div
             className="mx-4 mb-4 rounded-2xl py-8 px-6 flex flex-col items-center text-center"
-            style={{ background: 'radial-gradient(ellipse 90% 60% at 50% 0%, rgba(231,15,114,0.28) 0%, rgba(231,15,114,0.08) 55%, #000 80%)' }}
+            style={{ background: 'radial-gradient(ellipse 50% 70% at 50% 10%, rgba(231,15,114,0.30) 0%, rgba(231,15,114,0.08) 55%, #000 80%)' }}
           >
             <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4"
                  style={{ background: 'radial-gradient(circle, rgba(231,15,114,0.5) 0%, rgba(231,15,114,0.2) 50%, transparent 100%)', boxShadow: '0 0 40px rgba(231,15,114,0.5), 0 0 80px rgba(231,15,114,0.2)' }}>
