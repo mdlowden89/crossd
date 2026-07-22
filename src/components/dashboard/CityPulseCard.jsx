@@ -202,7 +202,7 @@ export default function CityPulseCard({ moments = [], profile = null, isNew = tr
       <div className="flex flex-col gap-3">
         {/* Top Zones */}
         {activePulse.topZones.length > 0 && (
-          <div className="bg-black/60 rounded-2xl p-4 border border-white/8">
+          <div className="bg-black/60 rounded-2xl p-4 border border-[#E70F72]/15">
             <div className="flex items-center gap-1.5 mb-2">
               <MapPin className="w-3.5 h-3.5 text-[#E70F72]" />
               <span className="text-white/45 text-sm">Top Zones</span>
@@ -215,7 +215,7 @@ export default function CityPulseCard({ moments = [], profile = null, isNew = tr
         )}
 
         {/* Peak Time */}
-        <div className="bg-black/60 rounded-2xl p-4 border border-white/8">
+        <div className="bg-black/60 rounded-2xl p-4 border border-[#E70F72]/15">
           <div className="flex items-center gap-1.5 mb-2">
             <Clock className="w-3.5 h-3.5 text-amber-400" />
             <span className="text-white/45 text-sm">Peak Time</span>
@@ -226,7 +226,7 @@ export default function CityPulseCard({ moments = [], profile = null, isNew = tr
 
         {/* PlacesDNA */}
         {activePulse.topArchetypes.length > 0 && (
-          <div className="bg-black/60 rounded-2xl p-4 border border-white/8">
+          <div className="bg-black/60 rounded-2xl p-4 border border-[#E70F72]/15">
             <div className="flex items-center gap-1.5 mb-3">
               <span className="text-white/45 text-sm">Your PlacesDNA this week</span>
               <InfoPopover text={INFO.dna} />
