@@ -1,6 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, TrendingUp } from 'lucide-react';
+import { Zap, TrendingUp, Minus } from 'lucide-react';
+
+const STORAGE_KEY = 'crossd_spark_chance_prev';
 
 function calcStreak(moments) {
   if (!moments.length) return 0;
@@ -92,8 +94,11 @@ function MetricGrid({ components }) {
 }
 
 export default function SparkChanceMeter({ moments = [] }) {
+  const prevScoreRef = useRef(null);
+  const [previous, setPrevious] = useState(null);
+
   const data = useMemo(() => {
-    if (!moments.length) return { score: 5, previous: 5, label: 'No signal yet', components: { consistency:0, variety:0, peakClarity:0, dnaConfidence:0 } };
+    if (!moments.length) return { score: 0, label: 'No signal yet', components: { consistency:0, variety:0, peakClarity:0, dnaConfidence:0 } };
 
     const streak = calcStreak(moments);
     const consistencyScore = Math.min(100, (streak / 7) * 100);
@@ -109,15 +114,33 @@ export default function SparkChanceMeter({ moments = [] }) {
     const dnaConfidenceScore = Math.min(100, (moments.length / 20) * 100);
 
     const score = Math.round(0.25*consistencyScore + 0.25*varietyScore + 0.25*peakClarityScore + 0.25*dnaConfidenceScore);
-    const previous = Math.max(0, score - Math.floor(Math.random()*5) - 2);
 
     let label = 'Warming up';
     if (score >= 70) label = 'Hot streak 🔥';
     else if (score >= 50) label = 'Good momentum';
     else if (score >= 30) label = 'Gaining signal';
 
-    return { score, previous, label, components: { consistency: Math.round(consistencyScore), variety: Math.round(varietyScore), peakClarity: Math.round(peakClarityScore), dnaConfidence: Math.round(dnaConfidenceScore) } };
+    return { score, label, components: { consistency: Math.round(consistencyScore), variety: Math.round(varietyScore), peakClarity: Math.round(peakClarityScore), dnaConfidence: Math.round(dnaConfidenceScore) } };
   }, [moments]);
+
+  // Load previous score from localStorage, then persist the new score
+  useEffect(() => {
+    if (data.score === 0) return;
+    const stored = localStorage.getItem(STORAGE_KEY);
+    const storedNum = stored !== null ? parseInt(stored, 10) : null;
+    // Only update previous ref on first load or if score actually changed
+    if (prevScoreRef.current === null) {
+      setPrevious(storedNum);
+      prevScoreRef.current = data.score;
+    } else if (prevScoreRef.current !== data.score) {
+      setPrevious(prevScoreRef.current);
+      prevScoreRef.current = data.score;
+    }
+    localStorage.setItem(STORAGE_KEY, String(data.score));
+  }, [data.score]);
+
+  const delta = previous !== null ? data.score - previous : 0;
+  const noChange = previous === null || delta === 0;
 
   const barColor = data.score >= 60 ? '#E70F72' : data.score >= 35 ? '#F6A800' : '#5B5BFF';
 
@@ -129,9 +152,24 @@ export default function SparkChanceMeter({ moments = [] }) {
           <h2 className="text-xl font-bold text-white">Spark Chance</h2>
         </div>
         <div className="flex items-center gap-1.5 text-sm">
-          <span className="text-white/50">{data.previous}%</span>
-          <TrendingUp className="w-3.5 h-3.5 text-green-400" />
-          <span className="font-bold" style={{ color: barColor }}>{data.score}%</span>
+          {noChange ? (
+            <>
+              <Minus className="w-3.5 h-3.5 text-white/40" />
+              <span className="text-white/40 font-medium">No change</span>
+            </>
+          ) : (
+            <>
+              <span className="text-white/50">{previous}%</span>
+              {delta > 0
+                ? <TrendingUp className="w-3.5 h-3.5 text-green-400" />
+                : <TrendingUp className="w-3.5 h-3.5 text-red-400 rotate-180" />
+              }
+              <span className="font-bold" style={{ color: delta > 0 ? '#4ade80' : '#f87171' }}>
+                {delta > 0 ? '+' : ''}{delta}%
+              </span>
+            </>
+          )}
+          <span className="font-bold ml-1" style={{ color: barColor }}>{data.score}%</span>
         </div>
       </div>
       <p className="text-white/50 text-sm mb-5">Your match readiness based on your rhythm.</p>
