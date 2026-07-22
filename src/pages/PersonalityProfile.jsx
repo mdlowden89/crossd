@@ -224,30 +224,27 @@ export default function PersonalityProfile() {
         </div>
 
         {/* Meta info */}
-        <div className="rounded-3xl border border-[#E70F72]/20 bg-[#0d0d0d] overflow-hidden"
-             style={{ background: 'linear-gradient(135deg, #0d0d0d 0%, #110508 100%)' }}>
-          <div className="grid grid-cols-2 divide-x divide-white/6">
-            <div className="p-5 border-b border-white/6">
-              <p className="text-[#E70F72]/60 text-[10px] font-bold tracking-widest uppercase mb-2">Spark Archetype</p>
-              <p className="text-white font-bold text-sm leading-snug">{description.sparkArchetype}</p>
-            </div>
-            <div className="p-5 border-b border-white/6">
-              <p className="text-[#E70F72]/60 text-[10px] font-bold tracking-widest uppercase mb-2">Also Known As</p>
-              <p className="text-white font-bold text-sm leading-snug">{description.alsoKnownAs}</p>
-            </div>
-            <div className="p-5">
-              <p className="text-[#E70F72]/60 text-[10px] font-bold tracking-widest uppercase mb-2">Core Energy</p>
-              <p className="text-white font-bold text-sm leading-snug">{description.coreEnergy}</p>
-            </div>
-            <div className="p-5">
-              <p className="text-[#E70F72]/60 text-[10px] font-bold tracking-widest uppercase mb-2">Romantic Style</p>
-              <p className="text-white font-bold text-sm leading-snug">{description.romanticStyle}</p>
-            </div>
+        <div className="rounded-3xl border border-white/8 bg-[#0d0d0d] p-6 grid grid-cols-2 gap-x-6 gap-y-4">
+          <div>
+            <p className="text-white/30 text-xs tracking-widest uppercase mb-1">Spark Archetype</p>
+            <p className="text-white font-semibold text-sm capitalize">{description.sparkArchetype}</p>
+          </div>
+          <div>
+            <p className="text-white/30 text-xs tracking-widest uppercase mb-1">Also Known As</p>
+            <p className="text-white font-semibold text-sm capitalize">{description.alsoKnownAs}</p>
+          </div>
+          <div>
+            <p className="text-white/30 text-xs tracking-widest uppercase mb-1">Core Energy</p>
+            <p className="text-white font-semibold text-sm capitalize">{description.coreEnergy}</p>
+          </div>
+          <div>
+            <p className="text-white/30 text-xs tracking-widest uppercase mb-1">Romantic Style</p>
+            <p className="text-white font-semibold text-sm capitalize">{description.romanticStyle}</p>
           </div>
           {description.whatTheyNeed && (
-            <div className="px-5 py-4 border-t border-[#E70F72]/15 bg-[#E70F72]/5">
-              <p className="text-[#E70F72]/60 text-[10px] font-bold tracking-widest uppercase mb-2">What They Need</p>
-              <p className="text-white font-bold text-sm leading-snug">{description.whatTheyNeed}</p>
+            <div className="col-span-2">
+              <p className="text-white/30 text-xs tracking-widest uppercase mb-1">What They Need</p>
+              <p className="text-white font-semibold text-sm capitalize">{description.whatTheyNeed}</p>
             </div>
           )}
         </div>
