@@ -434,22 +434,22 @@ export default function PersonalityProfile() {
             <InfoGrid items={description.communicationStyle.styles} />
             {description.communicationStyle.dos && (
               <div className="mt-4 grid grid-cols-2 gap-3">
-                <div className="p-4 rounded-2xl bg-[#E70F72]/8 border border-[#E70F72]/40">
-                  <p className="text-[#E70F72] text-xs font-bold tracking-widest uppercase mb-3">DO</p>
+                <div className="p-4 rounded-2xl bg-green-500/10 border border-green-500/20">
+                  <p className="text-green-400 text-xs font-bold tracking-widest uppercase mb-3">DO</p>
                   <div className="space-y-2">
                     {description.communicationStyle.dos.map((item, i) => (
                       <div key={i} className="flex items-center gap-2 text-white/70 text-xs">
-                        <CheckCircle className="w-3.5 h-3.5 text-[#E70F72] flex-shrink-0" />{item}
+                        <CheckCircle className="w-3.5 h-3.5 text-green-400 flex-shrink-0" />{item}
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="p-4 rounded-2xl bg-[#E70F72]/8 border border-[#E70F72]/40">
-                  <p className="text-[#E70F72] text-xs font-bold tracking-widest uppercase mb-3">AVOID</p>
+                <div className="p-4 rounded-2xl bg-orange-500/10 border border-orange-500/20">
+                  <p className="text-orange-400 text-xs font-bold tracking-widest uppercase mb-3">AVOID</p>
                   <div className="space-y-2">
                     {description.communicationStyle.avoids.map((item, i) => (
                       <div key={i} className="flex items-center gap-2 text-white/70 text-xs">
-                        <XCircle className="w-3.5 h-3.5 text-[#E70F72] flex-shrink-0" />{item}
+                        <XCircle className="w-3.5 h-3.5 text-orange-400 flex-shrink-0" />{item}
                       </div>
                     ))}
                   </div>
