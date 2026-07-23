@@ -626,20 +626,20 @@ export default function InsightsSheet({ moments, profile, onClose, userId }) {
                 transition={{ delay: 0.3 }}
                 className="bg-gradient-to-br from-[#0B0B0B] to-[#050505] border border-white/10 rounded-2xl p-6"
               >
-                <div className="flex items-center gap-4 mb-4">
+                <div className="flex flex-wrap items-center gap-3 mb-4">
                   {insights.placesDNA.map((dna, idx) => (
                     <div 
                       key={idx}
-                      className="flex items-center gap-2 px-4 py-2 rounded-full font-semibold"
+                      className="flex items-center gap-2 px-3 py-2 rounded-full font-semibold min-w-0"
                       style={{ 
                         backgroundColor: `${dna.color}20`,
                         color: dna.color,
                         border: `2px solid ${dna.color}50`
                       }}
                     >
-                      <span className="text-xl">{dna.icon}</span>
-                      <span>{dna.name}</span>
-                      <span className="text-sm opacity-70">{dna.percentage}%</span>
+                      <span className="text-lg flex-shrink-0">{dna.icon}</span>
+                      <span className="truncate">{dna.name}</span>
+                      <span className="text-sm opacity-70 flex-shrink-0">{dna.percentage}%</span>
                     </div>
                   ))}
                 </div>
