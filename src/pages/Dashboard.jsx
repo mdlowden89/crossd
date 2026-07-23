@@ -676,34 +676,11 @@ export default function Dashboard() {
           <MetricCards dayStreak={dayStreak} sparksThisWeek={sparksThisWeek} expiringMoments={expiringMoments} />
         </motion.div>
 
-        {/* City Pulse Card */}
-        <motion.div id="city-pulse" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-          <CityPulseCard moments={moments} profile={profile} isNew={true} />
-        </motion.div>
-
-        {/* Spark Chance Meter */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
-          <SparkChanceMeter moments={moments.filter(m => !m._isSample)} />
-        </motion.div>
-
-        {/* Top 10 Spark Picks */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.38 }}>
-          <TopPicksCard profile={profile} moments={moments} />
-        </motion.div>
-
-        {/* Know Your Type */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}>
-          <PersonalityCard profile={profile} />
-        </motion.div>
-
         {/* Activity Map */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
+          transition={{ delay: 0.3 }}
           className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl overflow-hidden border border-[#E70F72]/30"
         >
           <div className="flex items-center gap-3 px-5 py-4">
@@ -724,6 +701,29 @@ export default function Dashboard() {
           <div className="h-72 w-full">
             <ActivityMap moments={moments} profile={profile} />
           </div>
+        </motion.div>
+
+        {/* City Pulse Card */}
+        <motion.div id="city-pulse" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
+          <CityPulseCard moments={moments} profile={profile} isNew={true} />
+        </motion.div>
+
+        {/* Spark Chance Meter */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
+          <SparkChanceMeter moments={moments.filter(m => !m._isSample)} />
+        </motion.div>
+
+        {/* Top 10 Spark Picks */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.43 }}>
+          <TopPicksCard profile={profile} moments={moments} />
+        </motion.div>
+
+        {/* Know Your Type */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.45 }}>
+          <PersonalityCard profile={profile} />
         </motion.div>
 
         {/* Challenges Section */}
