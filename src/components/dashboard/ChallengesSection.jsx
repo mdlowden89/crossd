@@ -86,7 +86,7 @@ export default function ChallengesSection() {
                 {/* Left Side */}
                 <div>
                   <div className="flex items-start gap-3 mb-3">
-                    <span className="text-3xl">{challenge.icon}</span>
+                    <span className="text-5xl leading-none">{challenge.icon}</span>
                     <div>
                       <h4 className="text-white font-semibold text-lg">{challenge.name}</h4>
                       <span className="inline-block text-xs bg-[#E70F72]/20 text-[#E70F72] px-2 py-1 rounded-full mt-1">
@@ -137,7 +137,7 @@ export default function ChallengesSection() {
                 {/* Left Side */}
                 <div>
                   <div className="flex items-start gap-3 mb-3">
-                    <span className="text-3xl">{challenge.icon}</span>
+                    <span className="text-5xl leading-none">{challenge.icon}</span>
                     <div>
                       <h4 className="text-white font-semibold text-lg">{challenge.name}</h4>
                       <span className="inline-block text-xs bg-white/10 text-white/50 px-2 py-1 rounded-full mt-1">
