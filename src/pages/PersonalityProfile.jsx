@@ -16,7 +16,7 @@ function InfoGrid({ items }) {
   return (
     <div className="grid grid-cols-2 gap-3">
       {items.map((item, i) => (
-        <div key={i} className="bg-[#1a1a1a] rounded-2xl p-4">
+        <div key={i} className="bg-[#1a1a1a] border border-[#E70F72]/30 rounded-2xl p-4">
           <p className="text-white font-semibold text-sm mb-1">{item.title}</p>
           <p className="text-white/55 text-xs leading-relaxed">{item.description}</p>
         </div>
