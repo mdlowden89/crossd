@@ -1,9 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, MapPin, Clock, Calendar, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { CrossdButton } from '@/components/ui/crossd-button';
+import { base44 } from '@/api/base44Client';
+
+function VenuePhoto({ moment }) {
+  const [photoUrl, setPhotoUrl] = useState(null);
+
+  useEffect(() => {
+    if (!moment.venue_name) return;
+    base44.functions.getPlacePhoto({ venue_name: moment.venue_name, lat: moment.lat, lng: moment.lng })
+      .then(res => { if (res?.photo_url) setPhotoUrl(res.photo_url); })
+      .catch(() => {});
+  }, [moment.venue_name]);
+
+  if (photoUrl) {
+    return (
+      <img
+        src={photoUrl}
+        alt={moment.venue_name}
+        className="w-12 h-12 rounded-xl object-cover flex-shrink-0"
+      />
+    );
+  }
+
+  return (
+    <div className="w-12 h-12 rounded-xl bg-[#E70F72]/20 flex items-center justify-center flex-shrink-0">
+      <MapPin className="w-6 h-6 text-[#E70F72]" />
+    </div>
+  );
+}
 
 export default function MomentsListSheet({ moments, onClose }) {
   const navigate = useNavigate();
@@ -78,9 +106,7 @@ export default function MomentsListSheet({ moments, onClose }) {
               className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl p-4 border border-[#E70F72]/20 hover:border-[#E70F72]/40 transition-colors"
             >
               <div className="flex items-start gap-3">
-                <div className="w-12 h-12 rounded-xl bg-[#E70F72]/20 flex items-center justify-center flex-shrink-0">
-                  <MapPin className="w-6 h-6 text-[#E70F72]" />
-                </div>
+                <VenuePhoto moment={moment} />
                 
                 <div className="flex-1 min-w-0">
                   <h3 className="text-white font-semibold text-lg mb-1">
