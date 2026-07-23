@@ -471,21 +471,21 @@ export default function PersonalityProfile() {
                 const fillPct = Math.round(100 - i * 16);
                 const isTop = i === 0;
                 return (
-                  <div key={i} className={`rounded-2xl p-4 border ${isTop ? 'border-[#E70F72]/40 bg-[#E70F72]/10' : 'border-white/8 bg-white/3'}`}>
+                  <div key={i} className={`rounded-2xl p-4 border ${isTop ? 'border-[#E70F72]/40 bg-[#E70F72]/10' : 'border-white/15 bg-white/5'}`}>
                     <div className="flex items-center gap-3 mb-2">
-                      <span className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-[11px] font-black ${isTop ? 'bg-[#E70F72] text-white' : 'bg-white/10 text-white/50'}`}>
+                      <span className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-[11px] font-black ${isTop ? 'bg-[#E70F72] text-white' : 'bg-white/20 text-white/80'}`}>
                         {i + 1}
                       </span>
-                      <p className={`font-bold text-sm flex-1 ${isTop ? 'text-white' : 'text-white/80'}`}>{item.title}</p>
-                      <span className={`text-xs font-bold ${isTop ? 'text-[#E70F72]' : 'text-white/30'}`}>{fillPct}%</span>
+                      <p className="font-bold text-sm flex-1 text-white">{item.title}</p>
+                      <span className={`text-xs font-bold ${isTop ? 'text-[#E70F72]' : 'text-white/60'}`}>{fillPct}%</span>
                     </div>
-                    <div className="h-1 bg-white/8 rounded-full overflow-hidden mb-2 ml-9">
+                    <div className="h-1 bg-white/10 rounded-full overflow-hidden mb-2 ml-9">
                       <div
-                        className={`h-full rounded-full transition-all ${isTop ? 'bg-[#E70F72]' : 'bg-white/20'}`}
+                        className={`h-full rounded-full transition-all ${isTop ? 'bg-[#E70F72]' : 'bg-white/40'}`}
                         style={{ width: `${fillPct}%` }}
                       />
                     </div>
-                    <p className="text-white/45 text-xs leading-relaxed ml-9">{item.description}</p>
+                    <p className="text-white/60 text-xs leading-relaxed ml-9">{item.description}</p>
                   </div>
                 );
               })}
