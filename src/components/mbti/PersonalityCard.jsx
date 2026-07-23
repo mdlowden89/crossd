@@ -92,6 +92,8 @@ export default function PersonalityCard({ profile }) {
     );
   }
 
+  const capitaliseSegments = (str) => str ? str.split(',').map(s => s.trim()).map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(', ') : '';
+
   const description = MBTI_FULL_DESCRIPTIONS[mbtiType];
   if (!description) return null;
 
@@ -217,14 +219,14 @@ export default function PersonalityCard({ profile }) {
               <Zap className="w-3 h-3 text-amber-400" />
               <p className="text-white/35 text-[10px] font-bold tracking-widest uppercase">Core Energy</p>
             </div>
-            <p className="text-white font-semibold text-sm leading-snug">{description.coreEnergy ? description.coreEnergy.charAt(0).toUpperCase() + description.coreEnergy.slice(1) : ''}</p>
+            <p className="text-white font-semibold text-sm leading-snug">{capitaliseSegments(description.coreEnergy)}</p>
           </div>
           <div className="px-5 py-4">
             <div className="flex items-center gap-1.5 mb-1.5">
               <Heart className="w-3 h-3 text-[#E70F72]" />
               <p className="text-white/35 text-[10px] font-bold tracking-widest uppercase">Romantic Style</p>
             </div>
-            <p className="text-white font-semibold text-sm leading-snug">{description.romanticStyle ? description.romanticStyle.charAt(0).toUpperCase() + description.romanticStyle.slice(1) : ''}</p>
+            <p className="text-white font-semibold text-sm leading-snug">{capitaliseSegments(description.romanticStyle)}</p>
           </div>
         </div>
 
@@ -236,7 +238,7 @@ export default function PersonalityCard({ profile }) {
             </div>
             <div>
               <p className="text-white/35 text-[10px] font-bold tracking-widest uppercase mb-0.5">What They Need</p>
-              <p className="text-white font-semibold text-sm leading-snug">{description.whatTheyNeed ? description.whatTheyNeed.charAt(0).toUpperCase() + description.whatTheyNeed.slice(1) : ''}</p>
+              <p className="text-white font-semibold text-sm leading-snug">{capitaliseSegments(description.whatTheyNeed)}</p>
             </div>
           </div>
         )}
