@@ -65,7 +65,7 @@ export default function ChallengesSection() {
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-2">
-          <Award className="w-5 h-5 text-[#E70F72]" />
+          <Award className="w-10 h-10 text-[#E70F72]" />
           <h2 className="text-2xl font-bold text-white">Your Progress & Achievements</h2>
         </div>
         <p className="text-white/65">Track your active challenges and view your earned badges.</p>
