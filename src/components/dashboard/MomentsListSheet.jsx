@@ -11,8 +11,8 @@ function VenuePhoto({ moment }) {
 
   useEffect(() => {
     if (!moment.venue_name) return;
-    base44.functions.getPlacePhoto({ venue_name: moment.venue_name, lat: moment.lat, lng: moment.lng })
-      .then(res => { if (res?.photo_url) setPhotoUrl(res.photo_url); })
+    base44.functions.invoke('getPlacePhoto', { venue_name: moment.venue_name, lat: moment.lat, lng: moment.lng })
+      .then(res => { if (res?.data?.photo_url) setPhotoUrl(res.data.photo_url); })
       .catch(() => {});
   }, [moment.venue_name]);
 
