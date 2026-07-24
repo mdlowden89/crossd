@@ -123,7 +123,7 @@ export default function LogMoment() {
         lat: selectedPlace.lat,
         lng: selectedPlace.lng,
         geohash: geohash(selectedPlace.lat, selectedPlace.lng),
-        tile_key: `${Math.floor(selectedPlace.lat / 10)}_${Math.floor(selectedPlace.lng / 10)}`,
+        tile_key: geohash(selectedPlace.lat, selectedPlace.lng, 5),
         time_bucket: timeBucket,
         privacy_level: 'approximate',
         note: otherDetails || null,
