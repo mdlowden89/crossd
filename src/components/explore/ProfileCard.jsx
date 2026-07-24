@@ -1,13 +1,14 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, animate } from 'framer-motion';
-import { Heart, X, ChevronLeft, ChevronRight, MapPin, Briefcase, BadgeCheck, Sparkles, Flame, Music, Zap, Lightbulb, Info } from 'lucide-react';
+import { Heart, X, MapPin, BadgeCheck, Sparkles, Zap, Info, RotateCcw } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { CrossdCard } from '@/components/ui/crossd-card';
 import PlacesDNAPills from '@/components/profile/PlacesDNAPills';
 import { calculateMatchRarity } from '@/components/spark/rarityEngine';
 import RareMatchBadge from '@/components/profile/RareMatchBadge';
 import { calculateCompatibility } from '@/components/spark/compatibilityEngine';
 
-export default function ProfileCard({ profile, onLike, onPass, onViewFull, myProfile, myMoments = [] }) {
+export default function ProfileCard({ profile, onLike, onPass, onViewFull, onUndo, canUndo, isPremium, myProfile, myMoments = [] }) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [dragDirection, setDragDirection] = useState(0); // -1 left, 1 right, 0 none
   const dragX = useMotionValue(0);
@@ -457,6 +458,26 @@ export default function ProfileCard({ profile, onLike, onPass, onViewFull, myPro
         >
           <Heart className="w-10 h-10 text-black" fill="black" />
         </motion.button>
+      </div>
+
+      {/* Undo Pass row */}
+      <div className="flex justify-center mt-4">
+        {canUndo ? (
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onUndo}
+            className="flex items-center gap-1.5 text-white/50 text-xs hover:text-[#E70F72] transition-colors"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            Undo Pass
+          </motion.button>
+        ) : !isPremium ? (
+          <Link to="/CrossdPlus" className="flex items-center gap-1.5 text-white/30 text-xs hover:text-white/50 transition-colors">
+            <RotateCcw className="w-3.5 h-3.5" />
+            Undo Pass · <span className="text-[#E70F72]">Crossd+ only</span>
+          </Link>
+        ) : null}
       </div>
     </motion.div>
   );

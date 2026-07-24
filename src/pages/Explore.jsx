@@ -34,6 +34,7 @@ export default function Explore() {
   const [matchedProfile, setMatchedProfile] = useState(null);
   const [myProfile, setMyProfile] = useState(null);
   const [seenIds, setSeenIds] = useState(new Set());
+  const [passHistory, setPassHistory] = useState([]); // stack of passed profile ids for undo
   const [dailyLikeCount, setDailyLikeCount] = useState(getDailyLikeCount());
   const queryClient = useQueryClient();
 
@@ -211,9 +212,22 @@ export default function Explore() {
 
   const handlePass = () => {
     if (currentProfile) {
+      setPassHistory(prev => [...prev, currentProfile.id]);
       setSeenIds(prev => new Set([...prev, currentProfile.id]));
       setCurrentIndex(prev => prev + 1);
     }
+  };
+
+  const handleUndo = () => {
+    if (!isPremium || passHistory.length === 0) return;
+    const lastPassedId = passHistory[passHistory.length - 1];
+    setPassHistory(prev => prev.slice(0, -1));
+    setSeenIds(prev => {
+      const next = new Set(prev);
+      next.delete(lastPassedId);
+      return next;
+    });
+    setCurrentIndex(prev => Math.max(0, prev - 1));
   };
 
   const handleViewProfile = () => {
@@ -256,10 +270,17 @@ export default function Explore() {
         )}
       </AnimatePresence>
 
-      {/* Daily like limit banner for free users */}
+      {/* Daily like counter / upgrade nudge for free users */}
       {!isPremium && !isLikeLimitReached && dailyLikeCount > 0 && (
-        <div className="text-center text-white/50 text-xs mb-3">
-          {likesRemaining} like{likesRemaining !== 1 ? 's' : ''} remaining today
+        <div className="flex items-center justify-center gap-2 mb-3">
+          <span className="text-white/45 text-xs">
+            {likesRemaining} like{likesRemaining !== 1 ? 's' : ''} left today
+          </span>
+          {likesRemaining <= 3 && (
+            <Link to="/CrossdPlus" className="text-[#E70F72] text-xs font-medium underline underline-offset-2">
+              Get unlimited
+            </Link>
+          )}
         </div>
       )}
 
@@ -292,6 +313,9 @@ export default function Explore() {
             onLike={handleLike}
             onPass={handlePass}
             onViewFull={handleViewProfile}
+            onUndo={handleUndo}
+            canUndo={isPremium && passHistory.length > 0}
+            isPremium={isPremium}
           />
         ) : (
           <motion.div
