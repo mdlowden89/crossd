@@ -16,7 +16,7 @@ const navItems = [
 export default function BottomNav({ currentPage }) {
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-lg border-t border-white/10 z-50" style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 16px)' }}>
-      <div className="flex items-center justify-center gap-2 py-3 max-w-screen-lg mx-auto w-full">
+      <div className="flex items-center justify-between py-3 px-4 w-full max-w-md mx-auto">
         {navItems.map((item) => {
           const isActive = currentPage === item.page;
           const Icon = item.icon;
@@ -26,7 +26,7 @@ export default function BottomNav({ currentPage }) {
               key={item.name}
               to={createPageUrl(item.page)}
               className={cn(
-                "flex flex-col items-center gap-1 py-2 px-5 rounded-xl transition-colors",
+                "flex flex-col items-center gap-1 py-2 px-2 rounded-xl transition-colors flex-1",
                 isActive ? "text-[#E70F72]" : "text-white/50 hover:text-white/70"
               )}
             >
