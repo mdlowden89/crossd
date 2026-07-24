@@ -4,7 +4,25 @@ import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Filter, Loader2, RefreshCw, Heart, MapPin } from 'lucide-react';
+import { Loader2, RefreshCw, Heart, Lock } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
+const FREE_DAILY_LIKE_LIMIT = 10;
+
+function getDailyLikeCount() {
+  const today = new Date().toISOString().slice(0, 10);
+  const stored = JSON.parse(localStorage.getItem('crossd_likes') || '{}');
+  if (stored.date !== today) return 0;
+  return stored.count || 0;
+}
+
+function incrementDailyLikeCount() {
+  const today = new Date().toISOString().slice(0, 10);
+  const stored = JSON.parse(localStorage.getItem('crossd_likes') || '{}');
+  const count = stored.date === today ? (stored.count || 0) + 1 : 1;
+  localStorage.setItem('crossd_likes', JSON.stringify({ date: today, count }));
+  return count;
+}
 import ProfileCard from '@/components/explore/ProfileCard';
 import MatchConfirmation from '@/components/explore/MatchConfirmation';
 import { CrossdButton } from '@/components/ui/crossd-button';
@@ -16,7 +34,12 @@ export default function Explore() {
   const [matchedProfile, setMatchedProfile] = useState(null);
   const [myProfile, setMyProfile] = useState(null);
   const [seenIds, setSeenIds] = useState(new Set());
+  const [dailyLikeCount, setDailyLikeCount] = useState(getDailyLikeCount());
   const queryClient = useQueryClient();
+
+  const isPremium = myProfile?.crossd_plus;
+  const likesRemaining = isPremium ? Infinity : FREE_DAILY_LIKE_LIMIT - dailyLikeCount;
+  const isLikeLimitReached = !isPremium && dailyLikeCount >= FREE_DAILY_LIKE_LIMIT;
 
   // Load current user's profile
   useEffect(() => {
@@ -177,11 +200,13 @@ export default function Explore() {
   });
 
   const handleLike = () => {
-    if (currentProfile) {
-      setSeenIds(prev => new Set([...prev, currentProfile.id]));
-      likeMutation.mutate(currentProfile.id);
-      setCurrentIndex(prev => prev + 1);
-    }
+    if (!currentProfile) return;
+    if (isLikeLimitReached) return;
+    setSeenIds(prev => new Set([...prev, currentProfile.id]));
+    const newCount = incrementDailyLikeCount();
+    setDailyLikeCount(newCount);
+    likeMutation.mutate(currentProfile.id);
+    setCurrentIndex(prev => prev + 1);
   };
 
   const handlePass = () => {
@@ -231,9 +256,34 @@ export default function Explore() {
         )}
       </AnimatePresence>
 
+      {/* Daily like limit banner for free users */}
+      {!isPremium && !isLikeLimitReached && dailyLikeCount > 0 && (
+        <div className="text-center text-white/50 text-xs mb-3">
+          {likesRemaining} like{likesRemaining !== 1 ? 's' : ''} remaining today
+        </div>
+      )}
+
       {/* Main Content */}
       <AnimatePresence mode="wait">
-        {currentProfile ? (
+        {isLikeLimitReached ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex flex-col items-center justify-center min-h-[60vh] text-center px-6"
+          >
+            <div className="w-20 h-20 bg-[#E70F72]/10 rounded-full flex items-center justify-center mb-6">
+              <Lock className="w-10 h-10 text-[#E70F72]" />
+            </div>
+            <h2 className="text-2xl font-bold text-white mb-2">Daily Limit Reached</h2>
+            <p className="text-white/65 mb-6">
+              You've used your 10 free likes for today. Upgrade to Crossd+ for unlimited likes.
+            </p>
+            <Link to="/CrossdPlus">
+              <CrossdButton>Upgrade to Crossd+</CrossdButton>
+            </Link>
+            <p className="text-white/40 text-xs mt-4">Resets at midnight</p>
+          </motion.div>
+        ) : currentProfile ? (
           <ProfileCard
             key={currentProfile.id}
             profile={currentProfile}
