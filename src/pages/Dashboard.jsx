@@ -727,7 +727,7 @@ export default function Dashboard() {
         </motion.div>
 
         {/* Challenges Section */}
-        <ChallengesSection />
+        <ChallengesSection moments={moments} matches={matches} />
 
         {/* Crossd+ Upsell */}
         {!profile.crossd_plus &&
