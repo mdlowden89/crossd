@@ -321,8 +321,8 @@ export default function CrossdPlus() {
                 onClick={() => setSelectedPlan('quarterly')}
                 className="cursor-pointer"
               >
-                <CrossdCard glow={selectedPlan === 'quarterly'} className={`relative ${selectedPlan === 'quarterly' ? 'border-[#E70F72] border-2' : ''}`}>
-                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-[#E70F72] text-black text-xs font-bold px-2 py-0.5 rounded-full">
+                <CrossdCard glow={selectedPlan === 'quarterly'} className={`relative pt-6 ${selectedPlan === 'quarterly' ? 'border-[#E70F72] border-2' : ''}`}>
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#E70F72] text-black text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
                     Most Popular
                   </div>
                   <p className="text-white/65 text-sm mb-2">3 Months</p>
