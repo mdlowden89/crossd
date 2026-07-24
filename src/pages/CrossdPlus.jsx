@@ -4,8 +4,8 @@ import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { 
-  Sparkles, Zap, Eye, Heart, TrendingUp, Clock, 
-  Crown, CheckCircle, Star, BarChart2, Calendar
+  Sparkles, Zap, Eye, Heart, TrendingUp, RotateCcw,
+  Crown, CheckCircle, Star, BarChart2, Infinity, ArrowUp
 } from 'lucide-react';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
@@ -215,10 +215,12 @@ export default function CrossdPlus() {
           <div className="space-y-3">
             <h3 className="text-white/65 text-sm font-medium">Your Premium Features</h3>
             {[
-              { icon: Zap, label: 'Glow Mode Boosts', desc: 'Stand out in discovery' },
-              { icon: BarChart2, label: 'Weekly Recaps', desc: 'Shareable dating stats' },
-              { icon: Crown, label: 'Crossd+ Badge', desc: 'Show your premium status' },
-              { icon: Eye, label: 'See Who Likes You', desc: 'Coming soon' }
+              { icon: Infinity, label: 'Unlimited Likes & Sparks', desc: 'No daily limits' },
+              { icon: Eye, label: 'See Who Likes You', desc: 'Full likes visibility' },
+              { icon: RotateCcw, label: 'Undo Pass', desc: 'Recover missed connections' },
+              { icon: ArrowUp, label: 'Priority Likes', desc: 'Rise in discovery queues' },
+              { icon: Zap, label: 'Glow Mode', desc: '24-hour profile boost' },
+              { icon: Sparkles, label: 'FateSync', desc: 'Your personal dating blueprint' },
             ].map((feature, index) => (
               <div key={index} className="flex items-center gap-4 py-2">
                 <feature.icon className="w-5 h-5 text-[#E70F72]" />
@@ -238,24 +240,34 @@ export default function CrossdPlus() {
           <div className="space-y-4">
             {[
               { 
-                icon: Eye, 
-                label: 'See Who Likes You', 
-                desc: 'Instantly match with people who\'ve already shown interest'
+                icon: Infinity, 
+                label: 'Unlimited Likes & Sparks', 
+                desc: 'Connect without limits with unlimited Likes and Sparks every day.'
               },
               { 
-                icon: Heart, 
-                label: 'Unlimited Likes', 
-                desc: 'Swipe right as much as you want without daily limits'
+                icon: Eye, 
+                label: 'See Who Likes You', 
+                desc: 'Reveal everyone already interested in you and choose who you want to connect with.'
+              },
+              { 
+                icon: RotateCcw, 
+                label: 'Undo Pass', 
+                desc: 'Changed your mind? Go back and recover a potential spark you passed on.'
+              },
+              { 
+                icon: ArrowUp, 
+                label: 'Priority Likes', 
+                desc: 'Move higher in someone\'s discovery queue so your Like is more likely to be seen.'
+              },
+              { 
+                icon: Zap, 
+                label: 'Glow Mode', 
+                desc: 'Boost your profile visibility for 24 hours and help more people discover your spark.'
               },
               { 
                 icon: Sparkles, 
-                label: 'AI Spark Suggestions', 
-                desc: 'Get personalized place recommendations where you vibe thrives'
-              },
-              { 
-                icon: TrendingUp, 
-                label: 'VIP Profile Boost', 
-                desc: 'Get your profile seen by more people, faster'
+                label: 'FateSync', 
+                desc: 'Unlock your personal dating blueprint to understand how you connect and what you need from relationships.'
               }
             ].map((feature, index) => (
               <motion.div
