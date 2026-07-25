@@ -520,284 +520,277 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-black pb-24">
-      <div className="max-w-6xl mx-auto px-4 py-4">
+      <div className="mx-auto w-full max-w-xl px-4 lg:max-w-4xl xl:max-w-6xl py-4 space-y-4">
 
-        {/* Desktop: 2-column grid. Mobile: single column */}
-        <div className="md:grid md:grid-cols-2 md:gap-6 space-y-4 md:space-y-0">
+        {/* Welcome Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          whileHover={{ boxShadow: '0 0 0 1.5px rgba(231,15,114,0.7), 0 0 24px 4px rgba(231,15,114,0.2)' }}
+          transition={{ duration: 0.2 }}
+          className="relative overflow-hidden rounded-2xl p-5"
+          style={{
+            background: 'linear-gradient(135deg, #1a0510 0%, #0d000a 100%)',
+            border: '1px solid rgba(231,15,114,0.3)'
+          }}>
 
-          {/* ── LEFT COLUMN ── */}
-          <div className="space-y-4">
+          <div className="flex items-start gap-3 mb-4">
+            <div className="w-11 h-11 rounded-full bg-[#E70F72]/20 flex items-center justify-center flex-shrink-0">
+              <Sparkles className="w-5 h-5 text-[#E70F72]" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-white">Welcome back, {profile.display_name}!</h1>
+              <p className="text-white/50 text-sm mt-0.5">Did you see anyone interesting today?</p>
+            </div>
+          </div>
 
-            {/* Welcome Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              whileHover={{ boxShadow: '0 0 0 1.5px rgba(231,15,114,0.7), 0 0 24px 4px rgba(231,15,114,0.2)' }}
-              transition={{ duration: 0.2 }}
-              className="relative overflow-hidden rounded-2xl p-5"
-              style={{
-                background: 'linear-gradient(135deg, #1a0510 0%, #0d000a 100%)',
-                border: '1px solid rgba(231,15,114,0.3)'
-              }}>
-
-              <div className="flex items-start gap-3 mb-4">
-                <div className="w-11 h-11 rounded-full bg-[#E70F72]/20 flex items-center justify-center flex-shrink-0">
-                  <Sparkles className="w-5 h-5 text-[#E70F72]" />
-                </div>
-                <div>
-                  <h1 className="text-xl font-bold text-white">Welcome back, {profile.display_name}!</h1>
-                  <p className="text-white/50 text-sm mt-0.5">Did you see anyone interesting today?</p>
-                </div>
-              </div>
-
-              {todayPath ? (
-                <button
-                  onClick={() => navigate('/LogDailyPath')}
-                  className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-green-500/20 border border-green-500/30 text-green-400 text-sm font-semibold hover:bg-green-500/30 active:scale-95 transition-all mb-3"
-                >
-                  <CheckCircle2 className="w-4 h-4" />
-                  Today's path logged — {todayPath.stops?.length || 0} stop{(todayPath.stops?.length || 0) !== 1 ? 's' : ''}
-                </button>
-              ) : (
-                <button
-                  onClick={() => navigate('/LogDailyPath')}
-                  className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#E70F72] text-black text-sm font-semibold hover:bg-[#E70F72]/90 active:scale-95 transition-all mb-3"
-                >
-                  <MapPin className="w-4 h-4" />
-                  Log today's path
-                </button>
-              )}
-
-              {!todayPath && (
-                <div className="bg-white/5 border border-[#E70F72]/40 rounded-2xl px-3 py-3">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Route className="w-4 h-4 text-white/60" />
-                    <span className="text-white font-semibold text-sm">How it works</span>
-                  </div>
-                  <div className="space-y-2">
-                    {[
-                      'Tap the button and add the places you visited today.',
-                      'Set rough times and how long you stayed — your route is private.',
-                      "If someone near your path logged a place, we'll ping you to confirm the crossing."
-                    ].map((text, i) => (
-                      <div key={i} className="flex items-start gap-2">
-                        <div className="w-4 h-4 rounded-full bg-[#E70F72]/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <span className="text-[#E70F72] text-[9px] font-bold">{i + 1}</span>
-                        </div>
-                        <p className="text-white/60 text-sm leading-snug">{text}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {todayPath && todayPath.stops?.length > 0 && (
-                <div className="flex gap-2 flex-wrap">
-                  {todayPath.stops.map((s, i) => (
-                    <span key={i} className="bg-green-500/10 border border-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full">
-                      {s.name}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </motion.div>
-
-            {/* Activity Map */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl overflow-hidden border border-[#E70F72]/30"
+          {todayPath ? (
+            <button
+              onClick={() => navigate('/LogDailyPath')}
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-green-500/20 border border-green-500/30 text-green-400 text-sm font-semibold hover:bg-green-500/30 active:scale-95 transition-all mb-3"
             >
-              <div className="flex items-center gap-3 px-5 py-4">
-                <div className="w-10 h-10 rounded-full bg-[#E70F72]/20 flex items-center justify-center flex-shrink-0">
-                  <Map className="w-5 h-5 text-[#E70F72]" />
-                </div>
-                <div className="flex-1">
-                  <h2 className="text-lg font-bold text-white">Activity Map</h2>
-                  <p className="text-white/50 text-sm">Where your paths are crossing</p>
-                </div>
-                <button
-                  onClick={() => navigate(createPageUrl('ActivityMapPage'))}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#E70F72]/50 text-white text-sm font-semibold hover:bg-[#E70F72]/10 active:scale-95 transition-all"
-                >
-                  Open <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-              <div className="h-72 w-full">
-                <ActivityMap moments={moments} profile={profile} />
-              </div>
-            </motion.div>
+              <CheckCircle2 className="w-4 h-4" />
+              Today's path logged — {todayPath.stops?.length || 0} stop{(todayPath.stops?.length || 0) !== 1 ? 's' : ''}
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate('/LogDailyPath')}
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#E70F72] text-black text-sm font-semibold hover:bg-[#E70F72]/90 active:scale-95 transition-all mb-3"
+            >
+              <MapPin className="w-4 h-4" />
+              Log today's path
+            </button>
+          )}
 
-            {/* City Pulse Card */}
-            <motion.div id="city-pulse" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
-              <CityPulseCard moments={moments} profile={profile} isNew={true} />
-            </motion.div>
-
-            {/* Spark Chance Meter */}
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
-              <SparkChanceMeter moments={moments.filter(m => !m._isSample)} />
-            </motion.div>
-
-            {/* Top 10 Spark Picks */}
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.43 }}>
-              <TopPicksCard profile={profile} moments={moments} />
-            </motion.div>
-
-          </div>
-
-          {/* ── RIGHT COLUMN ── */}
-          <div className="space-y-4">
-
-            {/* Profile Strength */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl p-5 border border-[#E70F72]/30">
-
+          {/* How it works */}
+          {!todayPath && (
+            <div className="bg-white/5 border border-[#E70F72]/40 rounded-2xl px-3 py-3">
               <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="w-5 h-5 text-[#E70F72]" />
-                <h2 className="text-lg font-bold text-white">Profile Strength</h2>
+                <Route className="w-4 h-4 text-white/60" />
+                <span className="text-white font-semibold text-sm">How it works</span>
               </div>
-              <p className="text-white/65 text-sm mb-4">
-                Complete your profile to attract more compatible matches.
-              </p>
-
-              <div className="space-y-4">
-                <div className="flex items-center justify-center py-2">
-                  <CrossdProgressRing
-                    percentage={profileStrength}
-                    size={150}
-                    strokeWidth={10}
-                    showLabel={true} />
-                </div>
-
-                <div className="space-y-2.5">
-                  {profileItems.map((item, idx) => {
-                    const inner = (
-                      <>
-                        {item.completed
-                          ? <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
-                          : <Circle className="w-5 h-5 text-white/30 flex-shrink-0" />}
-                        <span className={`flex-1 text-sm ${item.completed ? 'text-white/90' : 'text-white/50'}`}>
-                          {item.text}
-                        </span>
-                        {!item.completed && <ChevronRight className="w-4 h-4 text-white/25 flex-shrink-0" />}
-                      </>
-                    );
-                    return item.completed ? (
-                      <div key={idx} className="flex items-center gap-3 px-2 py-2.5 rounded-xl bg-white/[0.03] border border-white/5">{inner}</div>
-                    ) : (
-                      <Link
-                        key={idx}
-                        to={item.href}
-                        className="flex items-center gap-3 rounded-xl px-2 py-2.5 border border-white/5 hover:bg-white/5 hover:border-[#E70F72]/20 active:bg-white/10 transition-colors"
-                      >
-                        {inner}
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Spark Energy Meter */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl p-5 border border-[#E70F72]/30">
-
-              <div className="flex items-center gap-2 mb-2">
-                <TrendingUp className="w-5 h-5 text-[#E70F72]" />
-                <h2 className="text-lg font-bold text-[#E70F72]">Spark Energy Meter</h2>
-              </div>
-              <p className="text-white/65 text-sm mb-4">
-                Your weekly engagement fuels your spark. Keep it high for better visibility!
-              </p>
-              <SparkEnergyBar energyData={energyData} sparksThisWeek={sparksThisWeek} />
-              <MetricCards dayStreak={dayStreak} sparksThisWeek={sparksThisWeek} expiringMoments={expiringMoments} />
-            </motion.div>
-
-            {/* Know Your Type */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.45 }}>
-              <PersonalityCard profile={profile} />
-            </motion.div>
-
-            {/* Challenges Section */}
-            <ChallengesSection moments={moments} matches={matches} />
-
-            {/* Crossd+ Upsell */}
-            {!profile.crossd_plus &&
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                className="relative overflow-hidden rounded-2xl p-5 text-center border border-[#E70F72]/30"
-                style={{ background: 'linear-gradient(135deg, #1a0510 0%, #0B0B0B 100%)' }}>
-                <div className="w-16 h-16 bg-[#E70F72] rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Star className="w-8 h-8 text-white" />
-                </div>
-                <h2 className="text-2xl font-bold text-[#E70F72] mb-3">Unlock Crossd+</h2>
-                <p className="text-white/65 text-sm mb-6 max-w-md mx-auto">
-                  Supercharge your experience with unlimited likes, see who likes you, and more exclusive perks!
-                </p>
-                <Link to={createPageUrl('CrossdPlus')} className="inline-block">
-                  <CrossdButton
-                    className="bg-gradient-to-r from-[#E70F72] to-orange-500 text-white hover:shadow-lg hover:shadow-[#E70F72]/30"
-                    size="lg">
-                    Explore Premium Features
-                  </CrossdButton>
-                </Link>
-              </motion.div>
-            }
-
-            {/* À La Carte Boosters */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7 }}
-              className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl p-5 border border-[#E70F72]/30">
-
-              <div className="flex items-center gap-2 mb-2">
-                <Gift className="w-5 h-5 text-[#E70F72]" />
-                <h2 className="text-lg font-bold text-white">À La Carte Boosters</h2>
-              </div>
-              <p className="text-white/65 text-sm mb-4">
-                Enhance your experience with powerful one-time purchases.
-              </p>
-
-              <div className="space-y-3">
-                <div className="flex items-center justify-between p-4 bg-black/40 rounded-xl border border-[#E70F72]/20">
-                  <div className="flex items-center gap-3">
-                    <Flame className="w-5 h-5 text-orange-500" />
-                    <div>
-                      <div className="text-white font-semibold">Glow Mode</div>
-                      <div className="text-white/50 text-sm">24h visibility boost</div>
+              <div className="space-y-2">
+                {[
+                  'Tap the button and add the places you visited today.',
+                  'Set rough times and how long you stayed — your route is private.',
+                  "If someone near your path logged a place, we'll ping you to confirm the crossing."
+                ].map((text, i) => (
+                  <div key={i} className="flex items-start gap-2">
+                    <div className="w-4 h-4 rounded-full bg-[#E70F72]/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-[#E70F72] text-[9px] font-bold">{i + 1}</span>
                     </div>
+                    <p className="text-white/60 text-sm leading-snug">{text}</p>
                   </div>
-                  <CrossdButton size="sm" variant="secondary">Get</CrossdButton>
-                </div>
-
-                <div className="flex items-center justify-between p-4 bg-black/40 rounded-xl border border-[#E70F72]/20">
-                  <div className="flex items-center gap-3">
-                    <Zap className="w-5 h-5 text-[#E70F72]" />
-                    <div>
-                      <div className="text-white font-semibold">FateSync Pack</div>
-                      <div className="text-white/50 text-sm">5 priority matches</div>
-                    </div>
-                  </div>
-                  <CrossdButton size="sm" variant="secondary">Get</CrossdButton>
-                </div>
+                ))}
               </div>
-            </motion.div>
+            </div>
+          )}
 
-          </div>
+          {todayPath && todayPath.stops?.length > 0 && (
+            <div className="flex gap-2 flex-wrap">
+              {todayPath.stops.map((s, i) => (
+                <span key={i} className="bg-green-500/10 border border-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full">
+                  {s.name}
+                </span>
+              ))}
+            </div>
+          )}
+        </motion.div>
+
+        {/* Profile Strength + Spark Energy — side by side on desktop */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl p-5 border border-[#E70F72]/30">
+
+            <div className="flex items-center gap-2 mb-2">
+              <Sparkles className="w-5 h-5 text-[#E70F72]" />
+              <h2 className="text-lg font-bold text-white">Profile Strength</h2>
+            </div>
+            <p className="text-white/65 text-sm mb-4">
+              Complete your profile to attract more compatible matches.
+            </p>
+
+            <div className="space-y-4">
+              <div className="flex items-center justify-center py-2">
+                <CrossdProgressRing
+                  percentage={profileStrength}
+                  size={150}
+                  strokeWidth={10}
+                  showLabel={true} />
+              </div>
+
+              <div className="space-y-2.5">
+                {profileItems.map((item, idx) => {
+                  const inner = (
+                    <>
+                      {item.completed
+                        ? <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+                        : <Circle className="w-5 h-5 text-white/30 flex-shrink-0" />}
+                      <span className={`flex-1 text-sm ${item.completed ? 'text-white/90' : 'text-white/50'}`}>
+                        {item.text}
+                      </span>
+                      {!item.completed && <ChevronRight className="w-4 h-4 text-white/25 flex-shrink-0" />}
+                    </>
+                  );
+                  return item.completed ? (
+                    <div key={idx} className="flex items-center gap-3 px-2 py-2.5 rounded-xl bg-white/[0.03] border border-white/5">{inner}</div>
+                  ) : (
+                    <Link
+                      key={idx}
+                      to={item.href}
+                      className="flex items-center gap-3 rounded-xl px-2 py-2.5 border border-white/5 hover:bg-white/5 hover:border-[#E70F72]/20 active:bg-white/10 transition-colors"
+                    >
+                      {inner}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl p-5 border border-[#E70F72]/30">
+
+            <div className="flex items-center gap-2 mb-2">
+              <TrendingUp className="w-5 h-5 text-[#E70F72]" />
+              <h2 className="text-lg font-bold text-[#E70F72]">Spark Energy Meter</h2>
+            </div>
+            <p className="text-white/65 text-sm mb-4">
+              Your weekly engagement fuels your spark. Keep it high for better visibility!
+            </p>
+            <SparkEnergyBar energyData={energyData} sparksThisWeek={sparksThisWeek} />
+            <MetricCards dayStreak={dayStreak} sparksThisWeek={sparksThisWeek} expiringMoments={expiringMoments} />
+          </motion.div>
         </div>
+
+        {/* Activity Map */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl overflow-hidden border border-[#E70F72]/30"
+        >
+          <div className="flex items-center gap-3 px-5 py-4">
+            <div className="w-10 h-10 rounded-full bg-[#E70F72]/20 flex items-center justify-center flex-shrink-0">
+              <Map className="w-5 h-5 text-[#E70F72]" />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-lg font-bold text-white">Activity Map</h2>
+              <p className="text-white/50 text-sm">Where your paths are crossing</p>
+            </div>
+            <button
+              onClick={() => navigate(createPageUrl('ActivityMapPage'))}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#E70F72]/50 text-white text-sm font-semibold hover:bg-[#E70F72]/10 active:scale-95 transition-all"
+            >
+              Open <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+          <div className="h-72 w-full lg:h-96">
+            <ActivityMap moments={moments} profile={profile} />
+          </div>
+        </motion.div>
+
+        {/* City Pulse + Spark Chance — side by side on desktop */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <motion.div id="city-pulse" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
+            <CityPulseCard moments={moments} profile={profile} isNew={true} />
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
+            <SparkChanceMeter moments={moments.filter(m => !m._isSample)} />
+          </motion.div>
+        </div>
+
+        {/* Top 10 Spark Picks */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.43 }}>
+          <TopPicksCard profile={profile} moments={moments} />
+        </motion.div>
+
+        {/* Know Your Type */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.45 }}>
+          <PersonalityCard profile={profile} />
+        </motion.div>
+
+        {/* Challenges Section */}
+        <ChallengesSection moments={moments} matches={matches} />
+
+        {/* Crossd+ Upsell */}
+        {!profile.crossd_plus &&
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="relative overflow-hidden rounded-2xl p-5 text-center border border-[#E70F72]/30"
+          style={{
+            background: 'linear-gradient(135deg, #1a0510 0%, #0B0B0B 100%)'
+          }}>
+
+            <div className="w-16 h-16 bg-[#E70F72] rounded-full flex items-center justify-center mx-auto mb-4">
+              <Star className="w-8 h-8 text-white" />
+            </div>
+            <h2 className="text-2xl font-bold text-[#E70F72] mb-3">Unlock Crossd+</h2>
+            <p className="text-white/65 text-sm mb-6 max-w-md mx-auto">
+              Supercharge your experience with unlimited likes, see who likes you, 
+              and more exclusive perks!
+            </p>
+            <Link to={createPageUrl('CrossdPlus')} className="inline-block">
+              <CrossdButton
+              className="bg-gradient-to-r from-[#E70F72] to-orange-500 text-white hover:shadow-lg hover:shadow-[#E70F72]/30"
+              size="lg">
+                Explore Premium Features
+              </CrossdButton>
+            </Link>
+          </motion.div>
+        }
+
+        {/* À La Carte Boosters */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl p-5 border border-[#E70F72]/30">
+
+          <div className="flex items-center gap-2 mb-2">
+            <Gift className="w-5 h-5 text-[#E70F72]" />
+            <h2 className="text-lg font-bold text-white">À La Carte Boosters</h2>
+          </div>
+          <p className="text-white/65 text-sm mb-4">
+            Enhance your experience with powerful one-time purchases.
+          </p>
+          
+          <div className="space-y-3">
+            <div className="flex items-center justify-between p-4 bg-black/40 rounded-xl border border-[#E70F72]/20">
+              <div className="flex items-center gap-3">
+                <Flame className="w-5 h-5 text-orange-500" />
+                <div>
+                  <div className="text-white font-semibold">Glow Mode</div>
+                  <div className="text-white/50 text-sm">24h visibility boost</div>
+                </div>
+              </div>
+              <CrossdButton size="sm" variant="secondary">Get</CrossdButton>
+            </div>
+            
+            <div className="flex items-center justify-between p-4 bg-black/40 rounded-xl border border-[#E70F72]/20">
+              <div className="flex items-center gap-3">
+                <Zap className="w-5 h-5 text-[#E70F72]" />
+                <div>
+                  <div className="text-white font-semibold">FateSync Pack</div>
+                  <div className="text-white/50 text-sm">5 priority matches</div>
+                </div>
+              </div>
+              <CrossdButton size="sm" variant="secondary">Get</CrossdButton>
+            </div>
+          </div>
+        </motion.div>
+
       </div>
     </div>
   );
