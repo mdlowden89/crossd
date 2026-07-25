@@ -520,7 +520,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-black pb-24">
-      <div className="mx-auto w-full max-w-xl px-4 lg:max-w-4xl xl:max-w-6xl py-4 space-y-4">
+      <div className="mx-auto w-full max-w-xl px-4 lg:max-w-5xl xl:max-w-[96rem] py-4 space-y-4">
 
         {/* Welcome Card */}
         <motion.div
