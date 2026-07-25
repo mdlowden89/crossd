@@ -237,12 +237,7 @@ export default function AlaCarteBoosters({ profile, onProfileUpdated }) {
             Crossd+ members receive 3 free Glow Hours every month.
           </p>
 
-          {!glowActive && (
-            <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/5">
-              <span className="text-white/50 text-xs">Demo: activate 1h free</span>
-              <ActivateButton type="glow" hours={1} label="Try 1h" activeField="glow_active_until" />
-            </div>
-          )}
+
         </BoosterRow>
 
         {/* Priority Spark Pack */}
@@ -255,10 +250,6 @@ export default function AlaCarteBoosters({ profile, onProfileUpdated }) {
           <p className="text-white/60 text-xs mb-3 leading-relaxed">
             Each Priority Spark jumps to the front of the recipient's queue so your profile is seen before regular Likes. At roughly 80p per Spark, use them on people you really want to connect with.
           </p>
-          <div className="flex items-center justify-between">
-            <span className="text-white/50 text-xs">5 priority sends · 72h window</span>
-            <ActivateButton type="priority_spark" hours={72} label="Activate · Free" activeField="priority_spark_active_until" />
-          </div>
           <p className="text-white/30 text-xs mt-2">Crossd+ members receive 5 free Priority Sparks every month.</p>
         </BoosterRow>
 
@@ -272,10 +263,6 @@ export default function AlaCarteBoosters({ profile, onProfileUpdated }) {
           <p className="text-white/60 text-xs mb-3 leading-relaxed">
             See exactly who has already expressed interest in your profile. Only shown when you have hidden Likes waiting — decide whether to Spark back and turn interest into a match.
           </p>
-          <div className="flex items-center justify-between">
-            <span className="text-white/50 text-xs">Reveal up to 3 likes · 48h window</span>
-            <ActivateButton type="like_reveal" hours={48} label="Activate · Free" activeField="like_reveal_active_until" />
-          </div>
           <p className="text-white/30 text-xs mt-2">Crossd+ members receive 1 free Like Reveal every month.</p>
         </BoosterRow>
 
@@ -289,10 +276,7 @@ export default function AlaCarteBoosters({ profile, onProfileUpdated }) {
           <p className="text-white/60 text-xs mb-3 leading-relaxed">
             Stand out by adding a short, personal note to your next Like. The recipient sees your message before deciding whether to match — a meaningful first impression for the profiles that really matter.
           </p>
-          <div className="flex items-center justify-between">
-            <span className="text-white/50 text-xs">One note attachment · 24h window</span>
-            <ActivateButton type="spark_note" hours={24} label="Activate · Free" activeField="spark_note_active_until" />
-          </div>
+
         </BoosterRow>
 
         {/* FateSync Picks */}
@@ -305,10 +289,7 @@ export default function AlaCarteBoosters({ profile, onProfileUpdated }) {
           <p className="text-white/60 text-xs mb-3 leading-relaxed">
             Five profiles surfaced using the attraction patterns and connection preferences in your FateSync blueprint. These still meet your normal age, gender, and safety preferences — curated discovery, not guaranteed matches.
           </p>
-          <div className="flex items-center justify-between">
-            <span className="text-white/50 text-xs">5 curated profiles · 72h window</span>
-            <ActivateButton type="priority_spark" hours={72} label="Activate · Free" activeField="priority_spark_active_until" />
-          </div>
+
         </BoosterRow>
 
       </div>
