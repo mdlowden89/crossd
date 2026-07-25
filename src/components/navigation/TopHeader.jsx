@@ -8,7 +8,7 @@ export default function TopHeader({ showNotifications = true, notificationCount 
   return (
     <header className="fixed top-0 left-0 right-0 bg-black/95 backdrop-blur-lg border-b border-white/5 z-40 safe-area-top">
       <div className="flex items-center justify-between px-4 py-3">
-        <Link to={createPageUrl('Home')}>
+        <Link to="/Dashboard">
           <CrossdLogo size="sm" />
         </Link>
         
