@@ -73,9 +73,14 @@ export default function ChallengesSection({ moments = [], matches = [] }) {
     }
   ], [streak, totalMatches, districts, matches]);
 
-  const completed = CHALLENGES.filter(c => c.progress >= c.total);
-  const active = CHALLENGES.filter(c => c.progress > 0 && c.progress < c.total);
-  const notStarted = CHALLENGES.filter(c => c.progress === 0);
+  // DEV PREVIEW: force first challenge as completed to preview earned state
+  const PREVIEW_COMPLETED = true;
+  const completedRaw = CHALLENGES.filter(c => c.progress >= c.total);
+  const completed = PREVIEW_COMPLETED && completedRaw.length === 0
+    ? [{ ...CHALLENGES[0], progress: CHALLENGES[0].total }]
+    : completedRaw;
+  const active = CHALLENGES.filter(c => c.progress > 0 && c.progress < c.total && !completed.find(cc => cc.id === c.id));
+  const notStarted = CHALLENGES.filter(c => c.progress === 0 && !completed.find(cc => cc.id === c.id));
 
   return (
     <motion.div
@@ -155,40 +160,54 @@ export default function ChallengesSection({ moments = [], matches = [] }) {
       <div>
         <h3 className="text-[#E70F72] font-semibold text-lg mb-4">Earned Achievements</h3>
         {completed.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-center border border-dashed border-white/10 rounded-2xl">
-            <div className="relative mb-4">
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#E70F72]/20 to-amber-500/20 flex items-center justify-center border border-[#E70F72]/20">
-                <Trophy className="w-9 h-9 text-amber-400/70" />
+          <div className="flex flex-col items-center justify-center py-14 text-center border border-dashed border-white/10 rounded-2xl relative overflow-hidden">
+            {/* Subtle background glow */}
+            <div className="absolute inset-0 bg-gradient-to-b from-amber-500/5 via-transparent to-transparent pointer-events-none" />
+            <div className="relative mb-5">
+              {/* Outer ring */}
+              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-amber-500/10 to-[#E70F72]/10 border border-amber-500/20 flex items-center justify-center">
+                {/* Inner ring */}
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-500/20 to-[#E70F72]/20 border border-amber-400/30 flex items-center justify-center">
+                  <Trophy className="w-8 h-8 text-amber-400" />
+                </div>
               </div>
-              <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-[#E70F72]/30 flex items-center justify-center text-xs">✨</div>
+              {/* Sparkle dots */}
+              <div className="absolute top-0 right-0 w-4 h-4 rounded-full bg-amber-400/40 flex items-center justify-center text-[10px]">✦</div>
+              <div className="absolute bottom-1 left-0 w-3 h-3 rounded-full bg-[#E70F72]/40 flex items-center justify-center text-[8px]">✦</div>
             </div>
-            <h4 className="text-white font-semibold mb-1">No Achievements Unlocked Yet</h4>
-            <p className="text-white/50 text-sm">Keep exploring and interacting on Crossd to earn badges!</p>
+            <h4 className="text-white font-bold text-base mb-1">No Achievements Unlocked Yet</h4>
+            <p className="text-white/40 text-sm max-w-xs">Complete challenges above to earn badges and unlock exclusive features.</p>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3">
             {completed.map((challenge) => (
               <motion.div
                 key={challenge.id}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-black/40 border border-green-500/30 rounded-2xl p-6"
+                className="relative overflow-hidden bg-gradient-to-r from-amber-500/10 via-[#E70F72]/5 to-transparent border border-amber-500/30 rounded-2xl p-5"
               >
+                {/* shimmer strip */}
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-400/50 to-transparent" />
                 <div className="flex items-center gap-4">
-                  <span className="text-5xl leading-none">{challenge.icon}</span>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h4 className="text-white font-semibold text-lg">{challenge.name}</h4>
-                      <CheckCircle2 className="w-5 h-5 text-green-400" />
+                  <div className="relative">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500/20 to-[#E70F72]/20 border border-amber-400/30 flex items-center justify-center text-3xl">
+                      {challenge.icon}
                     </div>
-                    <span className="inline-block text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">
-                      Completed ✓
-                    </span>
-                    <p className="text-white/65 text-sm mt-2">{challenge.reward}</p>
+                    <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-green-400 font-bold text-lg">{challenge.total}/{challenge.total}</div>
-                    <div className="text-white/40 text-xs">done</div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <h4 className="text-white font-bold">{challenge.name}</h4>
+                      <span className="text-[10px] bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full font-semibold uppercase tracking-wide">Badge Earned</span>
+                    </div>
+                    <p className="text-white/50 text-xs">{challenge.reward}</p>
+                  </div>
+                  <div className="text-right flex-shrink-0">
+                    <Trophy className="w-6 h-6 text-amber-400 mx-auto mb-0.5" />
+                    <div className="text-amber-400 font-bold text-sm">{challenge.total}/{challenge.total}</div>
                   </div>
                 </div>
               </motion.div>
