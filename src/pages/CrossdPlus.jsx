@@ -110,8 +110,11 @@ export default function CrossdPlus() {
     { icon: Eye, label: 'See Who Likes You', desc: 'Full likes visibility' },
     { icon: RotateCcw, label: 'Undo Pass', desc: 'Recover missed connections' },
     { icon: ArrowUp, label: 'Priority Likes', desc: 'Rise in discovery queues' },
-    { icon: Zap, label: 'Glow Mode', desc: '24-hour profile boost' },
+    { icon: Zap, label: '3 Glow Hours / month', desc: 'One-hour visibility boosts, yours to use anytime' },
+    { icon: Eye, label: '1 Like Reveal / month', desc: 'See who already likes you' },
+    { icon: ArrowUp, label: '5 Priority Sparks / month', desc: 'Jump to the top of discovery queues' },
     { icon: Sparkles, label: 'FateSync', desc: 'Your personal dating blueprint' },
+    { icon: ArrowUp, label: '20% off all boosters', desc: 'Discounted Glow Hours, Spark Notes & more' },
   ];
 
   return (
@@ -246,8 +249,10 @@ export default function CrossdPlus() {
               { icon: Eye, label: 'See Who Likes You', desc: 'Reveal everyone already interested in you and choose who you want to connect with.' },
               { icon: RotateCcw, label: 'Undo Pass', desc: 'Changed your mind? Go back and recover a potential spark you passed on.' },
               { icon: ArrowUp, label: 'Priority Likes', desc: "Move higher in someone's discovery queue so your Like is more likely to be seen." },
-              { icon: Zap, label: 'Glow Mode', desc: 'Boost your profile visibility for 24 hours and help more people discover your spark.' },
-              { icon: Sparkles, label: 'FateSync', desc: 'Unlock your personal dating blueprint to understand how you connect and what you need from relationships.' },
+              { icon: Zap, label: '3 Glow Hours / month', desc: 'Appear higher in discovery for one hour at a time — activate now or save for the perfect moment.' },
+              { icon: Eye, label: '1 Like Reveal / month', desc: 'See up to 3 people who have already liked you, every month.' },
+              { icon: ArrowUp, label: '5 Priority Sparks / month', desc: 'Jump to the front of five people\'s discovery queues each month.' },
+              { icon: Sparkles, label: 'FateSync + 20% off boosters', desc: 'Your personal dating blueprint, plus a 20% discount on all additional booster packs.' },
             ].map((feature, index) => (
               <motion.div
                 key={index}
