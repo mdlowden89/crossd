@@ -156,7 +156,12 @@ export default function ChallengesSection({ moments = [], matches = [] }) {
         <h3 className="text-[#E70F72] font-semibold text-lg mb-4">Earned Achievements</h3>
         {completed.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-center border border-dashed border-white/10 rounded-2xl">
-            <Trophy className="w-12 h-12 text-white/20 mb-3" />
+            <div className="relative mb-4">
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#E70F72]/20 to-amber-500/20 flex items-center justify-center border border-[#E70F72]/20">
+                <Trophy className="w-9 h-9 text-amber-400/70" />
+              </div>
+              <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-[#E70F72]/30 flex items-center justify-center text-xs">✨</div>
+            </div>
             <h4 className="text-white font-semibold mb-1">No Achievements Unlocked Yet</h4>
             <p className="text-white/50 text-sm">Keep exploring and interacting on Crossd to earn badges!</p>
           </div>
