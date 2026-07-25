@@ -5,7 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ChevronLeft, Heart, MessageCircle, Sparkles, MapPin,
-  BadgeCheck, Bell, Loader2, Check
+  BadgeCheck, Bell, Loader2, Check, Eye, Lock
 } from 'lucide-react';
 import { CrossdButton } from '@/components/ui/crossd-button';
 import { CrossdCard } from '@/components/ui/crossd-card';
@@ -53,6 +53,22 @@ export default function Notifications() {
     queryKey: ['notifications', myProfile?.id],
     queryFn: () => base44.entities.Notification.filter({ user_id: myProfile.id }, '-created_date', 50),
     enabled: !!myProfile
+  });
+
+  const likeRevealActive = myProfile?.like_reveal_active_until && new Date(myProfile.like_reveal_active_until) > new Date();
+
+  // Fetch likes received when Like Reveal is active
+  const { data: likesReceived = [] } = useQuery({
+    queryKey: ['likes-received', myProfile?.id],
+    queryFn: async () => {
+      const likes = await base44.entities.Like.filter({ to_user_id: myProfile.id, status: 'active' }, '-created_date', 3);
+      // Fetch profile for each liker
+      const profiles = await Promise.all(
+        likes.map(l => base44.entities.Profile.filter({ id: l.from_user_id }).then(r => r[0]))
+      );
+      return likes.map((l, i) => ({ like: l, profile: profiles[i] })).filter(x => x.profile);
+    },
+    enabled: !!myProfile && likeRevealActive
   });
 
   // Mark as read mutation
@@ -147,6 +163,49 @@ export default function Notifications() {
           </CrossdButton>
         )}
       </div>
+
+      {/* Like Reveal Section */}
+      {likeRevealActive && (
+        <div className="mb-6">
+          <div className="flex items-center gap-2 mb-3">
+            <Eye className="w-4 h-4 text-purple-400" />
+            <h2 className="text-white font-bold text-sm">👀 Like Reveal — Active</h2>
+            <span className="text-white/40 text-xs ml-auto">Up to 3 people</span>
+          </div>
+          {likesReceived.length === 0 ? (
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
+              <Lock className="w-6 h-6 text-white/20 mx-auto mb-2" />
+              <p className="text-white/40 text-sm">No likes yet — check back soon!</p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {likesReceived.map(({ like, profile }) => (
+                <div
+                  key={like.id}
+                  className="flex items-center gap-3 bg-purple-500/10 border border-purple-500/20 rounded-2xl p-3 cursor-pointer hover:border-purple-500/40 transition-colors"
+                  onClick={() => { window.location.href = createPageUrl('ProfileDetail') + `?id=${profile.id}`; }}
+                >
+                  {profile.photos?.[0]?.url ? (
+                    <img src={profile.photos[0].url} alt="" className="w-12 h-12 rounded-full object-cover border border-purple-500/30" />
+                  ) : (
+                    <div className="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center">
+                      <Heart className="w-5 h-5 text-purple-400" />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-white font-semibold text-sm">{profile.display_name}</p>
+                    <p className="text-white/50 text-xs">{profile.city || 'Liked your profile'}</p>
+                    {like.liked_content?.comment && (
+                      <p className="text-purple-300 text-xs mt-0.5 italic">💌 "{like.liked_content.comment}"</p>
+                    )}
+                  </div>
+                  <Heart className="w-4 h-4 text-purple-400 flex-shrink-0" fill="currentColor" />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {notifications.length === 0 ? (
         <motion.div

@@ -4,7 +4,7 @@ import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, RefreshCw, Heart, Lock } from 'lucide-react';
+import { Loader2, RefreshCw, Heart, Lock, Clock, Zap, MessageCircle, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const FREE_DAILY_LIKE_LIMIT = 10;
@@ -34,13 +34,19 @@ export default function Explore() {
   const [matchedProfile, setMatchedProfile] = useState(null);
   const [myProfile, setMyProfile] = useState(null);
   const [seenIds, setSeenIds] = useState(new Set());
-  const [passHistory, setPassHistory] = useState([]); // stack of passed profile ids for undo
+  const [passHistory, setPassHistory] = useState([]);
   const [dailyLikeCount, setDailyLikeCount] = useState(getDailyLikeCount());
+  const [sparkNote, setSparkNote] = useState('');
+  const [showSparkNoteModal, setShowSparkNoteModal] = useState(false);
+  const [pendingLikeProfileId, setPendingLikeProfileId] = useState(null);
   const queryClient = useQueryClient();
 
   const isPremium = myProfile?.crossd_plus;
   const likesRemaining = isPremium ? Infinity : FREE_DAILY_LIKE_LIMIT - dailyLikeCount;
   const isLikeLimitReached = !isPremium && dailyLikeCount >= FREE_DAILY_LIKE_LIMIT;
+  const isGoldenHourActive = myProfile?.golden_hour_active_until && new Date(myProfile.golden_hour_active_until) > new Date();
+  const isSparkNoteActive = myProfile?.spark_note_active_until && new Date(myProfile.spark_note_active_until) > new Date();
+  const isPrioritySparkActive = myProfile?.priority_spark_active_until && new Date(myProfile.priority_spark_active_until) > new Date();
 
   // Load current user's profile
   useEffect(() => {
@@ -129,17 +135,30 @@ export default function Explore() {
         return true;
       });
       
-      // Sort by compatibility - high energy matches float to top
+      // Sort by compatibility - priority sparks, golden hour, and glow float to top
       const { calculateCompatibility } = await import('@/components/spark/compatibilityEngine');
-      
+      const now = new Date();
+
       const profilesWithCompatibility = filteredProfiles.map(p => ({
         profile: p,
-        compatibility: calculateCompatibility(myProfile, p, [], []).total
+        compatibility: calculateCompatibility(myProfile, p, [], []).total,
+        // Boost score for profiles running priority spark or glow
+        boostScore: (p.priority_spark_active_until && new Date(p.priority_spark_active_until) > now ? 40 : 0)
+                  + (p.glow_active_until && new Date(p.glow_active_until) > now ? 20 : 0),
       }));
-      
-      // Sort by compatibility descending
-      profilesWithCompatibility.sort((a, b) => b.compatibility - a.compatibility);
-      
+
+      // Sort by (compatibility + boost) descending
+      profilesWithCompatibility.sort((a, b) =>
+        (b.compatibility + b.boostScore) - (a.compatibility + a.boostScore)
+      );
+
+      // If MY golden hour is active, shuffle slightly to surface more variety at top
+      const myGoldenHourActive = myProfile.golden_hour_active_until && new Date(myProfile.golden_hour_active_until) > now;
+      if (myGoldenHourActive) {
+        // Move top-10 into a golden pool and re-sort by compatibility only (removes noise)
+        profilesWithCompatibility.sort((a, b) => b.compatibility - a.compatibility);
+      }
+
       return profilesWithCompatibility.map(p => p.profile);
     },
     enabled: !!myProfile
@@ -147,13 +166,14 @@ export default function Explore() {
 
   // Like mutation
   const likeMutation = useMutation({
-    mutationFn: async (profileId) => {
-      // Create like
+    mutationFn: async ({ profileId, note }) => {
+      // Create like (with optional spark note)
       await base44.entities.Like.create({
         from_user_id: myProfile.id,
         to_user_id: profileId,
         source: 'discovery',
-        status: 'active'
+        status: 'active',
+        ...(note ? { liked_content: { type: 'profile', comment: note } } : {})
       });
 
       // Check if they also liked us (mutual match)
@@ -203,10 +223,30 @@ export default function Explore() {
   const handleLike = () => {
     if (!currentProfile) return;
     if (isLikeLimitReached) return;
+
+    // If Spark Note booster is active, show note modal first
+    if (isSparkNoteActive) {
+      setPendingLikeProfileId(currentProfile.id);
+      setShowSparkNoteModal(true);
+      return;
+    }
+
     setSeenIds(prev => new Set([...prev, currentProfile.id]));
     const newCount = incrementDailyLikeCount();
     setDailyLikeCount(newCount);
-    likeMutation.mutate(currentProfile.id);
+    likeMutation.mutate({ profileId: currentProfile.id, note: null });
+    setCurrentIndex(prev => prev + 1);
+  };
+
+  const handleSendSparkNote = (note) => {
+    setShowSparkNoteModal(false);
+    if (!pendingLikeProfileId) return;
+    setSeenIds(prev => new Set([...prev, pendingLikeProfileId]));
+    const newCount = incrementDailyLikeCount();
+    setDailyLikeCount(newCount);
+    likeMutation.mutate({ profileId: pendingLikeProfileId, note });
+    setPendingLikeProfileId(null);
+    setSparkNote('');
     setCurrentIndex(prev => prev + 1);
   };
 
@@ -267,6 +307,84 @@ export default function Explore() {
             onMessage={handleMessageMatch}
             onKeepSwiping={handleKeepSwiping}
           />
+        )}
+      </AnimatePresence>
+
+      {/* Active booster indicators */}
+      {(isGoldenHourActive || isPrioritySparkActive || isSparkNoteActive) && (
+        <div className="flex gap-2 flex-wrap mb-3">
+          {isGoldenHourActive && (
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-400 text-xs font-semibold">
+              <Clock className="w-3 h-3" /> Golden Hour Active
+            </div>
+          )}
+          {isPrioritySparkActive && (
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E70F72]/20 border border-[#E70F72]/30 text-[#E70F72] text-xs font-semibold">
+              <Zap className="w-3 h-3" /> Priority Sparks Active
+            </div>
+          )}
+          {isSparkNoteActive && (
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-500/30 text-blue-400 text-xs font-semibold">
+              <MessageCircle className="w-3 h-3" /> Spark Note Ready
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Spark Note Modal */}
+      <AnimatePresence>
+        {showSparkNoteModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/80 z-50 flex items-end justify-center p-4"
+            onClick={() => setShowSparkNoteModal(false)}
+          >
+            <motion.div
+              initial={{ y: 60, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 60, opacity: 0 }}
+              className="w-full max-w-sm bg-[#0B0B0B] border border-[#E70F72]/30 rounded-2xl p-5"
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <MessageCircle className="w-5 h-5 text-blue-400" />
+                  <h3 className="text-white font-bold">💌 Add a Spark Note</h3>
+                </div>
+                <button onClick={() => setShowSparkNoteModal(false)}>
+                  <X className="w-5 h-5 text-white/40" />
+                </button>
+              </div>
+              <p className="text-white/50 text-sm mb-3">Write a short message that they'll see before deciding to match.</p>
+              <textarea
+                value={sparkNote}
+                onChange={e => setSparkNote(e.target.value.slice(0, 150))}
+                placeholder="What caught your attention?"
+                maxLength={150}
+                rows={3}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white text-sm placeholder-white/30 resize-none focus:outline-none focus:border-[#E70F72]/50 mb-2"
+              />
+              <div className="flex items-center justify-between">
+                <span className="text-white/30 text-xs">{sparkNote.length}/150</span>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleSendSparkNote(null)}
+                    className="px-3 py-1.5 text-white/50 text-sm hover:text-white transition-colors"
+                  >
+                    Skip
+                  </button>
+                  <button
+                    onClick={() => handleSendSparkNote(sparkNote || null)}
+                    className="px-4 py-1.5 bg-[#E70F72] text-black text-sm font-semibold rounded-full hover:bg-[#E70F72]/90 transition-colors"
+                  >
+                    Send Spark ⚡
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
 
