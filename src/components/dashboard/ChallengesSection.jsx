@@ -185,23 +185,23 @@ export default function ChallengesSection({ moments = [], matches = [] }) {
                 key={challenge.id}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="relative overflow-hidden bg-gradient-to-r from-amber-500/10 via-[#E70F72]/5 to-transparent border border-amber-500/30 rounded-2xl p-5"
+                className="relative overflow-hidden bg-gradient-to-r from-amber-500/10 via-[#E70F72]/5 to-transparent border border-amber-500/30 rounded-2xl p-4"
               >
                 {/* shimmer strip */}
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-400/50 to-transparent" />
                 <div className="flex items-center gap-4">
                   <div className="relative">
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500/20 to-[#E70F72]/20 border border-amber-400/30 flex items-center justify-center text-3xl">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500/20 to-[#E70F72]/20 border border-amber-400/30 flex items-center justify-center text-2xl flex-shrink-0">
                       {challenge.icon}
                     </div>
                     <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
                       <CheckCircle2 className="w-3.5 h-3.5 text-white" />
                     </div>
                   </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <h4 className="text-white font-bold">{challenge.name}</h4>
-                      <span className="text-[10px] bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full font-semibold uppercase tracking-wide">Badge Earned</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+                      <h4 className="text-white font-bold leading-tight">{challenge.name}</h4>
+                      <span className="text-[10px] bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full font-semibold uppercase tracking-wide whitespace-nowrap">Badge Earned</span>
                     </div>
                     <p className="text-white/50 text-xs">{challenge.reward}</p>
                   </div>
