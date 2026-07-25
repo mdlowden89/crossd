@@ -304,6 +304,26 @@
         }
       }
     },
+    "priority_spark_active_until": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Priority Spark Pack active window"
+    },
+    "like_reveal_active_until": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Like Reveal active window"
+    },
+    "spark_note_active_until": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Spark Note active window"
+    },
+    "golden_hour_active_until": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Golden Hour boost active window"
+    },
     "discoverable": {
       "type": "boolean",
       "default": true

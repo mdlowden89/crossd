@@ -22,6 +22,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import MetricCards from '@/components/dashboard/MetricCards';
 import SparkEnergyBar from '@/components/dashboard/SparkEnergyBar';
 import { Progress } from '@/components/ui/progress';
+import AlaCarteBoosters from '@/components/dashboard/AlaCarteBoosters';
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -752,44 +753,7 @@ export default function Dashboard() {
         }
 
         {/* À La Carte Boosters */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="bg-gradient-to-b from-[#0B0B0B] to-[#050505] rounded-2xl p-5 border border-[#E70F72]/30">
-
-          <div className="flex items-center gap-2 mb-2">
-            <Gift className="w-5 h-5 text-[#E70F72]" />
-            <h2 className="text-lg font-bold text-white">À La Carte Boosters</h2>
-          </div>
-          <p className="text-white/65 text-sm mb-4">
-            Enhance your experience with powerful one-time purchases.
-          </p>
-          
-          <div className="space-y-3">
-            <div className="flex items-center justify-between p-4 bg-black/40 rounded-xl border border-[#E70F72]/20">
-              <div className="flex items-center gap-3">
-                <Flame className="w-5 h-5 text-orange-500" />
-                <div>
-                  <div className="text-white font-semibold">Glow Mode</div>
-                  <div className="text-white/50 text-sm">24h visibility boost</div>
-                </div>
-              </div>
-              <CrossdButton size="sm" variant="secondary">Get</CrossdButton>
-            </div>
-            
-            <div className="flex items-center justify-between p-4 bg-black/40 rounded-xl border border-[#E70F72]/20">
-              <div className="flex items-center gap-3">
-                <Zap className="w-5 h-5 text-[#E70F72]" />
-                <div>
-                  <div className="text-white font-semibold">FateSync Pack</div>
-                  <div className="text-white/50 text-sm">5 priority matches</div>
-                </div>
-              </div>
-              <CrossdButton size="sm" variant="secondary">Get</CrossdButton>
-            </div>
-          </div>
-        </motion.div>
+        <AlaCarteBoosters profile={profile} />
 
       </div>
     </div>
