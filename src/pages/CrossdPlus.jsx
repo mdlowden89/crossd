@@ -71,34 +71,38 @@ export default function CrossdPlus() {
     }
   });
 
-  // Subscribe to Crossd+
+  // Subscribe to Crossd+ via Stripe
   const subscribeMutation = useMutation({
     mutationFn: async (plan) => {
-      const expiresAt = new Date();
-      if (plan === 'monthly') {
-        expiresAt.setMonth(expiresAt.getMonth() + 1);
-      } else {
-        expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+      // Block checkout inside iframes (preview/builder)
+      if (window.self !== window.top) {
+        alert('Checkout is only available from the published app, not inside the preview.');
+        return;
       }
 
-      await base44.entities.Profile.update(myProfile.id, {
-        crossd_plus: true,
-        crossd_plus_plan: 'subscription',
-        crossd_plus_expires_at: expiresAt.toISOString()
+      const origin = window.location.origin;
+      const successUrl = `${origin}/CrossdPlus?checkout=success`;
+      const cancelUrl = `${origin}/CrossdPlus`;
+
+      let customerEmail;
+      try {
+        const user = await base44.auth.me();
+        customerEmail = user?.email;
+      } catch (_) { /* not logged in – that's fine */ }
+
+      const res = await base44.functions.createCheckoutSession({
+        plan,
+        successUrl,
+        cancelUrl,
+        ...(customerEmail ? { customerEmail } : {}),
       });
 
-      await base44.entities.Purchase.create({
-        user_id: myProfile.id,
-        provider: 'base44',
-        product_type: plan === 'monthly' ? 'crossd_plus_monthly' : 'crossd_plus_yearly',
-        status: 'completed',
-        expires_at: expiresAt.toISOString(),
-        features_unlocked: ['glow_mode', 'recaps', 'badge']
-      });
+      if (res.url) {
+        window.location.href = res.url;
+      } else {
+        throw new Error(res.error || 'Failed to create checkout session');
+      }
     },
-    onSuccess: () => {
-      loadProfile();
-    }
   });
 
   return (
