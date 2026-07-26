@@ -156,10 +156,10 @@ export default function AlaCarteBoosters({ profile, onProfileUpdated }) {
           icon={Flame}
           iconColor="text-orange-500"
           title="🔥 Glow Hours"
-          description="Appear higher in discovery for one hour at a time — activate now or save for the perfect moment."
+          description="Rise higher in discovery for one focused hour and increase your chances of being seen at the right moment."
         >
           <p className="text-white/60 text-xs mb-4 leading-relaxed">
-            Each Glow Hour boosts your profile for exactly 60 minutes, running continuously once activated. You can't pause or stack Glows — choose your moment wisely.
+            Rise higher in discovery for one focused hour and increase your chances of being seen at the right moment. Activate it immediately or save it for when activity is likely to be strongest.
           </p>
 
           {glowActive ? (
@@ -250,10 +250,10 @@ export default function AlaCarteBoosters({ profile, onProfileUpdated }) {
           icon={Zap}
           iconColor="text-[#E70F72]"
           title="⚡ Priority Spark Pack"
-          description="5 Sparks placed higher in each recipient's discovery queue · £3.99"
+          description="Make five of your Sparks stand out by placing them higher in each recipient's discovery queue · £3.99"
         >
           <p className="text-white/60 text-xs mb-3 leading-relaxed">
-            Each Priority Spark jumps to the front of the recipient's queue so your profile is seen before regular Likes. At roughly 80p per Spark, use them on people you really want to connect with.
+            Make five of your Sparks stand out by placing them higher in each recipient's discovery queue. A stronger way to signal genuine interest and avoid getting lost among other profiles.
           </p>
           <p className="text-white/30 text-xs mt-2">Crossd+ members receive 5 free Priority Sparks every month.</p>
           <div className="mt-3">
@@ -268,10 +268,10 @@ export default function AlaCarteBoosters({ profile, onProfileUpdated }) {
           icon={Eye}
           iconColor="text-purple-400"
           title="👀 Like Reveal"
-          description="Reveal up to 3 people who have already liked you · £2.99"
+          description="Reveal up to three people who have already liked you and turn hidden interest into a potential match · £2.99"
         >
           <p className="text-white/60 text-xs mb-3 leading-relaxed">
-            See exactly who has already expressed interest in your profile. Only shown when you have hidden Likes waiting — decide whether to Spark back and turn interest into a match.
+            Reveal up to three people who have already liked you and turn hidden interest into a potential match. Skip the uncertainty and focus on people who are already interested.
           </p>
           <p className="text-white/30 text-xs mt-2">Crossd+ members receive 1 free Like Reveal every month.</p>
           <div className="mt-3">
@@ -286,10 +286,10 @@ export default function AlaCarteBoosters({ profile, onProfileUpdated }) {
           icon={MessageCircle}
           iconColor="text-blue-400"
           title="💌 Spark Note"
-          description="1 personal message before matching · £1.49"
+          description="Send a short personal message alongside your Spark before matching · £1.49"
         >
           <p className="text-white/60 text-xs mb-3 leading-relaxed">
-            Stand out by adding a short, personal note to your next Like. The recipient sees your message before deciding whether to match — a meaningful first impression for the profiles that really matter.
+            Send a short personal message alongside your Spark before matching. Use it to mention something from their profile, make a memorable introduction, or show why you think you could click.
           </p>
           <div className="mt-3">
             <CrossdButton className="w-full text-sm" onClick={() => alert('Stripe checkout coming soon')}>
@@ -303,10 +303,10 @@ export default function AlaCarteBoosters({ profile, onProfileUpdated }) {
           icon={Sparkles}
           iconColor="text-[#E70F72]"
           title="FateSync Picks"
-          description="5 compatibility-led profiles surfaced from your FateSync blueprint · £5.99"
+          description="Surface five profiles selected using your FateSync personality and compatibility blueprint · £5.99"
         >
           <p className="text-white/60 text-xs mb-3 leading-relaxed">
-            Five profiles surfaced using the attraction patterns and connection preferences in your FateSync blueprint. These still meet your normal age, gender, and safety preferences — curated discovery, not guaranteed matches.
+            Surface five profiles selected using your FateSync personality and compatibility blueprint. Designed to help you discover people whose traits, relationship style and social energy may align with yours.
           </p>
           <div className="mt-3">
             <CrossdButton className="w-full text-sm" onClick={() => alert('Stripe checkout coming soon')}>
