@@ -303,14 +303,14 @@ export default function AlaCarteBoosters({ profile, onProfileUpdated }) {
           icon={Sparkles}
           iconColor="text-[#E70F72]"
           title="FateSync Picks"
-          description="5 compatibility-led profiles surfaced from your FateSync blueprint · £3.99"
+          description="5 compatibility-led profiles surfaced from your FateSync blueprint · £5.99"
         >
           <p className="text-white/60 text-xs mb-3 leading-relaxed">
             Five profiles surfaced using the attraction patterns and connection preferences in your FateSync blueprint. These still meet your normal age, gender, and safety preferences — curated discovery, not guaranteed matches.
           </p>
           <div className="mt-3">
             <CrossdButton className="w-full text-sm" onClick={() => alert('Stripe checkout coming soon')}>
-              Buy FateSync Picks · £3.99
+              Buy FateSync Picks · £5.99
             </CrossdButton>
           </div>
         </BoosterRow>
