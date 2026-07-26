@@ -209,19 +209,19 @@ export default function AlaCarteBoosters({ profile, onProfileUpdated }) {
 
             <div className="flex items-center justify-between bg-white/5 rounded-lg px-3 py-2.5 border border-white/10">
               <div>
-                <span className="text-white text-sm font-medium">3 Glow Hours</span>
-                <span className="text-white/40 text-xs ml-2">~80p/hour</span>
+                <span className="text-white text-sm font-medium">1 Glow Hour</span>
+                <span className="text-white/40 text-xs ml-2">single boost</span>
               </div>
-              <span className="text-[#E70F72] font-bold text-sm">£2.99</span>
+              <span className="text-[#E70F72] font-bold text-sm">£1.49</span>
             </div>
 
             <div className="flex items-center justify-between bg-amber-500/10 rounded-lg px-3 py-2.5 border border-amber-500/30 relative">
               <div className="absolute -top-2 right-3 bg-amber-500 text-black text-[10px] font-bold px-2 py-0.5 rounded-full">Best Value</div>
               <div>
-                <span className="text-white text-sm font-medium">5 Glow Hours</span>
+                <span className="text-white text-sm font-medium">3 Glow Hours</span>
                 <span className="text-white/40 text-xs ml-2">~80p/hour</span>
               </div>
-              <span className="text-amber-400 font-bold text-sm">£3.99</span>
+              <span className="text-amber-400 font-bold text-sm">£2.99</span>
             </div>
 
             <div className="flex items-center justify-between bg-white/5 rounded-lg px-3 py-2.5 border border-white/10">
