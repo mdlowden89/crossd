@@ -237,6 +237,11 @@ export default function AlaCarteBoosters({ profile, onProfileUpdated }) {
             Crossd+ members receive 3 free Glow Hours every month.
           </p>
 
+          <div className="mt-3">
+            <CrossdButton className="w-full text-sm" onClick={() => alert('Stripe checkout coming soon')}>
+              Buy Glow Hours
+            </CrossdButton>
+          </div>
 
         </BoosterRow>
 
@@ -251,6 +256,11 @@ export default function AlaCarteBoosters({ profile, onProfileUpdated }) {
             Each Priority Spark jumps to the front of the recipient's queue so your profile is seen before regular Likes. At roughly 80p per Spark, use them on people you really want to connect with.
           </p>
           <p className="text-white/30 text-xs mt-2">Crossd+ members receive 5 free Priority Sparks every month.</p>
+          <div className="mt-3">
+            <CrossdButton className="w-full text-sm" onClick={() => alert('Stripe checkout coming soon')}>
+              Buy Priority Spark Pack · £3.99
+            </CrossdButton>
+          </div>
         </BoosterRow>
 
         {/* Like Reveal */}
@@ -264,6 +274,11 @@ export default function AlaCarteBoosters({ profile, onProfileUpdated }) {
             See exactly who has already expressed interest in your profile. Only shown when you have hidden Likes waiting — decide whether to Spark back and turn interest into a match.
           </p>
           <p className="text-white/30 text-xs mt-2">Crossd+ members receive 1 free Like Reveal every month.</p>
+          <div className="mt-3">
+            <CrossdButton className="w-full text-sm" onClick={() => alert('Stripe checkout coming soon')}>
+              Buy Like Reveal · £2.99
+            </CrossdButton>
+          </div>
         </BoosterRow>
 
         {/* Spark Note */}
@@ -276,7 +291,11 @@ export default function AlaCarteBoosters({ profile, onProfileUpdated }) {
           <p className="text-white/60 text-xs mb-3 leading-relaxed">
             Stand out by adding a short, personal note to your next Like. The recipient sees your message before deciding whether to match — a meaningful first impression for the profiles that really matter.
           </p>
-
+          <div className="mt-3">
+            <CrossdButton className="w-full text-sm" onClick={() => alert('Stripe checkout coming soon')}>
+              Buy Spark Note · £1.49
+            </CrossdButton>
+          </div>
         </BoosterRow>
 
         {/* FateSync Picks */}
@@ -289,7 +308,11 @@ export default function AlaCarteBoosters({ profile, onProfileUpdated }) {
           <p className="text-white/60 text-xs mb-3 leading-relaxed">
             Five profiles surfaced using the attraction patterns and connection preferences in your FateSync blueprint. These still meet your normal age, gender, and safety preferences — curated discovery, not guaranteed matches.
           </p>
-
+          <div className="mt-3">
+            <CrossdButton className="w-full text-sm" onClick={() => alert('Stripe checkout coming soon')}>
+              Buy FateSync Picks · £3.99
+            </CrossdButton>
+          </div>
         </BoosterRow>
 
       </div>
