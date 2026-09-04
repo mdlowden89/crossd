@@ -4,6 +4,7 @@ import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
 import { CalendarDays, MapPin, Sparkles } from 'lucide-react';
 import EventCard from '@/components/events/EventCard';
+import UnknownHero from '@/components/events/UnknownHero';
 import { FRANCHISES, FRANCHISE_ORDER, getFranchiseMeta } from '@/components/events/franchiseMeta';
 
 export default function Events() {
@@ -57,16 +58,20 @@ export default function Events() {
   return (
     <div className="min-h-screen px-4 pt-6 pb-10 max-w-md mx-auto">
       {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center gap-2 text-[#E70F72] mb-1">
-          <Sparkles className="w-4 h-4" />
-          <span className="text-xs font-semibold tracking-widest">CROSSD LIVE</span>
+      {franchiseFilter === 'unknown' ? (
+        <UnknownHero />
+      ) : (
+        <div className="mb-6">
+          <div className="flex items-center gap-2 text-[#E70F72] mb-1">
+            <Sparkles className="w-4 h-4" />
+            <span className="text-xs font-semibold tracking-widest">CROSSD LIVE</span>
+          </div>
+          <h1 className="text-2xl font-bold text-white leading-tight">Singles events that don't feel like singles events.</h1>
+          <p className="text-sm text-white/50 mt-2 leading-relaxed">
+            Come do something genuinely worth doing. Everyone there happens to be single.
+          </p>
         </div>
-        <h1 className="text-2xl font-bold text-white leading-tight">Singles events that don't feel like singles events.</h1>
-        <p className="text-sm text-white/50 mt-2 leading-relaxed">
-          Come do something genuinely worth doing. Everyone there happens to be single.
-        </p>
-      </div>
+      )}
 
       {/* City filter */}
       {cities.length > 2 && (
