@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { LayoutDashboard, Compass, MapPin, MessageCircle, Map, Sparkles } from 'lucide-react';
+import { LayoutDashboard, Compass, MapPin, MessageCircle, Map, Sparkles, Flame } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { name: 'Dashboard', icon: LayoutDashboard, page: 'Dashboard' },
+  { name: 'Live', icon: Flame, page: 'Events' },
   { name: 'Explore', icon: Compass, page: 'Explore' },
-  { name: 'Moments', icon: MapPin, page: 'Moments' },
   { name: 'Chat', icon: MessageCircle, page: 'ChatList' },
   { name: 'Profile', icon: Sparkles, page: 'Profile', isGlow: true }
 ];

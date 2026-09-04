@@ -1,0 +1,117 @@
+{
+  "name": "Event",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Event title, e.g. 'Crossd Unknown \u2014 Mystery Social'"
+    },
+    "franchise": {
+      "type": "string",
+      "enum": [
+        "unknown",
+        "after_hours",
+        "table",
+        "sunday",
+        "play"
+      ],
+      "description": "Crossd Live franchise format"
+    },
+    "tagline": {
+      "type": "string",
+      "description": "Short one-line description shown on cards"
+    },
+    "description": {
+      "type": "string",
+      "description": "Longer description of the experience"
+    },
+    "city": {
+      "type": "string",
+      "description": "City the event takes place in"
+    },
+    "venue_name": {
+      "type": "string",
+      "description": "Venue name (hidden for 'unknown' franchise until reveal)"
+    },
+    "venue_address": {
+      "type": "string"
+    },
+    "venue_lat": {
+      "type": "number"
+    },
+    "venue_lng": {
+      "type": "number"
+    },
+    "venue_area_hint": {
+      "type": "string",
+      "description": "Fuzzy area hint for mystery events, e.g. 'Central London'"
+    },
+    "starts_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ends_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "capacity": {
+      "type": "number",
+      "description": "Maximum number of attendees"
+    },
+    "price_cents": {
+      "type": "number",
+      "description": "Ticket price in smallest currency unit (0 = free)",
+      "default": 0
+    },
+    "currency": {
+      "type": "string",
+      "default": "gbp"
+    },
+    "age_min": {
+      "type": "number"
+    },
+    "age_max": {
+      "type": "number"
+    },
+    "dress_code": {
+      "type": "string"
+    },
+    "mood": {
+      "type": "string",
+      "description": "General mood/vibe of the event"
+    },
+    "social_experiment": {
+      "type": "string",
+      "description": "Optional unusual social premise, e.g. 'No Names Until 9', 'Phone-Free'"
+    },
+    "cover_image_url": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "scheduled",
+        "live",
+        "completed",
+        "cancelled"
+      ],
+      "default": "scheduled"
+    },
+    "afterglow_closes_hours": {
+      "type": "number",
+      "default": 48,
+      "description": "Hours after ends_at that Afterglow stays open"
+    },
+    "host_name": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "franchise",
+    "city",
+    "starts_at",
+    "capacity",
+    "price_cents"
+  ]
+}

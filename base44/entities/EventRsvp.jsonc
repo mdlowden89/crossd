@@ -1,0 +1,48 @@
+{
+  "name": "EventRsvp",
+  "type": "object",
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "description": "Reference to Event"
+    },
+    "user_id": {
+      "type": "string",
+      "description": "User who RSVP'd"
+    },
+    "profile_id": {
+      "type": "string",
+      "description": "Reference to the user's Profile for display"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "attending",
+        "waitlist",
+        "cancelled"
+      ],
+      "default": "attending"
+    },
+    "paid": {
+      "type": "boolean",
+      "default": false
+    },
+    "ticket_count": {
+      "type": "number",
+      "default": 1
+    },
+    "checked_in": {
+      "type": "boolean",
+      "default": false
+    },
+    "stripe_session_id": {
+      "type": "string",
+      "description": "Stripe checkout session id for paid tickets"
+    }
+  },
+  "required": [
+    "event_id",
+    "user_id",
+    "status"
+  ]
+}

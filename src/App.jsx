@@ -9,6 +9,9 @@ import LogDailyPath from './pages/LogDailyPath';
 import CityPulseWeekly from './pages/CityPulseWeekly';
 import AdminVenueAnalytics from './pages/AdminVenueAnalytics';
 import PersonalityProfile from './pages/PersonalityProfile';
+import Events from './pages/Events';
+import EventDetail from './pages/EventDetail';
+import Afterglow from './pages/Afterglow';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
@@ -66,6 +69,9 @@ const AuthenticatedApp = () => {
       <Route path="/city-pulse" element={<LayoutWrapper currentPageName="CityPulseWeekly"><CityPulseWeekly /></LayoutWrapper>} />
       <Route path="/admin-venue-analytics" element={<LayoutWrapper currentPageName="AdminVenueAnalytics"><AdminVenueAnalytics /></LayoutWrapper>} />
       <Route path="/personality-profile" element={<PersonalityProfile />} />
+      <Route path="/Events" element={<LayoutWrapper currentPageName="Events"><Events /></LayoutWrapper>} />
+      <Route path="/EventDetail" element={<LayoutWrapper currentPageName="EventDetail"><EventDetail /></LayoutWrapper>} />
+      <Route path="/Afterglow" element={<LayoutWrapper currentPageName="Afterglow"><Afterglow /></LayoutWrapper>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
