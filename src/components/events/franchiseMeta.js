@@ -2,8 +2,8 @@ export const FRANCHISES = {
   unknown: {
     label: 'Crossd Unknown',
     short: 'UNKNOWN',
-    color: '#8B5CF6',
-    accent: 'rgba(139, 92, 246, 0.25)',
+    color: '#6B4CCB',
+    accent: '#2B1B54',
     desc: 'Mystery experiences in unusual locations. You won\'t know where you\'re going until hours before.',
     tagline: 'Mystery social',
   },

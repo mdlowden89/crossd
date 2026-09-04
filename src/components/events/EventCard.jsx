@@ -21,13 +21,13 @@ export default function EventCard({ event, spotsTaken = 0 }) {
         ) : null}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
         <div
-          className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-semibold tracking-wider"
-          style={{ backgroundColor: meta.accent, color: meta.color, border: `1px solid ${meta.color}55` }}
+          className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-semibold tracking-wider text-white"
+          style={{ backgroundColor: meta.accent, border: `1px solid ${meta.color}` }}
         >
           CROSSD {meta.short}
         </div>
         {event.social_experiment && (
-          <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[10px] font-medium bg-black/70 text-white/90 border border-white/20">
+          <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[10px] font-medium bg-black/50 text-white/90 border border-white/25">
             {event.social_experiment}
           </div>
         )}
