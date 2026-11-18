@@ -242,7 +242,7 @@ export default function ActivityMap({ moments, profile, liveSpark, historicZones
           background: #000000;
         }
         .leaflet-tile-pane {
-          filter: brightness(0.7) sepia(1) hue-rotate(290deg) saturate(4) contrast(1.1);
+          filter: brightness(0.85);
         }
         .leaflet-popup-content-wrapper {
           background: rgba(11, 11, 11, 0.98);
