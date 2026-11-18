@@ -293,12 +293,14 @@ export default function ActivityMap({ moments, profile, liveSpark, historicZones
         zoomControl={true}
       >
         <TileLayer
-          attribution='&copy; <a href="https://cartodb.com/attributions">CartoDB</a>'
-          url="https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
+          attribution='&copy; <a href="https://www.esri.com/">Esri</a>, HERE, Garmin, OpenStreetMap contributors'
+          url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+          maxZoom={16}
         />
         <TileLayer
-          attribution='&copy; <a href="https://cartodb.com/attributions">CartoDB</a>'
-          url="https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png"
+          attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
+          url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
+          maxZoom={16}
         />
         
         {/* Route line with gradient effect based on recency */}
