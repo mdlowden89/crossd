@@ -17,9 +17,14 @@ const MAP_OPTIONS = {
 };
 
 const ROUTE_OPTIONS = {
-  strokeColor: '#E70F72',
-  strokeOpacity: 0.95,
-  strokeWeight: 3,
+  strokeOpacity: 0,
+  icons: [
+    {
+      icon: { path: 'M 0,-1 0,1', strokeColor: '#E70F72', strokeOpacity: 0.85, scale: 3 },
+      offset: '0',
+      repeat: '22px',
+    },
+  ],
 };
 
 const INFO_OPTIONS = { maxWidth: 300 };
